@@ -10,7 +10,7 @@ Route::middleware(ApiKeyMiddleware::class)->group(function () {
 
     Route::post("/login", [ApiController::class, "login"]);
 
-    Route::get("/send-email", [ApiController::class, "sendemail"]);
+    Route::get("/authemail", [ApiController::class, "authEmail"]);
 
     Route::group(["middleware" => ["auth:sanctum"]], function() {
         Route::get("/logout", [ApiController::class, "logout"]);

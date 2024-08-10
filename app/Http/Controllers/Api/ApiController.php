@@ -95,12 +95,21 @@ class ApiController extends Controller
             'message' => "$userName logged out",
         ]);
     }
-    public function sendemail(Request $request)
+
+    public function authemail(Request $request)
     {
+        $foundFaculty = Faculty::where('email', $request->email)->first();
+
+        if(!$foundFaculty){
+            return response()->json(['error' => 'Email not found!'], 404);
+        }
+
         return response()->json([
-            'status' => true,
-            'message' => "an error has occured",
-        ], 401);
+            'email' => $foundFaculty->email,
+            'name' => $foundFaculty->name,
+            'password' => $foundFaculty->password,
+            'roles' => $foundFaculty->roles->pluck('role_name'),
+        ]);
     }
 }
 
