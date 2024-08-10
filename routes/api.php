@@ -1,19 +1,20 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Support\Facades\URL;
+use App\Http\Middleware\ApiKeyMiddleware;
 
 //Authentication Service
-Route::post("/register", [ApiController::class, "register"]);
+Route::middleware(ApiKeyMiddleware::class)->group(function () {
+    Route::post("/register", [ApiController::class, "register"]);
 
-Route::post("/login", [ApiController::class, "login"]);
+    Route::post("/login", [ApiController::class, "login"]);
 
-Route::get("/send-email", [ApiController::class, "sendemail"]);
+    Route::get("/send-email", [ApiController::class, "sendemail"]);
 
-Route::group(["middleware" => ["auth:sanctum"]], function() {
-    Route::get("/logout", [ApiController::class, "logout"]);
+    Route::group(["middleware" => ["auth:sanctum"]], function() {
+        Route::get("/logout", [ApiController::class, "logout"]);
+    });
 });
 //Authentication Service
 

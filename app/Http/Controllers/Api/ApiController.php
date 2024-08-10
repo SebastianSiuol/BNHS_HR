@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Faculty;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,22 +13,22 @@ class ApiController extends Controller
     public function register(Request $request)
     {
         //Validates registration credentials
-        $validatedUser = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users|max:255',
+        $validatedFaculty = Validator::make($request->all(), [
+            'name' => 'required|min:3|max:64',
+            'email' => 'required|email|unique:faculties|max:255',
             'password' => 'required|min:8|max:32',
         ]);
 
         //Response if Validation fails
-        if ($validatedUser->fails()) {
+        if ($validatedFaculty->fails()) {
             return response()->json([
                 'status' => true,
-                'message' => 'User registration failed',
+                'message' => 'Factory registration failed',
             ], 401);
         }
 
         //Creates user if validations are successful
-        $user = User::create([
+        $faculty = Faculty::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
@@ -39,7 +39,7 @@ class ApiController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User registered successfully',
-            'token' => $user->createToken('apiToken')->plainTextToken
+            'token' => $faculty->createToken('apiToken')->plainTextToken
         ]);
     }
 
@@ -61,7 +61,7 @@ class ApiController extends Controller
         }
 
         // Check if the user is already logged in
-        $user = User::where('email', $request->email)->first();
+        $user = Faculty::where('email', $request->email)->first();
         if ($user && $user->tokens()->exists()) {
             return response()->json([
                 'status' => true, // Keeping status true as required
@@ -78,7 +78,7 @@ class ApiController extends Controller
         }
 
         //Returns response
-        $user = User::where('email', $request->email)->first();
+        $user = Faculty::where('email', $request->email)->first();
         return response()->json([
             'status' => true,
             'message' => 'User log-in successfully',
