@@ -40,11 +40,10 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        if(env('APP_DEBUG') === true) {
-            Artisan::call('db:seed', [
-                '--class' => FacultySeeder::class,
-            ]);
-        }
+        //TO-DO: Remove When in Final Production
+        Artisan::call('db:seed', [
+            '--class' => FacultySeeder::class,
+        ]);
 
     }
 
