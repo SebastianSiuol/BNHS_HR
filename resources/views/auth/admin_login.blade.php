@@ -12,18 +12,23 @@
 <body class="m-0">
 <div class="flex h-screen">
 
-    <img src="{{ asset('images/welcomescreen_placeholder.jpg') }}" alt="landingPage_placeholder" class="w-full  h-full">
+    <img src="{{ asset('images/bhnhs_cover.jpg') }}" alt="landingPage_placeholder" class="w-full  h-full">
 
     <div class="fixed top-0 bottom-0 items-center justify-center lg:right-0 w-[300px] bg-white">
 
         <!-- Logo -->
         <div class="w-full h-full bg-gray-50 p-8 flex flex-col items-center justify-center">
-            <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-8">
-                <span class="text-gray-500 text-2xl">LOGO</span>
+            <div class="w-48 h-48 bg-gray-300 rounded-full flex items-center justify-center mb-8">
+                <img src="{{ asset('images/bhnhs_logo.png') }}" alt="landingPage_placeholder" class="w-full  h-full">
             </div>
             <!-- Title -->
             <h2 class="text-2xl font-bold mb-6 text-center">Log Into Your Account</h2>
-
+            @if($errors->any())
+                <ul class="my-5">
+                    @foreach($errors->all() as $error) @endforeach
+                    <li class="text-red-500 italic font-bold">{{ $error }}</li>
+                </ul>
+            @endif
             <!-- Form -->
             <form class="w-full">
                 <!-- Staff ID -->

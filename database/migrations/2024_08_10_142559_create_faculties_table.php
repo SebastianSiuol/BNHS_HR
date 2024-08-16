@@ -1,8 +1,11 @@
 <?php
 
+use Database\Seeders\FacultySeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+
 
 return new class extends Migration
 {
@@ -12,8 +15,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('faculties', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id(); // Auto-incrementing ID
+            $table->string('faculty_code')->unique(); // For the formatted ID
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
@@ -33,6 +39,13 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        if(env('APP_DEBUG') === true) {
+            Artisan::call('db:seed', [
+                '--class' => FacultySeeder::class,
+            ]);
+        }
+
     }
 
     /**
