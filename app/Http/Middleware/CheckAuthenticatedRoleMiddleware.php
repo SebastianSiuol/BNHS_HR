@@ -12,18 +12,17 @@ class CheckAuthenticatedRoleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // Check if the user is authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized action.');
+        }
 
-            // Check if the user has the specified role
-            if ($user->roles()->where('role_name', $role)->exists()) {
-                return $next($request);
-            }
+        // Check if the user has the specified role
+        if (Auth::user()->roles->contains('role_name', ucfirst($role))) {
+            return $next($request);
         }
 
         // If the user is not authenticated or doesn't have the right role, redirect them
