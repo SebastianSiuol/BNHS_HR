@@ -17,8 +17,16 @@ Route::view('/admin/login','auth.admin_login');
 
 
 Route::middleware('auth')->group(function () {
-    Route::view('/staff/dashboard', 'staff.index')->name('staff_index');
-    Route::view('/admin/dashboard', 'admin.index')->name('admin_index');
+
+    // Routes for admin
+    Route::middleware(['role:admin'])->group(function () {
+        Route::view('/admin/dashboard', 'admin.index')->name('admin_index');
+    });
+
+    // Routes for staff
+    Route::middleware(['role:staff'])->group(function () {
+        Route::view('/staff/dashboard', 'staff.index')->name('staff_index');
+    });
 
 
     Route::post('/staff/logout', [AuthenticatedStaffController::class, 'destroy']);

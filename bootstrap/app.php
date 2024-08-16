@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Middleware\CheckAuthenticatedRoleMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'apiKey' => ApiKeyMiddleware::class,
+            'role' => CheckAuthenticatedRoleMiddleware::class,
         ]);
+        $middleware->redirectGuestsTo(fn () => route('/'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
