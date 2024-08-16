@@ -15,7 +15,7 @@ echo "Caching routes..."
 php artisan route:cache
 
 echo "Running in-development migrations"
-php artisan migration:fresh
+php artisan migrate:fresh
 
 #echo "Running migrations..."
 #php artisan migrate --force
