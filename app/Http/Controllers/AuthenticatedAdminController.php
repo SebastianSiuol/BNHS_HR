@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+    use Illuminate\Http\RedirectResponse;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
 
-class AuthenticatedStaffController extends Controller
+class AuthenticatedAdminController extends Controller
 {
     /**
      * Display the login view.
      */
     public function create()
     {
-        return view('auth.staff_login');
+        return view('auth.admin_login');
     }
 
     /**
@@ -23,24 +23,25 @@ class AuthenticatedStaffController extends Controller
     {
 
         $credentials = $request->validate([
-            'faculty_code' => 'required',
+            'admin_id' => 'required',
             'password' => 'required|min:6',
         ]);
 
-        if (Auth::attempt(['faculty_code' => $credentials['faculty_code'], 'password' => $credentials['password']])) {
+
+        if (Auth::attempt(['faculty_code' => $credentials['admin_id'], 'password' => $credentials['password']])) {
+
             $request->session()->regenerate();
-
             $user = Auth::user();
-            $isStaff = $user->roles()->where('role_id', 2)->exists();
+            $isAdmin = $user->roles()->where('role_id', 1)->exists();
 
-            if ($isStaff) {
-                return redirect()->intended(route('staff_index')); // Admin dashboard
+            if ($isAdmin) {
+                return redirect()->intended(route('admin_index')); // Admin dashboard
             } else {
                 Auth::logout(); // Log out the non-admin user
                 $request->session()->invalidate(); // Invalidate the session
                 $request->session()->regenerateToken(); // Regenerate CSRF token
                 return back()->withErrors([
-                    'msg' => 'You do not have access.',
+                    'msg' => 'You do not have admin access.',
                 ]);
             }
             // Check if the user has the admin role

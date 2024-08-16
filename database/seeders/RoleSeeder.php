@@ -22,8 +22,8 @@ class RoleSeeder extends Seeder
         ]);
 
         Faculty::find(1)->roles()->attach([1]);
-        Faculty::find(1)->roles()->attach([2]);
-        Faculty::find(2)->roles()->attach([1]);
+        Faculty::find(2)->roles()->attach([2]);
+        Faculty::find(3)->roles()->attach([1]);
         Faculty::find(3)->roles()->attach([2]);
 
     }

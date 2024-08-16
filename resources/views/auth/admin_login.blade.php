@@ -30,19 +30,26 @@
                 </ul>
             @endif
             <!-- Form -->
-            <form class="w-full">
+            <form method="POST" action="/admin/login" class="w-full">
+                @csrf
                 <!-- Staff ID -->
                 <div class="mb-4 py-2">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="staff_id">Admin ID</label>
                     <input
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        id="staff_id" type="text" placeholder="Admin ID">
+                        name="admin_id"
+                        id="admin_id"
+                        type="text"
+                        placeholder="Admin ID">
                 </div>
                 <div class="mb-0">
                     <label class="block text-gray-600 text-sm font-semibold mb-2" for="password">Password</label>
                     <input
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        id="password" type="password" placeholder="Password">
+                        name="password"
+                        id="password"
+                        type="password"
+                        placeholder="Password">
                 </div>
                 <div class="flex items-end mb-6 py-0">
                     <div class="ml-auto">
@@ -50,10 +57,10 @@
                     </div>
                 </div>
                 <div class="mb-8">
-                    <a href="admin_dashboard"
+                    <button type="submit"
                        class="w-full block text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                         Log In
-                    </a>
+                    </button>
                 </div>
                 <!-- Terms and Conditions -->
                 <p class="text-center text-gray-600 text-sm mt-4">
