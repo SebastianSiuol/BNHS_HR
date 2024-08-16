@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthenticatedStaffController;
 Route::view('/', 'welcome')->name('/');
 
 //Authentication
-Route::get('/staff/login', [AuthenticatedStaffController::class, 'create'])->name('login');
+Route::get('/staff/login', [AuthenticatedStaffController::class, 'create']);
 Route::post('/staff/login', [AuthenticatedStaffController::class, 'store'])->name('login');
 
 Route::view('/admin/login','auth.admin_login');
