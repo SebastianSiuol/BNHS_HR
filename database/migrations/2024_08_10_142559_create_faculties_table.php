@@ -41,9 +41,12 @@ return new class extends Migration
         });
 
         //TO-DO: Remove When in Final Production
-        Artisan::call('db:seed', [
-            '--class' => FacultySeeder::class,
-        ]);
+//        Artisan::call('db:seed', [
+//            '--class' => FacultySeeder::class,
+//        ]);
+
+        $seeder = new FacultySeeder();
+        $seeder->run();
     }
 
     /**
