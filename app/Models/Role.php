@@ -10,6 +10,6 @@ class Role extends Model
     use HasFactory;
 
     public function faculties(){
-        return $this->belongsToMany(Faculty::class);
+        return $this->belongsToMany(Faculty::class)->withTimestamps();
     }
 }

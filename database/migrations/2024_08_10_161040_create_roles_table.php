@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Database\Seeders\RoleSeeder;
 use App\Models\Faculty;
 use App\Models\Role;
 
@@ -25,6 +27,10 @@ return new class extends Migration
             $table->foreignIdFor(Role::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Artisan::call('db:seed', [
+            '--class' => RoleSeeder::class,
+        ]);
     }
 
     /**
