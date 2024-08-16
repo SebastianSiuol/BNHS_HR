@@ -2,6 +2,12 @@
 echo "Running composer"
 composer install --no-dev --working-dir=/var/www/html
 
+echo "Clearing existing config caches"
+php artisan config:clear
+
+echo "Clearing existing route caches"
+php artisan route:clear
+
 echo "Caching config..."
 php artisan config:cache
 
