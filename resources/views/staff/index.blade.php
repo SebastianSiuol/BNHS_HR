@@ -12,6 +12,9 @@
 </head>
 
 <body>
+@if (session('success'))
+    {{ session('success') }}
+@endif
 
 <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
