@@ -35,7 +35,10 @@ class AuthenticatedAdminController extends Controller
             $isAdmin = $user->roles()->where('role_id', 1)->exists();
 
             if ($isAdmin) {
-                return redirect()->intended(route('admin_index')); // Admin dashboard
+
+                return redirect()
+                    ->intended(route('admin_index'))
+                    ->with('success', 'Successfully Logged In!');// Admin dashboard
             } else {
                 Auth::logout(); // Log out the non-admin user
                 $request->session()->invalidate(); // Invalidate the session
@@ -48,7 +51,7 @@ class AuthenticatedAdminController extends Controller
         }
 
         return back()->withErrors([
-            'msg' => 'The provided credentials do not match our records.',
+            'msg' => 'Invalid credenials, please try again',
         ]);
     }
     /**
