@@ -27,13 +27,9 @@ return new class extends Migration
             $table->foreignIdFor(Role::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
-//
-//        Artisan::call('db:seed', [
-//            '--class' => RoleSeeder::class,
-//        ]);
 
-        $seeder=new RoleSeeder();
-        $seeder->run();
+        $role_seeder = new RoleSeeder();
+        $role_seeder->run();
     }
 
     /**

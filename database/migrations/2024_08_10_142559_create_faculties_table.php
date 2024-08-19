@@ -15,11 +15,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('faculties', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
+            $table->id();
             $table->string('faculty_code')->unique(); // For the formatted ID
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
@@ -40,13 +37,8 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        //TO-DO: Remove When in Final Production
-//        Artisan::call('db:seed', [
-//            '--class' => FacultySeeder::class,
-//        ]);
-
-        $seeder = new FacultySeeder();
-        $seeder->run();
+        $faculty_seeder = new FacultySeeder();
+        $faculty_seeder->run();
     }
 
     /**
