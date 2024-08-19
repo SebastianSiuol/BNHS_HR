@@ -31,7 +31,7 @@
                 <button type="button" class="text-sm bg-gray-200 rounded-full pr-2 pl-1 py-1 inline-flex items-center space-x-4" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span class="sr-only">Open user menu</span>
                     <div>
-                    <span class="font-semibold text-black">Andres Santiago</span>
+                    <span class="font-semibold text-black">{{$faculty->first_name . ' ' . $faculty->last_name}}</span>
                     <p class="text-gray-600 text-xs pl-11">administrator</p>
                     </div>
                     <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">

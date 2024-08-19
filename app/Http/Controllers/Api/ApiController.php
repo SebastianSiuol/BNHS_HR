@@ -5,11 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faculty;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
+    /**
+     * Retrieves all faculties with certain columns
+     */
+    public function index(Request $request)
+    {
+
+    }
+
+
+
+
 //    TODO: Add first-name, middle-name, last-name
 //    public function register(Request $request)
 //    {
@@ -47,7 +59,7 @@ class ApiController extends Controller
     public function login(Request $request)
     {
         $validatedUser = Validator::make($request->all(), [
-           'code' => 'required',
+            'code' => 'required',
             'password' => 'required|min:8|max:32',
 
         ]);
@@ -69,7 +81,7 @@ class ApiController extends Controller
         }
 
         //Authenticates the user, fails if there are no corresponding credentials found.
-        if (!Auth::attempt(['faculty_code' => $request['code'], 'password' =>$request['password']])) {
+        if (!Auth::attempt(['faculty_code' => $request['code'], 'password' => $request['password']])) {
             return response()->json([
                 'message' => 'Invalid credentials',
             ], 401);
@@ -96,24 +108,6 @@ class ApiController extends Controller
 
     }
 
-    public function retrieveFaculty(Request $request)
-    {
-        $foundFaculty = Faculty::where('faculty_code', $request->code)->first();
-
-        if(!$foundFaculty){
-            return response()->json(['error' => 'Account not found!'], 404);
-        }
-
-        return response()->json([
-            'code' => $foundFaculty->faculty_code,
-            'email' => $foundFaculty->email,
-            'first_name' => $foundFaculty->first_name,
-            'middle_name' => $foundFaculty->middle_name,
-            'last_name' => $foundFaculty->last_name,
-            'password' => $foundFaculty->password,
-            'roles' => $foundFaculty->roles->pluck('role_name'),
-        ]);
-    }
 }
 
 
