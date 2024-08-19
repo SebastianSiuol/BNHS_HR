@@ -31,7 +31,7 @@
                     <button type="button" class="text-sm bg-gray-200 rounded-full pr-2 pl-1 py-1 inline-flex items-center space-x-4" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                         <span class="sr-only">Open user menu</span>
                         <div>
-                            <span class="font-semibold text-black">Andres Santiago</span>
+                            <span class="font-semibold text-black">{{$faculty->first_name . ' ' . $faculty->last_name}}</span>
                             <p class="text-gray-600 text-xs pl-11">administrator</p>
                         </div>
                         <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
@@ -69,7 +69,7 @@
 
     <aside id="sidebar-multi-level-sidebar" class=" bg fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
         <div class="flex items-center justify-center mb-9">
-            <div class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center mt-10">
+            <div class="bg-blues-500 text-white rounded-full w-12 h-12 flex items-center justify-center mt-10">
                 LOGO
             </div>
             <span class="font-bold text-2xl md:block mt-10 pl-5">XYZ SCHOOL</span>
