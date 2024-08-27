@@ -38,18 +38,14 @@ Route::middleware('auth')->group(function () {
         })->name('admin_index');
 
 
-        Route::get('/admin/employee', function() {
+        Route::get('/admin/employee/add', function() {
 
-            $faculty = Auth::user();
-
-
-            return view('admin.employee_page', ['faculty' => $faculty]);
-        });
-
-
-
-//        Route::view('/admin/employee', 'admin.employee_page');
+            return view('admin.employee_add');
+        })->name('admin_employee_add');
     });
+
+
+
 
     // Routes for staff
     Route::middleware(['role:staff'])->group(function () {
