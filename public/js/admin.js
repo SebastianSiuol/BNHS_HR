@@ -17,7 +17,7 @@
 //             if (currentIndex > 0) {
 //                 fileInputs[currentIndex - 1].classList.add('block');
 //             }
-            
+
 //             fileInputs[currentIndex].classList.remove('hidden');
 //             currentIndex++;
 //         }

@@ -11,21 +11,21 @@ body{
 }
 
 aside{
-    background-color: #1E56A0;
+    background-color: #163172;
     color: white;
 }
 
 #formss{
     background-color: white;
     border: 1px solid #163172;
-    width: 500px;
+    width: 480px;
 }
 
 #formss form input{
     background-color: #D6E4F0;
     width: 100%;
     max-height: 42px;
-    
+
 }
 
 #formss form label{

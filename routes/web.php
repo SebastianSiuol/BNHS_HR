@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedStaffController;
 use App\Http\Controllers\AuthenticatedAdminController;
-use \App\Models\Faculty;
-use \Illuminate\Support\Facades\Auth;
+use App\Models\Faculty;
+use Illuminate\Support\Facades\Auth;
+Use App\Http\Controllers\FacultyController;
 
 Route::view('/', 'welcome')->name('/');
 
@@ -25,23 +26,17 @@ Route::middleware('auth')->group(function () {
     // Routes for admin
     Route::middleware(['role:admin'])->group(function () {
 
-
-//        Route::view('/admin/dashboard', 'admin.index')->name('admin_index');
-//        Route::view('/admin/home', 'admin.dashboard')->name('admin_index');
-
         Route::get('/admin/home', function() {
 
             $faculty = Auth::user();
 
-
             return view('admin.dashboard', ['faculty' => $faculty]);
         })->name('admin_index');
 
+        Route::get('/admin/employees', [FacultyController::class, 'index'])->name('employees.index');
+        Route::get('/admin/employees/create', [FacultyController::class, 'create'])->name('employees.create');
+        Route::post('/admin/employees', [FacultyController::class, 'store'])->name('employees.store');
 
-        Route::get('/admin/employee/add', function() {
-
-            return view('admin.employee_add');
-        })->name('admin_employee_add');
     });
 
 
