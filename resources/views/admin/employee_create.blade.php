@@ -407,8 +407,14 @@
                                     name="designation"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
                                 <option selected disabled>Select Designation</option>
-                                <option value="master-teacher">Master Teacher I</option>
-                                <option value="teacher">Teacher I</option>
+                                <option value="master-teacher-i">Master Teacher I</option>
+                                <option value="master-teacher-ii">Master Teacher II</option>
+                                <option value="master-teacher-iii">Master Teacher III</option>
+                                <option value="master-teacher-iv">Master Teacher IV</option>
+                                <option value="teacher-i">Teacher I</option>
+                                <option value="teacher-ii">Teacher II</option>
+                                <option value="teacher-iii">Teacher III</option>
+                                <option value="teacher-iv">Teacher IV</option>
                             </select>
                         </div>
                         <div>
@@ -452,8 +458,8 @@
                             <select id="manager"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
                                 <option selected disabled>Select Manager</option>
-                                <option value="">Manager 1</option>
-                                <option value="">Manager 2</option>
+                                <option value="">Example I</option>
+                                <option value="">Example II</option>
                             </select>
                         </div>
                         <div>
@@ -471,8 +477,8 @@
                             <select id="status"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
                                 <option selected>Active</option>
-                                <option value="">Option 2</option>
-                                <option value="">Option 3</option>
+                                <option value="">On-Leave</option>
+                                <option value="">Dismissed</option>
                             </select>
                         </div>
                     </div>
@@ -536,57 +542,77 @@
 
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
-                            <label for="resume" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Resume
-                                File</label>
+                            <label for="resume_file"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Resume File
+                            </label>
                             <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   "
-                                id="file_input" type="file">
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+                                name="resume_file"
+                                id="file_input"
+                                type="file">
                         </div>
                         <div>
-                            <label for="offer-letter"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Offer
-                                Letter</label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   "
-                                id="file_input" type="file">
+                            <label for="offer_letter"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Offer Letter</label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+                                   name="offer_letter"
+                                   id="file_input"
+                                   type="file">
                         </div>
                         <div>
-                            <label for="joining-letter"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Joining
-                                Letter</label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   "
-                                id="file_input" type="file">
+                            <label for="joining_letter"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Joining Letter
+                            </label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+                                   name="joining_letter"
+                                   id="file_input"
+                                   type="file">
                         </div>
                         <div>
-                            <label for="contract" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contract
-                                & Agreement </label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   "
-                                id="file_input" type="file">
+                            <label for="contract_and_agreement_file"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Contract & Agreement
+                            </label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+                                   name="contract_and_agreement_file"
+                                   id="file_input"
+                                   type="file">
                         </div>
                         <div>
-                            <label for="Other" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Other
-                                Documents </label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   "
-                                id="file_input" type="file">
+                            <label for="other_documents" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Other Documents
+                            </label>
+                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+                                   name="other_documents"
+                                   id="file_input"
+                                   type="file">
                         </div>
                         <div>
                             <label for="dropbox-url"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dropbox
-                                URL</label>
-                            <input type="text" disabled name="emp_id" id="emp_id"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Dropbox URL" >
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Dropbox URL
+                            </label>
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   name="dropbox_url"
+                                   id="emp_id"
+                                   type="text"
+                                   placeholder="Dropbox URL"
+                                    disabled>
                         </div>
                         <div>
                             <label for="gdrive-url"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Google Drive
-                                URL</label>
-                            <input type="text" disabled name="emp_id" id="emp_id"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Google Drive URL" >
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Google Drive URL
+                            </label>
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   id="emp_id"
+                                   name="gdrive-url"
+                                   type="text"
+                                   placeholder="Google Drive URL"
+                                   disabled>
                         </div>
                     </div>
 
@@ -606,7 +632,8 @@
             </div>
             <!-- End of Documents Form -->
 
-            <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            <button class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    type="submit">
                 Save
             </button>
 

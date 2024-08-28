@@ -25,10 +25,10 @@ class FacultyController extends Controller
 
     public function store(Request $request){
 
-        $faculty = Faculty::find(1);
+//        $faculty = Faculty::find(1);
 
-        dd($faculty->personal_information->medical_info->height);
+//        dd($faculty->personal_information->medical_info->height);
 
-//        dd($request->all());
+        dd($request->all());
     }
 }
