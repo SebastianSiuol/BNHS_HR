@@ -19,17 +19,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('civil_status', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('civil_status');
+            $table->timestamps();
+        });
+
         Schema::create('citizenships', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('citizen_type');
             $table->string('country')->nullable();
             $table->timestamps();
         });
-        Schema::create('civil_status', function (Blueprint $table) {
-            $table->id();
-            $table->string('civil_status');
-            $table->timestamps();
-        });
+
         Schema::create('personal_information', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Faculty::class)->nullable();
@@ -42,9 +44,11 @@ return new class extends Migration
             $table->string('place_of_birth');
             $table->string('telephone_no')->nullable();
             $table->string('contact_no')->nullable();
-            $table->foreignIdFor(Citizenship::class)->nullable();
-            $table->foreignIdFor(CivilStatus::class)->nullable();
+            $table->foreignId('civil_status_id')->nullable();
+            $table->foreignId('citizenship_id')->nullable();
             $table->timestamps();
+            $table->foreign('civil_status_id')->references('id')->on('civil_status');
+            $table->foreign('citizenship_id')->references('id')->on('citizenships');
         });
 
 

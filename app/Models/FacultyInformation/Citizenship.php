@@ -9,6 +9,7 @@ class Citizenship extends Model
 {
     use HasFactory;
 
+
     protected $table = 'citizenships';
 
     public function personal_information()

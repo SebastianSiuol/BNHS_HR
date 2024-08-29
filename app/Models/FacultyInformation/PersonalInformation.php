@@ -29,7 +29,7 @@ class PersonalInformation extends Model
         return $this->hasOne(PhilippinesIdentificationCards::class);
     }
 
-    public function civilstatus()
+    public function civil_status()
     {
         return $this->belongsTo(CivilStatus::class);
     }
