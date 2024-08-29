@@ -13,11 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-//        Schema::table('faculty_role', function (Blueprint $table) {
-//            $table->foreignIdFor(Faculty::class);
-//
-//            $table->foreignIdFor(Role::class);
-//        });
+
     }
 
     /**

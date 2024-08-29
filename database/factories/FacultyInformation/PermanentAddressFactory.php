@@ -17,7 +17,13 @@ class PermanentAddressFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'house_block_no' => $this->faker->buildingNumber(),
+            'street' => $this->faker->streetAddress(),
+            'subdivision_village' => $this->faker->city(),
+            'barangay' => $this->faker->streetName(),
+            'city_municipality' => $this->faker->country(),
+            'province' => $this->faker->firstName(),
+            'zip_code' => $this->faker->postcode(),
         ];
     }
 }
