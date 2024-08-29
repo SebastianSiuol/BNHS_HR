@@ -22,7 +22,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '1993-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
 
         PersonalInformation::factory()->create([
@@ -34,7 +35,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '1995-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
 
         PersonalInformation::factory()->create([
@@ -46,7 +48,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '1997-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
         PersonalInformation::factory()->create([
             'first_name' => 'Romeo',
@@ -57,7 +60,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '2003-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
         PersonalInformation::factory()->create([
             'first_name' => 'Davy',
@@ -68,7 +72,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '2002-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
         PersonalInformation::factory()->create([
             'first_name' => 'Gabriel',
@@ -79,7 +84,8 @@ class PersonalInformationSeeder extends Seeder
             'date_of_birth' => '1996-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
-            'contact_no' => '09987654321'
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
         ]);
 
         for ($i = 1; $i <= 6; $i++) {

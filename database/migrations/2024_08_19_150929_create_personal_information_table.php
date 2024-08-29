@@ -51,12 +51,12 @@ return new class extends Migration
             $table->foreign('citizenship_id')->references('id')->on('citizenships');
         });
 
+        $civil_status_seeder = new CivilStatusSeeder();
+        $civil_status_seeder->run();
 
         $personal_info_seeder = new PersonalInformationSeeder();
         $personal_info_seeder->run();
 
-        $civil_status_seeder = new CivilStatusSeeder();
-        $civil_status_seeder->run();
 
     }
 

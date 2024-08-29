@@ -8,7 +8,9 @@ use App\Models\Faculty;
 use Illuminate\Support\Facades\Auth;
 Use App\Http\Controllers\FacultyController;
 
-Route::view('/', 'welcome')->name('/');
+Route::get('/', function(){
+    return view('welcome');
+})->name('/');
 
 //Authentication
 Route::get('/staff/login', [AuthenticatedStaffController::class, 'create'])->name('staff_login');

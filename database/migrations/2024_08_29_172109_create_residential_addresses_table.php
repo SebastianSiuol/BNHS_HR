@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('residential_addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PersonalInformation::class);
+            $table->foreignIdFor(PersonalInformation::class)->nullable();
             $table->string('house_block_no');
             $table->string('street');
             $table->string('subdivision_village');
