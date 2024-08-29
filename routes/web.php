@@ -12,10 +12,10 @@ Route::view('/', 'welcome')->name('landing_page');
 
 //Authentication
 Route::get('/staff/login', [AuthenticatedStaffController::class, 'create'])->name('staff_login');
-Route::post('/staff/login', [AuthenticatedStaffController::class, 'store'])->name('staff_login');
+Route::post('/staff/login', [AuthenticatedStaffController::class, 'store']);
 
 Route::get('/admin/login', [AuthenticatedAdminController::class, 'create'])->name('admin_login');
-Route::post('/admin/login', [AuthenticatedAdminController::class, 'store'])->name('admin_login');
+Route::post('/admin/login', [AuthenticatedAdminController::class, 'store']);
 Route::post('/admin/logout', [AuthenticatedAdminController::class, 'destroy'])->name('admin_logout');
 
 //Route::view('/admin/login','auth.admin_login');

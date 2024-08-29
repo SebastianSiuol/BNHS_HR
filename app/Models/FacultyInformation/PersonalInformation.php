@@ -41,6 +41,14 @@ class PersonalInformation extends Model
     public function address(){
         return $this->hasOne(Address::class);
     }
+    public function residentiaL_address(){
+        return $this->hasOne(ResidentialAddress::class);
+    }
+
+    public function permanent_address(){
+        return $this->hasOne(PermanentAddress::class);
+    }
+
 
     public function reference_members(){
         return $this->hasMany(ReferenceMember::class);

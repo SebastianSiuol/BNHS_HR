@@ -153,10 +153,10 @@
 
                             <div class="mt-4">
 
-                                <x-admin-form-label for="reference_contact_01">
+                                <x-admin-form-label for="reference_contact_number_01">
                                     Reference Contact Number 01
                                 </x-admin-form-label>
-                                <x-admin-form-input type="text" name="reference_contact_01" id="reference_contact_01">
+                                <x-admin-form-input type="text" name="reference_contact_number_01" id="reference_contact_number_01">
                                     09xxxxxxxxx
                                 </x-admin-form-input>
 
@@ -173,10 +173,10 @@
                             </div>
                             <div class="mt-4">
 
-                                <x-admin-form-label for="reference_contact_02">
-                                    Reference Contact Number 01
+                                <x-admin-form-label for="reference_contact_number_02">
+                                    Reference Contact Number 02
                                 </x-admin-form-label>
-                                <x-admin-form-input type="text" name="reference_contact_02" id="reference_contact_02">
+                                <x-admin-form-input type="text" name="reference_contact_number_02" id="reference_contact_number_02">
                                     09xxxxxxxxx
                                 </x-admin-form-input>
 
@@ -216,13 +216,182 @@
                             </div>
 
                             <div class="mt-4">
-                                <x-admin-form-label for="local_address">
-                                    Local Address
-                                </x-admin-form-label>
-                                <textarea disabled
-                                          id="local_address"
-                                          name="local_address"
-                                          class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                <div>
+                                    <h6 class="font-semibold">Residential Address</h6>
+                                </div>
+                                <div>
+                                    <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="residential_house_num">
+                                                House/Block/Lot No.
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_house_num" id="residential_house_num">
+                                                House/Block/Lot No.
+                                            </x-admin-form-input>
+
+                                        </div>
+
+                                        <div>
+
+                                            <x-admin-form-label for="residential_street">
+                                                Street
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_street" id="residential_street">
+                                                Street
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                    <div>
+
+                                        <x-admin-form-label for="residential_subdivision">
+                                            Subdivision/Village
+                                        </x-admin-form-label>
+                                        <x-admin-form-input type="text" name="residential_subdivision" id="residential_subdivision">
+                                            Subdivision/Village
+                                        </x-admin-form-input>
+
+                                    </div>
+                                    <div class="mt-2 grid gap-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="residential_barangay">
+                                                Barangay
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_barangay" id="residential_barangay">
+                                                Barangay
+                                            </x-admin-form-input>
+
+                                        </div>
+                                        <div>
+
+                                            <x-admin-form-label for="residential_city">
+                                                City/Municipality
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_city" id="residential_city">
+                                                City/Municipality
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="residential_province">
+                                                Province
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_province" id="residential_province">
+                                                Province
+                                            </x-admin-form-input>
+
+                                        </div>
+                                        <div>
+
+                                            <x-admin-form-label for="residential_zip_code">
+                                                Zip Code
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="residential_zip_code" id="residential_zip_code">
+                                                Zip Code
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h6 class="font-semibold">Permanent Address</h6>
+                                    <div class="flex items-center mb-4 mt-2">
+                                        <input id="both_address_same"
+                                               name="both_address_same"
+                                               type="checkbox"
+                                               value="1"
+                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="both_address_same"
+                                               class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            same as Residential?
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="permanent_address_form">
+                                    <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_house_num">
+                                                House/Block/Lot No.
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_house_num" id="permanent_house_num">
+                                                House/Block/Lot No.
+                                            </x-admin-form-input>
+
+                                        </div>
+
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_street">
+                                                Street
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_street" id="permanent_street">
+                                                Street
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                    <div>
+
+                                        <x-admin-form-label for="permanent_subdivision">
+                                            Subdivision/Village
+                                        </x-admin-form-label>
+                                        <x-admin-form-input type="text" name="permanent_subdivision" id="permanent_subdivision">
+                                            Subdivision/Village
+                                        </x-admin-form-input>
+
+                                    </div>
+                                    <div class="mt-2 grid gap-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_barangay">
+                                                Barangay
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_barangay" id="permanent_barangay">
+                                                Barangay
+                                            </x-admin-form-input>
+
+                                        </div>
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_city">
+                                                City/Municipality
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_city" id="permanent_city">
+                                                City/Municipality
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_province">
+                                                Province
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_province" id="permanent_province">
+                                                Province
+                                            </x-admin-form-input>
+
+                                        </div>
+                                        <div>
+
+                                            <x-admin-form-label for="permanent_zip_code">
+                                                Zip Code
+                                            </x-admin-form-label>
+                                            <x-admin-form-input type="text" name="permanent_zip_code" id="permanent_zip_code">
+                                                Zip Code
+                                            </x-admin-form-input>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-4">
                                 <x-admin-form-label for="marital_status">
