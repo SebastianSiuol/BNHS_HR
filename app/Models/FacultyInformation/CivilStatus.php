@@ -9,6 +9,8 @@ class CivilStatus extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['civil_status'];
+
     protected $table = 'civil_status';
 
     public function personal_information()

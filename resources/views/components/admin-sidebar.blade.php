@@ -75,6 +75,26 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="sub-attendance" data-collapse-toggle="sub-leave">
+                    <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+                    </svg>
+
+                    <span class="flex-1 ms-3 text-white text-left rtl:text-right whitespace-nowrap dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">Leave</span>
+                    <svg class="w-3 h-3 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <ul id="sub-leave" class="hidden ml-10 py-2 space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-400 hover:text-gray-900 dark:hover:bg-gray-700">Leave Management</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-400 hover:text-gray-900 dark:hover:bg-gray-700">Leave Report</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </aside>

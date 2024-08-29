@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Faculty;
+use Database\Seeders\FacultyInformation\CivilStatusSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +32,7 @@ return new class extends Migration
         });
         Schema::create('personal_information', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Faculty::class)->default(1);
+            $table->foreignIdFor(Faculty::class)->nullable();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
@@ -41,14 +42,17 @@ return new class extends Migration
             $table->string('place_of_birth');
             $table->string('telephone_no')->nullable();
             $table->string('contact_no')->nullable();
-            $table->foreignIdFor(Citizenship::class)->default(1);
-            $table->foreignIdFor(CivilStatus::class)->default(1);
+            $table->foreignIdFor(Citizenship::class)->nullable();
+            $table->foreignIdFor(CivilStatus::class)->nullable();
             $table->timestamps();
         });
 
 
         $personal_info_seeder = new PersonalInformationSeeder();
         $personal_info_seeder->run();
+
+        $civil_status_seeder = new CivilStatusSeeder();
+        $civil_status_seeder->run();
 
     }
 

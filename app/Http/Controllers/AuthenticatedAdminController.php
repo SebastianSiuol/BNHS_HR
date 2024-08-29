@@ -61,7 +61,6 @@ class AuthenticatedAdminController extends Controller
     {
         Auth::logout();
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('/')->with('Success', 'You have been logged out.');
+        return redirect('/');
     }
 }

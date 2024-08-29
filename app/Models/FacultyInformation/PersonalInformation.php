@@ -3,12 +3,15 @@
 namespace App\Models\FacultyInformation;
 
 use App\Models\Faculty;
+use App\Models\ReferenceMember;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PersonalInformation extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 
     protected $table = 'personal_information';
 
@@ -37,5 +40,9 @@ class PersonalInformation extends Model
 
     public function address(){
         return $this->hasOne(Address::class);
+    }
+
+    public function reference_members(){
+        return $this->hasMany(ReferenceMember::class);
     }
 }
