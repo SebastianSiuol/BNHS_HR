@@ -19,7 +19,18 @@ class ApiController extends Controller
 
     }
 
-
+//    TODO: Integrate this code if API functions are neeed
+//Route::get('/get-response', function(){
+//
+//    $response = Http::withHeaders([
+//        'x-api-key' => 'Ru8NWgJalpjcZ1T53i10Z5Jp4xdQoKdU90dq8zLHC1ZrGMxwbl4XToKg0sb7JCv9'
+//    ])->get('https://bnhs-hr.onrender.com/api/retrieve/faculty', [
+//        'faculty_code' => 'BHNHS-2024-0001'
+//    ]);
+//
+//    dd($response->getbody());
+//
+//});
 
 
 //    TODO: Add first-name, middle-name, last-name

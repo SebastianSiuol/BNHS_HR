@@ -1,21 +1,24 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedStaffController;
 use App\Http\Controllers\AuthenticatedAdminController;
-use \App\Models\Faculty;
-use \Illuminate\Support\Facades\Auth;
+use App\Models\Faculty;
+use Illuminate\Support\Facades\Auth;
+Use App\Http\Controllers\FacultyController;
 
 Route::view('/', 'welcome')->name('/');
 
 //Authentication
 Route::get('/staff/login', [AuthenticatedStaffController::class, 'create'])->name('staff_login');
-Route::post('/staff/login', [AuthenticatedStaffController::class, 'store'])->name('staff_login');
+Route::post('/staff/login', [AuthenticatedStaffController::class, 'store']);
 
 Route::get('/admin/login', [AuthenticatedAdminController::class, 'create'])->name('admin_login');
-Route::post('/admin/login', [AuthenticatedAdminController::class, 'store'])->name('admin_login');
+Route::post('/admin/login', [AuthenticatedAdminController::class, 'store']);
+Route::post('/admin/logout', [AuthenticatedAdminController::class, 'destroy'])->name('admin_logout');
 
-Route::view('/admin/login','auth.admin_login');
+//Route::view('/admin/login','auth.admin_login');
 
 
 
@@ -25,31 +28,23 @@ Route::middleware('auth')->group(function () {
     // Routes for admin
     Route::middleware(['role:admin'])->group(function () {
 
-
-//        Route::view('/admin/dashboard', 'admin.index')->name('admin_index');
-//        Route::view('/admin/home', 'admin.dashboard')->name('admin_index');
-
         Route::get('/admin/home', function() {
 
             $faculty = Auth::user();
 
-
             return view('admin.dashboard', ['faculty' => $faculty]);
         })->name('admin_index');
 
+        Route::get('/admin/employees', [FacultyController::class, 'index'])->name('employees_index');
+        Route::get('/admin/employees/create', [FacultyController::class, 'create'])->name('employees_create');
+        Route::post('/admin/employees', [FacultyController::class, 'store'])->name('employees_store');
+        Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])->name('employees_show');
+        Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])->name('employees_destroy');
 
-        Route::get('/admin/employee', function() {
-
-            $faculty = Auth::user();
-
-
-            return view('admin.employee_page', ['faculty' => $faculty]);
-        });
-
-
-
-//        Route::view('/admin/employee', 'admin.employee_page');
     });
+
+
+
 
     // Routes for staff
     Route::middleware(['role:staff'])->group(function () {

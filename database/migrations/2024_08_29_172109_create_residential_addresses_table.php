@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
+        Schema::create('residential_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(PersonalInformation::class);
             $table->string('house_block_no');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('residential_addresses');
     }
 };

@@ -23,8 +23,8 @@ return new class extends Migration
 
         Schema::create('faculty_role', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Faculty::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Role::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Faculty::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Role::class)->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
 

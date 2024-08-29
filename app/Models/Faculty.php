@@ -14,11 +14,11 @@ class Faculty extends Authenticatable
     use HasApiTokens ,HasFactory, Notifiable;
 
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
         'email',
         'password',
+        'department_id',
+        'designation_id',
+        'shift_id',
     ];
 
     protected $hidden = [
@@ -75,5 +75,21 @@ class Faculty extends Authenticatable
     }
     public function roles(){
         return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    public function comment(){
+        return $this->hasOne(Comment::class);
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
+    public function designation(){
+        return $this->belongsTo(Designation::class);
+    }
+
+    public function shift(){
+        return $this->belongsTo(Shift::class);
     }
 }

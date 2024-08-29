@@ -1,10 +1,14 @@
 <?php
 
+use App\Models\Faculty;
 use Database\Seeders\FacultySeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
+
+use App\Models\Department;
+use App\Models\Designation;
+use App\Models\Shift;
 
 
 return new class extends Migration
@@ -19,6 +23,9 @@ return new class extends Migration
             $table->string('faculty_code')->unique(); // For the formatted ID
             $table->string('email')->unique();
             $table->string('password');
+            $table->foreignIdFor(Department::class)->nullable();
+            $table->foreignIdFor(Designation::class)->nullable();
+            $table->foreignIdFor(Shift::class)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
