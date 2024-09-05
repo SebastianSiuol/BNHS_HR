@@ -281,11 +281,11 @@
                                             <div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for=contact_person_name>Contact Person Name</x-admin-show-label>
-                                                    <x-admin-show-input name=contact_person_name id=contact_person_name value="None" />
+                                                    <x-admin-show-input name=contact_person_name id=contact_person_name value="{{$faculty->personal_information->contact_person->name}}" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for=contact_person_number>Contact Person Number</x-admin-show-label>
-                                                    <x-admin-show-input name=contact_person_number id=contact_person_number value="None" />
+                                                    <x-admin-show-input name=contact_person_number id=contact_person_number value="{{$faculty->personal_information->contact_person->contact_no}}" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for=sex>Sex</x-admin-show-label>

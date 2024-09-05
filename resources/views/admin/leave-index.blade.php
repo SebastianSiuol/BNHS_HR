@@ -1,6 +1,7 @@
 <x-admin-layout>
 
-    <x-slot:heading>Daily Attendance</x-slot:heading>
+    <x-slot:heading>Leave Manage</x-slot:heading>
+
     <main>
 
 

@@ -34,7 +34,7 @@
                         aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span class="sr-only">Open user menu</span>
                     <div>
-                        <span class="font-semibold text-black">Andres Santiago</span>
+                        <span class="font-semibold text-black">John Doe</span>
                         <p class="text-gray-600 text-xs pl-11">administrator</p>
                     </div>
                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"

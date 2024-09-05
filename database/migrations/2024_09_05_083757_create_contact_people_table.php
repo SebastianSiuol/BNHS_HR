@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeders\ContactPersonSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,9 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('contact_no');
             $table->timestamps();
-            $table->foreign('personal_information_id')->references('id')->on('personal_information');
-
         });
+
+        $contact_psn = new ContactPersonSeeder();
+        $contact_psn->run();
     }
 
     /**

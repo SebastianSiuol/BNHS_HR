@@ -1,6 +1,6 @@
 <x-admin-layout>
 
-    <x-slot:heading>Employee Creation</x-slot:heading>
+    <x-slot:heading>Employee Edit</x-slot:heading>
 
     <!-- Main Content -->
     <main class="block h-full p-4 sm:ml-80">
@@ -270,7 +270,7 @@
                                        datepicker-autoselect-today
                                        datepicker-format="mm-dd-yyyy"
                                        datepicker-min-date="{{date('m-d-Y', strtotime('-14 Days')), }}"
-                                       datepicker-max-date="{{date('m-d-Y', strtotime('30 Days')), }}"
+                                       datepicker-max-date="{{date('m-d-Y', strtotime('30 Years')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                                        placeholder="Select date">

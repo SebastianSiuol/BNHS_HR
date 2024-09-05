@@ -89,7 +89,7 @@
         </div>
 
         <!-- TELEPHONE NUMBER -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="mt-4">
             <x-admin-form-label for="telephone_number">
                 Telephone Number
             </x-admin-form-label>

@@ -36,7 +36,13 @@ Route::middleware('auth')->group(function () {
 
             $faculty = Auth::user();
 
-            return view('admin.dashboard', ['faculty' => $faculty]);
+            $total_employees = Faculty::all()->count();
+
+            return view('admin.dashboard', [
+                'faculty' => $faculty,
+                'total_employees' => $total_employees,
+            ]);
+
         })->name('admin_index');
 
 //      Start of Employee Resource
