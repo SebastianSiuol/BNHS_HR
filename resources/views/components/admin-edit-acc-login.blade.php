@@ -10,12 +10,4 @@
         </x-admin-form-input>
 
     </div>
-{{--    <div>--}}
-{{--        <x-admin-form-label for="password">--}}
-{{--            Password--}}
-{{--        </x-admin-form-label>--}}
-{{--        <x-admin-form-input type="password" name="password" id="password">--}}
-{{--            ********--}}
-{{--        </x-admin-form-input>--}}
-{{--    </div>--}}
 </div>

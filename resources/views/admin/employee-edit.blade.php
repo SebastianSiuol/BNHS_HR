@@ -66,7 +66,13 @@
                         </ul>
                     @endif
 
-                    <x-admin-edit-prsn-deets :max_date=$max_date :civil_statuses=$civil_statuses :faculty="$faculty"/>
+                    <x-admin-edit-prsn-deets
+                        :max_date="$max_date"
+                        :civil_statuses="$civil_statuses"
+                        :faculty="$faculty"
+                        :name_exts="$name_exts"
+                        :psn_info="$personal_information"
+                    />
 
                     <div class="flex justify-end">
                         <button id="nextToAccountLogin"
@@ -219,8 +225,9 @@
                             </select>
                         </div>
                         <div>
-                            <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                                of Joining</label>
+                            <x-admin-form-label for="date_of_joining">
+                                Date of Joining
+                            </x-admin-form-label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-blue-900 " aria-hidden="true"
@@ -229,16 +236,24 @@
                                             d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </div>
-                                <input id="date-join-picker" datepicker datepicker-buttons datepicker-autoselect-today
+                                <input id="date_of_joining"
+                                       name="date_of_joining"
+                                       value="{{$faculty->date_of_joining}}"
+                                       datepicker
+                                       datepicker-buttons
+                                       datepicker-autoselect-today
+                                       datepicker-format="mm-dd-yyyy"
+                                       datepicker-min-date="01-01-1900"
+                                       datepicker-max-date="{{date('m-d-Y', strtotime('14 Days')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                                        placeholder="Select date">
                             </div>
                         </div>
                         <div>
-                            <label for="date-leave"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of
-                                Leaving</label>
+                            <x-admin-form-label for="date_of_leaving">
+                                Date of Leaving
+                            </x-admin-form-label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-blue-900 " aria-hidden="true"
@@ -247,7 +262,15 @@
                                             d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </div>
-                                <input id="date-leave-picker" datepicker datepicker-buttons datepicker-autoselect-today
+                                <input id="date_of_leaving"
+                                       name="date_of_leaving"
+                                       value="{{$faculty->date_of_leaving}}"
+                                       datepicker
+                                       datepicker-buttons
+                                       datepicker-autoselect-today
+                                       datepicker-format="mm-dd-yyyy"
+                                       datepicker-min-date="{{date('m-d-Y', strtotime('-14 Days')), }}"
+                                       datepicker-max-date="{{date('m-d-Y', strtotime('30 Days')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                                        placeholder="Select date">
@@ -266,10 +289,14 @@
                         <div>
                             <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift </label>
                             <select id="shift"
+                                    name="shift"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                <option select disabled>Select Shift</option>
-                                <option value="">Shift 1</option>
-                                <option value="">Shift 2</option>
+                                <option disabled>Select Shift</option>
+                                @foreach($shifts as $shift)
+                                    <option value="{{ $shift->id }}" {{ $faculty->shift_id ==  $shift->id ? 'selected=selected' : ''}}>
+                                        {{$shift->name}}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -424,7 +451,11 @@
                             Prev Step: Company Details
                         </button>
 
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+{{--                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">--}}
+{{--                            Edit--}}
+{{--                        </button>--}}
+
+                        <button type="button" data-modal-target="confirm-edit" data-modal-toggle="confirm-edit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             Edit
                         </button>
 
@@ -433,20 +464,47 @@
             </div>
             <!-- End of Documents Form -->
 
-
-
+            <!-- START OF EDIT CONFIRM MODAL -->
+            <div id="confirm-edit" tabindex="-1"
+                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button"
+                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                data-modal-hide="confirm-edit">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                Confirm Edit Employee?
+                            </h3>
+                            <button data-modal-hide="confirm-edit"
+                                    type="submit"
+                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                Yes, I'm sure
+                            </button>
+                            <button data-modal-hide="confirm-edit"
+                                    type="button"
+                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                No, cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END OF EDIT CONFIRM MODAL -->
 
         </form>
-
-{{--        <form method="POST" action="/admin/employees/debug_store">--}}
-{{--            @method('POST')--}}
-{{--            @csrf--}}
-{{--            <button class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"--}}
-{{--                    type="submit">--}}
-{{--                Save--}}
-{{--            </button>--}}
-{{--        </form>--}}
-
     </main>
 
     <script src={{asset('js/admin.js')}}></script>

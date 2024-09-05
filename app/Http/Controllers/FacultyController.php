@@ -32,13 +32,13 @@ class FacultyController extends Controller
 
 
         return view('admin.employee-create', [
-            'generated_id' => Faculty::generateFacultyCode(),
-            'shifts' => Shift::all(),
-            'departments' => Department::all(),
-            'designations' => Designation::all(),
-            'civil_statuses' => CivilStatus::all(),
-            'name_exts' => NameExtension::all(),
-            'max_date' => date("m/d/Y", strtotime('-21 year')),
+            'generated_id'      => Faculty::generateFacultyCode(),
+            'shifts'            => Shift::all(),
+            'departments'       => Department::all(),
+            'designations'      => Designation::all(),
+            'civil_statuses'    => CivilStatus::all(),
+            'name_exts'         => NameExtension::all(),
+            'max_date'          => date("m/d/Y", strtotime('-21 year')),
         ]);
     }
 
@@ -263,16 +263,18 @@ class FacultyController extends Controller
             'personal_information'  => $faculty->personal_information,
             'birth_date'            => $faculty->personal_information->date_of_birth,
 
-//            Choices Defaults
+//          Dropdown Choices
             'max_date'              => date("m/d/Y", strtotime('-21 year')),
+            'shifts'                => Shift::all(),
             'departments'           => Department::all(),
             'designations'          => Designation::all(),
             'civil_statuses'        => CivilStatus::all(),
+            'name_exts'             => NameExtension::all(),
         ]);
     }
 
-    public function update(){
-        dd("Hey!");
+    public function update(Request $request, Faculty $faculty){
+        dd($request->all());
     }
 
     public function destroy(Faculty $faculty){

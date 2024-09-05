@@ -7,41 +7,24 @@ function validatePersonalDetailsForm() {
 
     // pd = personal details,
     // txt = text
-    const personalDetailsInputs = document.querySelectorAll('.validate-pd-txt-inputs');
+    const personalDetailsInputs = document.querySelectorAll('.validate-pd-txt-inputs input');
     const birthDateInput = document.getElementById('date_of_birth');
 
-    var numberOfInputs = personalDetailsInputs.length;
+    let allValid = true;
 
-    var numberOfValidatedInputs = 0;
-
-    personalDetailsInputs.forEach((e) => {
-        const input = e.querySelector('input');
-
+    for (let input of personalDetailsInputs) {
         if (input.value.trim() === '') {
             input.setCustomValidity('Please input the required field');
             input.reportValidity()
-        } else {
-            numberOfValidatedInputs++;
-
-            if (numberOfValidatedInputs === numberOfInputs) {
-
-                if (isDateOfBirthNotFilled()) {
-
-                    console.log(isDateOfBirthNotFilled());
-
-                    birthDateInput.setCustomValidity('Please select a date');
-                    birthDateInput.reportValidity();
-
-                } else {
-
-                    document.getElementById('personalDetails').style.display = 'none';
-                    document.getElementById('accountLogin').style.display = 'block';
-                }
-            }
+            allValid = false;
+            break;
         }
-    })
+    }
 
-    console.log(numberOfInputs);
+    if (allValid){
+        document.getElementById('personalDetails').style.display = 'none';
+        document.getElementById('accountLogin').style.display = 'block';
+    }
 }
 
 function isDateOfBirthNotFilled(){
