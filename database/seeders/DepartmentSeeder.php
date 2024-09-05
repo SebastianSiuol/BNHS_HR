@@ -14,6 +14,8 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
+
+//      NOTE: Production Data
         Department::create([
             'department_name' => 'Mathematics'
         ]);

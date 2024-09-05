@@ -65,7 +65,7 @@
                         </ul>
                     @endif
 
-                    <x-admin-personal-details-form :max_date=$max_date :civil_statuses=$civil_statuses />
+                    <x-admin-personal-details-form :max_date=$max_date :civil_statuses=$civil_statuses :name_exts=$name_exts />
 
                     <div class="flex justify-end">
                         <button id="nextToAccountLogin"
@@ -198,9 +198,11 @@
                                     name="department"
                                     autocomplete="false"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option selected="selected" disabled>Select Department</option>
+                                <option {{ empty(old('department'))  ? 'selected=selected': '' }} disabled>Select Department</option>
                             @foreach($departments as $department)
-                                <option value="{!! __($department->id) !!}">{!! __($department->department_name) !!}</option>
+                                <option value="{!! __($department->id) !!}" {{ old('department') ==  $department->id ? 'selected=selected' : ''}}>
+                                    {!! __($department->department_name) !!}
+                                </option>
                             @endforeach
                             </select>
                         </div>
@@ -211,15 +213,19 @@
                                     name="designation"
                                     autocomplete="false"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                    <option selected="selected" disabled>Select Designation</option>
+                                    <option {{ empty(old('designation'))  ? 'selected=selected': '' }} disabled>Select Designation</option>
+
                                 @foreach($designations as $designation)
-                                    <option value="{!! __($designation->id) !!}">{!! __($designation->department_designation) !!}</option>
+                                    <option value="{!! __($designation->id) !!}" {{ old('designation') ==  $designation->id ? 'selected=selected' : ''}}>
+                                        {!! __($designation->department_designation) !!}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                         <div>
-                            <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date
-                                of Joining</label>
+                            <x-admin-form-label for="date_of_joining">
+                                Date of Joining
+                            </x-admin-form-label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-blue-900 " aria-hidden="true"
@@ -228,16 +234,23 @@
                                             d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </div>
-                                <input id="date-join-picker" datepicker datepicker-buttons datepicker-autoselect-today
+                                <input id="date_of_joining"
+                                       name="date_of_joining"
+                                       datepicker
+                                       datepicker-buttons
+                                       datepicker-autoselect-today
+                                       datepicker-format="mm-dd-yyyy"
+                                       datepicker-min-date="01-01-1900"
+                                       datepicker-max-date="{{date('m-d-Y', strtotime('14 Days')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                                        placeholder="Select date">
                             </div>
                         </div>
                         <div>
-                            <label for="date-leave"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of
-                                Leaving</label>
+                            <x-admin-form-label for="date_of_leaving">
+                                Date of Leaving
+                            </x-admin-form-label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-blue-900 " aria-hidden="true"
@@ -246,7 +259,14 @@
                                             d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                     </svg>
                                 </div>
-                                <input id="date-leave-picker" datepicker datepicker-buttons datepicker-autoselect-today
+                                <input id="date_of_leaving"
+                                       name="date_of_leaving"
+                                       datepicker
+                                       datepicker-buttons
+                                       datepicker-autoselect-today
+                                       datepicker-format="mm-dd-yyyy"
+                                       datepicker-min-date="{{date('m-d-Y', strtotime('-14 Days')), }}"
+                                       datepicker-max-date="{{date('m-d-Y', strtotime('30 Days')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                                        placeholder="Select date">
@@ -265,15 +285,19 @@
                         <div>
                             <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift </label>
                             <select id="shift"
+                                    name="shift"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                <option select disabled>Select Shift</option>
-                                <option value="">Shift 1</option>
-                                <option value="">Shift 2</option>
+                                <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled>Select Shift</option>
+                                @foreach($shifts as $shift)
+                                    <option value="{{ $shift->id }}" {{ old('shift') ==  $shift->id ? 'selected=selected' : ''}}>
+                                        {{$shift->name}}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div>
-                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status </label>
+                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employment Status</label>
                             <select id="status"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
                                 <option selected>Active</option>

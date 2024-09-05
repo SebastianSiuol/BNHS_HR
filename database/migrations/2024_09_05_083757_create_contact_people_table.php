@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('contact_people', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personal_info_id')->nullable();
+            $table->foreignId('personal_information_id')->nullable();
             $table->string('name');
             $table->string('contact_no');
             $table->timestamps();
-            $table->foreign('personal_info_id')->references('id')->on('personal_information');
+            $table->foreign('personal_information_id')->references('id')->on('personal_information');
 
         });
     }

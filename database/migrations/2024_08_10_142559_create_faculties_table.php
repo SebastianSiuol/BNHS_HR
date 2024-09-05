@@ -23,9 +23,11 @@ return new class extends Migration
             $table->string('faculty_code')->unique(); // For the formatted ID
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignIdFor(Department::class)->nullable();
-            $table->foreignIdFor(Designation::class)->nullable();
-            $table->foreignIdFor(Shift::class)->nullable();
+            $table->string('date_of_joining')->nullable();
+            $table->string('date_of_leaving')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->foreignId('designation_id')->nullable();
+            $table->foreignId('shift_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

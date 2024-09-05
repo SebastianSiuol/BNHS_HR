@@ -1,6 +1,6 @@
 <?php
 
-use Database\Seeders\ShiftSeeder;
+use Database\Seeders\NameExtensionSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,15 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shifts', function (Blueprint $table) {
+        Schema::create('name_extensions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('time');
+            $table->string('title');
             $table->timestamps();
         });
 
-        $shift_seeder = new ShiftSeeder();
-        $shift_seeder->run();
+        $name_ext_seeder = new NameExtensionSeeder();
+        $name_ext_seeder->run();
     }
 
     /**
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shifts');
+        Schema::dropIfExists('name_extensions');
     }
 };

@@ -16,7 +16,7 @@ class PersonalInformation extends Model
     protected $table = 'personal_information';
 
 
-//  HAS ONE RELATIONSHIPS
+//  NOTE: HAS ONE RELATIONSHIPS (Foreign Key is in Their Table)
     public function medical_info(){
         return $this->hasOne(MedicalInformation::class);
     }
@@ -42,20 +42,22 @@ class PersonalInformation extends Model
     }
 
 
-//  HAS MANY RELATIONSHIPS
+//  NOTE: HAS MANY RELATIONSHIPS
     public function reference_members(){
         return $this->hasMany(ReferenceMember::class);
     }
 
 
-
-
-
-//    BELONGS TO RELATIONSHIPS
+//    NOTE: BELONGS TO RELATIONSHIPS (Foreign Key is in The Table)
     public function faculty()
     {
         return $this->belongsTo(Faculty::class);
     }
+
+    public function name_extension() {
+        return $this->belongsTo(NameExtension::class);
+    }
+
     public function civil_status()
     {
         return $this->belongsTo(CivilStatus::class);
@@ -63,5 +65,15 @@ class PersonalInformation extends Model
 
     public function citizenship(){
         return $this->belongsTo(Citizenship::class);
+    }
+
+
+//   NOTE: Methods
+    public function getFirstRefMember(){
+        return $this->reference_members()->where('reference_number', 1);
+    }
+
+    public function getSecondRefMember(){
+        return $this->reference_members()->where('reference_number', 2);
     }
 }

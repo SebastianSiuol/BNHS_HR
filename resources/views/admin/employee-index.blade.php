@@ -229,36 +229,40 @@
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for="name_extension">Extension Name</x-admin-show-label>
-                                                    <x-admin-show-input name="name_extension" id="name_extension" value="{{$faculty->personal_information->name_extension}}" />
+                                                    <x-admin-show-input name="name_extension" id="name_extension" value="{{ ($faculty->personal_information->name_extension == null) ? 'None' : $faculty->personal_information->name_extension->title  }}" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for="date_of_birth">Date of Birth</x-admin-show-label>
                                                     <x-admin-show-input name="date_of_birth" id="date_of_birth" value="{{$faculty->personal_information->date_of_birth}}" />
                                                 </div>
+                                                <div class="mt-4">
+                                                    <x-admin-show-label for="date_of_birth">Place of Birth</x-admin-show-label>
+                                                    <x-admin-show-input name="date_of_birth" id="date_of_birth" value="{{$faculty->personal_information->place_of_birth}}" />
+                                                </div>
                                                 <div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="contact_number">Contact Number</x-admin-show-label>
-                                                        <x-admin-show-input name="contact_number" id="contact_number" value="{{$faculty->personal_information->contact_number}}" />
+                                                        <x-admin-show-input name="contact_number" id="contact_number" value="{{$faculty->personal_information->contact_no}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="telephone_number">Telephone Number</x-admin-show-label>
-                                                        <x-admin-show-input name="telephone_number" id="telephone_number" value="{{$faculty->personal_information->telephone_number}}" />
+                                                        <x-admin-show-input name="telephone_number" id="telephone_number" value="{{$faculty->personal_information->telephone_no == null ? 'None' : $faculty->personal_information->telephone_no}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_name_01">Reference 01 Name</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_name_01" id="reference_name_01" value="John Doe" />
+                                                        <x-admin-show-input name="reference_name_01" id="reference_name_01" value="{{$faculty->personal_information->getFirstRefMember[0]['name']}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_number_01">Reference 01 Number</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_number_01" id="reference_number_01" value="09xxxxxxxxx" />
+                                                        <x-admin-show-input name="reference_number_01" id="reference_number_01" value="{{$faculty->personal_information->getFirstRefMember[0]['contact_number']}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_name_02">Reference 02 Name</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_name_02" id="reference_name_02" value="Jane Doe" />
+                                                        <x-admin-show-input name="reference_name_02" id="reference_name_02" value="{{$faculty->personal_information->getSecondRefMember->isEmpty() ? 'None': $faculty->personal_information->getSecondRefMember[0]['name'] }}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_number_02">Reference 02 Number</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_number_02" id="reference_number_02" value="09xxxxxxxxx" />
+                                                        <x-admin-show-input name="reference_number_02" id="reference_number_02" value="{{$faculty->personal_information->getSecondRefMember->isEmpty() ? 'None': $faculty->personal_information->getSecondRefMember[0]['contact_number'] }}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for=marital_status>Marital Status</x-admin-show-label>
@@ -276,8 +280,12 @@
                                             </div>
                                             <div>
                                                 <div class="mt-4">
-                                                    <x-admin-show-label for=contact_person>Contact Person</x-admin-show-label>
-                                                    <x-admin-show-input name=contact_person id=contact_person value="John Doe" />
+                                                    <x-admin-show-label for=contact_person_name>Contact Person Name</x-admin-show-label>
+                                                    <x-admin-show-input name=contact_person_name id=contact_person_name value="None" />
+                                                </div>
+                                                <div class="mt-4">
+                                                    <x-admin-show-label for=contact_person_number>Contact Person Number</x-admin-show-label>
+                                                    <x-admin-show-input name=contact_person_number id=contact_person_number value="None" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for=sex>Sex</x-admin-show-label>
@@ -483,8 +491,8 @@
                                         <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight text-gray-900 md:text-2xl ">
                                             Account Login
                                         </h1>
-                                        <form class="space-y-4 md:space-y-6" action="#">
-                                            <div class="flex">
+                                        <form class="space-y-4 md:space-y-6">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=email>Email*</x-admin-show-label>
                                                 <x-admin-show-input name=email id=email value="{{$faculty->email}}" />
                                             </div>
@@ -499,57 +507,35 @@
                                             Company Details
                                         </h1>
                                         <form class="space-y-4 md:space-y-6" action="#">
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=employee_code>Employee ID</x-admin-show-label>
                                                 <x-admin-show-input name=employee_code id=employee_code value="{{$faculty->faculty_code}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=department>Department</x-admin-show-label>
                                                 <x-admin-show-input name=department id=department value="{{$faculty->department->department_name}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=designation>Designation</x-admin-show-label>
                                                 <x-admin-show-input name=designation id=designation value="{{$faculty->designation->department_designation}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="date-join" class="block mr-4 mb-2 text-sm font-medium text-gray-900 ">Date of Joining*</label>
-                                                <div class="relative w-full">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                        </svg>
-                                                    </div>
-                                                    <input disabled id="date-of-joining" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      " placeholder="Select date">
-                                                </div>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=date_of_joining>Date of Joining</x-admin-show-label>
+                                                <x-admin-show-input name=date_of_joining id=date_of_joining value="{{$faculty->date_of_joining}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="date-leave" class="block mr-3 mb-2 text-sm font-medium text-gray-900 ">Date of Leaving*</label>
-                                                <div class="relative w-full">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                        </svg>
-                                                    </div>
-                                                    <input disabled id="date-of-leaving" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      " placeholder="Select date">
-                                                </div>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=date_of_leaving>Date of Leaving</x-admin-show-label>
+                                                <x-admin-show-input name=date_of_leaving id=date_of_leaving value="{{$faculty->date_of_leaving}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="manager" class="block mr-px mb-2 text-sm font-medium text-gray-900 ">Manager/<br>Department Head*</label>
-                                                <select disabled id="manager" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                                    <option selected>Select Manager</option>
-                                                    <option value="">Manager 1</option>
-                                                    <option value="">Manager 2</option>
-                                                </select>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=Manager>Manager/Department Head</x-admin-show-label>
+                                                <x-admin-show-input name=Manager id=Manager placeholder="No Head" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="shift" class="block mr-14 mb-2 text-sm font-medium text-gray-900 ">Shift*</label>
-                                                <select disabled id="shift" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                                    <option selected>Select Shift</option>
-                                                    <option value="">Shift 1</option>
-                                                    <option value="">Shift 2</option>
-                                                </select>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=shift>Shift</x-admin-show-label>
+                                                <x-admin-show-input name=shift id=shift value="{{$faculty->shift->time}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <label for="Status" class="block mr-12 mb-2 text-sm font-medium text-gray-900 ">Status</label>
                                                 <form class="max-w-sm mx-auto">
                                                     <select disabled id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">

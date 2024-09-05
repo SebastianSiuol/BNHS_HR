@@ -1,4 +1,4 @@
-@props(['max_date', 'civil_statuses'])
+@props(['max_date', 'civil_statuses', 'name_exts'])
 
 <div class="grid gap-4 mb-4 sm:grid-cols-2">
     <div>
@@ -34,13 +34,36 @@
         </div>
 
         <!-- NAME EXTENSION -->
+{{--        <div class="mt-4">--}}
+{{--            <x-admin-form-label for="name_extension">--}}
+{{--                Name Extension--}}
+{{--            </x-admin-form-label>--}}
+{{--            <x-admin-form-input type="text" name="name_extension" id="name_extension" value="{{ old('name_extension') }}">--}}
+{{--                Name Extension--}}
+{{--            </x-admin-form-input>--}}
+{{--        </div>--}}
+
         <div class="mt-4">
             <x-admin-form-label for="name_extension">
                 Name Extension
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="name_extension" id="name_extension" value="{{ old('name_extension') }}">
-                Name Extension
-            </x-admin-form-input>
+            <select id="name_extension"
+                    name="name_extension"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
+                <option {{ empty(old('name_extension'))  ? 'selected=selected': '' }}  disabled value='null'>Select Name Extension</option>
+                @foreach($name_exts as $name_ext)
+                    <option
+                        value="{{ $name_ext->id }}" {{old ('marital_status') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- PLACE OF BIRTH -->
+        <div class="validate-pd-txt-inputs mt-4">
+            <x-admin-form-label for="place_of_birth">
+                Place of Birth
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="place_of_birth" id="place_of_birth" value="{{ old('place_of_birth') }}" />
         </div>
 
         <!-- BIRTH DATE -->
@@ -62,16 +85,15 @@
                        placeholder="Select date"
                        required="required"
                        pattern="^(0[1-9]|1z[0-2])-(0[1-9]|[12][0-9]|3[01])-(\d{4})$"
+                       value="{{ old('date_of_birth') }}"
                        datepicker
                        datepicker-autohide
                        datepicker-format="mm-dd-yyyy"
                        datepicker-autoselect-today
                        datepicker-min-date="01-01-1900"
                        datepicker-max-date="{{$max_date}}"
-                       class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5"
-                >
+                       class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5">
             </div>
-
         </div>
 
         <!-- CONTACT NUMBER -->
@@ -80,6 +102,16 @@
                 Contact Number
             </x-admin-form-label>
             <x-admin-form-input type="text" name="contact_number" id="contact_number" value="{{ old('contact_number') }}">
+                09xxxxxxxxx
+            </x-admin-form-input>
+        </div>
+
+        <!-- TELEPHONE NUMBER -->
+        <div class="validate-pd-txt-inputs mt-4">
+            <x-admin-form-label for="telephone_number">
+                Telephone Number
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="telephone_number" id="telephone_number" value="{{ old('telephone_number') }}">
                 09xxxxxxxxx
             </x-admin-form-input>
         </div>
@@ -175,9 +207,9 @@
             <select id="sex"
                     name="sex"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                <option selected disabled>Select Sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option {{ empty(old('sex'))  ? 'selected=selected': '' }} disabled>Select Sex</option>
+                <option value="Male" {{ old('sex') === 'Male' ? 'selected=selected': '' }}>Male</option>
+                <option value="Female" {{ old('sex') === 'Female' ? 'selected=selected': '' }}>Female</option>
             </select>
         </div>
 
@@ -277,7 +309,7 @@
                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     <label for="both_address_same"
                            class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        same as Residential?
+                        Same as Residential
                     </label>
                 </div>
             </div>
