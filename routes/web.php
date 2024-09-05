@@ -41,8 +41,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/employees/create', [FacultyController::class, 'create'])->name('employees_create');
         Route::post('/admin/employees', [FacultyController::class, 'store'])->name('employees_store');
         Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])->name('employees_show');
+        Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])->name('employees_edit');
+        Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])->name('employees_update');
         Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])->name('employees_destroy');
 
+        Route::post('/admin/employees/debug_store', [FacultyController::class, 'debug_store'])->name('employees_debug_store');
     });
 
 

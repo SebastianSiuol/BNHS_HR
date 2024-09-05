@@ -1,8 +1,24 @@
+const birthDateElement = document.getElementById('birthdate');
+
+
+
+
+// document.getElementById('nextToAccountLogin').addEventListener('click', () => {
+//
+//     if (birthDateElement.value === '') {
+//         birthDateElement.setCustomValidity("Please select a date");
+//         birthDateElement.reportValidity();
+//     }
+// });
+
+
+
+
 // ADD EMPLOYEE FORM NAVIGATION
-document.getElementById('nextToAccountLogin').addEventListener('click', function() {
-    document.getElementById('personalDetails').style.display = 'none';
-    document.getElementById('accountLogin').style.display = 'block';
-});
+// document.getElementById('nextToAccountLogin').addEventListener('click', function() {
+//     document.getElementById('personalDetails').style.display = 'none';
+//     document.getElementById('accountLogin').style.display = 'block';
+// });
 
 document.getElementById('prevToPersonalDetails').addEventListener('click', function() {
     document.getElementById('accountLogin').style.display = 'none';
@@ -29,17 +45,6 @@ document.getElementById('prevToCompanyDetails').addEventListener('click', functi
     document.getElementById('companyDetails').style.display = 'block';
 });
 
-document.getElementById('both_address_same').addEventListener('change', function(){
-    if(this.checked){
-        document.getElementById('permanent_address_form').style.display = 'none';
-    } else {
-        document.getElementById('permanent_address_form').style.display = 'block';
-    }
-    // document.getElementById('permanent_house_num').disabled = this.checked;
-    // document.getElementById('permanent_street').disabled = this.checked;
-    // document.getElementById('permanent_subdivision').disabled = this.checked;
-    // document.getElementById('permanent_barangay').disabled = this.checked;
-    // document.getElementById('permanent_city').disabled = this.checked;
-    // document.getElementById('permanent_province').disabled = this.checked;
-    // document.getElementById('permanent_zip_code').disabled = this.checked;
-});
+
+
+

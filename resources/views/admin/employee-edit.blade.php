@@ -11,11 +11,12 @@
                  stroke="currentColor" class="w-9 h-9 text-blue-900">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
             </svg>
-            <h1 class="text-3xl text-blue-900 font-bold ml-2">Add Employee</h1>
+            <h1 class="text-3xl text-blue-900 font-bold ml-2">Edit Employee [{{ $faculty->faculty_code }}]</h1>
         </div>
 
-        <form method="POST" action="/admin/employees">
+        <form method="POST" action="/admin/employees/{{$faculty->id}}">
             @csrf
+            @method("PATCH")
 
             <!-- Personal Details Form -->
             <div id="personalDetails">
@@ -65,7 +66,7 @@
                         </ul>
                     @endif
 
-                    <x-admin-personal-details-form :max_date=$max_date :civil_statuses=$civil_statuses />
+                    <x-admin-edit-prsn-deets :max_date=$max_date :civil_statuses=$civil_statuses :faculty="$faculty"/>
 
                     <div class="flex justify-end">
                         <button id="nextToAccountLogin"
@@ -119,7 +120,7 @@
                         Account Login
                     </h1>
 
-                    <x-admin-account-login-form />
+                    <x-admin-edit-acc-login :faculty="$faculty" />
 
                     <div class="flex items center justify-between">
                         <button id="prevToPersonalDetails" type="button"
@@ -185,7 +186,7 @@
                                    id="emp_id"
                                    disabled
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="{{$generated_id}}" >
+                                   value="{{$faculty->faculty_code}}" >
                         </div>
                         <div>
 
@@ -198,9 +199,9 @@
                                     name="department"
                                     autocomplete="false"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option selected="selected" disabled>Select Department</option>
+                                <option disabled>Select Department</option>
                             @foreach($departments as $department)
-                                <option value="{!! __($department->id) !!}">{!! __($department->department_name) !!}</option>
+                                <option value="{!! __($department->id) !!}" {{$faculty->department_id === $department->id ? "selected=selected": ""}}>{!! __($department->department_name) !!}</option>
                             @endforeach
                             </select>
                         </div>
@@ -211,9 +212,9 @@
                                     name="designation"
                                     autocomplete="false"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                    <option selected="selected" disabled>Select Designation</option>
+                                    <option disabled>Select Designation</option>
                                 @foreach($designations as $designation)
-                                    <option value="{!! __($designation->id) !!}">{!! __($designation->department_designation) !!}</option>
+                                    <option value="{!! __($designation->id) !!}" {{$faculty->designation_id === $designation->id ? "selected=selected": ""}}>{!! __($designation->department_designation) !!}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -424,7 +425,7 @@
                         </button>
 
                         <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            Save
+                            Edit
                         </button>
 
                     </div>
@@ -432,10 +433,7 @@
             </div>
             <!-- End of Documents Form -->
 
-{{--                        <button class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"--}}
-{{--                                type="submit">--}}
-{{--                            Save--}}
-{{--                        </button>--}}
+
 
 
         </form>
@@ -452,5 +450,5 @@
     </main>
 
     <script src={{asset('js/admin.js')}}></script>
-    <script src={{asset('js/validate-forms.js')}}></script>
+    <script src={{asset('js/validate-edit-forms.js')}}></script>
 </x-admin-layout>

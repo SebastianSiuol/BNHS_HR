@@ -1,4 +1,4 @@
-@props(['max_date', 'civil_statuses'])
+@props(['max_date', 'civil_statuses', 'faculty'])
 
 <div class="grid gap-4 mb-4 sm:grid-cols-2">
     <div>
@@ -8,7 +8,7 @@
             <x-admin-form-label for="first_name">
                 First Name
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}">
+            <x-admin-form-input type="text" name="first_name" id="first_name" value="{{$faculty->personal_information->first_name}}">
                 First Name
             </x-admin-form-input>
         </div>
@@ -18,7 +18,7 @@
             <x-admin-form-label for="middle_name">
                 Middle Name
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="middle_name" id="middle_name" value="{{ old('middle_name') }}">
+            <x-admin-form-input type="text" name="middle_name" id="middle_name" value="{{$faculty->personal_information->middle_name}}">
                 Middle Name
             </x-admin-form-input>
         </div>
@@ -28,7 +28,7 @@
             <x-admin-form-label for="last_name">
                 Last Name
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}">
+            <x-admin-form-input type="text" name="last_name" id="last_name" value="{{$faculty->personal_information->last_name}}">
                 Last Name
             </x-admin-form-input>
         </div>
@@ -38,7 +38,7 @@
             <x-admin-form-label for="name_extension">
                 Name Extension
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="name_extension" id="name_extension" value="{{ old('name_extension') }}">
+            <x-admin-form-input type="text" name="name_extension" id="name_extension" value="{{$faculty->personal_information->name_extension}}">
                 Name Extension
             </x-admin-form-input>
         </div>
@@ -60,6 +60,7 @@
                 <input id="date_of_birth"
                        name="date_of_birth"
                        placeholder="Select date"
+                       setDate="{{$faculty->personal_information->date_of_birth}}"
                        required="required"
                        pattern="^(0[1-9]|1z[0-2])-(0[1-9]|[12][0-9]|3[01])-(\d{4})$"
                        datepicker
@@ -79,7 +80,7 @@
             <x-admin-form-label for="contact_number">
                 Contact Number
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_number" id="contact_number" value="{{ old('contact_number') }}">
+            <x-admin-form-input type="text" name="contact_number" id="contact_number" value="{{$faculty->personal_information->contact_no}}">
                 09xxxxxxxxx
             </x-admin-form-input>
         </div>
@@ -90,7 +91,7 @@
                 Nationality
             </x-admin-form-label>
 
-            <x-admin-form-input type="text" name="nationality" id="nationality" value="{{ old('nationality') }}">
+            <x-admin-form-input type="text" name="nationality" id="nationality" value="Filipino">
                 Nationality
             </x-admin-form-input>
         </div>
@@ -102,7 +103,7 @@
                 Reference Name 01
             </x-admin-form-label>
 
-            <x-admin-form-input type="text" name="reference_name_01" id="reference_name_01" value="{{ old('reference_name_01') }}">
+            <x-admin-form-input type="text" name="reference_name_01" id="reference_name_01" value="None">
                 John Doe
             </x-admin-form-input>
 
@@ -114,7 +115,7 @@
             <x-admin-form-label for="reference_contact_number_01">
                 Reference Contact Number 01
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_contact_number_01" id="reference_contact_number_01" value="{{ old('reference_contact_number_01') }}">
+            <x-admin-form-input type="text" name="reference_contact_number_01" id="reference_contact_number_01" value="None">
                 09xxxxxxxxx
             </x-admin-form-input>
 
@@ -126,7 +127,7 @@
             <x-admin-form-label for="reference_name_02">
                 Reference Name 02
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_name_02" id="reference_name_02" value="{{ old('reference_name_02') }}">
+            <x-admin-form-input type="text" name="reference_name_02" id="reference_name_02" value="None">
                 Jane Doe
             </x-admin-form-input>
 
@@ -138,7 +139,7 @@
             <x-admin-form-label for="reference_contact_number_02">
                 Reference Contact Number 02
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_contact_number_02" id="reference_contact_number_02" value="{{ old('reference_contact_number_02') }}">
+            <x-admin-form-input type="text" name="reference_contact_number_02" id="reference_contact_number_02" value="None">
                 09xxxxxxxxx
             </x-admin-form-input>
 
@@ -152,7 +153,7 @@
             <x-admin-form-label for="contact_person_name">
                 Contact Person Name
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_person_name" id="contact_person_name" value="{{ old('contact_person_name') }}">
+            <x-admin-form-input type="text" name="contact_person_name" id="contact_person_name" value="None">
                 John Doe
             </x-admin-form-input>
         </div>
@@ -162,7 +163,7 @@
             <x-admin-form-label for="contact_person_number">
                 Contact Person Number
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_person_number" id="contact_person_number" value="{{ old('contact_person_number') }}">
+            <x-admin-form-input type="text" name="contact_person_number" id="contact_person_number">
                 09xxxxxxxxx
             </x-admin-form-input>
         </div>
@@ -176,8 +177,8 @@
                     name="sex"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
                 <option selected disabled>Select Sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="Male" {{$faculty->personal_information->sex === "Male" ? 'selected=selected' : ''}}>Male</option>
+                <option value="Female" {{$faculty->personal_information->sex === "Female" ? 'selected=selected' : ''}}>Female</option>
             </select>
         </div>
 
@@ -194,7 +195,7 @@
                         <x-admin-form-label for="residential_house_num">
                             House/Block/Lot No.
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_house_num" id="residential_house_num" value="{{ old('residential_house_num') }}">
+                        <x-admin-form-input type="text" name="residential_house_num" id="residential_house_num" value="{{$faculty->personal_information->residential_address->house_block_no}}">
                             House/Block/Lot No.
                         </x-admin-form-input>
 
@@ -205,7 +206,7 @@
                         <x-admin-form-label for="residential_street">
                             Street
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_street" id="residential_street" value="{{ old('residential_street') }}">
+                        <x-admin-form-input type="text" name="residential_street" id="residential_street" value="{{$faculty->personal_information->residential_address->street}}">
                             Street
                         </x-admin-form-input>
 
@@ -216,7 +217,7 @@
                     <x-admin-form-label for="residential_subdivision">
                         Subdivision/Village
                     </x-admin-form-label>
-                    <x-admin-form-input type="text" name="residential_subdivision" id="residential_subdivision" value="{{ old('residential_subdivision') }}">
+                    <x-admin-form-input type="text" name="residential_subdivision" id="residential_subdivision" value="{{$faculty->personal_information->residential_address->subdivision_village}}">
                         Subdivision/Village
                     </x-admin-form-input>
 
@@ -227,7 +228,7 @@
                         <x-admin-form-label for="residential_barangay">
                             Barangay
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_barangay" id="residential_barangay" value="{{ old('residential_barangay') }}">
+                        <x-admin-form-input type="text" name="residential_barangay" id="residential_barangay" value="{{$faculty->personal_information->residential_address->barangay}}">
                             Barangay
                         </x-admin-form-input>
 
@@ -237,7 +238,7 @@
                         <x-admin-form-label for="residential_city">
                             City/Municipality
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_city" id="residential_city" value="{{ old('residential_city') }}">
+                        <x-admin-form-input type="text" name="residential_city" id="residential_city" value="{{$faculty->personal_information->residential_address->city_municipality}}">
                             City/Municipality
                         </x-admin-form-input>
 
@@ -249,7 +250,7 @@
                         <x-admin-form-label for="residential_province">
                             Province
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_province" id="residential_province" value="{{ old('residential_province') }}">
+                        <x-admin-form-input type="text" name="residential_province" id="residential_province" value="{{$faculty->personal_information->residential_address->province}}">
                             Province
                         </x-admin-form-input>
 
@@ -259,7 +260,7 @@
                         <x-admin-form-label for="residential_zip_code">
                             Zip Code
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="residential_zip_code" id="residential_zip_code" value="{{ old('residential_zip_code') }}">
+                        <x-admin-form-input type="text" name="residential_zip_code" id="residential_zip_code" value="{{$faculty->personal_information->residential_address->zip_code}}">
                             Zip Code
                         </x-admin-form-input>
 
@@ -270,16 +271,6 @@
             <!-- PERMANENT ADDRESS -->
             <div>
                 <h6 class="font-semibold">Permanent Address</h6>
-                <div class="flex items-center mb-4 mt-2">
-                    <input id="both_address_same"
-                           name="both_address_same"
-                           type="checkbox"
-                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="both_address_same"
-                           class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        same as Residential?
-                    </label>
-                </div>
             </div>
             <div id="permanent_address_form">
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
@@ -288,7 +279,7 @@
                         <x-admin-form-label for="permanent_house_num">
                             House/Block/Lot No.
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_house_num" id="permanent_house_num">
+                        <x-admin-form-input type="text" name="permanent_house_num" id="permanent_house_num" value="{{$faculty->personal_information->permanent_address->house_block_no}}">
                             House/Block/Lot No.
                         </x-admin-form-input>
 
@@ -299,7 +290,7 @@
                         <x-admin-form-label for="permanent_street">
                             Street
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_street" id="permanent_street">
+                        <x-admin-form-input type="text" name="permanent_street" id="permanent_street" value="{{$faculty->personal_information->permanent_address->street}}">
                             Street
                         </x-admin-form-input>
 
@@ -310,7 +301,7 @@
                     <x-admin-form-label for="permanent_subdivision">
                         Subdivision/Village
                     </x-admin-form-label>
-                    <x-admin-form-input type="text" name="permanent_subdivision" id="permanent_subdivision">
+                    <x-admin-form-input type="text" name="permanent_subdivision" id="permanent_subdivision" value="{{$faculty->personal_information->permanent_address->subdivision_village}}">
                         Subdivision/Village
                     </x-admin-form-input>
 
@@ -321,7 +312,7 @@
                         <x-admin-form-label for="permanent_barangay">
                             Barangay
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_barangay" id="permanent_barangay">
+                        <x-admin-form-input type="text" name="permanent_barangay" id="permanent_barangay" value="{{$faculty->personal_information->permanent_address->barangay}}">
                             Barangay
                         </x-admin-form-input>
 
@@ -331,7 +322,7 @@
                         <x-admin-form-label for="permanent_city">
                             City/Municipality
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_city" id="permanent_city">
+                        <x-admin-form-input type="text" name="permanent_city" id="permanent_city" value="{{$faculty->personal_information->permanent_address->city_municipality}}">
                             City/Municipality
                         </x-admin-form-input>
 
@@ -343,7 +334,7 @@
                         <x-admin-form-label for="permanent_province">
                             Province
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_province" id="permanent_province">
+                        <x-admin-form-input type="text" name="permanent_province" id="permanent_province" value="{{$faculty->personal_information->permanent_address->province}}">
                             Province
                         </x-admin-form-input>
 
@@ -353,7 +344,7 @@
                         <x-admin-form-label for="permanent_zip_code">
                             Zip Code
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_zip_code" id="permanent_zip_code">
+                        <x-admin-form-input type="text" name="permanent_zip_code" id="permanent_zip_code" value="{{$faculty->personal_information->permanent_address->zip_code}}">
                             Zip Code
                         </x-admin-form-input>
 
@@ -372,10 +363,10 @@
                     name="marital_status"
                     type="text"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option selected disabled value="0">Select Marital Status</option>
+                <option disabled value="0">Select Marital Status</option>
                 @foreach($civil_statuses as $civil_status)
                     <option
-                        value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
+                        value="{{ $civil_status->id }}" {{ $faculty->civil_status_id === $civil_status->id  ? 'selected=selected' : ' ' }}>{{$civil_status->civil_status}}</option>
                 @endforeach
 
             </select>
