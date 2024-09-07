@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Faculty;
-use App\Models\FacultyInformation\PersonalInformation;
 use Illuminate\Database\Seeder;
 
 class FacultySeeder extends Seeder
