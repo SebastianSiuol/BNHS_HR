@@ -19,14 +19,14 @@
                     </h1>
                     <div class="grid gap-4 mb-4 sm:grid-cols-4">
                         <div>
-                            <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
+                            <label for="department" class="block mb-2 text-sm font-medium text-gray-900 ">Department</label>
                             <select id="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
                                 <option selected>All Departments</option>
                                 <option value="">Department 1</option>
                                 <option value="">Department 2</option>
                             </select>                    </div>
                         <div>
-                            <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift  </label>
+                            <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 ">Shift  </label>
                             <select id="shift" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
                                 <option selected>All Shifts</option>
                                 <option value="">Shift 1</option>
@@ -34,7 +34,7 @@
                             </select>
                         </div>
                         <div>
-                            <label for="attendance-date-picker" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                            <label for="attendance-date-picker" class="block mb-2 text-sm font-medium text-gray-900 ">Date</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                     <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="mt-7">
-                            <button id="getEmployee" type="button" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <button id="getEmployee" type="button" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                 Get Employee
                             </button>
                         </div>
@@ -56,15 +56,15 @@
                 <!-- ATTENDANCE TABLE -->
                 <div id="attendanceTable" class="hidden bg-white border w-full border-gray-200 rounded-md shadow p-4">
                     <!-- HEADER -->
-                    <div class="pb-4 flex items-center justify-between dark:bg-gray-900">
+                    <div class="pb-4 flex items-center justify-between">
                         <label for="table-search" class="sr-only">Search</label>
                         <div class="relative mt-1">
                             <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="table-search" class="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+                            <input type="text" id="table-search" class="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items">
                         </div>
 
 {{--                        <!-- TODO -->--}}
@@ -83,8 +83,8 @@
 
                     <!-- MAIN TABLE -->
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-white bg-blue-900  dark:text-gray-400">
+                        <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-sm text-white bg-blue-900">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     Employee ID
@@ -110,26 +110,26 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <tr class="odd:bg-blue-100 even:bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     1
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Ryan Basilides
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Admin
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Evening Shift
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     9:00
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     18:00
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     <select id="attendance-status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2 " required="">
                                         <option value="">Present</option>
                                         <option value="">Absent</option>
@@ -137,26 +137,26 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <tr class="odd:bg-blue-100 even:bg-white border-b">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     1
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Ryan Basilides
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Admin
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     Day Shift
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     11:00
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     20:00
                                 </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     <select id="attendance-status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-28 p-2 " required="">
                                         <option value="">Present</option>
                                         <option value="">Absent</option>
@@ -168,36 +168,9 @@
                         </table>
                     </div>
 
-                    <!-- PAGINATION -->
-{{--                    <nav class="flex mb-4 items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">--}}
-{{--                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span></span>--}}
-{{--                        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>--}}
-{{--                            </li>--}}
-{{--                            <li>--}}
-{{--                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-{{--                    </nav>--}}
 
                     <div class="flex items center justify-center mt-12">
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center">
                             Submit
                         </button>
                     </div>

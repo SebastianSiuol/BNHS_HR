@@ -66,7 +66,10 @@
                         </ul>
                     @endif
 
-                    <x-admin-personal-details-form :max_date=$max_date :civil_statuses=$civil_statuses :name_exts=$name_exts />
+                    <x-employee-create-forms.psn-deets
+                        :max_date='$max_date'
+                        :civil_statuses='$civil_statuses'
+                        :name_exts='$name_exts' />
 
                     <div class="flex justify-end">
                         <button id="nextToAccountLogin"
@@ -120,7 +123,8 @@
                         Account Login
                     </h1>
 
-                    <x-admin-account-login-form />
+                    <x-employee-create-forms.acc-login />
+
 
                     <div class="flex items center justify-between">
                         <button id="prevToPersonalDetails" type="button"
@@ -323,7 +327,8 @@
                             Prev Step: Company Details
                         </button>
 
-                        <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        <button type="submit"
+                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             Save
                         </button>
 

@@ -18,6 +18,9 @@ function validatePersonalDetailsForm() {
             input.reportValidity()
             allValid = false;
             break;
+        } else {
+            input.setCustomValidity('');
+            input.reportValidity()
         }
     }
 
