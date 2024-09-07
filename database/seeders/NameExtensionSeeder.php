@@ -16,6 +16,10 @@ class NameExtensionSeeder extends Seeder
     public function run(): void
     {
         $name_ext = new NameExtension();
+        $name_ext->title = 'None';
+        $name_ext->save();
+
+        $name_ext = new NameExtension();
         $name_ext->title = 'Sr.';
         $name_ext->save();
 
