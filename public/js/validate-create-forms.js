@@ -22,11 +22,11 @@ function validatePersonalDetailsForm() {
         }
     }
 
-    if (!dateRegEx.test(dateOfBirth.value.trim())) {
-        dateOfBirth.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
-        dateOfBirth.reportValidity()
-        allValid = false;
-    }
+    // if (!dateRegEx.test(dateOfBirth.value.trim())) {
+    //     dateOfBirth.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
+    //     dateOfBirth.reportValidity()
+    //     allValid = false;
+    // }
 
     for (let select of personalDetailsSelect) {
         if (select.value === '0') {
@@ -85,15 +85,16 @@ function validateCompanyLoginForm() {
             input.reportValidity()
             allValid = false;
             break;
-        } else {
-            for (let dateInputs of companyLoginDateInputs) {
-                if (!dateRegEx.test(dateInputs.value.trim())) {
-                    dateInputs.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
-                    dateInputs.reportValidity()
-                    allValid = false;
-                }
-            }
         }
+            // else {
+        //     for (let dateInputs of companyLoginDateInputs) {
+        //         if (!dateRegEx.test(dateInputs.value.trim())) {
+        //             dateInputs.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
+        //             dateInputs.reportValidity()
+        //             allValid = false;
+        //         }
+        //     }
+        // }
     }
 
     for (let select of companyLoginSelects) {
