@@ -14,6 +14,7 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+//      NOTE: Production Data
         Role::factory()->create([
             'role_name' => 'Admin',
         ]);

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+    use App\Http\Requests\Auth\LoginRequest;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\RateLimiter;
 
-class AuthenticatedAdminController extends Controller
+    class AuthenticatedAdminController extends Controller
 {
     /**
      * Display the login view.
@@ -22,6 +24,12 @@ class AuthenticatedAdminController extends Controller
     public function store(Request $request)
     {
 
+
+//        $request->authenticate();
+//
+//        $request->session()->regenerate();
+//
+//        redirect()->intended(route('admin_index'));
         $credentials = $request->validate([
             'admin_id' => 'required',
             'password' => 'required|min:6',
@@ -47,13 +55,13 @@ class AuthenticatedAdminController extends Controller
                     'msg' => 'You do not have admin access.',
                 ]);
             }
-            // Check if the user has the admin role
         }
 
         return back()->withErrors([
             'msg' => 'Invalid credenials, please try again',
         ]);
     }
+
     /**
      * Handle log-out requests and destroys session.
      */
@@ -61,6 +69,7 @@ class AuthenticatedAdminController extends Controller
     {
         Auth::logout();
         $request->session()->invalidate();
-        return redirect('/');
+        $request->session()->regenerateToken();
+        return redirect()->intended(route('/'))->with('success', 'Successfully Logged Out!');
     }
 }

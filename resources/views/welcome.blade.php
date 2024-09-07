@@ -24,6 +24,21 @@
                 </p>
             </div>
         </div>
+
+        @if( Session::has('success'))
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="absolute bg-green-500 text-white rounded-lg p-2 m-2 top-0 right-0"
+            >
+                {{ Session::get('success') }}
+            </div>
+        @elseif( Session::has('error') )
+
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="absolute bg-green-500 text-white rounded-lg p-2 m-2 top-0 right-0"
+            >
+                {{ Session::get('error') }}
+            </div>
+        @endif
     </div>
 
 </x-welcome-layout>

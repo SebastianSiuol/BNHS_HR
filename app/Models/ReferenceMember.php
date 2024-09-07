@@ -10,7 +10,7 @@ class ReferenceMember extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'contact_number', 'address'];
+    protected $fillable = ['name', 'contact_number', 'address', 'reference_number'];
 
     public function personal_information(){
         return $this->belongsTo(PersonalInformation::class);

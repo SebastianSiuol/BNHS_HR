@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeders\ReferenceMemberSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +15,16 @@ return new class extends Migration
     {
         Schema::create('reference_members', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PersonalInformation::class);
+            $table->foreignId('personal_information_id')->nullable();
             $table->string('name');
             $table->string('contact_number');
             $table->string('address');
+            $table->string('reference_number');
             $table->timestamps();
         });
+
+        $reference_member_seeder = new ReferenceMemberSeeder();
+        $reference_member_seeder->run();
     }
 
     /**

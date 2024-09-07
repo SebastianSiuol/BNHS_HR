@@ -17,7 +17,9 @@ class ApiKeyMiddleware
     {
         $apiKey = env('API_KEY');
 
-        $apiKeyIsValid = (! empty($apiKey) && $request->header('X-API-KEY') == $apiKey);
+//        return response()->json(['api-key' => $apiKey]);
+
+        $apiKeyIsValid = (! empty($apiKey) && $request->header('x-api-key') == $apiKey);
 
         if(!$apiKeyIsValid) {
             return response()->json(['error' => 'Access Denied'], 403);

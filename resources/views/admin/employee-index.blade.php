@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Employee List</x-slot:heading>
+
+<x-slot:heading>Employee List</x-slot:heading>
 
     <!-- Main Content -->
     <main class="block h-full p-4 sm:ml-80">
@@ -104,12 +105,14 @@
                                             <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                         </svg>
                                     </button>
-                                    <button data-modal-target="edit-modal" data-modal-toggle="edit-modal" type="button">
+{{--                                    <button data-modal-target="edit-modal" data-modal-toggle="edit-modal" type="button">--}}
+                                        <a href="/admin/employees/{{$faculty->id}}/edit">
                                         <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                             <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
                                             <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
                                         </svg>
-                                    </button>
+{{--                                        <a href="/admin/employee/{{$faculty->id}}/edit"></a>--}}
+                                    </a>
 
                                     <button data-modal-target="delete-employee-{{$faculty->id}}-modal" data-modal-toggle="delete-employee-{{$faculty->id}}-modal">
                                         <svg class="w-[27px] h-[27px] text-red-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -138,6 +141,7 @@
 
         </div>
 
+
         @foreach($faculties as $faculty)
             <!-- START OF DELETE MODAL-->
             <form method="POST" action="/admin/employees/{{ $faculty->id }}/delete">
@@ -165,7 +169,7 @@
                                 </svg>
                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you
                                     want to delete this employee? This Action is Irreversible!</h3>
-                                <button data-modal-hide="popup-modal"
+                                <button data-modal-hide="delete-employee-{{$faculty->id}}-modal"
                                         type="submit"
                                         class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                     Yes, I'm sure
@@ -182,7 +186,6 @@
             </form>
         @endforeach
         <!-- END OF DELETE MODAL-->
-
 
 
         <!-- View Modal -->
@@ -227,36 +230,40 @@
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for="name_extension">Extension Name</x-admin-show-label>
-                                                    <x-admin-show-input name="name_extension" id="name_extension" value="{{$faculty->personal_information->name_extension}}" />
+                                                    <x-admin-show-input name="name_extension" id="name_extension" value="{{ ($faculty->personal_information->name_extension == null) ? 'None' : $faculty->personal_information->name_extension->title  }}" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for="date_of_birth">Date of Birth</x-admin-show-label>
                                                     <x-admin-show-input name="date_of_birth" id="date_of_birth" value="{{$faculty->personal_information->date_of_birth}}" />
                                                 </div>
+                                                <div class="mt-4">
+                                                    <x-admin-show-label for="date_of_birth">Place of Birth</x-admin-show-label>
+                                                    <x-admin-show-input name="date_of_birth" id="date_of_birth" value="{{$faculty->personal_information->place_of_birth}}" />
+                                                </div>
                                                 <div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="contact_number">Contact Number</x-admin-show-label>
-                                                        <x-admin-show-input name="contact_number" id="contact_number" value="{{$faculty->personal_information->contact_number}}" />
+                                                        <x-admin-show-input name="contact_number" id="contact_number" value="{{$faculty->personal_information->contact_no}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="telephone_number">Telephone Number</x-admin-show-label>
-                                                        <x-admin-show-input name="telephone_number" id="telephone_number" value="{{$faculty->personal_information->telephone_number}}" />
+                                                        <x-admin-show-input name="telephone_number" id="telephone_number" value="{{$faculty->personal_information->telephone_no == null ? 'None' : $faculty->personal_information->telephone_no}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_name_01">Reference 01 Name</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_name_01" id="reference_name_01" value="John Doe" />
+                                                        <x-admin-show-input name="reference_name_01" id="reference_name_01" value="{{$faculty->personal_information->getFirstRefMember[0]['name']}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_number_01">Reference 01 Number</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_number_01" id="reference_number_01" value="09xxxxxxxxx" />
+                                                        <x-admin-show-input name="reference_number_01" id="reference_number_01" value="{{$faculty->personal_information->getFirstRefMember[0]['contact_number']}}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_name_02">Reference 02 Name</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_name_02" id="reference_name_02" value="Jane Doe" />
+                                                        <x-admin-show-input name="reference_name_02" id="reference_name_02" value="{{$faculty->personal_information->getSecondRefMember->isEmpty() ? 'None': $faculty->personal_information->getSecondRefMember[0]['name'] }}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for="reference_number_02">Reference 02 Number</x-admin-show-label>
-                                                        <x-admin-show-input name="reference_number_02" id="reference_number_02" value="09xxxxxxxxx" />
+                                                        <x-admin-show-input name="reference_number_02" id="reference_number_02" value="{{$faculty->personal_information->getSecondRefMember->isEmpty() ? 'None': $faculty->personal_information->getSecondRefMember[0]['contact_number'] }}" />
                                                     </div>
                                                     <div class="mt-4">
                                                         <x-admin-show-label for=marital_status>Marital Status</x-admin-show-label>
@@ -274,8 +281,12 @@
                                             </div>
                                             <div>
                                                 <div class="mt-4">
-                                                    <x-admin-show-label for=contact_person>Contact Person</x-admin-show-label>
-                                                    <x-admin-show-input name=contact_person id=contact_person value="John Doe" />
+                                                    <x-admin-show-label for=contact_person_name>Contact Person Name</x-admin-show-label>
+                                                    <x-admin-show-input name=contact_person_name id=contact_person_name value="{{$faculty->personal_information->contact_person->name}}" />
+                                                </div>
+                                                <div class="mt-4">
+                                                    <x-admin-show-label for=contact_person_number>Contact Person Number</x-admin-show-label>
+                                                    <x-admin-show-input name=contact_person_number id=contact_person_number value="{{$faculty->personal_information->contact_person->contact_no}}" />
                                                 </div>
                                                 <div class="mt-4">
                                                     <x-admin-show-label for=sex>Sex</x-admin-show-label>
@@ -481,8 +492,8 @@
                                         <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight text-gray-900 md:text-2xl ">
                                             Account Login
                                         </h1>
-                                        <form class="space-y-4 md:space-y-6" action="#">
-                                            <div class="flex">
+                                        <form class="space-y-4 md:space-y-6">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=email>Email*</x-admin-show-label>
                                                 <x-admin-show-input name=email id=email value="{{$faculty->email}}" />
                                             </div>
@@ -497,57 +508,35 @@
                                             Company Details
                                         </h1>
                                         <form class="space-y-4 md:space-y-6" action="#">
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=employee_code>Employee ID</x-admin-show-label>
                                                 <x-admin-show-input name=employee_code id=employee_code value="{{$faculty->faculty_code}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=department>Department</x-admin-show-label>
                                                 <x-admin-show-input name=department id=department value="{{$faculty->department->department_name}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <x-admin-show-label for=designation>Designation</x-admin-show-label>
                                                 <x-admin-show-input name=designation id=designation value="{{$faculty->designation->department_designation}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="date-join" class="block mr-4 mb-2 text-sm font-medium text-gray-900 ">Date of Joining*</label>
-                                                <div class="relative w-full">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                        </svg>
-                                                    </div>
-                                                    <input disabled id="date-of-joining" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      " placeholder="Select date">
-                                                </div>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=date_of_joining>Date of Joining</x-admin-show-label>
+                                                <x-admin-show-input name=date_of_joining id=date_of_joining value="{{$faculty->date_of_joining}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="date-leave" class="block mr-3 mb-2 text-sm font-medium text-gray-900 ">Date of Leaving*</label>
-                                                <div class="relative w-full">
-                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                        </svg>
-                                                    </div>
-                                                    <input disabled id="date-of-leaving" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      " placeholder="Select date">
-                                                </div>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=date_of_leaving>Date of Leaving</x-admin-show-label>
+                                                <x-admin-show-input name=date_of_leaving id=date_of_leaving value="{{$faculty->date_of_leaving}}" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="manager" class="block mr-px mb-2 text-sm font-medium text-gray-900 ">Manager/<br>Department Head*</label>
-                                                <select disabled id="manager" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                                    <option selected>Select Manager</option>
-                                                    <option value="">Manager 1</option>
-                                                    <option value="">Manager 2</option>
-                                                </select>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=Manager>Manager/Department Head</x-admin-show-label>
+                                                <x-admin-show-input name=Manager id=Manager placeholder="No Head" />
                                             </div>
-                                            <div class="flex">
-                                                <label for="shift" class="block mr-14 mb-2 text-sm font-medium text-gray-900 ">Shift*</label>
-                                                <select disabled id="shift" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                                    <option selected>Select Shift</option>
-                                                    <option value="">Shift 1</option>
-                                                    <option value="">Shift 2</option>
-                                                </select>
+                                            <div class="grid grid-cols-2">
+                                                <x-admin-show-label for=shift>Shift</x-admin-show-label>
+                                                <x-admin-show-input name=shift id=shift value="{{$faculty->shift->time}}" />
                                             </div>
-                                            <div class="flex">
+                                            <div class="grid grid-cols-2">
                                                 <label for="Status" class="block mr-12 mb-2 text-sm font-medium text-gray-900 ">Status</label>
                                                 <form class="max-w-sm mx-auto">
                                                     <select disabled id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
@@ -607,440 +596,25 @@
 
         @endforeach
 
-
-        <!-- Edit Modal -->
-        <div id="edit-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-fit max-h-full">
-                <!-- Modal content -->
-                <div class="relative p-5 bg-gray-100 items-center justify-center rounded-lg shadow dark:bg-gray-700">
-                    <!-- Header -->
-                    <div class="flex items-center mb-7 justify-between p-4 md:p-4 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Edit Details
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="edit-modal">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-
-                    <!-- Personal Details Form -->
-                    <div id="personalDetails">
-                        <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                            <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                                    1
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Personal Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    2
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Account Login</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    3
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Company Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    4
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Documents</h3>
-                                </span>
-                            </li>
-                        </ol>
-                        <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-                            <form id="myForm" action="#">
-
-                                <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-                                    Personal Details
-                                </h1>
-                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                        <input type="text" pattern="[A-Za-z\s]+" name="name" id="name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full Name" required="">
-                                    </div>
-                                    <div>
-                                        <label for="contact-person" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact Person</label>
-                                        <input type="text" pattern="[A-Za-z\s]+" name="contact-person" id="contact-person" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Contact Person Full Name" required="">
-                                    </div>
-                                    <div>
-                                        <label for="birthdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Birth</label>
-                                        <div class="relative w-full">
-                                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                </svg>
-                                            </div>
-                                            <input id="birthdate-picker" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" required="" placeholder="Select date">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender </label>
-                                        <select id="gender" class="select-validate bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                            <option selected disabled value="">Select Gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="contact_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact Number</label>
-                                        <input type="tel" pattern="\d{11}" name="contact_number" id="contact_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="09xxxxxxxxx" required="Please input numbers only with a maximum of 11 digits.">
-                                        <div class="mt-4">
-                                            <label for="nationality" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nationality</label>
-                                            <select id="nationality" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                                <option value="">Filipino</option>
-                                            </select>
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="R1-Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference 1 Name</label>
-                                            <input type="text" pattern="[A-Za-z\s]+" name="R1-Name" id="R1-Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full Name" required="">
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="R1-Phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference 1 Contact Number</label>
-                                            <input type="tel" pattern="\d{11}" name="R1-Phone" id="R1-Phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="09xxxxxxxxx" required="">
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="R2-Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference 2 Name</label>
-                                            <input type="text" pattern="[A-Za-z\s]+" name="R2-Name" id="R2-Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full Name" required="">
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="R2-Phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reference 2 Contact Number</label>
-                                            <input type="tel" pattern="\d{11}" name="R2-Phone" id="R2-Phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="09xxxxxxxxx" required="">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="local_address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Local Address</label>
-                                        <textarea type="text" id="local-address" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500" required=""></textarea>
-                                        <div class="mt-4">
-                                            <label for="marital-status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Marital Status</label>
-                                            <select id="marital-status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                                <option selected>Select</option>
-                                                <option value="S">Single</option>
-                                                <option value="M">Married</option>
-                                                <option value="W">Widowed</option>
-                                                <option value="S">Separated</option>
-                                            </select>
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="photo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Photo</label>
-                                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none" required="" id="file_input" type="file">
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Comment</label>
-                                            <textarea type="text" id="comment" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500     "></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end">
-                                    <button id="nextToAccountLogin" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        Next Step: Account Login
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Account Login Form -->
-                    <div id="accountLogin" class="hidden">
-                        <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    1
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Personal Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                                    2
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Account Login</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    3
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Company Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    4
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Documents</h3>
-                                </span>
-                            </li>
-                        </ol>
-                        <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-
-                            <form action="#">
-                                <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-                                    Account Login
-                                </h1>
-                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@email.com" required="">
-                                    </div>
-                                    <div>
-                                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                        <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required="">
-                                    </div>
-                                </div>
-
-                                <div class="flex items center justify-between">
-                                    <button id="prevToPersonalDetails" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                        Prev Step: Personal Details
-                                    </button>
-                                    <button id="nextToCompanyDetails" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        Next Step: Company Details
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-
-                    <!-- Company Details Form -->
-                    <div id="companyDetails" class="hidden">
-                        <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    1
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Personal Details </h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    2
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Account Login</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                                    3
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Company Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    4
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Documents</h3>
-                                </span>
-                            </li>
-                        </ol>
-                        <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-                            <form action="#">
-
-                                <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-                                    Company Details
-                                </h1>
-                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="emp_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employee ID</label>
-                                        <input type="number" disabled name="emp_id" id="emp_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Auto Generated" required="">
-                                    </div>
-                                    <div>
-                                        <label for="department" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                                        <select id="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                            <option selected disabled>Select Department</option>
-                                            <option value="">Department 1</option>
-                                            <option value="">Department 2</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="designation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Designation</label>
-                                        <select id="designation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                            <option selected disabled>Select Department</option>
-                                            <option value="">Department 1</option>
-                                            <option value="">Department 2</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Joining</label>
-                                        <div class="relative w-full">
-                                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                </svg>
-                                            </div>
-                                            <input id="date-join-picker" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="date-leave" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Leaving</label>
-                                        <div class="relative w-full">
-                                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                </svg>
-                                            </div>
-                                            <input id="date-leave-picker" datepicker datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      " required="" placeholder="Select date">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="manager" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Manager / Department Head </label>
-                                        <select id="manager" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                            <option selected disabled>Select Manager</option>
-                                            <option value="">Manager 1</option>
-                                            <option value="">Manager 2</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift  </label>
-                                        <select id="shift" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                            <option selected disabled>Select Shift</option>
-                                            <option value="">Shift 1</option>
-                                            <option value="">Shift 2</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status </label>
-                                        <select id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                            <option selected>Active</option>
-                                            <option value="">Option 2</option>
-                                            <option value="">Option 3</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="flex items center justify-between">
-                                    <button id="prevToAccountLogin" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                        Prev Step: Account Login
-                                    </button>
-                                    <button id="nextToDocuments" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        Next Step: Documents
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Documents Form -->
-                    <div id="Documents" class="hidden">
-                        <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    1
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Personal Details </h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    2
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Account Login</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                                    3
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Company Details</h3>
-                                </span>
-                            </li>
-                            <li class="flex items-center text-blue-600 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                                <span class="flex items-center justify-center w-8 h-8 border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                                    4
-                                </span>
-                                <span>
-                                    <h3 class="font-medium leading-tight">Documents</h3>
-                                </span>
-                            </li>
-                        </ol>
-                        <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-                            <form action="#">
-
-                                <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-                                    Documents
-                                </h1>
-
-                                <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="resume" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Resume File</label>
-                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none" required="" id="file_input" type="file">
-                                    </div>
-                                    <div>
-                                        <label for="offer-letter" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Offer Letter</label>
-                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   " required="" id="file_input" type="file">
-                                    </div>
-                                    <div>
-                                        <label for="joining-letter" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Joining Letter</label>
-                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   " required="" id="file_input" type="file">
-                                    </div>
-                                    <div>
-                                        <label for="contract" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contract & Agreement </label>
-                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   " required="" id="file_input" type="file">
-                                    </div>
-                                    <div>
-                                        <label for="Other" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Other Documents </label>
-                                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none   " required="" id="file_input" type="file">
-                                    </div>
-                                    <div>
-                                        <label for="dropbox-url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dropbox URL</label>
-                                        <input disabled name="emp_id" id="emp_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Dropbox URL" required="">
-                                    </div>
-                                    <div>
-                                        <label for="gdrive-url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Google Drive URL</label>
-                                        <input disabled name="emp_id" id="emp_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Google Drive URL" required="">
-                                    </div>
-                                </div>
-
-                                <div class="flex items center justify-between">
-                                    <button id="prevToCompanyDetails" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                        Prev Step: Company Details
-                                    </button>
-                                    <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                        Save
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        @if( Session::has('success'))
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-green-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('success') }}
             </div>
-        </div>
+        @elseif( Session::has('error') )
 
-
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-red-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('error') }}
+            </div>
+        @endif
     </main>
 
-    <script src={{asset('js/admin.js')}}></script>
+
+
+{{--    <script src={{asset('js/admin.js')}}></script>--}}
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 
 </x-admin-layout>

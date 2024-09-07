@@ -22,9 +22,9 @@
                     </ul>
                 @endif
                 <!-- Form -->
-                <form method="POST" action="/admin/login" class="w-full">
+                <form method="POST" action="/admin/login" class="w-full admin-login-form">
                     @csrf
-                    <!-- Staff ID -->
+                    <!-- ADMIN ID -->
                     <div class="mb-4 py-2">
                         <label class="block text-gray-600 text-sm font-semibold mb-2" for="staff_id">Admin ID</label>
                         <input
@@ -32,6 +32,8 @@
                             name="admin_id"
                             id="admin_id"
                             type="text"
+                            autocomplete="off"
+                            required="required"
                             placeholder="Admin ID">
                     </div>
                     <div class="mb-0">
@@ -41,6 +43,8 @@
                             name="password"
                             id="password"
                             type="password"
+                            autocomplete="off"
+                            required="required"
                             placeholder="Password">
                     </div>
                     <div class="flex items-end mb-6 py-0">
@@ -49,7 +53,8 @@
                         </div>
                     </div>
                     <div class="mb-8">
-                        <button type="submit"
+                        <button id="submit-login-button"
+                                type="submit"
                                 class="w-full block text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                             Log In
                         </button>
@@ -62,4 +67,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('js/admin-login.js') }}"></script>
 </x-welcome-layout>

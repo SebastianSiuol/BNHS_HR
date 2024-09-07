@@ -1,4 +1,4 @@
-<div class="grid gap-4 mb-4 sm:grid-cols-2">
+<div class="validate-acc-txt-inputs grid gap-4 mb-4 sm:grid-cols-2">
     <div>
         <x-admin-form-label for="email">
             Email
