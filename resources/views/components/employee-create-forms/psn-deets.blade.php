@@ -4,7 +4,7 @@
     <div>
 
         <!-- FIRST NAME -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="first_name">
                 First Name
             </x-admin-form-label>
@@ -14,7 +14,7 @@
         </div>
 
         <!-- MIDDLE NAME -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="middle_name">
                 Middle Name
             </x-admin-form-label>
@@ -24,7 +24,7 @@
         </div>
 
         <!-- LAST NAME -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="last_name">
                 Last Name
             </x-admin-form-label>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- PLACE OF BIRTH -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="place_of_birth">
                 Place of Birth
             </x-admin-form-label>
@@ -74,8 +74,6 @@
                 <input id="date_of_birth"
                        name="date_of_birth"
                        placeholder="Select date"
-                       required="required"
-                       pattern="^(0[1-9]|1z[0-2])-(0[1-9]|[12][0-9]|3[01])-(\d{4})$"
                        value="{{ old('date_of_birth') }}"
                        datepicker
                        datepicker-autohide
@@ -88,7 +86,7 @@
         </div>
 
         <!-- CONTACT NUMBER -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="contact_number">
                 Contact Number
             </x-admin-form-label>
@@ -98,7 +96,7 @@
         </div>
 
         <!-- TELEPHONE NUMBER -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="mt-4">
             <x-admin-form-label for="telephone_number">
                 Telephone Number
             </x-admin-form-label>
@@ -108,7 +106,7 @@
         </div>
 
         <!-- NATIONALITY -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="nationality">
                 Nationality
             </x-admin-form-label>
@@ -119,7 +117,7 @@
         </div>
 
         <!-- REFERENCE NAME 01-->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
 
             <x-admin-form-label for="reference_name_01">
                 Reference Name 01
@@ -132,7 +130,7 @@
         </div>
 
         <!-- REFERENCE NUMBER 01-->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
 
             <x-admin-form-label for="reference_contact_number_01">
                 Reference Contact Number 01
@@ -171,7 +169,7 @@
     <div>
 
         <!-- CONTACT PERSON NAME -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="contact_person_name">
                 Contact Person Name
             </x-admin-form-label>
@@ -181,7 +179,7 @@
         </div>
 
         <!-- CONTACT PERSON NUMBER -->
-        <div class="validate-pd-txt-inputs mt-4">
+        <div class="required-inputs mt-4">
             <x-admin-form-label for="contact_person_number">
                 Contact Person Number
             </x-admin-form-label>
@@ -212,7 +210,7 @@
 
             <div>
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_house_num">
                             House/Block/Lot No.
@@ -223,7 +221,7 @@
 
                     </div>
 
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_street">
                             Street
@@ -234,7 +232,7 @@
 
                     </div>
                 </div>
-                <div class="validate-pd-txt-inputs">
+                <div class="required-inputs">
 
                     <x-admin-form-label for="residential_subdivision">
                         Subdivision/Village
@@ -245,7 +243,7 @@
 
                 </div>
                 <div class="mt-2 grid gap-4 grid-cols-2">
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_barangay">
                             Barangay
@@ -255,7 +253,7 @@
                         </x-admin-form-input>
 
                     </div>
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_city">
                             City/Municipality
@@ -267,7 +265,7 @@
                     </div>
                 </div>
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_province">
                             Province
@@ -277,7 +275,7 @@
                         </x-admin-form-input>
 
                     </div>
-                    <div class="validate-pd-txt-inputs">
+                    <div class="required-inputs">
 
                         <x-admin-form-label for="residential_zip_code">
                             Zip Code
@@ -297,9 +295,9 @@
                     <input id="both_address_same"
                            name="both_address_same"
                            type="checkbox"
-                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
                     <label for="both_address_same"
-                           class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                           class="ms-2 text-sm font-medium text-gray-900">
                         Same as Residential
                     </label>
                 </div>
