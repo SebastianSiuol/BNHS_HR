@@ -13,6 +13,7 @@ use App\Models\FacultyInformation\PersonalInformation;
 use App\Models\FacultyInformation\ResidentialAddress;
 use App\Models\ReferenceMember;
 use App\Models\Shift;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Reference\Reference;
@@ -49,23 +50,24 @@ class FacultyController extends Controller
 
 
 //      START OF VALIDATIONS
-        if($request->both_address_same){
-            $request->merge([
-            'permanent_house_num'   => $request->residential_house_num,
-            'permanent_street'      => $request->residential_street,
-            'permanent_subdivision' => $request->residential_subdivision,
-            'permanent_barangay'    => $request->residential_barangay,
-            'permanent_city'        => $request->residential_city,
-            'permanent_province'    => $request->residential_province,
-            'permanent_zip_code'    => $request->residential_zip_code,
-            ]);
-        }
+
+//        if($request->both_address_same){
+//            $request->merge([
+//            'permanent_house_num'   => $request->residential_house_num,
+//            'permanent_street'      => $request->residential_street,
+//            'permanent_subdivision' => $request->residential_subdivision,
+//            'permanent_barangay'    => $request->residential_barangay,
+//            'permanent_city'        => $request->residential_city,
+//            'permanent_province'    => $request->residential_province,
+//            'permanent_zip_code'    => $request->residential_zip_code,
+//            ]);
+//        }
+
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
             'password'                      => ['required', 'string', 'min:8'],
-            'date_of_joining'               => ['required', 'date_format:m-d-Y'],
-            'date_of_leaving'               => ['required', 'date_format:m-d-Y'],
+            'date_of_joining'               => ['required', 'date', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -77,7 +79,7 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -21 year'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
             'marital_status'                => ['required'],
@@ -107,6 +109,9 @@ class FacultyController extends Controller
             'reference_contact_number_01'   => ['required'],
             'reference_name_02'             => ['nullable'],
             'reference_contact_number_02'   => ['nullable'],
+        ],[
+            'date_of_birth.before' => 'Employee must be at least 21 years old!',
+            'date_of_joining.after_or_equal' => 'The date of joining must not be a date before today',
         ]);
 //      END OF VALIDATIONS
 
@@ -117,7 +122,7 @@ class FacultyController extends Controller
         $faculty->email             = $validated_inputs['email'];
         $faculty->password          = $validated_inputs['password'];
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
-        $faculty->date_of_leaving   = $validated_inputs['date_of_leaving'];
+        $faculty->date_of_leaving   = null;
         $faculty->department_id     = $validated_inputs['department'];
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
@@ -231,8 +236,8 @@ class FacultyController extends Controller
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
-            'date_of_joining'               => ['required', 'date_format:m-d-Y'],
-            'date_of_leaving'               => ['required', 'date_format:m-d-Y'],
+            'date_of_joining'               => ['nullable', 'date'],
+            'date_of_leaving'               => ['nullable', 'date_format:m-d-Y', 'after:date_of_joining'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -244,7 +249,7 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before:+18 years'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
             'marital_status'                => ['required'],
@@ -274,6 +279,9 @@ class FacultyController extends Controller
 //            'reference_contact_number_01'   => ['required'],
 //            'reference_name_02'             => ['nullable'],
 //            'reference_contact_number_02'   => ['nullable'],
+        ], [
+            'date_of_birth.before' => 'Employee must be at least 21 years old!',
+            'date_of_leaving.after_or_equal' => 'The leaving date must be a date after the date of joining!',
         ]);
 //      END OF VALIDATIONS
 
@@ -346,6 +354,6 @@ class FacultyController extends Controller
         $faculty->delete();
         return redirect()
             ->route('employees_index')
-            ->with('success', 'Faculty deleted successfully!');
+            ->with('success', 'Employee deleted successfully!');
     }
 }

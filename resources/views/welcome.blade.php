@@ -16,8 +16,8 @@
                 <p class="mb-8">Please click or tap your destination.</p>
                 <a href="/admin/login"
                    class="w-full bg-blue-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-blue-600">Admin</a>
-                <a href="/staff/login"
-                   class="w-full bg-red-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-red-600">Staff</a>
+{{--                <a href="/staff/login"--}}
+{{--                   class="w-full bg-red-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-red-600">Staff</a>--}}
 
                 <p class="text-center text-gray-500 text-sm mt-4">
                     By using this service, you understand and agree to the Terms and Conditions of the system.

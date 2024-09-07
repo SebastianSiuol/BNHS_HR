@@ -58,6 +58,7 @@
             </div>
             <input id="date_of_joining"
                    name="date_of_joining"
+                   value="{{ old('date_of_joining') }}"
                    datepicker
                    datepicker-buttons
                    datepicker-autoselect-today
@@ -84,6 +85,8 @@
             </div>
             <input id="date_of_leaving"
                    name="date_of_leaving"
+                   value="{{ old('date_of_leaving') }}"
+                   disabled
                    datepicker
                    datepicker-buttons
                    datepicker-autoselect-today
@@ -110,7 +113,7 @@
     </div>
     <div>
 
-        <x-admin-form-label for="shift"> Manager/Department Head</x-admin-form-label>
+        <x-admin-form-label for="shift">Select Shift</x-admin-form-label>
 
         <select id="shift"
                 name="shift"

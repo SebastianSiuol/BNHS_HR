@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
 
     // Routes for staff
     Route::middleware(['role:staff'])->group(function () {
-        Route::view('/staff/dashboard', 'staff.index')->name('staff_index');
+        Route::view('/staff/home', 'staff.index')->name('staff_index');
     });
 
 
