@@ -1,15 +1,9 @@
 <?php
 
-use App\Models\Faculty;
 use Database\Seeders\FacultySeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-use App\Models\Department;
-use App\Models\Designation;
-use App\Models\Shift;
-
 
 return new class extends Migration
 {
