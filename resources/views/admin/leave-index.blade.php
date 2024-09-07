@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Leave Manage</x-slot:heading>
+
+<x-slot:heading>Leave Manage</x-slot:heading>
 
     <main>
 

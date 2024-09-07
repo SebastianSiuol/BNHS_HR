@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Add Leave</x-slot:heading>
+
+<x-slot:heading>Add Leave</x-slot:heading>
 
     <main class="block h-full p-4 sm:ml-80">
         <div class="flex items-center pb-8">

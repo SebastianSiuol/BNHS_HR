@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
     <x-slot:heading>Home</x-slot:heading>
 
@@ -172,7 +172,20 @@
             </div>
         </div>
 
+        @if( Session::has('success'))
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-green-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('success') }}
+            </div>
+        @elseif( Session::has('error') )
 
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-red-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('error') }}
+            </div>
+        @endif
 
 
     </main>

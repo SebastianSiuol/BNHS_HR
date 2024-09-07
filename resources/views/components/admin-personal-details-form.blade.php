@@ -1,6 +1,6 @@
 @props(['max_date', 'civil_statuses', 'name_exts'])
 
-<div class="grid gap-4 mb-4 sm:grid-cols-2">
+<div class="validate-all grid gap-4 mb-4 sm:grid-cols-2">
     <div>
 
         <!-- FIRST NAME -->
@@ -34,15 +34,6 @@
         </div>
 
         <!-- NAME EXTENSION -->
-{{--        <div class="mt-4">--}}
-{{--            <x-admin-form-label for="name_extension">--}}
-{{--                Name Extension--}}
-{{--            </x-admin-form-label>--}}
-{{--            <x-admin-form-input type="text" name="name_extension" id="name_extension" value="{{ old('name_extension') }}">--}}
-{{--                Name Extension--}}
-{{--            </x-admin-form-input>--}}
-{{--        </div>--}}
-
         <div class="mt-4">
             <x-admin-form-label for="name_extension">
                 Name Extension
@@ -50,7 +41,7 @@
             <select id="name_extension"
                     name="name_extension"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                <option {{ empty(old('name_extension'))  ? 'selected=selected': '' }}  disabled value='null'>Select Name Extension</option>
+                <option {{ empty(old('name_extension'))  ? 'selected=selected': '' }}  disabled value='0'>Select Name Extension</option>
                 @foreach($name_exts as $name_ext)
                     <option
                         value="{{ $name_ext->id }}" {{old ('marital_status') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
@@ -207,7 +198,7 @@
             <select id="sex"
                     name="sex"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                <option {{ empty(old('sex'))  ? 'selected=selected': '' }} disabled>Select Sex</option>
+                <option {{ empty(old('sex'))  ? 'selected=selected': '' }} disabled value='0'>Select Sex</option>
                 <option value="Male" {{ old('sex') === 'Male' ? 'selected=selected': '' }}>Male</option>
                 <option value="Female" {{ old('sex') === 'Female' ? 'selected=selected': '' }}>Female</option>
             </select>

@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Daily Attendance</x-slot:heading>
+
+<x-slot:heading>Daily Attendance</x-slot:heading>
 
     <main>
         <main class="block h-full p-4 sm:ml-80">

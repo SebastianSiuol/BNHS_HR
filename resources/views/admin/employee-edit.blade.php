@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Employee Edit</x-slot:heading>
+
+<x-slot:heading>Employee Edit</x-slot:heading>
 
     <!-- Main Content -->
     <main class="block h-full p-4 sm:ml-80">

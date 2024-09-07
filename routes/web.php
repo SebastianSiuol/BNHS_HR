@@ -34,13 +34,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/home', function() {
 
-            $faculty = Auth::user();
-
-            $total_employees = Faculty::all()->count();
-
             return view('admin.dashboard', [
-                'faculty' => $faculty,
-                'total_employees' => $total_employees,
+                'admin'              => Auth::user(),
+                'total_employees'    => Faculty::all()->count(),
             ]);
 
         })->name('admin_index');

@@ -19,19 +19,18 @@ use League\CommonMark\Reference\Reference;
 
 class FacultyController extends Controller
 {
-//    TODO:FIX THIS
     public function index(){
         $faculties = Faculty::with('personal_information')->first()->paginate(5);
 
         return view('admin.employee-index',[
-            'faculties'=>$faculties
+            'admin'             => Auth::user(),
+            'faculties'         =>$faculties
         ]);
     }
 
     public function create(){
-
-
         return view('admin.employee-create', [
+            'admin'             => Auth::user(),
             'generated_id'      => Faculty::generateFacultyCode(),
             'shifts'            => Shift::all(),
             'departments'       => Department::all(),
@@ -41,54 +40,6 @@ class FacultyController extends Controller
             'max_date'          => date("m/d/Y", strtotime('-21 year')),
         ]);
     }
-
-//    public function debug_store (Request $request){
-//        $faculty = new Faculty;
-//
-//        $faculty->email             = 'text';
-//        $faculty->password          = 'text';
-//        $faculty->department_id     = 1;
-//        $faculty->designation_id    = 1;
-//
-//        $psn_info = new PersonalInformation([
-//            'first_name'        => 'test',
-//            'middle_name'       => 'test',
-//            'last_name'         => 'test',
-//            'name_extension'    => 'test',
-//            'sex'               => 'test',
-//            'place_of_birth'    => 'test',
-//            'date_of_birth'     => 'test',
-//            'telephone_no'      => 'test',
-//            'contact_no'        => 'test',
-//            'civil_status_id'   => 1,
-//        ]);
-//
-//        $resi_addr = new ResidentialAddress([
-//            'house_block_no'        => 'test',
-//            'street'                => 'test',
-//            'subdivision_village'   => 'test',
-//            'barangay'              => 'test',
-//            'city_municipality'     => 'test',
-//            'province'              => 'test',
-//            'zip_code'              => 'test',
-//        ]);
-//
-//        $perma_addr = new PermanentAddress([
-//            'house_block_no'        => 'test',
-//            'street'                => 'test',
-//            'subdivision_village'   => 'test',
-//            'barangay'              => 'test',
-//            'city_municipality'     => 'test',
-//            'province'              => 'test',
-//            'zip_code'              => 'test',
-//        ]);
-//
-//        $faculty->save();
-//        $faculty->personal_information()->save($psn_info);
-//        $psn_info->residentiaL_address()->save($resi_addr);
-//        $psn_info->permanent_address()->save($perma_addr);
-//
-//    }
 
     public function store(Request $request)
     {
@@ -248,19 +199,23 @@ class FacultyController extends Controller
             $psn_info->reference_members()->save($ref_mem_02);
 //      END OF SAVING DETAILS
 
-        return redirect()->route('employees_index');
+        return redirect()
+            ->route('employees_index')
+            ->with('success', 'Employee created successfully!');
     }
 
     public function show(){
-        return redirect()->route('employees_index');
+        return view('admin.employee_index', [
+            'admin'             => Auth::user(),
+        ]);
     }
 
     public function edit(Faculty $faculty){
 
         return view('admin.employee-edit', [
+            'admin'             => Auth::user(),
             'faculty'               => $faculty,
             'personal_information'  => $faculty->personal_information,
-            'birth_date'            => $faculty->personal_information->date_of_birth,
 
 //          Dropdown Choices
             'max_date'              => date("m/d/Y", strtotime('-21 year')),
@@ -377,16 +332,20 @@ class FacultyController extends Controller
 
         return redirect()
             ->route('employees_index')
-            ->with('success', 'Faculty updated successfully!');
+            ->with('success', 'Employee updated successfully!');
     }
 
     public function destroy(Faculty $faculty){
 
         if (Auth::user()->id == $faculty->id){
-            abort(403);
+            return redirect()
+                ->route('employees_index')
+                ->with('error', 'Cannot delete logged-in employee!');
         }
 
         $faculty->delete();
-        return redirect()->route('employees_index');
+        return redirect()
+            ->route('employees_index')
+            ->with('success', 'Faculty deleted successfully!');
     }
 }

@@ -70,6 +70,6 @@ namespace App\Http\Controllers;
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect()->intended(route('/'))->with('success', 'Successfully Logged Out!');
     }
 }

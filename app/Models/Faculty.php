@@ -28,6 +28,8 @@ class Faculty extends Authenticatable
         'remember_token',
     ];
 
+    protected $with = ['personal_information'];
+
     protected function casts(): array
     {
         return [

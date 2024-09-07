@@ -1,6 +1,7 @@
-<x-admin-layout>
+<x-admin-layout :admin="$admin">
 
-    <x-slot:heading>Employee List</x-slot:heading>
+
+<x-slot:heading>Employee List</x-slot:heading>
 
     <!-- Main Content -->
     <main class="block h-full p-4 sm:ml-80">
@@ -140,6 +141,7 @@
 
         </div>
 
+
         @foreach($faculties as $faculty)
             <!-- START OF DELETE MODAL-->
             <form method="POST" action="/admin/employees/{{ $faculty->id }}/delete">
@@ -167,7 +169,7 @@
                                 </svg>
                                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you
                                     want to delete this employee? This Action is Irreversible!</h3>
-                                <button data-modal-hide="popup-modal"
+                                <button data-modal-hide="delete-employee-{{$faculty->id}}-modal"
                                         type="submit"
                                         class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                     Yes, I'm sure
@@ -184,7 +186,6 @@
             </form>
         @endforeach
         <!-- END OF DELETE MODAL-->
-
 
 
         <!-- View Modal -->
@@ -596,15 +597,24 @@
         @endforeach
 
         @if( Session::has('success'))
-        <div class="session-alert relative bg-green-500 float-right text-white rounded-lg p-2 m-2">
-            {{ Session::get('success') }}
-        </div>
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-green-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('success') }}
+            </div>
+        @elseif( Session::has('error') )
+
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+                 class="session-alert relative bg-red-500 float-right text-white rounded-lg p-2 m-2"
+            >
+                {{ Session::get('error') }}
+            </div>
         @endif
     </main>
 
 
 
-    <script src={{asset('js/admin.js')}}></script>
+{{--    <script src={{asset('js/admin.js')}}></script>--}}
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 
 </x-admin-layout>
