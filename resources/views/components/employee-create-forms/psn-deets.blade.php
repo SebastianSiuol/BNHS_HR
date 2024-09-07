@@ -54,7 +54,7 @@
             <x-admin-form-label for="place_of_birth">
                 Place of Birth
             </x-admin-form-label>
-            <x-admin-form-input type="text" name="place_of_birth" id="place_of_birth" value="{{ old('place_of_birth') }}" />
+            <x-admin-form-input type="text" name="place_of_birth" id="place_of_birth" placeholder="Place of Birth" value="{{ old('place_of_birth') }}" />
         </div>
 
         <!-- BIRTH DATE -->
@@ -202,6 +202,24 @@
             </select>
         </div>
 
+        <!-- MARITAL STATUS -->
+        <div class="mt-4">
+            <x-admin-form-label for="marital_status">
+                Marital Status
+            </x-admin-form-label>
+            <select id="marital_status"
+                    name="marital_status"
+                    type="text"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <option selected disabled value="0">Select Marital Status</option>
+                @foreach($civil_statuses as $civil_status)
+                    <option
+                        value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
+                @endforeach
+
+            </select>
+        </div>
+
         <!-- RESIDENTIAL ADDRESS -->
         <div class="mt-4">
             <div>
@@ -291,115 +309,68 @@
             <!-- PERMANENT ADDRESS -->
             <div>
                 <h6 class="font-semibold">Permanent Address</h6>
-                <div class="flex items-center mb-4 mt-2">
-                    <input id="both_address_same"
-                           name="both_address_same"
-                           type="checkbox"
-                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
-                    <label for="both_address_same"
-                           class="ms-2 text-sm font-medium text-gray-900">
-                        Same as Residential
-                    </label>
-                </div>
+{{--                <div class="flex items-center mb-4 mt-2">--}}
+{{--                    <input id="both_address_same"--}}
+{{--                           name="both_address_same"--}}
+{{--                           type="checkbox"--}}
+{{--                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">--}}
+{{--                    <label for="both_address_same"--}}
+{{--                           class="ms-2 text-sm font-medium text-gray-900">--}}
+{{--                        Same as Residential--}}
+{{--                    </label>--}}
+{{--                </div>--}}
             </div>
             <div id="permanent_address_form">
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_house_num">
                             House/Block/Lot No.
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_house_num" id="permanent_house_num">
-                            House/Block/Lot No.
-                        </x-admin-form-input>
-
+                        <x-admin-form-input type="text" name="permanent_house_num" id="permanent_house_num" placeholder="House/Block/Lot No." value="{{ old('permanent_house_num') }}"/>
                     </div>
-
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_street">
                             Street
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_street" id="permanent_street">
-                            Street
-                        </x-admin-form-input>
-
+                        <x-admin-form-input type="text" name="permanent_street" id="permanent_street" placeholder="Street" value="{{ old('permanent_street') }}"/>
                     </div>
                 </div>
-                <div>
-
+                <div class="required-inputs">
                     <x-admin-form-label for="permanent_subdivision">
                         Subdivision/Village
                     </x-admin-form-label>
-                    <x-admin-form-input type="text" name="permanent_subdivision" id="permanent_subdivision">
-                        Subdivision/Village
-                    </x-admin-form-input>
-
+                    <x-admin-form-input type="text" name="permanent_subdivision" id="permanent_subdivision" placeholder="Subdivision/Village" value="{{ old('permanent_subdivision') }}"/>
                 </div>
                 <div class="mt-2 grid gap-4 grid-cols-2">
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_barangay">
                             Barangay
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_barangay" id="permanent_barangay">
-                            Barangay
-                        </x-admin-form-input>
-
+                        <x-admin-form-input type="text" name="permanent_barangay" id="permanent_barangay" placeholder="Barangay" value="{{ old('permanent_barangay') }}"/>
                     </div>
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_city">
                             City/Municipality
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_city" id="permanent_city">
-                            City/Municipality
-                        </x-admin-form-input>
-
+                        <x-admin-form-input type="text" name="permanent_city" id="permanent_city" placeholder="City/Municipality" value="{{ old('permanent_city') }}"/>
                     </div>
                 </div>
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_province">
                             Province
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_province" id="permanent_province">
-                            Province
-                        </x-admin-form-input>
+                        <x-admin-form-input type="text" name="permanent_province" id="permanent_province" placeholder="Province" value="{{ old('permanent_province') }}"/>
 
                     </div>
-                    <div>
-
+                    <div class="required-inputs">
                         <x-admin-form-label for="permanent_zip_code">
                             Zip Code
                         </x-admin-form-label>
-                        <x-admin-form-input type="text" name="permanent_zip_code" id="permanent_zip_code">
-                            Zip Code
-                        </x-admin-form-input>
-
+                        <x-admin-form-input type="text" name="permanent_zip_code" id="permanent_zip_code" placeholder="Zip Code" value="{{ old('permanent_zip_code') }}"/>
                     </div>
                 </div>
             </div>
-        </div>
-
-
-        <!-- MARITAL STATUS -->
-        <div class="mt-4">
-            <x-admin-form-label for="marital_status">
-                Marital Status
-            </x-admin-form-label>
-            <select id="marital_status"
-                    name="marital_status"
-                    type="text"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option selected disabled value="0">Select Marital Status</option>
-                @foreach($civil_statuses as $civil_status)
-                    <option
-                        value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
-                @endforeach
-
-            </select>
         </div>
 
         <!-- PHOTO -->
