@@ -330,7 +330,7 @@
 
 
             <!-- Documents Form -->
-            <div id="Documents" class="hidden">
+            <div id="documentsForm" class="hidden">
 
                 <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
                     <x-admin-employee-add-nav-stepper>

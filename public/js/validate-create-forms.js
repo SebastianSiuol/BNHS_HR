@@ -1,3 +1,5 @@
+const dateRegEx = RegExp('^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\\d\\d$')
+
 /**
  * Validates the input fields base on the class given to them.
  */
@@ -8,7 +10,6 @@ function validatePersonalDetailsForm() {
     const personalDetailsInputs = document.querySelectorAll('.validate-pd-txt-inputs input');
     const personalDetailsSelect = document.querySelectorAll('.validate-all select');
     const dateOfBirth = document.getElementById('date_of_birth');
-    const dateRegEx = RegExp('^(0[1-9]|1z[0-2])-(0[1-9]|[12][0-9]|3[01])-(\\d{4})$')
 
     let allValid = true;
 
@@ -73,6 +74,8 @@ function validateAccountLoginForm() {
 function validateCompanyLoginForm() {
     const companyLoginInputs = document.querySelectorAll('.validate-comp-txt-inputs input');
     const companyLoginSelects = document.querySelectorAll('.validate-comp-txt-inputs select');
+    const companyLoginDateInputs = document.querySelectorAll('.validate-comp-txt-inputs .date-inputs');
+
 
     let allValid = true;
 
@@ -83,18 +86,27 @@ function validateCompanyLoginForm() {
             allValid = false;
             break;
         } else {
-            for (let select of companyLoginSelects) {
-                if (select.value === '0') {
-                    select.setCustomValidity('Please select the required field');
-                    select.reportValidity()
+            for (let dateInputs of companyLoginDateInputs) {
+                if (!dateRegEx.test(dateInputs.value.trim())) {
+                    dateInputs.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
+                    dateInputs.reportValidity()
                     allValid = false;
-                    break;
                 }
             }
         }
     }
 
-    if (allValid){
+    for (let select of companyLoginSelects) {
+        if (select.value === '0') {
+            select.setCustomValidity('Please select the required field');
+            select.reportValidity()
+            allValid = false;
+            break;
+        }
+    }
+
+
+    if (allValid) {
         document.getElementById('companyDetails').style.display = 'none';
         document.getElementById('documentsForm').style.display = 'block';
     }

@@ -65,7 +65,7 @@
                    datepicker-min-date="01-01-1900"
                    datepicker-max-date="{{date('m-d-Y', strtotime('14 Days')), }}"
                    type="text"
-                   class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
+                   class="date-inputs bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                    placeholder="Select date">
         </div>
 
@@ -91,7 +91,7 @@
                    datepicker-min-date="{{date('m-d-Y', strtotime('-14 Days')), }}"
                    datepicker-max-date="{{date('m-d-Y', strtotime('30 Days')), }}"
                    type="text"
-                   class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
+                   class="date-inputs bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "
                    placeholder="Select date">
         </div>
 
