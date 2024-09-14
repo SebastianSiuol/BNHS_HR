@@ -7,7 +7,7 @@
 <div class="validate-comp-txt-inputs grid gap-4 mb-4 sm:grid-cols-2">
     <div>
         <x-admin-form-label for="emp_id"> Employee ID </x-admin-form-label>
-        <x-admin-form-input type="text" id="emp_id" readonly="readonly" value="{{ $generated_id }}"/>
+        <x-admin-form-input name="emp_id" />
     </div>
     <div>
 

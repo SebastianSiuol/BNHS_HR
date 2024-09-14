@@ -21,39 +21,9 @@
             <!-- Personal Details Form -->
             <div id="personalDetails">
 
-                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                    <x-admin-employee-add-nav-stepper :active='true'>
-
-                        <x-slot:number>1</x-slot:number>
-
-                        Personal Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>2</x-slot:number>
-
-                        Account Login
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>3</x-slot:number>
-
-                        Company Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>4</x-slot:number>
-
-                        Documents
-
-                    </x-admin-employee-add-nav-stepper>
-                </ol>
+                <x-admin-employee-nav-steppers :active_number="1" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-
 
                     <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
                         Personal Details
@@ -86,36 +56,8 @@
             <!-- Account Login Form -->
             <div id="accountLogin" class="hidden">
 
-                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                    <x-admin-employee-add-nav-stepper>
+            <x-admin-employee-nav-steppers :active_number="2" />
 
-                        <x-slot:number>1</x-slot:number>
-
-                        Personal Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper :active='true'>
-
-                        <x-slot:number>2</x-slot:number>
-
-                        Account Login
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>3</x-slot:number>
-
-                        Company Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>4</x-slot:number>
-
-                        Documents
-
-                    </x-admin-employee-add-nav-stepper>
-                </ol>
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -145,36 +87,8 @@
             <!-- START OF COMPANY DETAILS FORM -->
             <div id="companyDetails" class="hidden">
 
-                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                    <x-admin-employee-add-nav-stepper>
+                <x-admin-employee-nav-steppers :active_number="3" />
 
-                        <x-slot:number>1</x-slot:number>
-
-                        Personal Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>2</x-slot:number>
-
-                        Account Login
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper :active='true'>
-
-                        <x-slot:number>3</x-slot:number>
-
-                        Company Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>4</x-slot:number>
-
-                        Documents
-
-                    </x-admin-employee-add-nav-stepper>
-                </ol>
 
 
                 <!-- Inputs -->
@@ -207,36 +121,8 @@
             <!-- Documents Form -->
             <div id="documentsForm" class="hidden">
 
-                <ol class="items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
-                    <x-admin-employee-add-nav-stepper>
+                <x-admin-employee-nav-steppers :active_number="4" />
 
-                        <x-slot:number>1</x-slot:number>
-
-                        Personal Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>2</x-slot:number>
-
-                        Account Login
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper>
-
-                        <x-slot:number>3</x-slot:number>
-
-                        Company Details
-
-                    </x-admin-employee-add-nav-stepper>
-                    <x-admin-employee-add-nav-stepper :active='true'>
-
-                        <x-slot:number>4</x-slot:number>
-
-                        Documents
-
-                    </x-admin-employee-add-nav-stepper>
-                </ol>
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
