@@ -1,26 +1,24 @@
 @props(['active' => false, 'type' => 'top'])
+@php
 
+    $active_classes = 'text-gray-900 bg-gray-100';
+    $inactive_classes = 'transition-all duration-300 hover:bg-gray-100 hover:text-black';
 
+@endphp
 
 @if($type == 'top')
 
     <a {{ $attributes }}
-       class="flex ml-5 mb-1 p-2 items-center rounded-lg group
-       {{ $active ? 'text-gray-900 bg-gray-100'
-                  : 'transition duration-75 hover:bg-gray-100'
-       }}"
-    >
+       class="flex ml-5 mb-1 p-2 items-center rounded-lg
+       {{ $active ? $active_classes : $inactive_classes}}">
         {{$slot}}
     </a>
 
 @elseif($type == 'sub')
 
     <a {{ $attributes }}
-       class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group
-       {{ $active ? 'hover:bg-gray-100 bg-gray-100 text-gray-900'
-                  : 'text-white hover:bg-gray-100 hover:text-gray-900'
-       }}"
-    >
+       class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11
+       {{ $active ? $active_classes : $inactive_classes}}">
         {{$slot}}
     </a>
 

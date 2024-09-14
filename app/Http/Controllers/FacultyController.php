@@ -79,7 +79,7 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -21 year'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -18 year'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
             'marital_status'                => ['required'],
@@ -110,8 +110,8 @@ class FacultyController extends Controller
             'reference_name_02'             => ['nullable'],
             'reference_contact_number_02'   => ['nullable'],
         ],[
-            'date_of_birth.before' => 'Employee must be at least 21 years old!',
-            'date_of_joining.after_or_equal' => 'The date of joining must not be a date before today',
+            'date_of_birth.before' => 'The employee must be at least 18 years old!',
+            'date_of_joining.after_or_equal' => 'The joining date cannot be an earlier day than today!',
         ]);
 //      END OF VALIDATIONS
 
@@ -223,7 +223,7 @@ class FacultyController extends Controller
             'personal_information'  => $faculty->personal_information,
 
 //          Dropdown Choices
-            'max_date'              => date("m/d/Y", strtotime('-21 year')),
+            'max_date'              => date("m/d/Y", strtotime('-18 year')),
             'shifts'                => Shift::all(),
             'departments'           => Department::all(),
             'designations'          => Designation::all(),
@@ -237,7 +237,7 @@ class FacultyController extends Controller
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
             'date_of_joining'               => ['nullable', 'date'],
-            'date_of_leaving'               => ['nullable', 'date_format:m-d-Y', 'after:date_of_joining'],
+            'date_of_leaving'               => ['nullable', 'date_format:m-d-Y','after:now'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -249,7 +249,7 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before:+18 years'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'after:-100 years', 'before:-18 years'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
             'marital_status'                => ['required'],
@@ -280,8 +280,9 @@ class FacultyController extends Controller
 //            'reference_name_02'             => ['nullable'],
 //            'reference_contact_number_02'   => ['nullable'],
         ], [
-            'date_of_birth.before' => 'Employee must be at least 21 years old!',
-            'date_of_leaving.after_or_equal' => 'The leaving date must be a date after the date of joining!',
+            'date_of_birth.before' => 'The employee must be at least 18 years old!',
+            'date_of_leaving.after' => 'The leaving date cannot be an earlier day than today!',
+
         ]);
 //      END OF VALIDATIONS
 
@@ -355,5 +356,20 @@ class FacultyController extends Controller
         return redirect()
             ->route('employees_index')
             ->with('success', 'Employee deleted successfully!');
+    }
+
+    public function search(Request $request){
+
+//        $search = $request->query('search');
+//        $faculties = null;
+//
+//        if ($search) {
+//            $faculties = Faculty::where('faculty_code', 'like', '%'.$search.'%')->first()->paginate(5);
+//        }
+////        dd($faculties);
+//
+//        return view('admin.employee-index')
+//            ->with('faculties', $faculties)
+//            ->with('admin', Auth::user());
     }
 }

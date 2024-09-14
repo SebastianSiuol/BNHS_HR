@@ -15,18 +15,27 @@
         <div class="ml-2 bg-white border w-full border-gray-200 rounded-md shadow p-4">
 
             <!-- HEADER -->
-            <div class="pb-4 flex items-center justify-between ">
+            <div class="pb-4 flex items-center justify-between">
 
                 <!-- SEARCH -->
-                <label for="table-search" class="sr-only">Search</label>
-                <div class="relative mt-1">
+                <form id="employee_search"
+{{--                      method='GET' --}}
+{{--                      action="/admin/employees/search" --}}
+                      class="relative mt-1 grid grid-cols-1 sm:grid-cols-2">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </div>
-                    <input type="text" id="table-search" class="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items">
-                </div>
+                    <input  id="search"
+{{--                            name="search"--}}
+                            type="text"
+                           class="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items">
+                    <button type="submit"
+                            class="w-32 ml-4 px-4 py-2.5 text-white text-sm text-center font-medium bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300">
+                        Search
+                    </button>
+                </form>
                 <!-- END OF SEARCH -->
 
                 <div class="mt-2 sm:flex">

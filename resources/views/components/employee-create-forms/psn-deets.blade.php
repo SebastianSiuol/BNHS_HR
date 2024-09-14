@@ -1,8 +1,8 @@
 @props(['max_date', 'civil_statuses', 'name_exts'])
 
-<div class="validate-all grid gap-4 mb-4 sm:grid-cols-2">
-    <div>
+<div class="validate-all gap-4 mb-4">
 
+    <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
         <!-- FIRST NAME -->
         <div class="required-inputs mt-4">
             <x-admin-form-label for="first_name">
@@ -48,7 +48,10 @@
                 @endforeach
             </select>
         </div>
+    </div>
 
+
+    <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
         <!-- PLACE OF BIRTH -->
         <div class="required-inputs mt-4">
             <x-admin-form-label for="place_of_birth">
@@ -79,113 +82,10 @@
                        datepicker-autohide
                        datepicker-format="mm-dd-yyyy"
                        datepicker-autoselect-today
-                       datepicker-min-date="01-01-1900"
+                       datepicker-min-date="01-01-1940"
                        datepicker-max-date="{{$max_date}}"
                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5">
             </div>
-        </div>
-
-        <!-- CONTACT NUMBER -->
-        <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_number">
-                Contact Number
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_number" id="contact_number" value="{{ old('contact_number') }}">
-                09xxxxxxxxx
-            </x-admin-form-input>
-        </div>
-
-        <!-- TELEPHONE NUMBER -->
-        <div class="mt-4">
-            <x-admin-form-label for="telephone_number">
-                Telephone Number
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="telephone_number" id="telephone_number" value="{{ old('telephone_number') }}">
-                09xxxxxxxxx
-            </x-admin-form-input>
-        </div>
-
-        <!-- NATIONALITY -->
-        <div class="required-inputs mt-4">
-            <x-admin-form-label for="nationality">
-                Nationality
-            </x-admin-form-label>
-
-            <x-admin-form-input type="text" name="nationality" id="nationality" value="{{ old('nationality') }}">
-                Nationality
-            </x-admin-form-input>
-        </div>
-
-        <!-- REFERENCE NAME 01-->
-        <div class="required-inputs mt-4">
-
-            <x-admin-form-label for="reference_name_01">
-                Reference Name 01
-            </x-admin-form-label>
-
-            <x-admin-form-input type="text" name="reference_name_01" id="reference_name_01" value="{{ old('reference_name_01') }}">
-                John Doe
-            </x-admin-form-input>
-
-        </div>
-
-        <!-- REFERENCE NUMBER 01-->
-        <div class="required-inputs mt-4">
-
-            <x-admin-form-label for="reference_contact_number_01">
-                Reference Contact Number 01
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_contact_number_01" id="reference_contact_number_01" value="{{ old('reference_contact_number_01') }}">
-                09xxxxxxxxx
-            </x-admin-form-input>
-
-        </div>
-
-        <!-- REFERENCE NAME 02-->
-        <div class="mt-4">
-
-            <x-admin-form-label for="reference_name_02">
-                Reference Name 02
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_name_02" id="reference_name_02" value="{{ old('reference_name_02') }}">
-                Jane Doe
-            </x-admin-form-input>
-
-        </div>
-
-        <!-- REFERENCE NUMBER 02-->
-        <div class="mt-4">
-
-            <x-admin-form-label for="reference_contact_number_02">
-                Reference Contact Number 02
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="reference_contact_number_02" id="reference_contact_number_02" value="{{ old('reference_contact_number_02') }}">
-                09xxxxxxxxx
-            </x-admin-form-input>
-
-        </div>
-
-    </div>
-    <div>
-
-        <!-- CONTACT PERSON NAME -->
-        <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_person_name">
-                Contact Person Name
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_person_name" id="contact_person_name" value="{{ old('contact_person_name') }}">
-                John Doe
-            </x-admin-form-input>
-        </div>
-
-        <!-- CONTACT PERSON NUMBER -->
-        <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_person_number">
-                Contact Person Number
-            </x-admin-form-label>
-            <x-admin-form-input type="text" name="contact_person_number" id="contact_person_number" value="{{ old('contact_person_number') }}">
-                09xxxxxxxxx
-            </x-admin-form-input>
         </div>
 
         <!-- SEX? -->
@@ -219,9 +119,56 @@
 
             </select>
         </div>
+    </div>
 
-        <!-- RESIDENTIAL ADDRESS -->
+
+    <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
+        <!-- CONTACT NUMBER -->
+        <div class="required-inputs mt-4">
+            <x-admin-form-label for="contact_number">
+                Contact Number
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="contact_number" id="contact_number" value="{{ old('contact_number') }}">
+                09xxxxxxxxx
+            </x-admin-form-input>
+        </div>
+
+        <!-- TELEPHONE NUMBER -->
         <div class="mt-4">
+            <x-admin-form-label for="telephone_number">
+                Telephone Number
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="telephone_number" id="telephone_number" value="{{ old('telephone_number') }}">
+                09xxxxxxxxx
+            </x-admin-form-input>
+        </div>
+
+        <!-- CONTACT PERSON NAME -->
+        <div class="required-inputs mt-4">
+            <x-admin-form-label for="contact_person_name">
+                Contact Person Name
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="contact_person_name" id="contact_person_name" value="{{ old('contact_person_name') }}">
+                John Doe
+            </x-admin-form-input>
+        </div>
+
+        <!-- CONTACT PERSON NUMBER -->
+        <div class="required-inputs mt-4">
+            <x-admin-form-label for="contact_person_number">
+                Contact Person Number
+            </x-admin-form-label>
+            <x-admin-form-input type="text" name="contact_person_number" id="contact_person_number" value="{{ old('contact_person_number') }}">
+                09xxxxxxxxx
+            </x-admin-form-input>
+        </div>
+    </div>
+
+        <x-divider />
+
+    <div class="grid grid-cols-none lg:grid-cols-2 gap-2">
+        <div>
+            <!-- RESIDENTIAL ADDRESS -->
             <div>
                 <h6 class="font-semibold">Residential Address</h6>
             </div>
@@ -305,20 +252,22 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div>
             <!-- PERMANENT ADDRESS -->
             <div>
                 <h6 class="font-semibold">Permanent Address</h6>
-{{--                <div class="flex items-center mb-4 mt-2">--}}
-{{--                    <input id="both_address_same"--}}
-{{--                           name="both_address_same"--}}
-{{--                           type="checkbox"--}}
-{{--                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">--}}
-{{--                    <label for="both_address_same"--}}
-{{--                           class="ms-2 text-sm font-medium text-gray-900">--}}
-{{--                        Same as Residential--}}
-{{--                    </label>--}}
-{{--                </div>--}}
+                {{--                <div class="flex items-center mb-4 mt-2">--}}
+                {{--                    <input id="both_address_same"--}}
+                {{--                           name="both_address_same"--}}
+                {{--                           type="checkbox"--}}
+                {{--                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">--}}
+                {{--                    <label for="both_address_same"--}}
+                {{--                           class="ms-2 text-sm font-medium text-gray-900">--}}
+                {{--                        Same as Residential--}}
+                {{--                    </label>--}}
+                {{--                </div>--}}
             </div>
             <div id="permanent_address_form">
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
@@ -372,27 +321,30 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- PHOTO -->
-        <div class="mt-4">
-            <x-admin-form-label for="photo">
-                Photo
-            </x-admin-form-label>
-            <input
-                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
-                id="file_input" type="file">
-        </div>
+    <!-- PHOTO -->
+    <div class="mt-4">
+        <x-admin-form-label for="photo">
+            Photo
+        </x-admin-form-label>
+        <input
+            id="file_input"
+            type="file"
+            disabled="disabled"
+            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
+        >
+    </div>
 
-        <!-- COMMENT -->
-        <div class="mt-4">
-            <x-admin-form-label for="comment">
-                Comment
-            </x-admin-form-label>
-            <textarea disabled
-                      id="comment"
-                      name="comment"
-                      class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"></textarea>
-        </div>
-
+    <!-- COMMENT -->
+    <div class="mt-4">
+        <x-admin-form-label for="comment">
+            Comment
+        </x-admin-form-label>
+        <textarea disabled
+                  id="comment"
+                  name="comment"
+                  class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"></textarea>
     </div>
 </div>
+

@@ -271,7 +271,7 @@
                                        datepicker-buttons
                                        datepicker-autoselect-today
                                        datepicker-format="mm-dd-yyyy"
-                                       datepicker-min-date="{{date('m-d-Y', strtotime('-14 Days')), }}"
+                                       datepicker-min-date="{{date('m-d-Y', strtotime('now')), }}"
                                        datepicker-max-date="{{date('m-d-Y', strtotime('30 Years')), }}"
                                        type="text"
                                        class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5      "

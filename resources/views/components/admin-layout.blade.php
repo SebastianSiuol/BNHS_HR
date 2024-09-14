@@ -7,10 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $heading }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href={{ asset('css/admin.css') }}>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-screen">
 
@@ -74,13 +72,12 @@
     </div>
 </div>
 
-<!-- Sidebar -->
-<x-admin-sidebar></x-admin-sidebar>
-<!-- End of Sidebar-->
+    <!-- Start of Sidebar -->
+    <x-admin-sidebar />
+    <!-- End of Sidebar-->
 
 {{ $slot }}
 
-<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

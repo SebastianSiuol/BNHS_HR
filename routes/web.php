@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 Use App\Http\Controllers\FacultyController;
 
 Route::get('/', function(){
-    return view('welcome');
+    return view('index');
 })->name('/');
 
 //Authentication
@@ -28,18 +28,17 @@ Route::post('/admin/logout', [AuthenticatedAdminController::class, 'destroy'])->
 
 
 Route::middleware('auth')->group(function () {
-
-    // Routes for admin
-    Route::middleware(['role:admin'])->group(function () {
+    Route::middleware(['role:admin'])->group(function () { // Routes for admin
 
         Route::get('/admin/home', function() {
-
             return view('admin.dashboard', [
                 'admin'              => Auth::user(),
                 'total_employees'    => Faculty::all()->count(),
             ]);
-
         })->name('admin_index');
+
+
+        Route::get('/admin/employees/search', [FacultyController::class, 'search'])->name('employees_search');
 
 //      Start of Employee Resource
         Route::get('/admin/employees', [FacultyController::class, 'index'])->name('employees_index');
