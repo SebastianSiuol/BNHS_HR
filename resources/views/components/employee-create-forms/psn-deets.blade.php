@@ -3,62 +3,56 @@
 <div class="validate-all gap-4 mb-4">
 
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
+
         <!-- FIRST NAME -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="first_name">
-                First Name
-            </x-admin-form-label>
-            <x-admin-form-input name="first_name" />
+            <x-forms.label label_name="First Name" for="first_name" />
+            <x-forms.input name="first_name" placeholder="First Name" />
         </div>
 
         <!-- MIDDLE NAME -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="middle_name">
-                Middle Name
-            </x-admin-form-label>
-            <x-admin-form-input name="middle_name" />
+            <x-forms.label label_name="Middle Name" for="middle_name" />
+            <x-forms.input name="middle_name" placeholder="Middle Name" />
         </div>
 
         <!-- LAST NAME -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="last_name">
-                Last Name
-            </x-admin-form-label>
-            <x-admin-form-input name="last_name" />
+            <x-forms.label label_name="Last Name" for="last_name" />
+            <x-forms.input name="last_name" placeholder="Last Name" />
         </div>
 
         <!-- NAME EXTENSION -->
         <div class="mt-4">
-            <x-admin-form-label for="name_extension">
-                Name Extension
-            </x-admin-form-label>
-            <select id="name_extension"
-                    name="name_extension"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
+            <x-forms.label label_name="Name Extension" for="name_extension" />
+
+
+            <x-forms.select name="name_extension">
+
                 <option {{ empty(old('name_extension'))  ? 'selected=selected': '' }}  disabled value='0'>Select Name Extension</option>
-                @foreach($name_exts as $name_ext)
-                    <option
-                        value="{{ $name_ext->id }}" {{old ('marital_status') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
-                @endforeach
-            </select>
+
+            @foreach($name_exts as $name_ext)
+                <option
+                    value="{{ $name_ext->id }}" {{old ('marital_status') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
+            @endforeach
+
+            </x-forms.select>
+
         </div>
+
     </div>
 
 
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
         <!-- PLACE OF BIRTH -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="place_of_birth">
-                Place of Birth
-            </x-admin-form-label>
-            <x-admin-form-input name="place_of_birth" />
+            <x-forms.label label_name="Place of Birth" for="place_of_birth" />
+            <x-forms.input name="place_of_birth" placeholder="Place of Birth" />
         </div>
 
         <!-- BIRTH DATE -->
         <div class="mt-4">
-            <x-admin-form-label for="date_of_birth">
-                Date of Birth
-            </x-admin-form-label>
+            <x-forms.label label_name="Date of Birth" for="date_of_birth" />
 
             <div class="relative w-full">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -84,34 +78,34 @@
 
         <!-- SEX? -->
         <div class="mt-4">
-            <x-admin-form-label for="sex">
-                Sex
-            </x-admin-form-label>
-            <select id="sex"
-                    name="sex"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
+            <x-forms.label label_name="Sex" for="sex" />
+
+            <x-forms.select name="sex">
+
                 <option {{ empty(old('sex'))  ? 'selected=selected': '' }} disabled value='0'>Select Sex</option>
                 <option value="Male" {{ old('sex') === 'Male' ? 'selected=selected': '' }}>Male</option>
                 <option value="Female" {{ old('sex') === 'Female' ? 'selected=selected': '' }}>Female</option>
-            </select>
+
+            </x-forms.select>
+
         </div>
 
         <!-- MARITAL STATUS -->
         <div class="mt-4">
-            <x-admin-form-label for="marital_status">
-                Marital Status
-            </x-admin-form-label>
-            <select id="marital_status"
-                    name="marital_status"
-                    type="text"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option selected disabled value="0">Select Marital Status</option>
-                @foreach($civil_statuses as $civil_status)
-                    <option
-                        value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
-                @endforeach
+            <x-forms.label label_name="Civil Status" for="marital_status"/>
 
-            </select>
+            <x-forms.select name="marital_status">
+
+                <option selected disabled value="0">Select Marital Status</option>
+
+            @foreach($civil_statuses as $civil_status)
+                <option
+                    value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
+            @endforeach
+
+            </x-forms.select>
+
+
         </div>
     </div>
 
@@ -119,40 +113,32 @@
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
         <!-- CONTACT NUMBER -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_number">
-                Contact Number
-            </x-admin-form-label>
-            <x-admin-form-input name="contact_number" />
+            <x-forms.label label_name="Contact Number" for="contact_number"/>
+            <x-forms.input name="contact_number" placeholder="Contact Number" />
         </div>
 
         <!-- TELEPHONE NUMBER -->
         <div class="mt-4">
-            <x-admin-form-label for="telephone_number">
-                Telephone Number
-            </x-admin-form-label>
-            <x-admin-form-input name="telephone_number" />
+            <x-forms.label label_name="Telephone Number" for="telephone_number"/>
+            <x-forms.input name="telephone_number" placeholder="Telephone Number" />
         </div>
 
         <!-- CONTACT PERSON NAME -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_person_name">
-                Contact Person Name
-            </x-admin-form-label>
-            <x-admin-form-input name="contact_person_name" />
+            <x-forms.label label_name="Contact Person Name" for="contact_person_name" />
+            <x-forms.input name="contact_person_name" placeholder="Contact Person Name" />
         </div>
 
         <!-- CONTACT PERSON NUMBER -->
         <div class="required-inputs mt-4">
-            <x-admin-form-label for="contact_person_number">
-                Contact Person Number
-            </x-admin-form-label>
-            <x-admin-form-input name="contact_person_number" />
+            <x-forms.label label_name="Contact Person Number" for="contact_person_number" />
+            <x-forms.input name="contact_person_number" placeholder="Contact Person Number" />
         </div>
     </div>
 
         <x-divider />
 
-    <div class="grid grid-cols-none lg:grid-cols-2 gap-2">
+    <div class="grid grid-cols-none lg:grid-cols-2 gap-16">
         <div>
             <!-- RESIDENTIAL ADDRESS -->
             <div>
@@ -163,63 +149,49 @@
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_house_num">
-                            House/Block/Lot No.
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_house_num" />
+                        <x-forms.label label_name="House/Block/Lot No." for="residential_house_num" />
+                        <x-forms.input name="residential_house_num" placeholder="House/Block/Lot No." />
 
                     </div>
 
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_street">
-                            Street
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_street" />
+                        <x-forms.label label_name="Street" for="residential_street" />
+                        <x-forms.input name="residential_street" placeholder="Street" />
 
                     </div>
                 </div>
                 <div class="required-inputs">
 
-                    <x-admin-form-label for="residential_subdivision">
-                        Subdivision/Village
-                    </x-admin-form-label>
-                    <x-admin-form-input name="residential_subdivision" />
+                    <x-forms.label label_name="Subdivision/Village" for="residential_subdivision" />
+                    <x-forms.input name="residential_subdivision" placeholder="Subdivision/Village" />
 
                 </div>
                 <div class="mt-2 grid gap-4 grid-cols-2">
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_barangay">
-                            Barangay
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_barangay" />
+                        <x-forms.label label_name="Barangay" for="residential_barangay" />
+                        <x-forms.input name="residential_barangay" placeholder="Barangay" />
 
                     </div>
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_city">
-                            City/Municipality
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_city" />
+                        <x-forms.label label_name="City/Municipality" for="residential_city" />
+                        <x-forms.input name="residential_city" placeholder="City/Municipality" />
 
                     </div>
                 </div>
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_province">
-                            Province
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_province" />
+                        <x-forms.label label_name="Province" for="residential_province" />
+                        <x-forms.input name="residential_province" placeholder="Province" />
 
                     </div>
                     <div class="required-inputs">
 
-                        <x-admin-form-label for="residential_zip_code">
-                            Zip Code
-                        </x-admin-form-label>
-                        <x-admin-form-input name="residential_zip_code" />
+                        <x-forms.label label_name="Zip Code" for="residential_zip_code" />
+                        <x-forms.input name="residential_zip_code" placeholder="Zip Code" />
 
                     </div>
                 </div>
@@ -244,51 +216,44 @@
             <div id="permanent_address_form">
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_house_num">
-                            House/Block/Lot No.
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_house_num" />
+                        <x-forms.label label_name="House/Block/Lot No." for="permanent_house_num" />
+
+                        <x-forms.input name="permanent_house_num" placeholder="House/Block/Lot No." />
                     </div>
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_street">
-                            Street
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_street" />
+                        <x-forms.label label_name="Street" for="permanent_street" />
+
+                        <x-forms.input name="permanent_street" placeholder="Street" />
                     </div>
                 </div>
                 <div class="required-inputs">
-                    <x-admin-form-label for="permanent_subdivision">
-                        Subdivision/Village
-                    </x-admin-form-label>
-                    <x-admin-form-input name="permanent_subdivision" />
+                    <x-forms.label label_name="Subdivision/Village" for="permanent_subdivision" />
+
+                    <x-forms.input name="permanent_subdivision" placeholder="Subdivision/Village" />
                 </div>
                 <div class="mt-2 grid gap-4 grid-cols-2">
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_barangay">
-                            Barangay
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_barangay" />
+                        <x-forms.label label_name="Barangay" for="permanent_barangay" />
+
+                        <x-forms.input name="permanent_barangay" placeholder="Barangay" />
                     </div>
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_city">
-                            City/Municipality
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_city" />
+                        <x-forms.label label_name="City" for="permanent_city" />
+
+                        <x-forms.input name="permanent_city" placeholder="City" />
                     </div>
                 </div>
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_province">
-                            Province
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_province" />
+                        <x-forms.label label_name="Province" for="permanent_province" />
+
+                        <x-forms.input name="permanent_province" placeholder="Province" />
 
                     </div>
                     <div class="required-inputs">
-                        <x-admin-form-label for="permanent_zip_code">
-                            Zip Code
-                        </x-admin-form-label>
-                        <x-admin-form-input name="permanent_zip_code" />
+                        <x-forms.label label_name="Zip Code" for="permanent_zip_code" />
+
+                        <x-forms.input name="permanent_zip_code" placeholder="Zip Code" />
                     </div>
                 </div>
             </div>
@@ -297,24 +262,15 @@
 
     <!-- PHOTO -->
     <div class="mt-4">
-        <x-admin-form-label for="photo">
-            Photo
-        </x-admin-form-label>
-        <input
-            id="file_input"
-            type="file"
-            disabled="disabled"
-            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none"
-        >
+        <x-forms.label label_name="Photo" for="photo" />
+
+        <x-forms.file-input name="photo"/>
     </div>
 
     <!-- COMMENT -->
     <div class="mt-4">
-        <x-admin-form-label for="comment">
-            Comment
-        </x-admin-form-label>
-        <textarea disabled
-                  id="comment"
+        <x-forms.label label_name="Comment" for="comment" />
+        <textarea id="comment"
                   name="comment"
                   class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"></textarea>
     </div>
