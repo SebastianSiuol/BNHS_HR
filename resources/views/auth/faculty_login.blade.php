@@ -28,15 +28,15 @@
 
 
                 <!-- Form -->
-                <form method="POST" action="/admin/login" class="w-full admin-login-form">
+                <form method="POST" action="/faculty/login" class="w-full admin-login-form">
                     @csrf
                     <!-- ADMIN ID -->
                     <div class="mt-4">
-                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="admin_id">Employee ID</label>
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
                         <input
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            name="admin_id"
-                            id="admin_id"
+                            name="employee_id"
+                            id="employee_id"
                             type="text"
                             required="required"
                             placeholder="Employee ID">

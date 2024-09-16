@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\LeaveController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,15 @@ Route::get('/admin/login', [AuthenticatedAdminController::class, 'create'])->nam
 Route::post('/admin/login', [AuthenticatedAdminController::class, 'store']);
 Route::post('/admin/logout', [AuthenticatedAdminController::class, 'destroy'])->name('admin_logout');
 
-//Route::view('/admin/login','auth.admin_login');
+Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('login');
+Route::post('/faculty/login', [FacultySessionController::class, 'store']);
+Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('logout');
+
+
+Route::get('/staff/home', function() {
+    return view('staff.dashboard', []);
+})->name('staff_index');
+
 
 
 
@@ -64,9 +73,9 @@ Route::middleware('auth')->group(function () {
 
 
     // Routes for staff
-    Route::middleware(['role:staff'])->group(function () {
-        Route::view('/staff/home', 'staff.index')->name('staff_index');
-    });
+//    Route::middleware(['role:staff'])->group(function () {
+//        Route::view('/staff/home', 'staff.index')->name('staff_index');
+//    });
 
 
     Route::post('/staff/logout', [AuthenticatedStaffController::class, 'destroy']);

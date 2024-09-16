@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li>
-                        <form method="POST" action="/admin/logout">
+                        <form method="POST" action="/faculty/logout">
                             @csrf
                             <button type="submit"
                                     class="block px-4 py-2 text-sm text-red-700 w-full hover:bg-gray-100"

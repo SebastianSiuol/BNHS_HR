@@ -17,7 +17,7 @@
                 </div>
                 <h1 class="text-2xl font-bold mb-4">Welcome!</h1>
                 <p class="mb-8">Please click or tap your destination.</p>
-                <a href="/admin/login"
+                <a href="/faculty/login"
                    class="w-full bg-blue-500 text-white py-2 px-4 rounded text-center mb-4 hover:bg-blue-600">Employee</a>
 
                 <p class="text-center text-gray-500 text-sm mt-4">
