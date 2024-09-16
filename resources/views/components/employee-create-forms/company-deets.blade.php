@@ -1,4 +1,4 @@
-@props(['generated_id','departments', 'designations', 'shifts'])
+@props(['departments', 'designations', 'shifts'])
 
 
 
@@ -58,7 +58,6 @@
                    value="{{ old('date_of_joining') }}"
                    datepicker
                    datepicker-buttons
-                   datepicker-autoselect-today
                    datepicker-format="mm-dd-yyyy"
                    datepicker-min-date="{{date('m-d-Y', strtotime('now')), }}"
                    datepicker-max-date="{{date('m-d-Y', strtotime('21 Days')), }}"
