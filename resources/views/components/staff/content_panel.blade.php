@@ -1,5 +1,0 @@
-<div class="">
-
-    {{ $slot }}
-
-</div>

@@ -1,3 +1,5 @@
+@props(['with_nav' => true])
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -49,7 +51,13 @@
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
                     </li>
                     <li>
-                        <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100">Sign out</a>
+                        <form id="faculty_logout" method="POST" action="{{ route('faculty_logout') }}">
+                            @csrf
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                                Sign out
+                            </button>
+                        </form>
+
                     </li>
                 </ul>
             </div>
@@ -58,12 +66,16 @@
     </div>
 
     {{-- Second Row --}}
-    <x-staff.nav-bar />
+    @if($with_nav)
+        <x-staff.nav-bar />
+    @endif
 
 
     <main class="flex mx-auto max-w-[1280px] my-20">
         {{ $slot }}
     </main>
+
+
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>

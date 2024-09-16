@@ -48,22 +48,18 @@
 
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"
                  id="user-action">
-
                 <ul class="py-1">
                     <li>
-                        <a href="#"
-                           class="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
-                        >
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
                             My Account
                         </a>
                     </li>
                     <li>
-                        <form method="POST" action="/faculty/logout">
+                        <form method="POST" action="{{ route('faculty_logout') }}">
                             @csrf
-                            <button type="submit"
-                                    class="block px-4 py-2 text-sm text-red-700 w-full hover:bg-gray-100"
-                            >
-                                Log Out</button>
+                            <button type="submit" class="block px-4 py-2 text-sm text-red-700 w-full text-left hover:bg-gray-100">
+                                Log Out
+                            </button>
                         </form>
                     </li>
                 </ul>
