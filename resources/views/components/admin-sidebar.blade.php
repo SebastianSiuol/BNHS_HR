@@ -112,14 +112,30 @@
             </div>
 
             <li class="mb-6">
-                <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="top">
 
-                    <svg class="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-config" data-collapse-toggle="sub-config">
+                    <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
                     </svg>
 
-                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900">Configurations</span>
-                </x-admin-sidebar-button>
+                    <span class="flex-1 ms-3 text-white text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900 ">Configurations</span>
+                    <svg class="w-3 h-3 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+
+                <ul id="sub-config" class=" {{request()->is('admin/leaves*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Departments</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Designations</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Roles</x-admin-sidebar-button>
+                    </li>
+                </ul>
+
             </li>
         </ul>
     </div>

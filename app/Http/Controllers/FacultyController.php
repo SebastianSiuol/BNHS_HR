@@ -45,7 +45,7 @@ class FacultyController extends Controller
     public function store(Request $request)
     {
 
-//        NOTE: DEBUG PURPOSES (Comment out if done)
+//        NOTE: SANITY CHECK
 //        dd($request->all());
 
 
@@ -82,7 +82,7 @@ class FacultyController extends Controller
             'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -18 year'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
-            'marital_status'                => ['required'],
+            'civil_status'                  => ['required'],
 
 //          CONTACT PERSON
             'contact_person_name'           => ['required'],
@@ -103,12 +103,6 @@ class FacultyController extends Controller
             'permanent_city'                => ['required'],
             'permanent_province'            => ['required'],
             'permanent_zip_code'            => ['required'],
-
-//          REFERENCE MEMBERS
-            'reference_name_01'             => ['required'],
-            'reference_contact_number_01'   => ['required'],
-            'reference_name_02'             => ['nullable'],
-            'reference_contact_number_02'   => ['nullable'],
         ],[
             'date_of_birth.before' => 'The employee must be at least 18 years old!',
             'date_of_joining.after_or_equal' => 'The joining date cannot be an earlier day than today!',
@@ -165,43 +159,41 @@ class FacultyController extends Controller
             'zip_code'              => $request->permanent_zip_code,
         ]);
 
-        $ref_mem_01 = new ReferenceMember([
-            'name'                  => $validated_inputs['reference_name_01'],
-            'contact_number'        => $validated_inputs['reference_contact_number_01'],
-            'address'               => 'Quezon City',
-            'reference_number'      => '1',
-        ]);
-
-
-        $ref_mem_02 = NULL;
-        $have_another_ref = false;
-        if ($request->reference_name_02 && $request->reference_contact_number_02) {
-
-            $reference_02 = $request->validate([
-                'reference_name_02'             => 'required',
-                'reference_contact_number_02'   => 'required',
-            ]);
-
-            $ref_mem_02 = new ReferenceMember([
-                'name'              => $reference_02['reference_name_02'],
-                'contact_number'    => $reference_02['reference_contact_number_02'],
-                'address'           => 'Quezon City',
-                'reference_number'  => '2',
-            ]);
-
-            $have_another_ref = true;
-        }
+        // NOTE: Reference Members Storing
+//        $ref_mem_01 = new ReferenceMember([
+//            'name'                  => $validated_inputs['reference_name_01'],
+//            'contact_number'        => $validated_inputs['reference_contact_number_01'],
+//            'address'               => 'Quezon City',
+//            'reference_number'      => '1',
+//        ]);
+//
+//
+//        $ref_mem_02 = NULL;
+//        $have_another_ref = false;
+//        if ($request->reference_name_02 && $request->reference_contact_number_02) {
+//
+//            $reference_02 = $request->validate([
+//                'reference_name_02'             => 'required',
+//                'reference_contact_number_02'   => 'required',
+//            ]);
+//
+//            $ref_mem_02 = new ReferenceMember([
+//                'name'              => $reference_02['reference_name_02'],
+//                'contact_number'    => $reference_02['reference_contact_number_02'],
+//                'address'           => 'Quezon City',
+//                'reference_number'  => '2',
+//            ]);
+//
+//            $have_another_ref = true;
+//        }
 
 
 //      START OF SAVING DETAILS
         $faculty->save();
         $faculty->personal_information()->save($psn_info);
         $psn_info->residential_address()->save($resi_addr);
-        $psn_info->contact_person()->save($cont_psn);
         $psn_info->permanent_address()->save($perma_addr);
-        $psn_info->reference_members()->save($ref_mem_01);
-        if($have_another_ref)
-            $psn_info->reference_members()->save($ref_mem_02);
+        $psn_info->contact_person()->save($cont_psn);
 //      END OF SAVING DETAILS
 
         return redirect()
@@ -274,11 +266,6 @@ class FacultyController extends Controller
             'permanent_province'            => ['required'],
             'permanent_zip_code'            => ['required'],
 
-////          REFERENCE MEMBERS
-//            'reference_name_01'             => ['required'],
-//            'reference_contact_number_01'   => ['required'],
-//            'reference_name_02'             => ['nullable'],
-//            'reference_contact_number_02'   => ['nullable'],
         ], [
             'date_of_birth.before' => 'The employee must be at least 18 years old!',
             'date_of_leaving.after' => 'The leaving date cannot be an earlier day than today!',

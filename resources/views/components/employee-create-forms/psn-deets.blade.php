@@ -33,7 +33,7 @@
 
             @foreach($name_exts as $name_ext)
                 <option
-                    value="{{ $name_ext->id }}" {{old ('marital_status') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
+                    value="{{ $name_ext->id }}" {{old ('name_extension') == $name_ext->id ? 'selected=selected' : ''}}>{{$name_ext->title}}</option>
             @endforeach
 
             </x-forms.select>
@@ -92,15 +92,15 @@
 
         <!-- MARITAL STATUS -->
         <div class="mt-4">
-            <x-forms.label label_name="Civil Status" for="marital_status"/>
+            <x-forms.label label_name="Civil Status" for="civil_status"/>
 
-            <x-forms.select name="marital_status">
+            <x-forms.select name="civil_status">
 
                 <option selected disabled value="0">Select Marital Status</option>
 
             @foreach($civil_statuses as $civil_status)
                 <option
-                    value="{{ $civil_status->id }}" {{old ('marital_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
+                    value="{{ $civil_status->id }}" {{old ('civil_status') == $civil_status->id ? 'selected=selected' : ''}}>{{$civil_status->civil_status}}</option>
             @endforeach
 
             </x-forms.select>

@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'apiKey' => ApiKeyMiddleware::class,
             'role' => CheckAuthenticatedRoleMiddleware::class,
         ]);
+
         $middleware->redirectGuestsTo(fn () => route('/'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
