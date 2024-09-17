@@ -1,10 +1,18 @@
 FROM richarvey/nginx-php-fpm:3.1.6
 
-# Install Node.js and npm
-RUN apk --no-cache add nodejs npm
-
 # Copy all application files to the container
 COPY . .
+
+RUN apk update
+
+# Install the `npm` package
+RUN apk add --no-cache npm
+
+# Install NPM dependencies
+RUN npm install
+
+# Build Vite assets
+RUN npm run build
 
 # Image config
 ENV SKIP_COMPOSER 1
