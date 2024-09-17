@@ -1,18 +1,8 @@
 <?php
 
-use App\Models\Faculty;
-use Database\Seeders\FacultyInformation\CivilStatusSeeder;
-use Database\Seeders\NameExtensionSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-//Models namespaces
-use App\Models\FacultyInformation\Citizenship;
-use App\Models\FacultyInformation\CivilStatus;
-use App\Models\FacultyInformation\NameExtension;
-
-use Database\Seeders\FacultyInformation\PersonalInformationSeeder;
 
 return new class extends Migration
 {
@@ -34,7 +24,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('personal_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id')->nullable();
@@ -52,16 +41,6 @@ return new class extends Migration
             $table->timestamps();
 
         });
-
-        $civil_status_seeder = new CivilStatusSeeder();
-        $civil_status_seeder->run();
-
-
-
-        $personal_info_seeder = new PersonalInformationSeeder();
-        $personal_info_seeder->run();
-
-
     }
 
     /**

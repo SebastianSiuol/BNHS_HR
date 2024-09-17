@@ -28,8 +28,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $role_seeder = new RoleSeeder();
-        $role_seeder->run();
+
     }
 
     /**

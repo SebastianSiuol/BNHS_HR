@@ -5,18 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Faculty;
-use App\Models\FacultyInformation\CivilStatus;
-use App\Models\FacultyInformation\ContactPerson;
-use App\Models\FacultyInformation\NameExtension;
-use App\Models\FacultyInformation\PermanentAddress;
-use App\Models\FacultyInformation\PersonalInformation;
-use App\Models\FacultyInformation\ResidentialAddress;
-use App\Models\ReferenceMember;
+use App\Models\PersonalInformation\CivilStatus;
+use App\Models\PersonalInformation\ContactPerson;
+use App\Models\PersonalInformation\NameExtension;
+use App\Models\PersonalInformation\PermanentAddress;
+use App\Models\PersonalInformation\PersonalInformation;
+use App\Models\PersonalInformation\ResidentialAddress;
 use App\Models\Shift;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\CommonMark\Reference\Reference;
 
 class FacultyController extends Controller
 {
@@ -47,6 +44,7 @@ class FacultyController extends Controller
 
 //        NOTE: SANITY CHECK
 //        dd($request->all());
+//        dd(gettype($request->date_of_joining));
 
 
 //      START OF VALIDATIONS
@@ -67,7 +65,7 @@ class FacultyController extends Controller
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
             'password'                      => ['required', 'string', 'min:8'],
-            'date_of_joining'               => ['required', 'date', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
+            'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -131,7 +129,7 @@ class FacultyController extends Controller
             'date_of_birth'     => $validated_inputs['date_of_birth'],
             'telephone_no'      => $validated_inputs['telephone_number'],
             'contact_no'        => $validated_inputs['contact_number'],
-            'civil_status_id'   => $validated_inputs['marital_status'],
+            'civil_status_id'   => $validated_inputs['civil_status'],
         ]);
 
         $cont_psn = new ContactPerson([
@@ -202,9 +200,7 @@ class FacultyController extends Controller
     }
 
     public function show(){
-        return view('admin.employee_index', [
-            'admin'             => Auth::user(),
-        ]);
+        return redirect()->route('employees_index');
     }
 
     public function edit(Faculty $faculty){
@@ -228,8 +224,6 @@ class FacultyController extends Controller
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
-            'date_of_joining'               => ['nullable', 'date'],
-            'date_of_leaving'               => ['nullable', 'date_format:m-d-Y','after:now'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -244,7 +238,7 @@ class FacultyController extends Controller
             'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'after:-100 years', 'before:-18 years'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
-            'marital_status'                => ['required'],
+            'civil_status'                  => ['required'],
 
 //          CONTACT PERSON
             'contact_person_name'           => ['required'],
@@ -276,8 +270,6 @@ class FacultyController extends Controller
 //      START OF EDITING
 //      ACCOUNT DETAILS
         $faculty->email                     = $validated_inputs['email'];
-        $faculty->date_of_joining           = $validated_inputs['date_of_joining'];
-        $faculty->date_of_leaving           = $validated_inputs['date_of_leaving'];
 
 //      PERSONAL INFORMATION DETAILS
         $psn_info = $faculty->personal_information;
@@ -290,7 +282,7 @@ class FacultyController extends Controller
         $psn_info->date_of_birth            = $validated_inputs['date_of_birth'];
         $psn_info->contact_no               = $validated_inputs['contact_number'];
         $psn_info->telephone_no             = $validated_inputs['telephone_number'];
-        $psn_info->civil_status_id          = $validated_inputs['marital_status'];
+        $psn_info->civil_status_id          = $validated_inputs['civil_status'];
 
 //      CONTACT PERSON DETAILS
         $cont_psn = $psn_info->contact_person;

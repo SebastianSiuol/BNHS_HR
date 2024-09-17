@@ -40,8 +40,6 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        $faculty_seeder = new FacultySeeder();
-        $faculty_seeder->run();
     }
 
     /**

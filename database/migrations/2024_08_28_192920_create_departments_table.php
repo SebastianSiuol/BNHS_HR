@@ -18,8 +18,7 @@ return new  class extends Migration
             $table->timestamps();
         });
 
-        $department_seeder = new DepartmentSeeder();
-        $department_seeder->run();
+
 
 
     }

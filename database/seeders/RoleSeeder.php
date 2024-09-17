@@ -16,17 +16,23 @@ class RoleSeeder extends Seeder
     {
 //      NOTE: Production Data
         Role::factory()->create([
-            'role_name' => 'Admin',
-        ]);
-        Role::factory()->create([
-            'role_name' => 'Staff',
+            'role_name' => 'admin',
         ]);
 
+        Role::factory()->create([
+            'role_name' => 'manager',
+        ]);
+
+        Role::factory()->create([
+            'role_name' => 'staff',
+        ]);
+
+
         Faculty::find(1)->roles()->attach([1]);
-        Faculty::find(2)->roles()->attach([2]);
-        Faculty::find(3)->roles()->attach([2]);
-        Faculty::find(4)->roles()->attach([1]);
+        Faculty::find(2)->roles()->attach([3]);
+        Faculty::find(3)->roles()->attach([3]);
+        Faculty::find(4)->roles()->attach([3]);
         Faculty::find(5)->roles()->attach([2]);
-        Faculty::find(6)->roles()->attach([2]);
+        Faculty::find(6)->roles()->attach([3]);
     }
 }

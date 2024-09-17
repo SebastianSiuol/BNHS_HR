@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\FacultyInformation\PersonalInformation;
-use Database\Seeders\PermanentAddressSeeder;
-use Database\Seeders\ResidentialAddressSeeder;
+use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,11 +25,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $residential_seeder = new ResidentialAddressSeeder();
-        $residential_seeder->run();
 
-        $permanent_seeder = new PermanentAddressSeeder();
-        $permanent_seeder->run();
     }
 
     /**

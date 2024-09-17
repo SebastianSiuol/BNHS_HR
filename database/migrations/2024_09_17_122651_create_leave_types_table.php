@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_people', function (Blueprint $table) {
+        Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('personal_information_id')->nullable();
             $table->string('name');
-            $table->string('contact_no');
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_people');
+        Schema::dropIfExists('leave_types');
     }
 };

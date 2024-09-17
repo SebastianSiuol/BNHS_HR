@@ -41,20 +41,18 @@ class FacultySessionController extends Controller
 
             $request->session()->regenerate();
             $user = Auth::user();
-            $isAdmin = $user->roles()->where('role_id', 1)->exists();
+            $isAdmin = $user->roles()->where('role_name', 'admin')->exists();
+            $isStaff = $user->roles()->where('role_name', 'staff')->exists();
 
             if ($isAdmin) {
-
                 return redirect()
                     ->intended(route('admin_index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
-            } else {
-                Auth::logout(); // Log out the non-admin user
-                $request->session()->invalidate(); // Invalidate the session
-                $request->session()->regenerateToken(); // Regenerate CSRF token
-                return back()->withErrors([
-                    'msg' => 'You do not have admin access.',
-                ]);
+            }
+            if ($isStaff) {
+                return redirect()
+                    ->intended(route('staff_index'))
+                    ->with('success', 'Successfully Logged In!');// Staff dashboard
             }
         }
 

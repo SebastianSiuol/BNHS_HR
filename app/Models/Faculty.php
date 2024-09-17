@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\FacultyInformation\PersonalInformation;
+use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -74,17 +74,20 @@ class Faculty extends Authenticatable
         return $prefix . $year . '-' . $formattedNumber;
     }
 
+    /* NOTE: HasOne/Many Relationships */
     public function personal_information(){
         return $this->hasOne(PersonalInformation::class);
-    }
-    public function roles(){
-        return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
     public function comment(){
         return $this->hasOne(Comment::class);
     }
 
+    public function leaves(){
+        return $this->hasMany(Leave::class);
+    }
+
+    /* NOTE: Belongs Relationships */
     public function department(){
         return $this->belongsTo(Department::class);
     }
@@ -95,5 +98,9 @@ class Faculty extends Authenticatable
 
     public function shift(){
         return $this->belongsTo(Shift::class);
+    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class)->withTimestamps();
     }
 }
