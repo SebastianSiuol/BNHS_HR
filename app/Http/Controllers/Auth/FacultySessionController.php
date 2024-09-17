@@ -48,11 +48,19 @@ class FacultySessionController extends Controller
                 return redirect()
                     ->intended(route('admin_index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
-            }
-            if ($isStaff) {
+            }else if ($isStaff) {
                 return redirect()
                     ->intended(route('staff_index'))
                     ->with('success', 'Successfully Logged In!');// Staff dashboard
+            } else {
+
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'msg' => 'Your account has no dedicated role yet. Please contact management!',
+                ]);
             }
         }
 

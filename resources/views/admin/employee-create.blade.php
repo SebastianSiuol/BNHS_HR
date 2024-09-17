@@ -87,7 +87,8 @@
                         :generated_id="$generated_id"
                         :departments="$departments"
                         :designations="$designations"
-                        :shifts="$shifts" />
+                        :shifts="$shifts"
+                        :roles="$roles"/>
 
                     {{-- Buttons --}}
                     <div class="flex items center justify-between">

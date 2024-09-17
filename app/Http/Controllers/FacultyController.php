@@ -11,6 +11,7 @@ use App\Models\PersonalInformation\NameExtension;
 use App\Models\PersonalInformation\PermanentAddress;
 use App\Models\PersonalInformation\PersonalInformation;
 use App\Models\PersonalInformation\ResidentialAddress;
+use App\Models\Role;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,7 @@ class FacultyController extends Controller
             'civil_statuses'    => CivilStatus::all(),
             'name_exts'         => NameExtension::all(),
             'max_date'          => date("m/d/Y", strtotime('-21 year')),
+            'roles'             => Role::all(),
         ]);
     }
 
@@ -69,6 +71,7 @@ class FacultyController extends Controller
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
+            'role'                           => ['required'],
 
 //          PERSONAL INFORMATION
             'first_name'                    => ['required'],
@@ -188,6 +191,7 @@ class FacultyController extends Controller
 
 //      START OF SAVING DETAILS
         $faculty->save();
+        $faculty->roles()->attach($validated_inputs['role']);
         $faculty->personal_information()->save($psn_info);
         $psn_info->residential_address()->save($resi_addr);
         $psn_info->permanent_address()->save($perma_addr);

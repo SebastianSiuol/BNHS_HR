@@ -1,4 +1,4 @@
-@props(['departments', 'designations', 'shifts'])
+@props(['departments', 'designations', 'shifts', 'roles'])
 
 
 
@@ -57,6 +57,7 @@
                    name="date_of_joining"
                    value="{{ old('date_of_joining') }}"
                    datepicker
+                   datepicker-autoselect-today
                    datepicker-buttons
                    datepicker-format="mm-dd-yyyy"
                    datepicker-min-date="{{date('m-d-Y', strtotime('now')), }}"
@@ -94,6 +95,23 @@
                 {{$shift->name}}
             </option>
         @endforeach
+
+        </x-forms.select>
+
+    </div>
+
+    <div>
+
+        <x-forms.label label_name="Select Role" for="role" />
+
+        <x-forms.select name="role">
+
+            <option {{ empty(old('role'))  ? 'selected=selected': '' }} disabled value="0">Select Role</option>
+            @foreach($roles as $role)
+                <option value="{{ $role->id }}" {{ old('role') ==  $role->id ? 'selected=selected' : ''}}>
+                    {{ucfirst($role->role_name)}}
+                </option>
+            @endforeach
 
         </x-forms.select>
 
