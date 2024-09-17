@@ -1,6 +1,5 @@
 <?php
 
-use Database\Seeders\ContactPersonSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,8 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $contact_psn = new ContactPersonSeeder();
-        $contact_psn->run();
+
     }
 
     /**

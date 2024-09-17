@@ -21,7 +21,7 @@ class CheckAuthenticatedRoleMiddleware
         }
 
         // Check if the user has the specified role
-        if (Auth::user()->roles->contains('role_name', ucfirst($role))) {
+        if (Auth::user()->roles->contains('role_name', strtolower($role))) {
             return $next($request);
         }
 

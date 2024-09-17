@@ -5,18 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Faculty;
-use App\Models\FacultyInformation\CivilStatus;
-use App\Models\FacultyInformation\ContactPerson;
-use App\Models\FacultyInformation\NameExtension;
-use App\Models\FacultyInformation\PermanentAddress;
-use App\Models\FacultyInformation\PersonalInformation;
-use App\Models\FacultyInformation\ResidentialAddress;
-use App\Models\ReferenceMember;
+use App\Models\PersonalInformation\CivilStatus;
+use App\Models\PersonalInformation\ContactPerson;
+use App\Models\PersonalInformation\NameExtension;
+use App\Models\PersonalInformation\PermanentAddress;
+use App\Models\PersonalInformation\PersonalInformation;
+use App\Models\PersonalInformation\ResidentialAddress;
+use App\Models\Role;
 use App\Models\Shift;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\CommonMark\Reference\Reference;
 
 class FacultyController extends Controller
 {
@@ -39,14 +37,16 @@ class FacultyController extends Controller
             'civil_statuses'    => CivilStatus::all(),
             'name_exts'         => NameExtension::all(),
             'max_date'          => date("m/d/Y", strtotime('-21 year')),
+            'roles'             => Role::all(),
         ]);
     }
 
     public function store(Request $request)
     {
 
-//        NOTE: DEBUG PURPOSES (Comment out if done)
+//        NOTE: SANITY CHECK
 //        dd($request->all());
+//        dd(gettype($request->date_of_joining));
 
 
 //      START OF VALIDATIONS
@@ -67,10 +67,11 @@ class FacultyController extends Controller
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
             'password'                      => ['required', 'string', 'min:8'],
-            'date_of_joining'               => ['required', 'date', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
+            'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
+            'role'                           => ['required'],
 
 //          PERSONAL INFORMATION
             'first_name'                    => ['required'],
@@ -79,10 +80,10 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -21 year'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -18 year'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
-            'marital_status'                => ['required'],
+            'civil_status'                  => ['required'],
 
 //          CONTACT PERSON
             'contact_person_name'           => ['required'],
@@ -103,15 +104,9 @@ class FacultyController extends Controller
             'permanent_city'                => ['required'],
             'permanent_province'            => ['required'],
             'permanent_zip_code'            => ['required'],
-
-//          REFERENCE MEMBERS
-            'reference_name_01'             => ['required'],
-            'reference_contact_number_01'   => ['required'],
-            'reference_name_02'             => ['nullable'],
-            'reference_contact_number_02'   => ['nullable'],
         ],[
-            'date_of_birth.before' => 'Employee must be at least 21 years old!',
-            'date_of_joining.after_or_equal' => 'The date of joining must not be a date before today',
+            'date_of_birth.before' => 'The employee must be at least 18 years old!',
+            'date_of_joining.after_or_equal' => 'The joining date cannot be an earlier day than today!',
         ]);
 //      END OF VALIDATIONS
 
@@ -137,7 +132,7 @@ class FacultyController extends Controller
             'date_of_birth'     => $validated_inputs['date_of_birth'],
             'telephone_no'      => $validated_inputs['telephone_number'],
             'contact_no'        => $validated_inputs['contact_number'],
-            'civil_status_id'   => $validated_inputs['marital_status'],
+            'civil_status_id'   => $validated_inputs['civil_status'],
         ]);
 
         $cont_psn = new ContactPerson([
@@ -165,43 +160,42 @@ class FacultyController extends Controller
             'zip_code'              => $request->permanent_zip_code,
         ]);
 
-        $ref_mem_01 = new ReferenceMember([
-            'name'                  => $validated_inputs['reference_name_01'],
-            'contact_number'        => $validated_inputs['reference_contact_number_01'],
-            'address'               => 'Quezon City',
-            'reference_number'      => '1',
-        ]);
-
-
-        $ref_mem_02 = NULL;
-        $have_another_ref = false;
-        if ($request->reference_name_02 && $request->reference_contact_number_02) {
-
-            $reference_02 = $request->validate([
-                'reference_name_02'             => 'required',
-                'reference_contact_number_02'   => 'required',
-            ]);
-
-            $ref_mem_02 = new ReferenceMember([
-                'name'              => $reference_02['reference_name_02'],
-                'contact_number'    => $reference_02['reference_contact_number_02'],
-                'address'           => 'Quezon City',
-                'reference_number'  => '2',
-            ]);
-
-            $have_another_ref = true;
-        }
+        // NOTE: Reference Members Storing
+//        $ref_mem_01 = new ReferenceMember([
+//            'name'                  => $validated_inputs['reference_name_01'],
+//            'contact_number'        => $validated_inputs['reference_contact_number_01'],
+//            'address'               => 'Quezon City',
+//            'reference_number'      => '1',
+//        ]);
+//
+//
+//        $ref_mem_02 = NULL;
+//        $have_another_ref = false;
+//        if ($request->reference_name_02 && $request->reference_contact_number_02) {
+//
+//            $reference_02 = $request->validate([
+//                'reference_name_02'             => 'required',
+//                'reference_contact_number_02'   => 'required',
+//            ]);
+//
+//            $ref_mem_02 = new ReferenceMember([
+//                'name'              => $reference_02['reference_name_02'],
+//                'contact_number'    => $reference_02['reference_contact_number_02'],
+//                'address'           => 'Quezon City',
+//                'reference_number'  => '2',
+//            ]);
+//
+//            $have_another_ref = true;
+//        }
 
 
 //      START OF SAVING DETAILS
         $faculty->save();
+        $faculty->roles()->attach($validated_inputs['role']);
         $faculty->personal_information()->save($psn_info);
         $psn_info->residential_address()->save($resi_addr);
-        $psn_info->contact_person()->save($cont_psn);
         $psn_info->permanent_address()->save($perma_addr);
-        $psn_info->reference_members()->save($ref_mem_01);
-        if($have_another_ref)
-            $psn_info->reference_members()->save($ref_mem_02);
+        $psn_info->contact_person()->save($cont_psn);
 //      END OF SAVING DETAILS
 
         return redirect()
@@ -210,9 +204,7 @@ class FacultyController extends Controller
     }
 
     public function show(){
-        return view('admin.employee_index', [
-            'admin'             => Auth::user(),
-        ]);
+        return redirect()->route('employees_index');
     }
 
     public function edit(Faculty $faculty){
@@ -223,7 +215,7 @@ class FacultyController extends Controller
             'personal_information'  => $faculty->personal_information,
 
 //          Dropdown Choices
-            'max_date'              => date("m/d/Y", strtotime('-21 year')),
+            'max_date'              => date("m/d/Y", strtotime('-18 year')),
             'shifts'                => Shift::all(),
             'departments'           => Department::all(),
             'designations'          => Designation::all(),
@@ -236,8 +228,6 @@ class FacultyController extends Controller
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
-            'date_of_joining'               => ['nullable', 'date'],
-            'date_of_leaving'               => ['nullable', 'date_format:m-d-Y', 'after:date_of_joining'],
             'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
@@ -249,10 +239,10 @@ class FacultyController extends Controller
             'name_extension'                => ['nullable'],
             'sex'                           => ['required'],
             'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before:+18 years'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'after:-100 years', 'before:-18 years'],
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
-            'marital_status'                => ['required'],
+            'civil_status'                  => ['required'],
 
 //          CONTACT PERSON
             'contact_person_name'           => ['required'],
@@ -274,22 +264,16 @@ class FacultyController extends Controller
             'permanent_province'            => ['required'],
             'permanent_zip_code'            => ['required'],
 
-////          REFERENCE MEMBERS
-//            'reference_name_01'             => ['required'],
-//            'reference_contact_number_01'   => ['required'],
-//            'reference_name_02'             => ['nullable'],
-//            'reference_contact_number_02'   => ['nullable'],
         ], [
-            'date_of_birth.before' => 'Employee must be at least 21 years old!',
-            'date_of_leaving.after_or_equal' => 'The leaving date must be a date after the date of joining!',
+            'date_of_birth.before' => 'The employee must be at least 18 years old!',
+            'date_of_leaving.after' => 'The leaving date cannot be an earlier day than today!',
+
         ]);
 //      END OF VALIDATIONS
 
 //      START OF EDITING
 //      ACCOUNT DETAILS
         $faculty->email                     = $validated_inputs['email'];
-        $faculty->date_of_joining           = $validated_inputs['date_of_joining'];
-        $faculty->date_of_leaving           = $validated_inputs['date_of_leaving'];
 
 //      PERSONAL INFORMATION DETAILS
         $psn_info = $faculty->personal_information;
@@ -302,7 +286,7 @@ class FacultyController extends Controller
         $psn_info->date_of_birth            = $validated_inputs['date_of_birth'];
         $psn_info->contact_no               = $validated_inputs['contact_number'];
         $psn_info->telephone_no             = $validated_inputs['telephone_number'];
-        $psn_info->civil_status_id          = $validated_inputs['marital_status'];
+        $psn_info->civil_status_id          = $validated_inputs['civil_status'];
 
 //      CONTACT PERSON DETAILS
         $cont_psn = $psn_info->contact_person;
@@ -355,5 +339,20 @@ class FacultyController extends Controller
         return redirect()
             ->route('employees_index')
             ->with('success', 'Employee deleted successfully!');
+    }
+
+    public function search(Request $request){
+
+//        $search = $request->query('search');
+//        $faculties = null;
+//
+//        if ($search) {
+//            $faculties = Faculty::where('faculty_code', 'like', '%'.$search.'%')->first()->paginate(5);
+//        }
+////        dd($faculties);
+//
+//        return view('admin.employee-index')
+//            ->with('faculties', $faculties)
+//            ->with('admin', Auth::user());
     }
 }

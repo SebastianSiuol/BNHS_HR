@@ -1,10 +1,8 @@
 <?php
 
-use Database\Seeders\ReferenceMemberSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\FacultyInformation\PersonalInformation;
 
 return new class extends Migration
 {
@@ -23,8 +21,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $reference_member_seeder = new ReferenceMemberSeeder();
-        $reference_member_seeder->run();
+
     }
 
     /**

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $shift_seeder = new ShiftSeeder();
-        $shift_seeder->run();
+
     }
 
     /**

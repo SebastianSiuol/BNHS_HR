@@ -1,6 +1,5 @@
 <?php
 
-use Database\Seeders\NameExtensionSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +17,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $name_ext_seeder = new NameExtensionSeeder();
-        $name_ext_seeder->run();
     }
 
     /**

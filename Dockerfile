@@ -1,5 +1,9 @@
 FROM richarvey/nginx-php-fpm:3.1.6
 
+# Install Node.js and npm
+RUN apk --no-cache add nodejs npm
+
+# Copy all application files to the container
 COPY . .
 
 # Image config

@@ -1,9 +1,9 @@
-<aside id="sidebar-multi-level-sidebar" class=" bg fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-    <div id="burger" class="cursor-pointer text-white p-4 flex justify-end h-7">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-110 hover:text-gray-300">
-            <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-        </svg>
-    </div>
+<aside id="sidebar-multi-level-sidebar" class="fixed bg-[#163172] text-white top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+{{--    <div id="burger" class="cursor-pointer text-white p-4 flex justify-end h-7">--}}
+{{--        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-110 hover:text-gray-300">--}}
+{{--            <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />--}}
+{{--        </svg>--}}
+{{--    </div>--}}
 
     <div class="flex items-center ml-5 justify-center mb-0">
         <div class=" rounded-full w-20 h-15 flex items-center justify-center mt-10 overflow-hidden">
@@ -39,7 +39,6 @@
             </div>
 
             <li>
-
                 <!-- START OF DROPDOWN TOGGLE -->
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-employee-buttons" data-collapse-toggle="sub-employee-buttons">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -62,6 +61,7 @@
                 </ul>
             </li>
             <li>
+                <!-- START OF DROPDOWN TOGGLE -->
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-attendance" data-collapse-toggle="sub-attendance">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
@@ -72,6 +72,8 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
+                <!-- END OF DROPDOWN TOGGLE -->
+
                 <ul id="sub-attendance" class=" {{request()->is('admin/attendances*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
                         <x-admin-sidebar-button href="/admin/attendances" :active="request()->is('admin/attendances')" type="sub">Daily Attendance</x-admin-sidebar-button>
@@ -82,6 +84,7 @@
                 </ul>
             </li>
             <li>
+                <!-- START OF DROPDOWN TOGGLE -->
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-attendance" data-collapse-toggle="sub-leave">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
@@ -92,6 +95,8 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
+                <!-- END OF DROPDOWN TOGGLE -->
+
                 <ul id="sub-leave" class=" {{request()->is('admin/leaves*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
                         <x-admin-sidebar-button href="/admin/leaves/create" :active="request()->is('admin/leaves/create')" type="sub">Add Leave</x-admin-sidebar-button>
@@ -100,6 +105,37 @@
                         <x-admin-sidebar-button href="/admin/leaves" :active="request()->is('admin/leaves')" type="sub">Manage Leave</x-admin-sidebar-button>
                     </li>
                 </ul>
+            </li>
+
+            <div class="ml-3">
+                <p class="text-sm">Settings</p>
+            </div>
+
+            <li class="mb-6">
+
+                <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-config" data-collapse-toggle="sub-config">
+                    <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"/>
+                    </svg>
+
+                    <span class="flex-1 ms-3 text-white text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900 ">Configurations</span>
+                    <svg class="w-3 h-3 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+
+                <ul id="sub-config" class=" {{request()->is('admin/leaves*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Departments</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Designations</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Roles</x-admin-sidebar-button>
+                    </li>
+                </ul>
+
             </li>
         </ul>
     </div>

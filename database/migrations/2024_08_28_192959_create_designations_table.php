@@ -18,8 +18,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $designation_seeder = new DesignationSeeder();
-        $designation_seeder->run();
     }
 
     /**

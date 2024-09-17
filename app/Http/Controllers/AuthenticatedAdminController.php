@@ -58,7 +58,7 @@ namespace App\Http\Controllers;
         }
 
         return back()->withErrors([
-            'msg' => 'Invalid credenials, please try again',
+            'msg' => 'Invalid credentials, please try again',
         ]);
     }
 
