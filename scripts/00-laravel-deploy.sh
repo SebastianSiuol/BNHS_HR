@@ -17,8 +17,8 @@ php artisan route:cache
 echo "Running in-development migrations"
 php artisan migrate:fresh --force
 
-echo "Running npm build..."
-npm run build --prefix /var/www/html
+#echo "Running npm build..."
+#npm run build --prefix /var/www/html
 
 #echo "Running migrations..."
 #php artisan migrate --force
