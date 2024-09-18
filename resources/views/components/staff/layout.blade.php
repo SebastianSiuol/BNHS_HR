@@ -48,6 +48,9 @@
             <div id="faculty_account" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                 <ul class="py-2 text-gray-700 dark:text-gray-200">
                     <li>
+                        <a href="{{ route('staff_leave_index') }}" class="block px-4 py-2 hover:bg-gray-100">Leave</a>
+                    </li>
+                    <li>
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
                     </li>
                     <li>
