@@ -132,9 +132,6 @@
                         <x-admin-sidebar-button href="{{ route('department_config_index') }}" :active="request()->is('admin/config/*')" type="sub">Departments</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Designations</x-admin-sidebar-button>
-                    </li>
-                    <li>
                         <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Shift</x-admin-sidebar-button>
                     </li>
                     <li>

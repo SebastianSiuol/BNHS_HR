@@ -14,7 +14,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::all();
+        $departments = Department::with(['designations' => ['faculties']])->paginate(5);
+
 
         return view('admin.configuration.department.index', [
             'admin' => Auth::user(),
