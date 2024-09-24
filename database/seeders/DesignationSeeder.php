@@ -15,35 +15,73 @@ class DesignationSeeder extends Seeder
     {
 //      NOTE: Production Data
         Designation::create([
-            'name' => 'Master Teacher I'
+            'name' => 'Math Department Head',
+            'department_id' => 1,
         ]);
         Designation::create([
-            'name' => 'Master Teacher II'
+            'name' => 'Mathematics Instructor',
+            'department_id' => 1,
+        ]);
+
+        Designation::create([
+            'name' => 'Science Coordinator',
+            'department_id' => 2,
         ]);
         Designation::create([
-            'name' => 'Master Teacher III'
+            'name' => 'Biology Teacher',
+            'department_id' => 2,
+        ]);
+
+        Designation::create([
+            'name' => 'English Head',
+            'department_id' => 3,
         ]);
         Designation::create([
-            'name' => 'Master Teacher IV'
+            'name' => 'Literature Instructor',
+            'department_id' => 3,
+        ]);
+
+        Designation::create([
+            'name' => 'Social Studies Chair',
+            'department_id' => 4,
         ]);
         Designation::create([
-            'name' => 'Teacher I'
+            'name' => 'History Instructor',
+            'department_id' => 4,
+        ]);
+
+        Designation::create([
+            'name' => 'TLE Department Head',
+            'department_id' => 5,
         ]);
         Designation::create([
-            'name' => 'Teacher II'
+            'name' => 'Home Economics Instructor',
+            'department_id' => 5,
+        ]);
+
+        Designation::create([
+            'name' => 'MAPEH Coordinator',
+            'department_id' => 6,
         ]);
         Designation::create([
-            'name' => 'Teacher III'
+            'name' => 'Physical Education Teacher',
+            'department_id' => 6,
+        ]);
+
+        Designation::create([
+            'name' => 'Values Education Coordinator',
+            'department_id' => 7,
         ]);
         Designation::create([
-            'name' => 'Teacher IV'
+            'name' => 'Guidance Counselor',
+            'department_id' => 7,
         ]);
 
         $faculty = Faculty::find(1);
         $faculty->designation_id = 1;
         $faculty->save();
         $faculty = Faculty::find(2);
-        $faculty->designation_id = 5;
+        $faculty->designation_id = 9;
         $faculty->save();
         $faculty = Faculty::find(3);
         $faculty->designation_id = 6;
@@ -52,10 +90,11 @@ class DesignationSeeder extends Seeder
         $faculty->designation_id = 7;
         $faculty->save();
         $faculty = Faculty::find(5);
-        $faculty->designation_id = 6;
+        $faculty->designation_id = 10;
         $faculty->save();
         $faculty = Faculty::find(6);
-        $faculty->designation_id = 5;
+        $faculty->designation_id = 11;
         $faculty->save();
+
     }
 }

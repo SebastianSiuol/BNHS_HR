@@ -190,4 +190,6 @@
 
     <script src={{asset('js/admin.js')}}></script>
     <script src={{asset('js/validate-edit-forms.js')}}></script>
+    <script src={{asset('js/employee/create-designation.js')}}></script>
+
 </x-admin-layout>

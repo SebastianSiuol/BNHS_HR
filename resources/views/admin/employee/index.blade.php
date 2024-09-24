@@ -98,7 +98,7 @@
                                 {{ $faculty->email }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $faculty->department->department_name }}
+                                {{ $faculty->designation->department->name }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ $faculty->shift->name }}

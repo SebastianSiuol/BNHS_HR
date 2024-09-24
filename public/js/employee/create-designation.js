@@ -7,17 +7,12 @@ departmentSelect.addEventListener('change', function () {
     const department = departmentSelect.value;
 
     // Clear the designation dropdown
-    designationSelect.innerHTML = '<option value="0">Select Designation</option>';
+    designationSelect.innerHTML = '<option {{ empty(old(\'designation\'))  ? \'selected=selected\': \'\' }} disabled value="0">Select a Department First</option>';
 
     // If a department is selected, make an AJAX request using Fetch API
     if (department) {
-        fetch(`/get-designations?category=${department}`, {
+        fetch(`/get-designations?department=${department}`, {
             method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
         })
             .then(response => response.json())
             .then(responseData => {

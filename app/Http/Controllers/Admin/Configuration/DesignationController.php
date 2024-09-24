@@ -11,9 +11,11 @@ class DesignationController extends Controller
 {
     public function getDesignations(Request $request){
 
-//            dd($request->all());
+            $designations = Designation::with('department')
+                ->where('department_id', 'LIKE', $request->department)->get();
 
-            return Designation::all();
+
+            return response()->json($designations);
 
     }
 }

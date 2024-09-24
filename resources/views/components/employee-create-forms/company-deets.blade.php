@@ -31,13 +31,7 @@
 
         <x-forms.select name="designation">
 
-            <option {{ empty(old('designation'))  ? 'selected=selected': '' }} disabled value="0">Select Designation</option>
-
-        @foreach($designations as $designation)
-            <option value="{!! __($designation->id) !!}" {{ old('designation') ==  $designation->id ? 'selected=selected' : ''}}>
-                {!! __($designation->department_designation) !!}
-            </option>
-        @endforeach
+            <option selected="selected" disabled value="0">Select a Department First</option>
 
         </x-forms.select>
 

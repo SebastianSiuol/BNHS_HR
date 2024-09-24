@@ -90,9 +90,6 @@ class Faculty extends Authenticatable
     }
 
     /* NOTE: Belongs Relationships */
-    public function department(){
-        return $this->belongsTo(Department::class);
-    }
 
     public function designation(){
         return $this->belongsTo(Designation::class);

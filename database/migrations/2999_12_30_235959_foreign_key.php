@@ -14,10 +14,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('faculties', function (Blueprint $table) {
-            $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('designation_id')->references('id')->on('designations');
             $table->foreign('shift_id')->references('id')->on('shifts');
             $table->foreign('employment_status_id')->references('id')->on('employment_statuses');
+        });
+
+        Schema::table('designations', function (Blueprint $table) {
+            $table->foreign('department_id')->references('id')->on('departments');
         });
 
         Schema::table('personal_information', function (Blueprint $table) {

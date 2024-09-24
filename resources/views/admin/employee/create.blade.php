@@ -19,7 +19,7 @@
             @csrf
 
             {{-- Start of Personal Details Form --}}
-            <div id="personalDetails" class="hidden">
+            <div id="personalDetails">
 
                 <x-admin-employee-nav-steppers :active_number="1" />
 
@@ -77,7 +77,7 @@
 
 
             {{-- Start of Company Details Form --}}
-            <div id="companyDetails" class="block">
+            <div id="companyDetails" class="hidden">
 
                 <x-admin-employee-nav-steppers :active_number="3" />
 

@@ -70,7 +70,6 @@ class FacultyController extends Controller
             'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
             'password'                      => ['required', 'string', 'min:8'],
             'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
-            'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
             'role'                           => ['required'],
@@ -120,7 +119,6 @@ class FacultyController extends Controller
         $faculty->password          = $validated_inputs['password'];
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
-        $faculty->department_id     = $validated_inputs['department'];
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
 
@@ -230,7 +228,6 @@ class FacultyController extends Controller
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
-            'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
 
@@ -276,6 +273,7 @@ class FacultyController extends Controller
 //      START OF EDITING
 //      ACCOUNT DETAILS
         $faculty->email                     = $validated_inputs['email'];
+        $faculty->designation_id            = $validated_inputs['designation'];
 
 //      PERSONAL INFORMATION DETAILS
         $psn_info = $faculty->personal_information;

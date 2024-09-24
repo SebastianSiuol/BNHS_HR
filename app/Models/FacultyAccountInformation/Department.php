@@ -15,4 +15,8 @@ class Department extends Model
     public function faculties(){
         return $this->hasMany(Faculty::class);
     }
+
+    public function designations(){
+        return $this->hasMany(Designation::class);
+    }
 }

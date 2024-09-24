@@ -10,10 +10,14 @@ class Designation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'department_id'];
 
     public function faculties(){
         return $this->hasMany(Faculty::class);
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 
 }
