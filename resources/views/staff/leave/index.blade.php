@@ -3,7 +3,7 @@
     <x-staff.content-panel>
         <div class="flex justify-between">
             <h3 class="text-blue-800 text-3xl font-bold">Manage Leave</h3>
-            <a href="/staff/leave/create">
+            <a href="{{ route('staff.leave.create') }}">
                 <button type="submit" class="bg-blue-700 p-2 text-white rounded-lg hover:bg-blue-900">Apply for a Leave</button>
             </a>
         </div>

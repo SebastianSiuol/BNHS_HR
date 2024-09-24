@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('staff_leave_store') }}">
+        <form method="POST" action="{{ route('staff.leave.store') }}">
             @csrf
 
             <div class=" flex flex-col gap-y-6 max-w-[75vh] pl-20 py-10 mr-auto">
@@ -43,10 +43,10 @@
                                name="start_leave_date"
                                placeholder="Select date"
                                value="{{ old('start_leave_date') }}"
+                               showDaysOfWeek="false"
                                datepicker
                                datepicker-autohide
                                datepicker-format="mm-dd-yyyy"
-                               datepicker-autoselect-today
                                datepicker-min-date="{{date('m-d-Y', strtotime('now')), }}"
                                class="ps-10 p-2.5 bg-gray-50 w-[24rem] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ">
                     </div>
@@ -97,4 +97,6 @@
         </form>
 
     </x-staff.content-panel>
+
+    <script src={{ asset('js/staff/leave/leave-range.js') }}></script>
 </x-staff.layout>

@@ -15,7 +15,7 @@ class StaffLeaveController extends Controller
      */
     public function index()
     {
-        return view('staff.leave-index');
+        return view('staff.leave.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class StaffLeaveController extends Controller
     {
         $leave_types = LeaveType::all();
 
-        return view('staff.leave-create', [
+        return view('staff.leave.create', [
             'leave_types' => $leave_types
         ]);
     }
