@@ -10,7 +10,7 @@ class Designation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['department_designation'];
+    protected $fillable = ['name'];
 
     public function faculties(){
         return $this->hasMany(Faculty::class);

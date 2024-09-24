@@ -249,4 +249,6 @@
 
 
     </main>
+
+    <script src="{{ asset('js/test.js') }}"></script>
 </x-admin-layout>

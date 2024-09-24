@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
+use App\Http\Controllers\Admin\Configuration\DesignationController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 Use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\AttendanceController;
@@ -20,11 +21,11 @@ Route::post('/faculty/login', [FacultySessionController::class, 'store']);
 Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 //Authentication
 
+Route::get('/get-designations', [DesignationController::class, 'getDesignations']);
 
 Route::get('/staff/leave', [StaffLeaveController::class, 'index'])->name('staff_leave_index');
 Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name('staff_leave_create');
 Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff_leave_store');
-
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
 Route::middleware('auth')->group(function () {

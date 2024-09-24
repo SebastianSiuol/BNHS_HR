@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/js/test.js
 /storage/*.key
 /vendor
 /.fleet

@@ -15,28 +15,28 @@ class DesignationSeeder extends Seeder
     {
 //      NOTE: Production Data
         Designation::create([
-            'department_designation' => 'Master Teacher I'
+            'name' => 'Master Teacher I'
         ]);
         Designation::create([
-            'department_designation' => 'Master Teacher II'
+            'name' => 'Master Teacher II'
         ]);
         Designation::create([
-            'department_designation' => 'Master Teacher III'
+            'name' => 'Master Teacher III'
         ]);
         Designation::create([
-            'department_designation' => 'Master Teacher IV'
+            'name' => 'Master Teacher IV'
         ]);
         Designation::create([
-            'department_designation' => 'Teacher I'
+            'name' => 'Teacher I'
         ]);
         Designation::create([
-            'department_designation' => 'Teacher II'
+            'name' => 'Teacher II'
         ]);
         Designation::create([
-            'department_designation' => 'Teacher III'
+            'name' => 'Teacher III'
         ]);
         Designation::create([
-            'department_designation' => 'Teacher IV'
+            'name' => 'Teacher IV'
         ]);
 
         $faculty = Faculty::find(1);
