@@ -76,10 +76,10 @@
 
                 <ul id="sub-attendance" class=" {{request()->is('admin/attendances*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="/admin/attendances" :active="request()->is('admin/attendances')" type="sub">Daily Attendance</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.attendances.index') }}" :active="request()->is('admin/attendances')" type="sub">Daily Attendance</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="/admin/attendances/report" :active="request()->is('admin/attendances/report')" type="sub">Attendance Report</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.attendances.report') }}" :active="request()->is('admin/attendances/report')" type="sub">Attendance Report</x-admin-sidebar-button>
                     </li>
                 </ul>
             </li>
@@ -124,12 +124,18 @@
                     </svg>
                 </button>
 
-                <ul id="sub-config" class=" {{request()->is('admin/leaves*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
+                <ul id="sub-config" class=" {{request()->is('admin/config/*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Departments</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Company Details</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="{{ route('department_config_index') }}" :active="request()->is('admin/config/*')" type="sub">Departments</x-admin-sidebar-button>
                     </li>
                     <li>
                         <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Designations</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Shift</x-admin-sidebar-button>
                     </li>
                     <li>
                         <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Roles</x-admin-sidebar-button>

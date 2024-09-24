@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
 use App\Models\Faculty;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\FacultyAccountInformation\Department;
 use Illuminate\Database\Seeder;
 
 class DepartmentSeeder extends Seeder
@@ -17,25 +16,25 @@ class DepartmentSeeder extends Seeder
 
 //      NOTE: Production Data
         Department::create([
-            'department_name' => 'Mathematics'
+            'name' => 'Mathematics'
         ]);
         Department::create([
-            'department_name' => 'Science'
+            'name' => 'Science'
         ]);
         Department::create([
-            'department_name' => 'English'
+            'name' => 'English'
         ]);
         Department::create([
-            'department_name' => 'Social Studies'
+            'name' => 'Social Studies'
         ]);
         Department::create([
-            'department_name' => 'Technology and Livelihood Education'
+            'name' => 'Technology and Livelihood Education'
         ]);
         Department::create([
-            'department_name' => 'Music, Arts, Physical Education, and Health'
+            'name' => 'Music, Arts, Physical Education, and Health'
         ]);
         Department::create([
-            'department_name' => 'Values Education'
+            'name' => 'Values Education'
         ]);
 
         $faculty = Faculty::find(1);

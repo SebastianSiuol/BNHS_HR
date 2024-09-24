@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('department_id')->nullable();
             $table->foreignId('designation_id')->nullable();
             $table->foreignId('shift_id')->nullable();
+            $table->foreignId('employment_status_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

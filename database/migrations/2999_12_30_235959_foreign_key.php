@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('department_id')->references('id')->on('departments');
             $table->foreign('designation_id')->references('id')->on('designations');
             $table->foreign('shift_id')->references('id')->on('shifts');
+            $table->foreign('employment_status_id')->references('id')->on('employment_statuses');
         });
 
         Schema::table('personal_information', function (Blueprint $table) {

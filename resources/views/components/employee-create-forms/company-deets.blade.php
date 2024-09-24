@@ -18,7 +18,7 @@
             <option {{ empty(old('department'))  ? 'selected=selected': '' }} disabled value="0"> Select Department </option>
         @foreach($departments as $department)
             <option value="{!! __($department->id) !!}" {{ old('department') ==  $department->id ? 'selected=selected' : ''}}>
-                {!! __($department->department_name) !!}
+                {!! __($department->name) !!}
             </option>
         @endforeach
 

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Designation;
 use App\Models\Faculty;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\FacultyAccountInformation\Designation;
 use Illuminate\Database\Seeder;
 
 class DesignationSeeder extends Seeder

@@ -19,8 +19,8 @@
 
                 <!-- SEARCH -->
                 <form id="employee_search"
-{{--                      method='GET' --}}
-{{--                      action="/admin/employees/search" --}}
+                      method='GET'
+                      action="{{ route('admin_employees_search') }}"
                       class="relative mt-1 grid grid-cols-1 sm:grid-cols-2">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -28,7 +28,7 @@
                         </svg>
                     </div>
                     <input  id="search"
-{{--                            name="search"--}}
+                            name="query"
                             type="text"
                            class="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items">
                     <button type="submit"
@@ -101,7 +101,7 @@
                                 {{ $faculty->department->department_name }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                Morning
+                                {{ $faculty->shift->name }}
                             </td>
                             <td class="px-6 py-4 font-medium text-green-500 whitespace-nowrap">
                                 Active

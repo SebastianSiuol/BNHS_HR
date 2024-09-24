@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use App\Models\Designation;
+use App\Exports\FacultyExport;
 use App\Models\Faculty;
+use App\Models\FacultyAccountInformation\Department;
+use App\Models\FacultyAccountInformation\Designation;
 use App\Models\PersonalInformation\CivilStatus;
 use App\Models\PersonalInformation\ContactPerson;
 use App\Models\PersonalInformation\NameExtension;
@@ -15,20 +16,21 @@ use App\Models\Role;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FacultyController extends Controller
 {
     public function index(){
         $faculties = Faculty::with('personal_information')->first()->paginate(5);
 
-        return view('admin.employee-index',[
+        return view('admin.employee.index',[
             'admin'             => Auth::user(),
             'faculties'         =>$faculties
         ]);
     }
 
     public function create(){
-        return view('admin.employee-create', [
+        return view('admin.employee.create', [
             'admin'             => Auth::user(),
             'generated_id'      => Faculty::generateFacultyCode(),
             'shifts'            => Shift::all(),
@@ -209,7 +211,7 @@ class FacultyController extends Controller
 
     public function edit(Faculty $faculty){
 
-        return view('admin.employee-edit', [
+        return view('admin.employee.edit', [
             'admin'             => Auth::user(),
             'faculty'               => $faculty,
             'personal_information'  => $faculty->personal_information,
@@ -343,16 +345,29 @@ class FacultyController extends Controller
 
     public function search(Request $request){
 
-//        $search = $request->query('search');
-//        $faculties = null;
-//
-//        if ($search) {
-//            $faculties = Faculty::where('faculty_code', 'like', '%'.$search.'%')->first()->paginate(5);
-//        }
-////        dd($faculties);
-//
-//        return view('admin.employee-index')
-//            ->with('faculties', $faculties)
-//            ->with('admin', Auth::user());
+//        dd($request->all());
+
+        $faculties = Faculty::with(['personal_information', 'department', 'shift'])
+            ->where('faculty_code',  'LIKE' , '%' . request('query') . '%')
+            ->orWhere('email',  'LIKE' , '%' . request('query') . '%')
+            ->orWhereHas('personal_information', function($query) use($request){
+                $query->where('first_name', 'LIKE' , '%' . request('query') . '%')
+                ->orWhere('last_name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->orWhereHas('department', function($query) use($request){
+                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->orWhereHas('shift', function($query) use($request){
+                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->paginate(5);
+
+        return view('admin.employee.index')
+            ->with('faculties', $faculties)
+            ->with('admin', Auth::user());
+    }
+
+    public function export(){
+        return Excel::download(new FacultyExport, 'faculties.xlsx');
     }
 }

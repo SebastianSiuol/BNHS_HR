@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\FacultyAccountInformation\Department;
+use App\Models\FacultyAccountInformation\Designation;
 use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -97,6 +99,11 @@ class Faculty extends Authenticatable
     }
 
     public function shift(){
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function employmentStatus()
+    {
         return $this->belongsTo(Shift::class);
     }
 
