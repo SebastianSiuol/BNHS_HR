@@ -72,6 +72,8 @@ Route::middleware('auth')->group(function () {
 
        /*   Configuration Routes */
         Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])      ->name('admin.config.company_details.index');
+        Route::post('/admin/config/company_details', [CompanyDetailController::class, 'store'])     ->name('admin.config.company_details.store');
+        Route::patch('/admin/config/company_details', [CompanyDetailController::class, 'update'])     ->name('admin.config.company_details.update');
         Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('admin.config.department.index');
         Route::get('/admin/config/position', [PositionController::class, 'index'])                  ->name('admin.config.position.index');
         Route::get('/admin/config/shift', [ShiftController::class, 'index'])                        ->name('admin.config.shift.index');
