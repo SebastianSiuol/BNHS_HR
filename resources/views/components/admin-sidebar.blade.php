@@ -129,13 +129,16 @@
 
                 <ul id="sub-config" class=" {{request()->is('admin/config/*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Company Details</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.config.company_details.index') }}" :active="request()->is( 'admin/config/company_details' )" type="sub">Company Details</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="{{ route('department_config_index') }}" :active="request()->is('admin/config/*')" type="sub">Departments</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.config.department.index') }}" :active="request()->is('admin/config/department')" type="sub">Departments</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Shift</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.config.position.index') }}" :active="request()->is('admin/config/position')" type="sub">Position</x-admin-sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin-sidebar-button href="{{ route('admin.config.shift.index') }}" :active="request()->is('admin/config/shift')" type="sub">Shift</x-admin-sidebar-button>
                     </li>
                     <li>
                         <x-admin-sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Roles</x-admin-sidebar-button>

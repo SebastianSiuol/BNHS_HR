@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\Configuration\CompanyDetailController;
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
+use App\Http\Controllers\Admin\Configuration\PositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -69,10 +71,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])              ->name('admin.service-credits.index');
 
        /*   Configuration Routes */
-        Route::get('/admin/config/details', []);
-        Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('department_config_index');
-        Route::get('/admin/config/position', []);
-        Route::get('/admin/config/shift', [ShiftController::class, 'index'])                        ->name('shift_config_index');
+        Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])      ->name('admin.config.company_details.index');
+        Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('admin.config.department.index');
+        Route::get('/admin/config/position', [PositionController::class, 'index'])                  ->name('admin.config.position.index');
+        Route::get('/admin/config/shift', [ShiftController::class, 'index'])                        ->name('admin.config.shift.index');
     });
 
 
