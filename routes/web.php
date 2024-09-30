@@ -22,20 +22,19 @@ Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name
 Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
-
-Route::get('/faculty/forgot-password', [ForgotPasswordController::class, 'create'])->name('auth.forgot-password.create');
-Route::post('/faculty/forgot-password', [ForgotPasswordController::class, 'store'])->name('auth.forgot-password.store');
-Route::get('/faculty/new-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
-Route::post('/faculty/new-password', [ResetPasswordController::class, 'store'])->name('password.reset.store');
-
-
 Route::middleware('redirectIfAuth')->group(function () {
     Route::view('/','index')->name('/');
     Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty_login');
     Route::post('/faculty/login', [FacultySessionController::class, 'store']);
+
+    Route::get('/faculty/forgot-password', [ForgotPasswordController::class, 'create'])->name('auth.forgot-password.create');
+    Route::post('/faculty/forgot-password', [ForgotPasswordController::class, 'store'])->name('auth.forgot-password.store');
+    Route::get('/faculty/new-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/faculty/new-password', [ResetPasswordController::class, 'store'])->name('password.reset.store');
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
     Route::middleware(['role:admin'])->group(function () { // Routes for admin
@@ -51,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/employees/search', [FacultyController::class, 'search'])                 ->name('admin_employees_search');
 
-//      Employee Management Routes
+        /*  Employee Management Routes */
         Route::get('/admin/employees', [FacultyController::class, 'index'])                         ->name('employees.index');
         Route::get('/admin/employees/create', [FacultyController::class, 'create'])                 ->name('employees.create');
         Route::post('/admin/employees', [FacultyController::class, 'store'])                        ->name('employees_store');
@@ -59,13 +58,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])           ->name('employees_edit');
         Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])            ->name('employees_update');
         Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])   ->name('employees_destroy');
-//      Attendance Routes
+        /*  Attendance Routes */
         Route::get('/admin/attendances', [AttendanceController::class, 'index'])                    ->name('admin.attendances.index');
         Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])            ->name('admin.attendances.report');
-//      Leave Routes
-        Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                              ->name('admin.leaves.index');
-        Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                      ->name('admin.leaves.create');
-//      Configuration Routes
+        /*  Leave Routes */
+        Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                         ->name('admin.leaves.index');
+        Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                 ->name('admin.leaves.create');
+       /*   Configuration Routes */
         Route::get('/admin/config/details', []);
         Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('department_config_index');
         Route::get('/admin/config/position', []);

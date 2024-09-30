@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('date_of_joining')->nullable();
             $table->string('date_of_leaving')->nullable();
+            $table->string('service_credit')->nullable()->default(0);
             $table->foreignId('designation_id')->nullable();
             $table->foreignId('shift_id')->nullable();
             $table->foreignId('employment_status_id')->nullable();

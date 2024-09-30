@@ -15,12 +15,10 @@ class ForgotPasswordController extends Controller
     public function store(Request $request){
         $request->validate(['email' => 'required|email']);
 
-        $status = Password::sendResetLink(
+        Password::sendResetLink(
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        return back()->with(['status' => __("Your password reset link has been sent.")]);
     }
 }

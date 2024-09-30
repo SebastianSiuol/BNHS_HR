@@ -30,13 +30,20 @@
 
 <main class="flex flex-col mx-auto my-20 max-w-[1280px]">
 
-    <h2 class="mb-6 font-bold text-2xl text-center text-gray-800"> Reset your Password</h2>
+    <h2 class="mb-6 font-bold text-2xl text-center text-gray-800">Reset your Password</h2>
+
+    @if($errors->any())
+        <ul class="mx-auto my-5">
+            @foreach($errors->all() as $error) @endforeach
+            <li class="text-red-500 italic font-bold">{{ $error }}</li>
+        </ul>
+    @endif
 
     <div class="mx-auto bg-white p-4 border border-gray-400 rounded-xl shadow-lg">
+
         <!-- Form -->
         <form method="POST" action="{{ route('auth.forgot-password.store') }}" class="w-auto">
             @csrf
-
             <div class="mt-4">
                 <label class="block text-gray-600 text-sm font-semibold mb-2" for="email">Employee Email</label>
                 <input
@@ -61,16 +68,9 @@
         </form>
     </div>
 
-    @if($errors->any())
-        <ul class="my-5">
-            @foreach($errors->all() as $error) @endforeach
-            <li class="text-red-500 italic font-bold">{{ $error }}</li>
-        </ul>
-    @endif
-
     @if( Session::has('status'))
         <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-             class="absolute bg-green-500 text-white rounded-lg p-2 m-2 top-0 right-0"
+             class="absolute bg-green-500 text-white rounded-lg p-2 m-2 top-20 right-10"
         >
             {{ Session::get('status') }}
         </div>
