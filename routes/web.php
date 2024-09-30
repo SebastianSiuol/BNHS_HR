@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 Use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\FacultySessionController;
@@ -20,6 +22,13 @@ Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name
 Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
+
+Route::get('/faculty/forgot-password', [ForgotPasswordController::class, 'create'])->name('auth.forgot-password.create');
+Route::post('/faculty/forgot-password', [ForgotPasswordController::class, 'store'])->name('auth.forgot-password.store');
+Route::get('/faculty/new-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
+Route::post('/faculty/new-password', [ResetPasswordController::class, 'store'])->name('password.reset.store');
+
+
 Route::middleware('redirectIfAuth')->group(function () {
     Route::view('/','index')->name('/');
     Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty_login');
@@ -30,11 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
     Route::middleware(['role:admin'])->group(function () { // Routes for admin
+
         Route::get('/admin/home', function () {
+
             return view('admin.dashboard', [
-                'admin'              => Auth::user(),
-                'total_employees'    => Faculty::all()->count(),
+                'admin' => Auth::user(),
+                'total_employees' => Faculty::all()->count(),
             ]);
+
         })->name('admin_index');
 
         Route::get('/admin/employees/search', [FacultyController::class, 'search'])                 ->name('admin_employees_search');

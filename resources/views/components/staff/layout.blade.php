@@ -18,7 +18,7 @@
 </head>
 <body class="h-screen font-poppins">
 
-    {{-- First Row --}}
+    {{-- HEADER --}}
     <div class="flex py-2 px-16 justify-between bg-[#163172] text-white">
 
         <div class="flex space-x-2 items-center justify-center">

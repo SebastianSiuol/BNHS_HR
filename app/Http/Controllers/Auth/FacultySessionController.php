@@ -22,7 +22,7 @@ class FacultySessionController extends Controller
      */
     public function create()
     {
-        return view('auth.faculty_login');
+        return view('auth.faculty-login');
     }
 
     /**

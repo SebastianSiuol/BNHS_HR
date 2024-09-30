@@ -1,13 +1,14 @@
 <x-welcome-layout>
+    <x-slot:heading>Forgot Password</x-slot:heading>
 
-    <x-slot:heading>Admin Login</x-slot:heading>
+
     <div class="flex h-screen">
 
         <div class="flex-1">
             <img src="{{ asset('images/bhnhs_cover.jpg') }}" alt="landingPage_placeholder" class="w-full h-full">
         </div>
 
-        <div class="fixed h-full bg-white items-center justify-center w-max-[300px]  lg:right-0">
+        <div class="fixed h-full bg-white items-center justify-center w-max-[600px] lg:right-0 w-[600px]">
 
             <div class="w-full h-full bg-gray-50 p-8 flex flex-col items-center justify-center">
 
@@ -17,8 +18,9 @@
                 </div>
 
 
+
                 <!-- Title -->
-                <h2 class="mb-6 font-bold text-2xl text-center">Log Into Your Account</h2>
+                <h2 class="mb-6 font-bold text-2xl text-center">Enter New Password</h2>
                 @if($errors->any())
                     <ul class="my-5">
                         @foreach($errors->all() as $error) @endforeach
@@ -28,54 +30,49 @@
 
 
                 <!-- Form -->
-                <form method="POST" action="/faculty/login" class="w-full admin-login-form">
+                <form method="POST" action="{{ route('auth.forgot-password.post') }}" class="w-full admin-login-form">
                     @csrf
-                    <!-- ADMIN ID -->
-                    <div class="mt-4">
-                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
-                        <input
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            name="employee_id"
-                            id="employee_id"
-                            type="text"
-                            required="required"
-                            placeholder="Employee ID">
-                    </div>
-
                     <div class="mt-4">
                         <label class="block text-gray-600 text-sm font-semibold mb-2" for="password">Password</label>
                         <input
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             name="password"
                             id="password"
-                            type="password"
-                            autocomplete="off"
+                            type="text"
                             required="required"
                             placeholder="Password">
                     </div>
 
-                    <div class="flex items-end mb-6 py-0">
-                        <div class="ml-auto">
-                            <a href="#" class="text-sm text-black-500 hover:underline">Forgot Password?</a>
-                        </div>
+                    <div class="mt-4">
+                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="password_confirmation">Confirm Password</label>
+                        <input
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            name="password_confirmation"
+                            id="password_confirmation"
+                            type="text"
+                            required="required"
+                            placeholder="Confirm Password">
                     </div>
 
-                    <div class="mb-8">
+                    <div class="my-8">
                         <button id="submit-login-button"
                                 type="submit"
                                 class="w-full block text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            Log In
+                            Submit
                         </button>
                     </div>
 
-                    <!-- Terms and Conditions -->
-                    <p class="text-center text-gray-600 text-sm mt-4">
-                        By using this service, you understand and agree to the Terms and Conditions of the system.
-                    </p>
+                    <div class="font-bold text-lg text-start">
+                        <p> Your new password should:</p>
+                        <ul>
+                            <li class="text-red-800">- at least have a minimum of 8 characters</li>
+                            <li class="text-red-800">- at least include one uppercase letter</li>
+                            <li class="text-red-800">- at least have one special character.</li>
+                        </ul>
+                    </div>
+
                 </form>
             </div>
         </div>
     </div>
-
-    <script src="{{ asset('js/admin-login.js') }}"></script>
 </x-welcome-layout>
