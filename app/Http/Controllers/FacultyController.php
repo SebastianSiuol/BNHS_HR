@@ -199,12 +199,12 @@ class FacultyController extends Controller
 //      END OF SAVING DETAILS
 
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee created successfully!');
     }
 
     public function show(){
-        return redirect()->route('employees_index');
+        return redirect()->route('employees.index');
     }
 
     public function edit(Faculty $faculty){
@@ -323,7 +323,7 @@ class FacultyController extends Controller
         $perm_addr->save();
 
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee updated successfully!');
     }
 
@@ -331,13 +331,13 @@ class FacultyController extends Controller
 
         if (Auth::user()->id == $faculty->id){
             return redirect()
-                ->route('employees_index')
+                ->route('employees.index')
                 ->with('error', 'Cannot delete logged-in employee!');
         }
 
         $faculty->delete();
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee deleted successfully!');
     }
 

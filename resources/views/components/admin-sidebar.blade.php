@@ -53,10 +53,10 @@
 
                 <ul id="sub-employee-buttons" class=" {{request()->is('admin/employees*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="/admin/employees/create" :active="request()->is('admin/employees/create')" type="sub">Add Employee</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('employees.create') }}" :active="request()->is('admin/employees/create')" type="sub">Add Employee</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="/admin/employees" :active="request()->is('admin/employees')" type="sub">Manage Employees</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('employees.index') }}" :active="request()->is('admin/employees')" type="sub">Manage Employees</x-admin-sidebar-button>
                     </li>
                 </ul>
             </li>
@@ -99,10 +99,10 @@
 
                 <ul id="sub-leave" class=" {{request()->is('admin/leaves*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="/admin/leaves/create" :active="request()->is('admin/leaves/create')" type="sub">Add Leave</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.leaves.create') }}" :active="request()->is('admin/leaves/create')" type="sub">Add Leave</x-admin-sidebar-button>
                     </li>
                     <li>
-                        <x-admin-sidebar-button href="/admin/leaves" :active="request()->is('admin/leaves')" type="sub">Manage Leave</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.leaves.index') }}" :active="request()->is('admin/leaves')" type="sub">Manage Leave</x-admin-sidebar-button>
                     </li>
                 </ul>
             </li>
