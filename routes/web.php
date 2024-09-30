@@ -9,6 +9,7 @@ Use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\AdminLeaveController;
+use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +65,9 @@ Route::middleware('auth')->group(function () {
         /*  Leave Routes */
         Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                         ->name('admin.leaves.index');
         Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                 ->name('admin.leaves.create');
+
+        Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])              ->name('admin.service-credits.index');
+
        /*   Configuration Routes */
         Route::get('/admin/config/details', []);
         Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('department_config_index');
