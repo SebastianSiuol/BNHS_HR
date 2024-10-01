@@ -5,11 +5,10 @@ function changeInputFields() {
     let saveButton = document.getElementById("patch-company-details");
 
     // Loop through each input field and remove the 'readonly' attribute
+    // Changes the fields style after button press.
     inputFields.forEach(function (input) {
         input.removeAttribute('disabled');
-
         input.classList.remove('border-gray-300');
-
         input.classList.add('border-blue-900');
     });
 

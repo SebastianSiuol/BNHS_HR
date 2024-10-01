@@ -51,32 +51,35 @@ Route::middleware('auth')->group(function () {
 
         })->name('admin_index');
 
-        Route::get('/admin/employees/search', [FacultyController::class, 'search'])                 ->name('admin_employees_search');
+        Route::get('/admin/employees/search', [FacultyController::class, 'search'])                             ->name('admin_employees_search');
 
         /*  Employee Management Routes */
-        Route::get('/admin/employees', [FacultyController::class, 'index'])                         ->name('employees.index');
-        Route::get('/admin/employees/create', [FacultyController::class, 'create'])                 ->name('employees.create');
-        Route::post('/admin/employees', [FacultyController::class, 'store'])                        ->name('employees_store');
-        Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])                ->name('employees.show');
-        Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])           ->name('employees_edit');
-        Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])            ->name('employees_update');
-        Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])   ->name('employees_destroy');
+        Route::get('/admin/employees', [FacultyController::class, 'index'])                                     ->name('employees.index');
+        Route::get('/admin/employees/create', [FacultyController::class, 'create'])                             ->name('employees.create');
+        Route::post('/admin/employees', [FacultyController::class, 'store'])                                    ->name('employees_store');
+        Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])                            ->name('employees.show');
+        Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])                       ->name('employees_edit');
+        Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])                        ->name('employees_update');
+        Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])               ->name('employees_destroy');
         /*  Attendance Routes */
-        Route::get('/admin/attendances', [AttendanceController::class, 'index'])                    ->name('admin.attendances.index');
-        Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])            ->name('admin.attendances.report');
+        Route::get('/admin/attendances', [AttendanceController::class, 'index'])                                ->name('admin.attendances.index');
+        Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])                        ->name('admin.attendances.report');
         /*  Leave Routes */
-        Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                         ->name('admin.leaves.index');
-        Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                 ->name('admin.leaves.create');
+        Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                                     ->name('admin.leaves.index');
+        Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                             ->name('admin.leaves.create');
 
-        Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])              ->name('admin.service-credits.index');
+        Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])                          ->name('admin.service-credits.index');
 
        /*   Configuration Routes */
-        Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])      ->name('admin.config.company_details.index');
-        Route::post('/admin/config/company_details', [CompanyDetailController::class, 'store'])     ->name('admin.config.company_details.store');
-        Route::patch('/admin/config/company_details', [CompanyDetailController::class, 'update'])     ->name('admin.config.company_details.update');
-        Route::get('/admin/config/department', [DepartmentController::class, 'index'])              ->name('admin.config.department.index');
-        Route::get('/admin/config/position', [PositionController::class, 'index'])                  ->name('admin.config.position.index');
-        Route::get('/admin/config/shift', [ShiftController::class, 'index'])                        ->name('admin.config.shift.index');
+        Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])                  ->name('admin.config.company_details.index');
+        Route::post('/admin/config/company_details', [CompanyDetailController::class, 'store'])                 ->name('admin.config.company_details.store');
+        Route::patch('/admin/config/company_details', [CompanyDetailController::class, 'update'])               ->name('admin.config.company_details.update');
+
+        Route::get('/admin/config/department', [DepartmentController::class, 'index'])                          ->name('admin.config.department.index');
+        Route::post('/admin/config/department/store', [DepartmentController::class, 'store'])                   ->name('admin.config.department.store');
+        Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy'])    ->name('admin.config.department.destroy');
+        Route::get('/admin/config/position', [PositionController::class, 'index'])                              ->name('admin.config.position.index');
+        Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                    ->name('admin.config.shift.index');
     });
 
 
