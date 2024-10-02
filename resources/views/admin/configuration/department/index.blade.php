@@ -48,7 +48,7 @@
 {{--            </div>--}}
 
 
-            <!-- TABLE -->
+            {{-- TABLE --}}
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table id="default-table"
                        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -118,7 +118,7 @@
 
             </div>
 
-            <!-- Add Department modal -->
+            {{-- Add Department modal --}}
             <x-admin.configuration.department.create />
 
             @foreach($departments as $department)
@@ -128,7 +128,7 @@
                 <x-admin.configuration.department.destroy :department="$department"/>
             @endforeach
 
-            <!-- Pagination -->
+            {{-- Pagination --}}
             {{ $departments->links() }}
 
         </div>

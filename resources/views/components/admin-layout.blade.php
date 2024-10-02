@@ -12,7 +12,7 @@
 </head>
 <body class="h-screen">
 
-<!-- Header -->
+{{-- Header --}}
 <div class="px-3 py-2 lg:px-5 lg:pl-3">
     <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
             aria-controls="sidebar-multi-level-sidebar" type="button"
@@ -68,9 +68,9 @@
     </div>
 </div>
 
-    <!-- Start of Sidebar -->
+    {{-- Start of Sidebar --}}
     <x-admin-sidebar />
-    <!-- End of Sidebar-->
+    {{-- End of Sidebar--}}
 
 {{ $slot }}
 

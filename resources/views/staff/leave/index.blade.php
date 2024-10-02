@@ -37,22 +37,26 @@
                 <tbody>
 
                 <!-- START OF ROWS -->
-                @for($i = 0; $i < 5; $i++)
+                @foreach($leaves as $leave)
                     <tr class="odd:bg-blue-100 odd: even:bg-white even:border-b ">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            Maternal Leave
+                            {{ $leave->leave_types->name }}
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             14 Days
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            01-01-1970
+                            {{ $leave->start_date }}
                         </td>
                         <td class="px-6 py-4 font-medium text-green-900 whitespace-nowrap">
-                            Active
+                            @if($leave->approved == 0)
+                                Pending
+                            @else
+                                Approved
+                            @endif
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            Ako'y may anak
+                            {{ $leave->reason }}
                         </td>
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             <div class="flex items-center justify-end">
@@ -82,7 +86,7 @@
                     </tr>
 
 
-                @endfor
+                @endforeach
                 <!-- END OF ROW -->
                 </tbody>
             </table>

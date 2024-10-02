@@ -40,7 +40,7 @@ return new class extends Migration
 
         Schema::table('leaves', function(Blueprint $table) {
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
-            $table->foreign('leave_type_id')->references('id')->on('leave_types');
+            $table->foreign('leave_types_id')->references('id')->on('leave_types');
         });
     }
 

@@ -39,7 +39,7 @@
             </div>
 
             <li>
-                <!-- START OF DROPDOWN TOGGLE -->
+                {{-- START OF DROPDOWN TOGGLE --}}
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-employee-buttons" data-collapse-toggle="sub-employee-buttons">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
@@ -49,7 +49,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
-                <!-- END OF DROPDOWN TOGGLE -->
+                {{-- END OF DROPDOWN TOGGLE --}}
 
                 <ul id="sub-employee-buttons" class=" {{request()->is('admin/employees*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
@@ -61,7 +61,7 @@
                 </ul>
             </li>
             <li>
-                <!-- START OF DROPDOWN TOGGLE -->
+                {{-- START OF DROPDOWN TOGGLE --}}
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-attendance" data-collapse-toggle="sub-attendance">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
@@ -72,7 +72,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
-                <!-- END OF DROPDOWN TOGGLE -->
+                {{-- END OF DROPDOWN TOGGLE --}}
 
                 <ul id="sub-attendance" class=" {{request()->is('admin/attendances*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
@@ -84,7 +84,7 @@
                 </ul>
             </li>
             <li>
-                <!-- START OF DROPDOWN TOGGLE -->
+                {{-- START OF DROPDOWN TOGGLE --}}
                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100" aria-controls="sub-attendance" data-collapse-toggle="sub-leave">
                     <svg class="flex-shrink-0 ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
@@ -95,11 +95,11 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
-                <!-- END OF DROPDOWN TOGGLE -->
+                {{-- END OF DROPDOWN TOGGLE --}}
 
                 <ul id="sub-leave" class=" {{ request()->is('admin/leaves*') || request()->is('admin/service-credits*') ? '' : 'hidden' }} ml-10 py-2 space-y-2">
                     <li>
-                        <x-admin-sidebar-button href="{{ route('admin.leaves.create') }}" :active="request()->is('admin/leaves/create')" type="sub">Add Leave</x-admin-sidebar-button>
+                        <x-admin-sidebar-button href="{{ route('admin.leaves.create') }}" :active="request()->is('admin/leaves/create')" type="sub">Leaves</x-admin-sidebar-button>
                     </li>
                     <li>
                         <x-admin-sidebar-button href="{{ route('admin.leaves.index') }}" :active="request()->is('admin/leaves')" type="sub">Manage Leave</x-admin-sidebar-button>

@@ -15,14 +15,17 @@ class LeaveTypeSeeder extends Seeder
     {
         $leave_types = new LeaveType();
         $leave_types->name = 'Paternal Leave';
+        $leave_types->days = '7';
         $leave_types->save();
 
         $leave_types = new LeaveType();
         $leave_types->name = 'Maternal Leave';
+        $leave_types->days = '120';
         $leave_types->save();
 
         $leave_types = new LeaveType();
         $leave_types->name = 'Service Credit';
+        $leave_types->days = null;
         $leave_types->save();
 
     }

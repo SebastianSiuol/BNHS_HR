@@ -78,6 +78,8 @@ class Faculty extends Authenticatable
         return $prefix . $year . '-' . $formattedNumber;
     }
 
+
+
     /* NOTE: HasOne/Many Relationships */
     public function personal_information(){
         return $this->hasOne(PersonalInformation::class);

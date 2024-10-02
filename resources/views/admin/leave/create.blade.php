@@ -1,6 +1,5 @@
 <x-admin-layout :admin="$admin">
 
-
 <x-slot:heading>Add Leave</x-slot:heading>
 
     <main class="block h-full p-4 sm:ml-80">
@@ -8,10 +7,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9 text-blue-900">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
-            <h1 class="text-3xl text-blue-900 font-bold ml-2">Add Leave</h1>
+            <h1 class="text-3xl text-blue-900 font-bold ml-2">Leaves</h1>
         </div>
 
-        <!-- LEAVE REQUESTS DIV -->
+        {{-- LEAVE REQUESTS DIV --}}
         <div>
             <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -19,7 +18,7 @@
                     Leave Requests
                 </h1>
 
-                <!-- LEAVE REQUESTS TABLE -->
+                {{-- LEAVE REQUESTS TABLE --}}
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-sm text-white bg-blue-900  dark:text-gray-400">
@@ -51,20 +50,22 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @foreach($leaves as $leave)
                         <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Ryan Basilides
+                                {{ $leave->faculty->personal_information->generateFullName() }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Sick Leave
+                                {{ $leave->leave_types->name }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Jan 18 2024
+                                {{ $leave->start_date }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Jan 22 2024
+                                {{ $leave->leave_date }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $leave->faculty->service_credit }}
                             </td>
                             <td class="px-6 py-4 font-medium text-green-500 whitespace-nowrap dark:text-white">
                                 <button data-modal-target="view-documents" data-modal-toggle="view-documents" type="button" class="text-white flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1 py-1 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -95,6 +96,7 @@
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                         </tbody>
                     </table>
 
@@ -103,10 +105,10 @@
 
         </div>
 
-        <!-- View Documents -->
+        {{-- View Documents Modal --}}
         <div id="view-documents" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-fit max-h-full">
-                <!-- Modal content -->
+                {{-- Modal content --}}
                 <div class="relative bg-gray-100 items-center justify-center rounded-lg shadow dark:bg-gray-700">
                     <div class="flex mb items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">

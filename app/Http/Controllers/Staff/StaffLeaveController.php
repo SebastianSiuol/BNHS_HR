@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Models\Leave;
 use App\Models\LeaveType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,11 @@ class StaffLeaveController extends Controller
      */
     public function index()
     {
-        return view('staff.leave.index');
+        $user_leaves = Leave::where('faculty_id', Auth::user()->id)->with('leave_types')->get();
+
+        return view('staff.leave.index', [
+            'leaves' => $user_leaves
+        ]);
     }
 
     /**
@@ -23,10 +28,9 @@ class StaffLeaveController extends Controller
      */
     public function create()
     {
-        $leave_types = LeaveType::all();
-
         return view('staff.leave.create', [
-            'leave_types' => $leave_types
+            'user' => Auth::user(),
+            'leave_types' => LeaveType::all(),
         ]);
     }
 
@@ -35,32 +39,55 @@ class StaffLeaveController extends Controller
      */
     public function store(Request $request)
     {
-        $validated_input = $request->validate([
-            'leave_type' => ['required'],
-            'start_leave_date' => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
-            'end_leave_date' => ['required', 'date_format:m-d-Y', 'after:start_leave_date'],
-            'leave_reason' => ['required'],
-        ],[
-            'start_leave_date.after_or_equal' => 'The From* date cannot be an earlier day than today!',
-            'end_leave_date.after' => 'The To* date must be after the From* date!',
-
+        /* Validates Leave Type before Proceeding. */
+         $request->validate([
+            'leave_type' => 'required', 'abort',
         ]);
 
-        $faculty = Auth::user();
+        /* Finds the Requested Leave to Retrieve its Days */
+        $leave_type = LeaveType::find($request->leave_type);
+
+        /* Validates Input depending on the Requested Leave Type */
+        if ($leave_type->days) {
+
+            $validated_input = $request->validate([
+                'leave_type' => ['required'],
+                'start_leave_date' => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
+                'leave_reason' => ['required'],
+            ], [
+                'start_leave_date.after_or_equal' => 'The From* date cannot be an earlier day than today!',
+            ]);
+
+            $end_date = LeaveType::calculateLeaveEndDate($validated_input['start_leave_date'], $leave_type->days);
+
+        } else {
+            $validated_input = $request->validate([
+                'leave_type' => ['required'],
+                'start_leave_date' => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
+                'no_leave_days' => ['required'],
+                'leave_reason' => ['required'],
+            ], [
+                'start_leave_date.after_or_equal' => 'The From* date cannot be an earlier day than today!',
+            ]);
+
+            $end_date = LeaveType::calculateLeaveEndDate($validated_input['start_leave_date'], $validated_input['no_leave_days']);
+
+        };
+
+        $user = Auth::user();
 
         $leave = new Leave([
-            'leave_type_id'    => $validated_input['leave_type'],
-            'start_date'        => $validated_input['start_leave_date'],
-            'leave_date'        => $validated_input['end_leave_date'],
-            'document'          => "Document",
-            'reason'            => $validated_input['leave_reason'],
-            'approved'          => false,
+            'leave_types_id' => $validated_input['leave_type'],
+            'start_date' => $validated_input['start_leave_date'],
+            'leave_date' => $end_date,
+            'document' => "Document",
+            'reason' => $validated_input['leave_reason'],
+            'approved' => false,
         ]);
 
+        $user->leaves()->save($leave);
 
-        $faculty->leaves()->save($leave);
-
-        return redirect()->route('staff_leave_index');
+        return redirect()->route('staff.leave.index');
     }
 
     /**

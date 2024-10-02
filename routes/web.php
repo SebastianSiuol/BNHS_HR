@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
 use App\Http\Controllers\Admin\Configuration\PositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
+use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 Use App\Http\Controllers\FacultyController;
@@ -13,12 +14,14 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\AdminLeaveController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
+use App\Models\LeaveType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Faculty;
 
 
-Route::get('/get-designations', [DesignationController::class, 'getDesignations']);
+Route::get('/get-designations', [DesignationController::class, 'getDesignations'])->name('api.get.designations');
+Route::get('/get-leave-type', [LeaveTypeApiController::class, 'getLeaveType'])->name('api.get.leave.type');
 
 Route::get('/staff/leave', [StaffLeaveController::class, 'index'])->name('staff.leave.index');
 Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name('staff.leave.create');
@@ -77,7 +80,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/config/department', [DepartmentController::class, 'index'])                          ->name('admin.config.department.index');
         Route::post('/admin/config/department/store', [DepartmentController::class, 'store'])                   ->name('admin.config.department.store');
-        Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy'])    ->name('admin.config.department.destroy');
+        Route::patch('/admin/config/department/{department}', [DepartmentController::class, 'update'])          ->name('admin.config.department.update');
+        Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy']) ->name('admin.config.department.destroy');
+
         Route::get('/admin/config/position', [PositionController::class, 'index'])                              ->name('admin.config.position.index');
         Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                    ->name('admin.config.shift.index');
     });
