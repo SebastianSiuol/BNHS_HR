@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 items-center gap-x-3">
+                <div id="no_of_leave_days_div" class="grid grid-cols-2 items-center gap-x-3">
 
                     <x-staff.forms.label label="Number of Days*" for="no_leave_days"/>
                     <div class="relative flex items-center max-w-[8rem]">

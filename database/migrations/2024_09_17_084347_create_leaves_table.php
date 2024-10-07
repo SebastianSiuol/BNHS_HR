@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('leave_date');
             $table->string('document');
             $table->string('reason');
-            $table->boolean('approved')->default(false);
+            $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

@@ -82,7 +82,6 @@ class StaffLeaveController extends Controller
             'leave_date' => $end_date,
             'document' => "Document",
             'reason' => $validated_input['leave_reason'],
-            'approved' => false,
         ]);
 
         $user->leaves()->save($leave);
@@ -111,7 +110,7 @@ class StaffLeaveController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd("What's up!");
     }
 
     /**

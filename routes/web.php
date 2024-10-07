@@ -26,6 +26,7 @@ Route::get('/get-leave-type', [LeaveTypeApiController::class, 'getLeaveType'])->
 Route::get('/staff/leave', [StaffLeaveController::class, 'index'])->name('staff.leave.index');
 Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name('staff.leave.create');
 Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
+
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
 Route::middleware('redirectIfAuth')->group(function () {
@@ -70,6 +71,7 @@ Route::middleware('auth')->group(function () {
         /*  Leave Routes */
         Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                                     ->name('admin.leaves.index');
         Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                             ->name('admin.leaves.create');
+        Route::patch('/admin/leave/status/action', [AdminLeaveController::class, 'statusAction'])              ->name('staff.leave.statusAction');
 
         Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])                          ->name('admin.service-credits.index');
 

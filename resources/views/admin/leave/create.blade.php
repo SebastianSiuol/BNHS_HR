@@ -50,59 +50,81 @@
                         </tr>
                         </thead>
                         <tbody>
+
                         @foreach($leaves as $leave)
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $leave->faculty->personal_information->generateFullName() }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $leave->leave_types->name }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $leave->start_date }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $leave->leave_date }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $leave->faculty->service_credit }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-green-500 whitespace-nowrap dark:text-white">
-                                <button data-modal-target="view-documents" data-modal-toggle="view-documents" type="button" class="text-white flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1 py-1 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                    <svg class="w-[27px] h-[27px] text-white-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
-                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                    </svg>
-                                    View Documents
-                                </button>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-green-500 whitespace-nowrap dark:text-white">
-                                Active
-                            </td>
-                            <td class="sm:flex px-6 py-4 font-medium text-green-500 whitespace-nowrap dark:text-white">
-                                <button id="approveLeave" type="button" class=" text-white items-center justify-between bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">
-                                    Approve
-                                </button>
-                                <button id="rejectLeave" type="button" class=" text-white items-center justify-between bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 me-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
-                                    Reject
-                                </button>
+                            <x-table.row>
 
-                                <div id="approved" class="hidden text-white items-center justify-between bg-green-700 font-medium rounded-lg text-sm px-2 py-2 me-2">
-                                    Approved
-                                </div>
+                                <x-table.data>
+                                    {{ $leave->faculty->personal_information->generateFullName() }}
+                                </x-table.data>
 
-                                <div id="rejected" class="hidden text-white items-center justify-between bg-red-700 font-medium rounded-lg text-sm px-2 py-2 me-2">
-                                    Rejected
-                                </div>
-                            </td>
-                        </tr>
+                                <x-table.data>
+                                    {{ $leave->leave_types->name }}
+                                </x-table.data>
+
+                                <x-table.data>
+                                    {{ $leave->start_date }}
+                                </x-table.data>
+
+                                <x-table.data>
+                                    {{ $leave->leave_date }}
+                                </x-table.data>
+
+                                <x-table.data>
+                                    {{ $leave->faculty->service_credit }}
+                                </x-table.data>
+
+                                <x-table.data>
+                                    <button data-modal-target="view-documents" data-modal-toggle="view-documents"
+                                            type="button"
+                                            class="text-white flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1 py-1 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                        <svg class="w-[27px] h-[27px] text-white-600 dark:text-white" aria-hidden="true"
+                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                             viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2"
+                                                  d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                                            <path stroke="currentColor" stroke-width="2"
+                                                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                        </svg>
+                                        View Documents
+                                    </button>
+                                </x-table.data>
+
+                                <x-table.data>
+                                    {{ ucfirst($leave->status) }}
+                                </x-table.data>
+
+                                <x-table.data>
+                                    <div id="buttons_{{$leave->id}}" {{ $leave->status == 'pending' ? "class=block" : "class=hidden" }}>
+                                        <button id="approve_leave"
+                                                type="button"
+                                                data-userId="{{$leave->id}}"
+                                                class="approve_leave text-white items-center justify-between bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">
+                                            Approve
+                                        </button>
+                                        <button id="reject_leave"
+                                                type="button"
+                                                data-userId="{{$leave->id}}"
+                                                class="reject_leave text-white items-center justify-between bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2 me-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                                            Reject
+                                        </button>
+                                    </div>
+                                    <div id="approved_{{$leave->id}}"
+                                         class="{{ $leave->status == 'approved' ? "block" : "hidden" }} text-white text-center bg-green-700 font-medium rounded-lg text-sm px-2 py-2 me-2">
+                                        Approved
+                                    </div>
+
+                                    <div id="rejected_{{$leave->id}}"
+                                         class="{{ $leave->status == 'rejected' ? "block" : "hidden" }} text-white text-center bg-red-700 font-medium rounded-lg text-sm px-2 py-2 me-2">
+                                        Rejected
+                                    </div>
+                                </x-table.data>
+                            </x-table.row>
                         @endforeach
                         </tbody>
                     </table>
-
                 </div>
             </div>
-
         </div>
 
         {{-- View Documents Modal --}}
@@ -132,5 +154,6 @@
 
     </main>
 
-    <script src="{{asset('js/admin-leave-create.js')}}"></script>
+
+    <script src="{{asset('js/admin/leave/create.js')}}"></script>
 </x-admin-layout>

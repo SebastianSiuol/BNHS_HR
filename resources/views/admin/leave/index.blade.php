@@ -43,78 +43,31 @@
                         </tr>
                         </thead>
                         <tbody class="text-center">
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Ryan Basilides</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Sebastian Torio</a>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="#" class="text-blue-600 underline hover:text-blue-900">Rogelio Herbosa</a>
-                            </td>
-                        </tr>
+
+                        {{-- Main Columns --}}
+                        @for($i = 0 ; $i < $max_rows; $i++)
+                            <x-table.row>
+                                <x-table.data>
+                                    @if(isset($approved_requests[$i]))
+                                        {{ $approved_requests[$i]->faculty->personal_information->generateFullName() }}
+                                    @endif
+                                </x-table.data>
+                                <x-table.data>
+                                    @if(isset($rejected_requests[$i]))
+                                        {{ $rejected_requests[$i]->faculty->personal_information->generateFullName() }}
+                                    @endif
+                                </x-table.data>
+                                <x-table.data>
+                                    @if(isset($pending_requests[$i]))
+                                        {{ $pending_requests[$i]->faculty->personal_information->generateFullName() }}
+                                    @endif
+                                </x-table.data>
+                            </x-table.row>
+                        @endfor
                         </tbody>
                     </table>
-
                 </div>
             </div>
-
         </div>
 
         <!-- Leave request TABLE -->
@@ -164,58 +117,35 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Ryan Basilides
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Sick Leave
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Jan 18 2024
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Jan 22 2024
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            5 Days
-                        </td>
-                    </tr>
-                    <tr class="odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Ryan Basilides
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Sick Leave
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Jan 18 2024
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Jan 22 2024
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            5 Days
-                        </td>
-                    </tr>
+                    @foreach($all_leave_requests as $leave_request)
+                    <x-table.row>
+                        <x-table.data>
+                            {{ $leave_request->faculty->personal_information->generateFullName() }}
+                        </x-table.data>
+                        <x-table.data>
+                            {{ $leave_request->leave_types->name }}
+                        </x-table.data>
+                        <x-table.data>
+                            {{ $leave_request->start_date }}
+                        </x-table.data>
+                        <x-table.data>
+                            {{ $leave_request->leave_date }}
+                        </x-table.data>
+                        <x-table.data>
+                            N/A
+                        </x-table.data>
+                        <x-table.data>
+                            {{ $leave_request->faculty->service_credit }}
+                        </x-table.data>
+                        <x-table.data>
+                            {{ ucfirst($leave_request->status) }}
+                        </x-table.data>
+                        <x-table.data>
+                            {{ $leave_request->totalLeaveDays() }}
+                        </x-table.data>
+                    </x-table.row>
+                    @endforeach
 
                     </tbody>
                 </table>

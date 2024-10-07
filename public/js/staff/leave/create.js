@@ -1,7 +1,7 @@
 const typeOfLeave = document.getElementById('leave_type')
-
 typeOfLeave.addEventListener('change', getLeaveType)
 
+const numberOfLeaveInput = document.getElementById('no_of_leave_days_div')
 
 function getLeaveType (){
     const leaveTypeID = typeOfLeave.value
@@ -13,7 +13,12 @@ function getLeaveType (){
             .then(response => response.json())
             .then(responseData => {
 
-                console.log(responseData['days'])
+                if(!responseData['days']){
+                    /* Shows Input when Service Credit is chosen. */
+                    numberOfLeaveInput.style.display = 'grid'
+                } else {
+                    numberOfLeaveInput.style.display = 'none'
+                }
 
             })
             .catch(e => {
