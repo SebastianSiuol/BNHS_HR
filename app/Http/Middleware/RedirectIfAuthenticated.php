@@ -19,9 +19,9 @@ class RedirectIfAuthenticated
         if (Auth::check()) {
 
             if (Auth::user()->roles->contains('role_name', strtolower('admin'))) {
-                return redirect()->route('admin_index');
+                return redirect()->route('admin.index');
             } else if (Auth::user()->roles->contains('role_name', strtolower('staff'))) {
-                return redirect()->route('staff_index');
+                return redirect()->route('staff.index');
             }
 
         }

@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
     <x-slot:heading>Positions</x-slot:heading>
 
@@ -216,4 +216,4 @@
             <!-- Pagination -->
         </div>
     </main>
-</x-admin-layout>
+</x-admin.layout>

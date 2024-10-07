@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
     <x-slot:heading>Home</x-slot:heading>
 
@@ -191,5 +191,5 @@
     </main>
     <script src={{asset('js/admin.js')}}></script>
 
-</x-admin-layout>
+</x-admin.layout>
 

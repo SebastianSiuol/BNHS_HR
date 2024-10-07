@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 
 <x-slot:heading>Employee Edit</x-slot:heading>
@@ -22,7 +22,7 @@
             <!-- Personal Details Form -->
             <div id="personalDetails">
 
-                <x-admin-employee-nav-steppers :active_number="1" />
+                <x-admin.employee.nav-steppers :active_number="1" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -59,7 +59,7 @@
             <!-- Account Login Form -->
             <div id="accountLogin" class="hidden">
 
-                <x-admin-employee-nav-steppers :active_number="2" />
+                <x-admin.employee.nav-steppers :active_number="2" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -86,7 +86,7 @@
             <!-- Company Details Form -->
             <div id="companyDetails" class="hidden">
 
-                <x-admin-employee-nav-steppers :active_number="3" />
+                <x-admin.employee.nav-steppers :active_number="3" />
 
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
@@ -119,7 +119,7 @@
             <!-- Documents Form -->
             <div id="documentsForm" class="hidden">
 
-                <x-admin-employee-nav-steppers :active_number="4" />
+                <x-admin.employee.nav-steppers :active_number="4" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -192,4 +192,4 @@
     <script src={{asset('js/validate-edit-forms.js')}}></script>
     <script src={{asset('js/employee/create-designation.js')}}></script>
 
-</x-admin-layout>
+</x-admin.layout>

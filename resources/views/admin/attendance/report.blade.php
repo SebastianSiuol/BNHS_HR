@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 
 <x-slot:heading>Attendance Report</x-slot:heading>
@@ -244,4 +244,4 @@
 
     <script src={{asset('js/admin-attd-report.js')}}></script>
 
-</x-admin-layout>
+</x-admin.layout>

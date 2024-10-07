@@ -49,11 +49,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/home', function () {
 
             return view('admin.dashboard', [
-                'admin' => Auth::user(),
                 'total_employees' => Faculty::all()->count(),
             ]);
 
-        })->name('admin_index');
+        })->name('admin.index');
 
         Route::get('/admin/employees/search', [FacultyController::class, 'search'])                             ->name('admin_employees_search');
 
@@ -94,7 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:staff'])->group(function () {
         Route::get('/staff/home', function() {
             return view('staff.dashboard', []);
-        })->name('staff_index');
+        })->name('staff.index');
     });
 
 });

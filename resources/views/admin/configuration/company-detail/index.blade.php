@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
     <x-slot:heading>Company Details</x-slot:heading>
 
@@ -158,4 +158,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="{{ asset('js/admin/company_details.js') }}"></script>
-</x-admin-layout>
+</x-admin.layout>

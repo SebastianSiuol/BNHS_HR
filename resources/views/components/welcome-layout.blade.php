@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/main_index.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
 <body>
+
     {{ $slot }}
+
 </body>
-
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
-
 </html>

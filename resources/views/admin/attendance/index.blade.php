@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 
 <x-slot:heading>Daily Attendance</x-slot:heading>
@@ -159,4 +159,4 @@
                 </div>
             @endif
         </main>
-</x-admin-layout>
+</x-admin.layout>

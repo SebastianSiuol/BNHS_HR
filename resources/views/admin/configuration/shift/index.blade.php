@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
     <x-slot:heading>Shifts</x-slot:heading>
 
@@ -288,4 +288,4 @@
 
         </div>
     </main>
-</x-admin-layout>
+</x-admin.layout>

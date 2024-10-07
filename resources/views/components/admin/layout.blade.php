@@ -1,5 +1,3 @@
-@props(['admin'])
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
@@ -36,7 +34,7 @@
                         aria-expanded="false" data-dropdown-toggle="user-action">
                     <span class="sr-only">Open user menu</span>
                     <div>
-                        <span class="font-semibold text-black">{{ $admin->personal_information->first_name . ' ' . $admin->personal_information->last_name }}</span>
+                        <span class="font-semibold text-black">{{ $loggedUser->personal_information->generateFullName() }}</span>
                         <p class="text-gray-600 text-xs">administrator</p>
                     </div>
                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
@@ -75,6 +73,5 @@
 
 {{ $slot }}
 
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

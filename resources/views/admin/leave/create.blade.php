@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 <x-slot:heading>Add Leave</x-slot:heading>
 
@@ -156,4 +156,4 @@
 
 
     <script src="{{asset('js/admin/leave/create.js')}}"></script>
-</x-admin-layout>
+</x-admin.layout>

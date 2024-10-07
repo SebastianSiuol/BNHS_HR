@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 
 <x-slot:heading>Employee Creation</x-slot:heading>
@@ -21,7 +21,7 @@
             {{-- Start of Personal Details Form --}}
             <div id="personalDetails">
 
-                <x-admin-employee-nav-steppers :active_number="1" />
+                <x-admin.employee.nav-steppers :active_number="1" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -53,7 +53,7 @@
             {{-- Start of Account Login Form --}}
             <div id="accountLogin" class="hidden">
 
-            <x-admin-employee-nav-steppers :active_number="2" />
+            <x-admin.employee.nav-steppers :active_number="2" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
 
@@ -79,7 +79,7 @@
             {{-- Start of Company Details Form --}}
             <div id="companyDetails" class="hidden">
 
-                <x-admin-employee-nav-steppers :active_number="3" />
+                <x-admin.employee.nav-steppers :active_number="3" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                     <x-forms.form-heading>Company Details</x-forms.form-heading>
@@ -108,7 +108,7 @@
             {{-- Start of Documents Form --}}
             <div id="documentsForm" class="hidden">
 
-                <x-admin-employee-nav-steppers :active_number="4" />
+                <x-admin.employee.nav-steppers :active_number="4" />
 
                 <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                     <x-forms.form-heading>Documents</x-forms.form-heading>
@@ -180,4 +180,4 @@
     <script src={{asset('js/admin.js')}}></script>
     <script src={{asset('js/validate-create-forms.js')}}></script>
     <script src={{asset('js/employee/create-designation.js')}}></script>
-</x-admin-layout>
+</x-admin.layout>

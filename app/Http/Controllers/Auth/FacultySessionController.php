@@ -46,11 +46,11 @@ class FacultySessionController extends Controller
 
             if ($isAdmin) {
                 return redirect()
-                    ->intended(route('admin_index'))
+                    ->intended(route('admin.index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
             }else if ($isStaff) {
                 return redirect()
-                    ->intended(route('staff_index'))
+                    ->intended(route('staff.index'))
                     ->with('success', 'Successfully Logged In!');// Staff dashboard
             } else {
 

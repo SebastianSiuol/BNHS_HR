@@ -1,4 +1,4 @@
-<x-admin-layout :admin="$admin">
+<x-admin.layout>
 
 
     <x-slot:heading>Department Configuration</x-slot:heading>
@@ -156,4 +156,4 @@
         @endif
     </main>
     <script src="{{ asset('js/admin/configurations/department-index.js') }}"></script>
-</x-admin-layout>
+</x-admin.layout>
