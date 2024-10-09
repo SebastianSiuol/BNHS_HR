@@ -6,8 +6,6 @@ const dateRegEx = RegExp('^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-(19|20)\\d\\
 function validatePersonalDetailsForm() {
 
     const personalDetailsInputs = document.querySelectorAll('.required-inputs input');
-    const permanentAddressInputs = document.querySelectorAll('.required-if-unchecked input');
-    // const personalDetailsSelect = document.querySelectorAll('.validate-all select');
     const dateOfBirthInput = document.getElementById('date_of_birth');
 
     let allValid = true;
@@ -24,20 +22,6 @@ function validatePersonalDetailsForm() {
         }
     }
 
-    // if(!isSameAddressChecked()){
-    //     for (let input of permanentAddressInputs) {
-    //         if (input.value.trim() === '') {
-    //             input.setCustomValidity('Please input the required field');
-    //             input.reportValidity()
-    //             allValid = false;
-    //             break;
-    //         } else {
-    //             input.setCustomValidity('');
-    //         }
-    //         input.reportValidity()
-    //     }
-    // }
-
     if (!dateRegEx.test(dateOfBirthInput.value.trim())) {
         dateOfBirthInput.setCustomValidity('Please select a valid date format [mm-dd-yyyy]');
         dateOfBirthInput.reportValidity()
@@ -46,16 +30,6 @@ function validatePersonalDetailsForm() {
         dateOfBirthInput.setCustomValidity('');
         dateOfBirthInput.reportValidity()
     }
-
-
-    // for (let select of personalDetailsSelect) {
-    //     if (select.value === '0') {
-    //         select.setCustomValidity('Please select the required field');
-    //         select.reportValidity()
-    //         allValid = false;
-    //         break;
-    //     }
-    // }
 
 
     if (allValid) {
@@ -144,15 +118,3 @@ function validateCompanyLoginForm() {
 document.getElementById('nextToAccountLogin').addEventListener('click', validatePersonalDetailsForm);
 document.getElementById('nextToCompanyDetails').addEventListener('click', validateAccountLoginForm);
 document.getElementById('nextToDocuments').addEventListener('click', validateCompanyLoginForm);
-
-// function isSameAddressChecked(){
-//     return document.getElementById('both_address_same').checked;
-// }
-
-// document.getElementById('both_address_same').addEventListener('change', function(){
-//     if (this.checked){
-//         document.getElementById('permanent_address_form').style.display = 'none';
-//     } else {
-//         document.getElementById('permanent_address_form').style.display = 'block';
-//     }
-// })

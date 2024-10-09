@@ -1,31 +1,32 @@
 @props(['max_date', 'civil_statuses', 'name_exts'])
 
-<div class="validate-all gap-4 mb-4">
+<div class="gap-4 mb-4">
 
+
+    {{-- First Row --}}
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
 
-        <!-- FIRST NAME -->
+        {{-- FIRST NAME --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="First Name" for="first_name" />
             <x-forms.input name="first_name" placeholder="First Name" />
         </div>
 
-        <!-- MIDDLE NAME -->
+        {{-- MIDDLE NAME --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Middle Name" for="middle_name" />
             <x-forms.input name="middle_name" placeholder="Middle Name" />
         </div>
 
-        <!-- LAST NAME -->
+        {{-- LAST NAME --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Last Name" for="last_name" />
             <x-forms.input name="last_name" placeholder="Last Name" />
         </div>
 
-        <!-- NAME EXTENSION -->
+        {{-- NAME EXTENSION --}}
         <div class="mt-4">
             <x-forms.label label_name="Name Extension" for="name_extension" />
-
 
             <x-forms.select name="name_extension">
 
@@ -42,15 +43,15 @@
 
     </div>
 
-
+    {{-- Second Row --}}
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
-        <!-- PLACE OF BIRTH -->
+        {{-- PLACE OF BIRTH --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Place of Birth" for="place_of_birth" />
             <x-forms.input name="place_of_birth" placeholder="Place of Birth" />
         </div>
 
-        <!-- BIRTH DATE -->
+        {{-- BIRTH DATE --}}
         <div class="mt-4">
             <x-forms.label label_name="Date of Birth" for="date_of_birth" />
 
@@ -76,7 +77,7 @@
             </div>
         </div>
 
-        <!-- SEX? -->
+        {{-- SEX? --}}
         <div class="mt-4">
             <x-forms.label label_name="Sex" for="sex" />
 
@@ -90,7 +91,7 @@
 
         </div>
 
-        <!-- MARITAL STATUS -->
+        {{-- MARITAL STATUS --}}
         <div class="mt-4">
             <x-forms.label label_name="Civil Status" for="civil_status"/>
 
@@ -110,26 +111,27 @@
     </div>
 
 
+    {{-- Third Row --}}
     <div class="grid grid-cols-none lg:grid-cols-4 gap-4">
-        <!-- CONTACT NUMBER -->
+        {{-- CONTACT NUMBER --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Contact Number" for="contact_number"/>
             <x-forms.input name="contact_number" placeholder="Contact Number" />
         </div>
 
-        <!-- TELEPHONE NUMBER -->
+        {{-- TELEPHONE NUMBER --}}
         <div class="mt-4">
             <x-forms.label label_name="Telephone Number" for="telephone_number"/>
             <x-forms.input name="telephone_number" placeholder="Telephone Number" />
         </div>
 
-        <!-- CONTACT PERSON NAME -->
+        {{-- CONTACT PERSON NAME --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Contact Person Name" for="contact_person_name" />
             <x-forms.input name="contact_person_name" placeholder="Contact Person Name" />
         </div>
 
-        <!-- CONTACT PERSON NUMBER -->
+        {{-- CONTACT PERSON NUMBER --}}
         <div class="required-inputs mt-4">
             <x-forms.label label_name="Contact Person Number" for="contact_person_number" />
             <x-forms.input name="contact_person_number" placeholder="Contact Person Number" />
@@ -140,7 +142,7 @@
 
     <div class="grid grid-cols-none lg:grid-cols-2 gap-16">
         <div>
-            <!-- RESIDENTIAL ADDRESS -->
+            {{-- RESIDENTIAL ADDRESS --}}
             <div>
                 <h6 class="font-semibold">Residential Address</h6>
             </div>
@@ -199,19 +201,27 @@
         </div>
 
         <div>
-            <!-- PERMANENT ADDRESS -->
-            <div>
+            {{-- PERMANENT ADDRESS --}}
+            <div class="flex gap-x-3">
                 <h6 class="font-semibold">Permanent Address</h6>
-                {{--                <div class="flex items-center mb-4 mt-2">--}}
-                {{--                    <input id="both_address_same"--}}
-                {{--                           name="both_address_same"--}}
-                {{--                           type="checkbox"--}}
-                {{--                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">--}}
-                {{--                    <label for="both_address_same"--}}
-                {{--                           class="ms-2 text-sm font-medium text-gray-900">--}}
-                {{--                        Same as Residential--}}
-                {{--                    </label>--}}
-                {{--                </div>--}}
+
+{{--                <div class="flex items-center mb-4 mt-2">
+                    <input id="both_address_same"
+                           name="both_address_same"
+                           type="checkbox"
+                           class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+                    <label for="both_address_same"
+                           class="ms-2 text-sm font-medium text-gray-900">
+                        Same as Residential
+                    </label>
+                </div>--}}
+
+                <button type="button"
+                        id="same_address_button"
+                        class="px-2 text-center text-sm text-white border border-blue-700 rounded-lg bg-blue-700 hover:bg-blue-800 hover:border-blue-800">
+                    Same as Residential
+                </button>
+
             </div>
             <div id="permanent_address_form">
                 <div class="mt-2 grid gap-4 mb-4 grid-cols-2">
@@ -260,14 +270,14 @@
         </div>
     </div>
 
-    <!-- PHOTO -->
+    {{-- PHOTO --}}
     <div class="mt-4">
         <x-forms.label label_name="Photo" for="photo" />
 
         <x-forms.file-input name="photo"/>
     </div>
 
-    <!-- COMMENT -->
+    {{-- COMMENT --}}
     <div class="mt-4">
         <x-forms.label label_name="Comment" for="comment" />
         <textarea id="comment"

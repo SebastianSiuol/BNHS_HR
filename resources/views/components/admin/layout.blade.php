@@ -68,7 +68,7 @@
 </div>
 
     {{-- Start of Sidebar --}}
-    <x-admin-sidebar />
+    <x-admin.sidebar />
     {{-- End of Sidebar--}}
 
 {{ $slot }}

@@ -30,6 +30,7 @@ Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
 Route::middleware('redirectIfAuth')->group(function () {
+
     Route::view('/','index')->name('/');
     Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty_login');
     Route::post('/faculty/login', [FacultySessionController::class, 'store']);
@@ -38,6 +39,7 @@ Route::middleware('redirectIfAuth')->group(function () {
     Route::post('/faculty/forgot-password', [ForgotPasswordController::class, 'store'])->name('auth.forgot-password.store');
     Route::get('/faculty/new-password/{token}', [ResetPasswordController::class, 'create'])->name('password.reset');
     Route::post('/faculty/new-password', [ResetPasswordController::class, 'store'])->name('password.reset.store');
+
 });
 
 Route::middleware('auth')->group(function () {
