@@ -14,19 +14,18 @@ class LeaveTypeSeeder extends Seeder
     public function run(): void
     {
         $leave_types = new LeaveType();
-        $leave_types->name = 'Active';
+        $leave_types->name = 'Paternal Leave';
+        $leave_types->days = '7';
         $leave_types->save();
 
         $leave_types = new LeaveType();
-        $leave_types->name = 'Dismissed';
+        $leave_types->name = 'Maternal Leave';
+        $leave_types->days = '120';
         $leave_types->save();
 
         $leave_types = new LeaveType();
-        $leave_types->name = 'On-Leave';
-        $leave_types->save();
-
-        $leave_types = new LeaveType();
-        $leave_types->name = 'Transferred';
+        $leave_types->name = 'Service Credit';
+        $leave_types->days = null;
         $leave_types->save();
 
     }

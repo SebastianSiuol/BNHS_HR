@@ -10,12 +10,12 @@
         </div>
         <div class="grid grid-cols-2">
             <x-admin-show-label for=department>Department</x-admin-show-label>
-            <x-admin-show-input name=department id=department value="{{$faculty->department->department_name}}"/>
+            <x-admin-show-input name=department id=department value="{{$faculty->designation->department->name}}"/>
         </div>
         <div class="grid grid-cols-2">
             <x-admin-show-label for=designation>Designation</x-admin-show-label>
             <x-admin-show-input name=designation id=designation
-                                value="{{$faculty->designation->department_designation}}"/>
+                                value="{{$faculty->designation->name}}"/>
         </div>
         <div class="grid grid-cols-2">
             <x-admin-show-label for=date_of_joining>Date of Joining</x-admin-show-label>

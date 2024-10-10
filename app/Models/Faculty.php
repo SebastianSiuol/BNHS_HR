@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\FacultyAccountInformation\Department;
+use App\Models\FacultyAccountInformation\Designation;
 use App\Models\PersonalInformation\PersonalInformation;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Laravel\Sanctum\HasApiTokens;
 
 class Faculty extends Authenticatable
@@ -74,6 +78,8 @@ class Faculty extends Authenticatable
         return $prefix . $year . '-' . $formattedNumber;
     }
 
+
+
     /* NOTE: HasOne/Many Relationships */
     public function personal_information(){
         return $this->hasOne(PersonalInformation::class);
@@ -88,15 +94,17 @@ class Faculty extends Authenticatable
     }
 
     /* NOTE: Belongs Relationships */
-    public function department(){
-        return $this->belongsTo(Department::class);
-    }
 
     public function designation(){
         return $this->belongsTo(Designation::class);
     }
 
     public function shift(){
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function employmentStatus()
+    {
         return $this->belongsTo(Shift::class);
     }
 

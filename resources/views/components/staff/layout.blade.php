@@ -18,7 +18,7 @@
 </head>
 <body class="h-screen font-poppins">
 
-    {{-- First Row --}}
+    {{-- HEADER --}}
     <div class="flex py-2 px-16 justify-between bg-[#163172] text-white">
 
         <div class="flex space-x-2 items-center justify-center">
@@ -47,6 +47,9 @@
             <!-- Dropdown menu -->
             <div id="faculty_account" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                 <ul class="py-2 text-gray-700 dark:text-gray-200">
+                    <li>
+                        <a href="{{ route('staff.leave.index') }}" class="block px-4 py-2 hover:bg-gray-100">Leave</a>
+                    </li>
                     <li>
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
                     </li>

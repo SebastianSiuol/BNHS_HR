@@ -2,6 +2,7 @@
 
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DesignationSeeder;
+use Database\Seeders\EmploymentStatusSeeder;
 use Database\Seeders\FacultySeeder;
 use Database\Seeders\LeaveTypeSeeder;
 use Database\Seeders\PersonalInformationSeeders\CivilStatusSeeder;
@@ -62,6 +63,9 @@ return new class extends Migration
 
         $leave_type_seeder = new LeaveTypeSeeder();
         $leave_type_seeder->run();
+
+        $employment_status = new EmploymentStatusSeeder();
+        $employment_status->run();
     }
 
     /**

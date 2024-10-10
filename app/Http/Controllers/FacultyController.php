@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use App\Models\Designation;
+use App\Exports\FacultyExport;
 use App\Models\Faculty;
+use App\Models\FacultyAccountInformation\Department;
+use App\Models\FacultyAccountInformation\Designation;
 use App\Models\PersonalInformation\CivilStatus;
 use App\Models\PersonalInformation\ContactPerson;
 use App\Models\PersonalInformation\NameExtension;
@@ -15,20 +16,21 @@ use App\Models\Role;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FacultyController extends Controller
 {
     public function index(){
         $faculties = Faculty::with('personal_information')->first()->paginate(5);
 
-        return view('admin.employee-index',[
+        return view('admin.employee.index',[
             'admin'             => Auth::user(),
             'faculties'         =>$faculties
         ]);
     }
 
     public function create(){
-        return view('admin.employee-create', [
+        return view('admin.employee.create', [
             'admin'             => Auth::user(),
             'generated_id'      => Faculty::generateFacultyCode(),
             'shifts'            => Shift::all(),
@@ -68,7 +70,6 @@ class FacultyController extends Controller
             'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
             'password'                      => ['required', 'string', 'min:8'],
             'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
-            'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
             'role'                           => ['required'],
@@ -118,7 +119,6 @@ class FacultyController extends Controller
         $faculty->password          = $validated_inputs['password'];
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
-        $faculty->department_id     = $validated_inputs['department'];
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
 
@@ -199,17 +199,17 @@ class FacultyController extends Controller
 //      END OF SAVING DETAILS
 
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee created successfully!');
     }
 
     public function show(){
-        return redirect()->route('employees_index');
+        return redirect()->route('employees.index');
     }
 
     public function edit(Faculty $faculty){
 
-        return view('admin.employee-edit', [
+        return view('admin.employee.edit', [
             'admin'             => Auth::user(),
             'faculty'               => $faculty,
             'personal_information'  => $faculty->personal_information,
@@ -228,7 +228,6 @@ class FacultyController extends Controller
 
         $validated_inputs = $request->validate([
             'email'                         => ['required', 'string', 'max:255'],
-            'department'                    => ['required'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
 
@@ -274,6 +273,7 @@ class FacultyController extends Controller
 //      START OF EDITING
 //      ACCOUNT DETAILS
         $faculty->email                     = $validated_inputs['email'];
+        $faculty->designation_id            = $validated_inputs['designation'];
 
 //      PERSONAL INFORMATION DETAILS
         $psn_info = $faculty->personal_information;
@@ -323,7 +323,7 @@ class FacultyController extends Controller
         $perm_addr->save();
 
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee updated successfully!');
     }
 
@@ -331,28 +331,41 @@ class FacultyController extends Controller
 
         if (Auth::user()->id == $faculty->id){
             return redirect()
-                ->route('employees_index')
+                ->route('employees.index')
                 ->with('error', 'Cannot delete logged-in employee!');
         }
 
         $faculty->delete();
         return redirect()
-            ->route('employees_index')
+            ->route('employees.index')
             ->with('success', 'Employee deleted successfully!');
     }
 
     public function search(Request $request){
 
-//        $search = $request->query('search');
-//        $faculties = null;
-//
-//        if ($search) {
-//            $faculties = Faculty::where('faculty_code', 'like', '%'.$search.'%')->first()->paginate(5);
-//        }
-////        dd($faculties);
-//
-//        return view('admin.employee-index')
-//            ->with('faculties', $faculties)
-//            ->with('admin', Auth::user());
+//        dd($request->all());
+
+        $faculties = Faculty::with(['personal_information', 'department', 'shift'])
+            ->where('faculty_code',  'LIKE' , '%' . request('query') . '%')
+            ->orWhere('email',  'LIKE' , '%' . request('query') . '%')
+            ->orWhereHas('personal_information', function($query) use($request){
+                $query->where('first_name', 'LIKE' , '%' . request('query') . '%')
+                ->orWhere('last_name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->orWhereHas('department', function($query) use($request){
+                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->orWhereHas('shift', function($query) use($request){
+                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+            })
+            ->paginate(5);
+
+        return view('admin.employee.index')
+            ->with('faculties', $faculties)
+            ->with('admin', Auth::user());
+    }
+
+    public function export(){
+        return Excel::download(new FacultyExport, 'faculties.xlsx');
     }
 }

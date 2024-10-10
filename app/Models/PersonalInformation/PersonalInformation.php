@@ -14,6 +14,9 @@ class PersonalInformation extends Model
 
     protected $table = 'personal_information';
 
+    public function generateFullName(){
+        return $this->first_name . ' ' . $this->last_name;
+    }
 
 //  NOTE: HAS ONE RELATIONSHIPS (Foreign Key is in Their Table)
     public function medical_info(){

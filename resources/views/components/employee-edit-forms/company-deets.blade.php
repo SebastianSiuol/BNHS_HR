@@ -17,7 +17,7 @@
 
             <option disabled>Select Department</option>
         @foreach($departments as $department)
-            <option value="{!! __($department->id) !!}" {{$faculty->department_id === $department->id ? "selected=selected": ""}}>{!! __($department->department_name) !!}</option>
+            <option value="{!! __($department->id) !!}" {{$faculty->department_id === $department->id ? "selected=selected": ""}}>{!! __($department->name) !!}</option>
         @endforeach
 
         </x-forms.select>

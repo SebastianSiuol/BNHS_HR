@@ -4,6 +4,8 @@ namespace App\Providers;
 
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\UrlGenerator;
 
@@ -25,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') == 'production') {
             $url->forceScheme('https');
         }
+
+
+        View::composer('*', function ($view) {
+            $view->with('loggedUser', Auth::user());
+        });
+
 
         Paginator::useTailwind();
     }

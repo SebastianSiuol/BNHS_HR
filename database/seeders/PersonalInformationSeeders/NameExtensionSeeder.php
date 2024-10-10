@@ -45,8 +45,13 @@ class NameExtensionSeeder extends Seeder
         $name_ext->title = 'V';
         $name_ext->save();
 
-        $psn_info = PersonalInformation::find(1);
-        $psn_info->name_extension_id = 1;
-        $psn_info->save();
+        $count = PersonalInformation::all()->count();
+
+        for ($i = 1; $i < $count+1; $i++) {
+            $psn_info = PersonalInformation::find($i);
+            $psn_info->name_extension_id = 1;
+            $psn_info->save();
+
+        }
     }
 }

@@ -14,9 +14,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('faculties', function (Blueprint $table) {
-            $table->foreign('department_id')->references('id')->on('departments');
-            $table->foreign('designation_id')->references('id')->on('designations');
+            $table->foreign('designation_id')->references('id')->on('designations')->onDelete('restrict');
             $table->foreign('shift_id')->references('id')->on('shifts');
+            $table->foreign('employment_status_id')->references('id')->on('employment_statuses');
+        });
+
+        Schema::table('designations', function (Blueprint $table) {
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
         });
 
         Schema::table('personal_information', function (Blueprint $table) {
@@ -36,7 +40,7 @@ return new class extends Migration
 
         Schema::table('leaves', function(Blueprint $table) {
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
-            $table->foreign('leave_type_id')->references('id')->on('leave_types');
+            $table->foreign('leave_types_id')->references('id')->on('leave_types');
         });
     }
 
