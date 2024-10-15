@@ -10,12 +10,6 @@ class FacultyApiController extends Controller
 {
     public function index(Request $request)
     {
-
-        // Might use it later, I don't know
-        //$faculties = Faculty::select('id', 'faculty_code', 'email', )
-        //    ->with('personal_information:faculty_id,first_name,last_name,middle_name,contact_no', 'roles:role_name')
-        //    ->get();
-
         $retrieved_faculties = Faculty::all();
 
         if ($retrieved_faculties->isEmpty()) {
@@ -30,6 +24,9 @@ class FacultyApiController extends Controller
                 'middle_name' => $retrieved_faculty->personal_information->middle_name,
                 'last_name' => $retrieved_faculty->personal_information->last_name,
                 'contact_number' => $retrieved_faculty->personal_information->contact_no,
+                'employmentStatus' => $retrieved_faculty->employment_status->name,
+                "teacherLevel" => $retrieved_faculty->school_position->name,
+                'department' => $retrieved_faculty->designation->department->name,
                 'roles' => $retrieved_faculty->roles->pluck('role_name'),
             ];
         }

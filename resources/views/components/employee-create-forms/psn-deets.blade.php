@@ -202,7 +202,7 @@
 
         <div>
             {{-- PERMANENT ADDRESS --}}
-            <div class="flex gap-x-3">
+            <div class="flex gap-x-4">
                 <h6 class="font-semibold">Permanent Address</h6>
 
 {{--                <div class="flex items-center mb-4 mt-2">
@@ -218,7 +218,8 @@
 
                 <button type="button"
                         id="same_address_button"
-                        class="px-2 text-center text-sm text-white border border-blue-700 rounded-lg bg-blue-700 hover:bg-blue-800 hover:border-blue-800">
+                        class="px-4 text-center text-sm text-white border border-gray-700 rounded-lg bg-gray-700 hover:bg-gray-500">
+
                     Same as Residential
                 </button>
 

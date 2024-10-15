@@ -13,6 +13,7 @@ use Database\Seeders\PersonalInformationSeeders\PersonalInformationSeeder;
 use Database\Seeders\PersonalInformationSeeders\ReferenceMemberSeeder;
 use Database\Seeders\PersonalInformationSeeders\ResidentialAddressSeeder;
 use Database\Seeders\RoleSeeder;
+use Database\Seeders\SchoolPositionSeeder;
 use Database\Seeders\ShiftSeeder;
 use Illuminate\Database\Migrations\Migration;
 
@@ -42,6 +43,15 @@ return new class extends Migration
         $shift_seeder = new ShiftSeeder();
         $shift_seeder->run();
 
+        $leave_type_seeder = new LeaveTypeSeeder();
+        $leave_type_seeder->run();
+
+        $employment_status = new EmploymentStatusSeeder();
+        $employment_status->run();
+
+        $school_position_seeder = new SchoolPositionSeeder();
+        $school_position_seeder->run();
+
         /* NOTE:Personal Information Seeders */
         $personal_info_seeder = new PersonalInformationSeeder();
         $personal_info_seeder->run();
@@ -60,12 +70,6 @@ return new class extends Migration
 
         $name_ext_seeder = new NameExtensionSeeder();
         $name_ext_seeder->run();
-
-        $leave_type_seeder = new LeaveTypeSeeder();
-        $leave_type_seeder->run();
-
-        $employment_status = new EmploymentStatusSeeder();
-        $employment_status->run();
     }
 
     /**

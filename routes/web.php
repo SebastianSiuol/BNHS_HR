@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Routes for staff
-    Route::middleware(['role:staff'])->group(function () {
+    Route::middleware(['role:faculty'])->group(function () {
         Route::get('/staff/home', function() {
             return view('staff.dashboard', []);
         })->name('staff.index');

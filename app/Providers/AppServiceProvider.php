@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
 
-        View::composer('*', function ($view) {
+        View::composer('components.admin.layout', function ($view) {
             $view->with('loggedUser', Auth::user());
         });
 

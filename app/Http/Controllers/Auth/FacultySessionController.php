@@ -42,7 +42,7 @@ class FacultySessionController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             $isAdmin = $user->roles()->where('role_name', 'admin')->exists();
-            $isStaff = $user->roles()->where('role_name', 'staff')->exists();
+            $isStaff = $user->roles()->where('role_name', 'faculty')->exists();
 
             if ($isAdmin) {
                 return redirect()

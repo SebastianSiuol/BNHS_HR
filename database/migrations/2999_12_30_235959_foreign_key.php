@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('designation_id')->references('id')->on('designations')->onDelete('restrict');
             $table->foreign('shift_id')->references('id')->on('shifts');
             $table->foreign('employment_status_id')->references('id')->on('employment_statuses');
+            $table->foreign('school_position_id')->references('id')->on('school_positions');
         });
 
         Schema::table('designations', function (Blueprint $table) {
