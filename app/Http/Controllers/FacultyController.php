@@ -24,14 +24,12 @@ class FacultyController extends Controller
         $faculties = Faculty::with('personal_information')->first()->paginate(5);
 
         return view('admin.employee.index',[
-            'admin'             => Auth::user(),
             'faculties'         =>$faculties
         ]);
     }
 
     public function create(){
         return view('admin.employee.create', [
-            'admin'             => Auth::user(),
             'generated_id'      => Faculty::generateFacultyCode(),
             'shifts'            => Shift::all(),
             'departments'       => Department::all(),
@@ -210,7 +208,6 @@ class FacultyController extends Controller
     public function edit(Faculty $faculty){
 
         return view('admin.employee.edit', [
-            'admin'             => Auth::user(),
             'faculty'               => $faculty,
             'personal_information'  => $faculty->personal_information,
 
@@ -343,26 +340,29 @@ class FacultyController extends Controller
 
     public function search(Request $request){
 
-//        dd($request->all());
+        $query = request('query');
 
-        $faculties = Faculty::with(['personal_information', 'department', 'shift'])
-            ->where('faculty_code',  'LIKE' , '%' . request('query') . '%')
-            ->orWhere('email',  'LIKE' , '%' . request('query') . '%')
-            ->orWhereHas('personal_information', function($query) use($request){
-                $query->where('first_name', 'LIKE' , '%' . request('query') . '%')
-                ->orWhere('last_name', 'LIKE' , '%' . request('query') . '%');
+        $faculties = Faculty::with(['personal_information', 'designation.department', 'shift'])
+            ->where('faculty_code',  'LIKE' , '%' . $query . '%')
+            ->orWhere('email',  'LIKE' , '%' . $query . '%')
+            ->orWhereHas('personal_information', function($subQuery) use($query){
+                $subQuery->where('first_name', 'LIKE' , '%' . $query . '%')
+                ->orWhere('last_name', 'LIKE' , '%' . $query . '%');
             })
-            ->orWhereHas('department', function($query) use($request){
-                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+
+            ->orWhereHas('designation', function($subQuery) use($query){
+                $subQuery->whereHas('department', function($nestedQuery) use($query){
+                  $nestedQuery->where('name', 'LIKE' , '%' . $query . '%');
+                });
             })
-            ->orWhereHas('shift', function($query) use($request){
-                $query->where('name', 'LIKE' , '%' . request('query') . '%');
+
+            ->orWhereHas('shift', function($subQuery) use($query){
+                $subQuery->where('name', 'LIKE' , '%' . request('query') . '%');
             })
             ->paginate(5);
 
         return view('admin.employee.index')
-            ->with('faculties', $faculties)
-            ->with('admin', Auth::user());
+            ->with('faculties', $faculties);
     }
 
     public function export(){
