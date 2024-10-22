@@ -15,7 +15,7 @@
             <h1 class="text-3xl text-blue-900 font-bold ml-2">Add Employee</h1>
         </div>
 
-        <form method="POST" action="/admin/employees">
+        <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data">
             @csrf
 
             {{-- Start of Personal Details Form --}}

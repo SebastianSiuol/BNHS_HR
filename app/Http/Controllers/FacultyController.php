@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FacultyExport;
+use App\Http\Controllers\Admin\PersonalInformationController;
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\Department;
 use App\Models\FacultyAccountInformation\Designation;
@@ -14,6 +15,7 @@ use App\Models\PersonalInformation\PersonalInformation;
 use App\Models\PersonalInformation\ResidentialAddress;
 use App\Models\Role;
 use App\Models\Shift;
+use App\Services\StoreFacultyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,159 +45,29 @@ class FacultyController extends Controller
 
     public function store(Request $request)
     {
+        /* Validate Request */
+        $validated_inputs = $this->validateStoreFaculty($request);
 
-//        NOTE: SANITY CHECK
-//        dd($request->all());
-//        dd(gettype($request->date_of_joining));
-
-
-//      START OF VALIDATIONS
-
-//        if($request->both_address_same){
-//            $request->merge([
-//            'permanent_house_num'   => $request->residential_house_num,
-//            'permanent_street'      => $request->residential_street,
-//            'permanent_subdivision' => $request->residential_subdivision,
-//            'permanent_barangay'    => $request->residential_barangay,
-//            'permanent_city'        => $request->residential_city,
-//            'permanent_province'    => $request->residential_province,
-//            'permanent_zip_code'    => $request->residential_zip_code,
-//            ]);
-//        }
-
-
-        $validated_inputs = $request->validate([
-            'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
-            'password'                      => ['required', 'string', 'min:8'],
-            'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
-            'designation'                   => ['required'],
-            'shift'                         => ['required'],
-            'role'                           => ['required'],
-
-//          PERSONAL INFORMATION
-            'first_name'                    => ['required'],
-            'middle_name'                   => ['nullable'],
-            'last_name'                     => ['required'],
-            'name_extension'                => ['nullable'],
-            'sex'                           => ['required'],
-            'place_of_birth'                => ['required'],
-            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -18 year'],
-            'contact_number'                => ['required'],
-            'telephone_number'              => ['nullable'],
-            'civil_status'                  => ['required'],
-
-//          CONTACT PERSON
-            'contact_person_name'           => ['required'],
-            'contact_person_number'         => ['nullable'],
-
-//          ADDRESSES
-            'residential_house_num'         => ['required'],
-            'residential_street'            => ['required'],
-            'residential_subdivision'       => ['required'],
-            'residential_barangay'          => ['required'],
-            'residential_city'              => ['required'],
-            'residential_province'          => ['required'],
-            'residential_zip_code'          => ['required'],
-            'permanent_house_num'           => ['required'],
-            'permanent_street'              => ['required'],
-            'permanent_subdivision'         => ['required'],
-            'permanent_barangay'            => ['required'],
-            'permanent_city'                => ['required'],
-            'permanent_province'            => ['required'],
-            'permanent_zip_code'            => ['required'],
-        ],[
-            'date_of_birth.before' => 'The employee must be at least 18 years old!',
-            'date_of_joining.after_or_equal' => 'The joining date cannot be an earlier day than today!',
-        ]);
-//      END OF VALIDATIONS
-
-
-//      START OF INSERT
+        /* Stores Faculty */
         $faculty = new Faculty;
-
         $faculty->email             = $validated_inputs['email'];
         $faculty->password          = $validated_inputs['password'];
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
-
-        $psn_info = new PersonalInformation([
-            'first_name'        => $validated_inputs['first_name'],
-            'middle_name'       => $validated_inputs['middle_name'],
-            'last_name'         => $validated_inputs['last_name'],
-            'name_extension_id' => $validated_inputs['name_extension'],
-            'sex'               => $validated_inputs['sex'],
-            'place_of_birth'    => $validated_inputs['place_of_birth'],
-            'date_of_birth'     => $validated_inputs['date_of_birth'],
-            'telephone_no'      => $validated_inputs['telephone_number'],
-            'contact_no'        => $validated_inputs['contact_number'],
-            'civil_status_id'   => $validated_inputs['civil_status'],
-        ]);
-
-        $cont_psn = new ContactPerson([
-            'name'              => $validated_inputs['contact_person_name'],
-            'contact_no'        => $validated_inputs['contact_person_number'],
-        ]);
-
-        $resi_addr = new ResidentialAddress([
-            'house_block_no'        => $validated_inputs['residential_house_num'],
-            'street'                => $validated_inputs['residential_street'],
-            'subdivision_village'   => $validated_inputs['residential_subdivision'],
-            'barangay'              => $validated_inputs['residential_barangay'],
-            'city_municipality'     => $validated_inputs['residential_city'],
-            'province'              => $validated_inputs['residential_province'],
-            'zip_code'              => $validated_inputs['residential_zip_code'],
-        ]);
-
-        $perma_addr = new PermanentAddress([
-            'house_block_no'        => $request->permanent_house_num,
-            'street'                => $request->permanent_street,
-            'subdivision_village'   => $request->permanent_subdivision,
-            'barangay'              => $request->permanent_barangay,
-            'city_municipality'     => $request->permanent_city,
-            'province'              => $request->permanent_province,
-            'zip_code'              => $request->permanent_zip_code,
-        ]);
-
-        // NOTE: Reference Members Storing
-//        $ref_mem_01 = new ReferenceMember([
-//            'name'                  => $validated_inputs['reference_name_01'],
-//            'contact_number'        => $validated_inputs['reference_contact_number_01'],
-//            'address'               => 'Quezon City',
-//            'reference_number'      => '1',
-//        ]);
-//
-//
-//        $ref_mem_02 = NULL;
-//        $have_another_ref = false;
-//        if ($request->reference_name_02 && $request->reference_contact_number_02) {
-//
-//            $reference_02 = $request->validate([
-//                'reference_name_02'             => 'required',
-//                'reference_contact_number_02'   => 'required',
-//            ]);
-//
-//            $ref_mem_02 = new ReferenceMember([
-//                'name'              => $reference_02['reference_name_02'],
-//                'contact_number'    => $reference_02['reference_contact_number_02'],
-//                'address'           => 'Quezon City',
-//                'reference_number'  => '2',
-//            ]);
-//
-//            $have_another_ref = true;
-//        }
-
-
-//      START OF SAVING DETAILS
         $faculty->save();
         $faculty->roles()->attach($validated_inputs['role']);
-        $faculty->personal_information()->save($psn_info);
-        $psn_info->residential_address()->save($resi_addr);
-        $psn_info->permanent_address()->save($perma_addr);
-        $psn_info->contact_person()->save($cont_psn);
-//      END OF SAVING DETAILS
 
+        /* Instantiates Service for Storing Faculty Details */
+        $store_faculty_service = new StoreFacultyService();
+
+        /* Stores Faculty Details */
+        $personal_information = $store_faculty_service->storePersonalInformation($faculty, $validated_inputs);
+        $store_faculty_service->storeAddresses($personal_information, $validated_inputs);
+        $store_faculty_service->storeContactPerson($personal_information, $validated_inputs);
+
+        /* Redirects */
         return redirect()
             ->route('employees.index')
             ->with('success', 'Employee created successfully!');
@@ -367,5 +239,51 @@ class FacultyController extends Controller
 
     public function export(){
         return Excel::download(new FacultyExport, 'faculties.xlsx');
+    }
+
+    public function validateStoreFaculty(Request $request){
+        return $request->validate([
+            'email'                         => ['required', 'string', 'email', 'max:255', 'unique:faculties'],
+            'password'                      => ['required', 'string', 'min:8'],
+            'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
+            'designation'                   => ['required'],
+            'shift'                         => ['required'],
+            'role'                           => ['required'],
+
+//          PERSONAL INFORMATION
+            'first_name'                    => ['required'],
+            'middle_name'                   => ['nullable'],
+            'last_name'                     => ['required'],
+            'name_extension'                => ['nullable'],
+            'sex'                           => ['required'],
+            'place_of_birth'                => ['required'],
+            'date_of_birth'                 => ['required', 'date_format:m-d-Y', 'before: -18 year'],
+            'contact_number'                => ['required'],
+            'telephone_number'              => ['nullable'],
+            'civil_status'                  => ['required'],
+
+//          CONTACT PERSON
+            'contact_person_name'           => ['required'],
+            'contact_person_number'         => ['nullable'],
+
+//          ADDRESSES
+            'residential_house_num'         => ['required'],
+            'residential_street'            => ['required'],
+            'residential_subdivision'       => ['required'],
+            'residential_barangay'          => ['required'],
+            'residential_city'              => ['required'],
+            'residential_province'          => ['required'],
+            'residential_zip_code'          => ['required'],
+            'permanent_house_num'           => ['required'],
+            'permanent_street'              => ['required'],
+            'permanent_subdivision'         => ['required'],
+            'permanent_barangay'            => ['required'],
+            'permanent_city'                => ['required'],
+            'permanent_province'            => ['required'],
+            'permanent_zip_code'            => ['required'],
+        ],[
+            'date_of_birth.before' => 'The employee must be at least 18 years old!',
+            'date_of_joining.after_or_equal' => 'The joining date cannot be an earlier day than today!',
+        ]);
     }
 }

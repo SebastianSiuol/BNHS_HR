@@ -47,13 +47,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
     Route::middleware(['role:admin'])->group(function () { // Routes for admin
+        /*
+        |-----------------------------------------------------------------------------
+        | Administration Role
+        |-----------------------------------------------------------------------------
+        */
 
         Route::get('/admin/home', function () {
-
             return view('admin.dashboard', [
                 'total_employees' => Faculty::all()->count(),
             ]);
-
         })->name('admin.index');
 
         Route::get('/admin/employees/search', [FacultyController::class, 'search'])                             ->name('admin_employees_search');
@@ -61,7 +64,7 @@ Route::middleware('auth')->group(function () {
         /*  Employee Management Routes */
         Route::get('/admin/employees', [FacultyController::class, 'index'])                                     ->name('employees.index');
         Route::get('/admin/employees/create', [FacultyController::class, 'create'])                             ->name('employees.create');
-        Route::post('/admin/employees', [FacultyController::class, 'store'])                                    ->name('employees_store');
+        Route::post('/admin/employees', [FacultyController::class, 'store'])                                    ->name('employees.store');
         Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])                            ->name('employees.show');
         Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])                       ->name('employees_edit');
         Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])                        ->name('employees_update');
@@ -91,8 +94,16 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    // Routes for staff
+
+
+
     Route::middleware(['role:faculty'])->group(function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Faculty Role
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/staff/home', function() {
             return view('staff.dashboard', []);
         })->name('staff.index');

@@ -34,8 +34,6 @@ class LoginRequest extends FormRequest
 
     public function authenticate(): void
     {
-
-
         $this->ensureIsNotRateLimited();
 
         if (!Auth::attempt(['faculty_code' => $this->admin_id, 'password' => $this->password])) {
