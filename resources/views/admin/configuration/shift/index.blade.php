@@ -2,7 +2,7 @@
 
     <x-slot:heading>Shifts</x-slot:heading>
 
-    <main class="block p-4 sm:ml-80">
+    <x-admin.main_container>
 
         <x-admin.page_header>
             Shifts
@@ -161,7 +161,7 @@
             @endif
 
         </div>
-    </main>
+    </x-admin.main_container>
 
 
     <script src="{{ asset('js/admin/configurations/shift/index.js') }}"></script>

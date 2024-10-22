@@ -4,7 +4,7 @@
 <x-slot:heading>Employee List</x-slot:heading>
 
     <!-- Main Content -->
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
 
         <x-admin.page_header>
             Manage Employees
@@ -229,7 +229,7 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-    </main>
+    </x-admin.main_container>
 
 
 

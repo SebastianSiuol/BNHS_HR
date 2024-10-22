@@ -4,7 +4,7 @@
 <x-slot:heading>Employee Creation</x-slot:heading>
 
     {{-- Main Content --}}
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
 
 
         <x-admin.page_header>
@@ -171,7 +171,7 @@
 
 
         </form>
-    </main>
+    </x-admin.main_container>
 
     <script src={{asset('js/admin.js')}}></script>
     <script src={{asset('js/admin/employee/create.js')}}></script>

@@ -2,7 +2,7 @@
 
 
 <x-slot:heading>Attendance Report</x-slot:heading>
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Attendance Report
         </x-admin.page_header>
@@ -237,7 +237,7 @@
 {{--                </nav>--}}
             </div>
         </form>
-    </main>
+    </x-admin.main_container>
 
     <script src={{asset('js/admin-attd-report.js')}}></script>
 

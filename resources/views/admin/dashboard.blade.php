@@ -3,7 +3,7 @@
     <x-slot:heading>Home</x-slot:heading>
 
     <!-- Main Content -->
-    <main class="block p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Dashboard
         </x-admin.page_header>
@@ -185,7 +185,7 @@
         @endif
 
 
-    </main>
+    </x-admin.main_container>
     <script src={{asset('js/admin.js')}}></script>
 
 </x-admin.layout>

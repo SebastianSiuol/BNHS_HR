@@ -3,7 +3,7 @@
 
     <x-slot:heading>Department Configuration</x-slot:heading>
 
-    <main class="block p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Department
         </x-admin.page_header>
@@ -151,6 +151,6 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-    </main>
+    </x-admin.main_container>
     <script src="{{ asset('js/admin/configurations/department-index.js') }}"></script>
 </x-admin.layout>

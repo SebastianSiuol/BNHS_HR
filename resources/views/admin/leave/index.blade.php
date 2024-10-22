@@ -3,7 +3,7 @@
 
 <x-slot:heading>Leave Manage</x-slot:heading>
 
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Manage Leaves
         </x-admin.page_header>
@@ -150,5 +150,5 @@
         </div>
 
 
-    </main>
+</x-admin.main_container>
 </x-admin.layout>

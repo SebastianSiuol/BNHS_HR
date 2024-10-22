@@ -2,7 +2,7 @@
 
     <x-slot:heading>Company Details</x-slot:heading>
 
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Company Details
         </x-admin.page_header>
@@ -151,7 +151,7 @@
             </div>
         @endif
 
-    </main>
+    </x-admin.main_container>>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="{{ asset('js/admin/company_details.js') }}"></script>

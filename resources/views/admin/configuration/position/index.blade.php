@@ -3,7 +3,7 @@
     <x-slot:heading>Positions</x-slot:heading>
 
 
-    <main class="block p-4 sm:ml-80">
+    <x-admin.main_container>
         <x-admin.page_header>
             Position
         </x-admin.page_header>
@@ -212,5 +212,5 @@
 
             <!-- Pagination -->
         </div>
-    </main>
+    </x-admin.main_container>
 </x-admin.layout>

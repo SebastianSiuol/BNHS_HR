@@ -4,7 +4,7 @@
 <x-slot:heading>Employee Edit</x-slot:heading>
 
     <!-- Main Content -->
-    <main class="block h-full p-4 sm:ml-80">
+    <x-admin.main_container>
 
         <x-admin.page_header>
             Edit Employee [{{ $faculty->faculty_code }}]
@@ -181,7 +181,7 @@
             <!-- END OF EDIT CONFIRM MODAL -->
 
         </form>
-    </main>
+    </x-admin.main_container>
 
     <script src={{asset('js/admin.js')}}></script>
     <script src={{asset('js/validate-edit-forms.js')}}></script>
