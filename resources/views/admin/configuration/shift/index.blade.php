@@ -69,46 +69,42 @@
                     </thead>
                     <tbody>
 
+                    @foreach($shifts as $shift)
 
+                        <x-table.row>
+                            <x-table.data>
+                                {{ ucfirst($shift->name) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ date('h:i a', strtotime($shift->from)) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ date('h:i a', strtotime($shift->to)) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ ($shift->days) ?? "No Days Set" }}
+                            </x-table.data>
+                            <x-table.data class="flex">
+                                <div class="flex items-center justify-center">
+                                    <button data-modal-target="edit-shift-modal"
+                                            data-modal-toggle="edit-shift-modal"
+                                            data-shift-id="{{$shift->id}}"
+                                            data-shift-name="{{$shift->name}}"
+                                            data-from-time="{{ $shift->from}}"
+                                            data-to-time="{{$shift->to}}"
+                                            type="button">
+                                        <x-icons.edit/>
+                                    </button>
+                                    <button data-modal-target="delete-shift-{{$shift->id}}-modal"
+                                            data-modal-toggle="delete-shift-{{$shift->id}}-modal"
+                                            type="button">
+                                        <x-icons.delete/>
+                                    </button>
+                                </div>
+                            </x-table.data>
+                        </x-table.row>
 
-                        @foreach($shifts as $shift)
-
-                            <x-table.row>
-                                <x-table.data>
-                                    {{ ucfirst($shift->name) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ date('h:i a', strtotime($shift->from)) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ date('h:i a', strtotime($shift->to)) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ ($shift->days) ?? "No Days Set" }}
-                                </x-table.data>
-                                <x-table.data class="flex">
-                                    <div class="flex items-center justify-center">
-                                        <button data-modal-target="edit-shift-modal"
-                                                data-modal-toggle="edit-shift-modal"
-                                                data-shift-id="{{$shift->id}}"
-                                                data-shift-name="{{$shift->name}}"
-                                                data-from-time="{{ $shift->from}}"
-                                                data-to-time="{{$shift->to}}"
-                                                type="button">
-                                            <x-icons.edit/>
-                                        </button>
-                                        <button data-modal-target="delete-shift-{{$shift->id}}-modal"
-                                                data-modal-toggle="delete-shift-{{$shift->id}}-modal"
-                                                type="button">
-                                            <x-icons.delete/>
-                                        </button>
-                                    </div>
-                                </x-table.data>
-                            </x-table.row>
-
-                        @endforeach
-
-
+                    @endforeach
 
                     </tbody>
                 </table>
