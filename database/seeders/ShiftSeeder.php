@@ -16,15 +16,18 @@ class ShiftSeeder extends Seeder
     {
 //      NOTE: Production Data
         $shift = new Shift();
-        $shift->name = 'Morning';
-        $shift->time = '06:00 AM - 12:00 PM';
+        $shift->name = 'morning';
+        $shift->from = '06:00';
+        $shift->to = '12:00';
+        $shift->description = 'Morning Shift';
         $shift->save();
 
         $shift = new Shift();
-        $shift->name = 'Afternoon';
-        $shift->time = '12:30 AM - 05:30 PM';
+        $shift->name = 'afternoon';
+        $shift->from = '12:30';
+        $shift->to = '17:30';
+        $shift->description = 'Afternoon Shift';
         $shift->save();
-
 
         $faculty = Faculty::find(1);
         $faculty->shift_id = 1;

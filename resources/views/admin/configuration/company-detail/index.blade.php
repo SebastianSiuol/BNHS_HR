@@ -2,13 +2,10 @@
 
     <x-slot:heading>Company Details</x-slot:heading>
 
-    <main class="block h-full p-4 sm:ml-80">
-        <div class="flex items-center pb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-9 h-9 text-blue-900">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-            <h1 class="text-3xl text-blue-900 font-bold ml-2">Company</h1>
-        </div>
+    <x-admin.main_container>
+        <x-admin.page_header>
+            Company Details
+        </x-admin.page_header>
 
         <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                 @if($detailsEmpty)
@@ -154,7 +151,7 @@
             </div>
         @endif
 
-    </main>
+    </x-admin.main_container>>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="{{ asset('js/admin/company_details.js') }}"></script>

@@ -14,8 +14,6 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\AdminLeaveController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
-use App\Models\LeaveType;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Faculty;
 
@@ -47,36 +45,64 @@ Route::middleware('auth')->group(function () {
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
     Route::middleware(['role:admin'])->group(function () { // Routes for admin
+        /*
+        |-----------------------------------------------------------------------------
+        |
+        |
+        |   Administration Role
+        |
+        |
+        |-----------------------------------------------------------------------------
+        */
 
         Route::get('/admin/home', function () {
-
             return view('admin.dashboard', [
                 'total_employees' => Faculty::all()->count(),
             ]);
-
         })->name('admin.index');
 
+        /*
+        |   Search Routes
+        */
         Route::get('/admin/employees/search', [FacultyController::class, 'search'])                             ->name('admin_employees_search');
+        Route::get('/admin/config/shift/search', [ShiftController::class, 'search'])                          ->name('admin.config.shift.search');
 
-        /*  Employee Management Routes */
+        /*
+        |   Employee Management Routes
+        */
         Route::get('/admin/employees', [FacultyController::class, 'index'])                                     ->name('employees.index');
         Route::get('/admin/employees/create', [FacultyController::class, 'create'])                             ->name('employees.create');
-        Route::post('/admin/employees', [FacultyController::class, 'store'])                                    ->name('employees_store');
+        Route::post('/admin/employees', [FacultyController::class, 'store'])                                    ->name('employees.store');
         Route::get('/admin/employees/{faculty}', [FacultyController::class, 'show'])                            ->name('employees.show');
         Route::get('/admin/employees/{faculty}/edit', [FacultyController::class, 'edit'])                       ->name('employees_edit');
         Route::patch('/admin/employees/{faculty}', [FacultyController::class, 'update'])                        ->name('employees_update');
         Route::delete('/admin/employees/{faculty}/delete', [FacultyController::class, 'destroy'])               ->name('employees_destroy');
-        /*  Attendance Routes */
+
+        /*
+        |   Attendance Routes
+        */
         Route::get('/admin/attendances', [AttendanceController::class, 'index'])                                ->name('admin.attendances.index');
         Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])                        ->name('admin.attendances.report');
-        /*  Leave Routes */
+
+        /*
+        |   Leave Routes
+        */
         Route::get('/admin/leaves', [AdminLeaveController::class, 'index'])                                     ->name('admin.leaves.index');
         Route::get('/admin/leaves/create', [AdminLeaveController::class, 'create'])                             ->name('admin.leaves.create');
         Route::patch('/admin/leave/status/action', [AdminLeaveController::class, 'statusAction'])              ->name('staff.leave.statusAction');
 
         Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])                          ->name('admin.service-credits.index');
 
-       /*   Configuration Routes */
+        /*
+        |   RPMS Routes
+        */
+        Route::get('/admin/rpms', function(){
+            return view('admin.rpms.index');
+        })->name('admin.rpms.index');
+
+        /*
+        |   Configuration Routes
+        */
         Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])                  ->name('admin.config.company_details.index');
         Route::post('/admin/config/company_details', [CompanyDetailController::class, 'store'])                 ->name('admin.config.company_details.store');
         Route::patch('/admin/config/company_details', [CompanyDetailController::class, 'update'])               ->name('admin.config.company_details.update');
@@ -87,12 +113,26 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy']) ->name('admin.config.department.destroy');
 
         Route::get('/admin/config/position', [PositionController::class, 'index'])                              ->name('admin.config.position.index');
+
         Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                    ->name('admin.config.shift.index');
+        Route::post('/admin/config/shift/store', [ShiftController::class, 'store'])                             ->name('admin.config.shift.store');
+        Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                         ->name('admin.config.shift.update');
+        Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                ->name('admin.config.shift.destroy');
+
+
     });
 
 
-    // Routes for staff
+
+
+
     Route::middleware(['role:faculty'])->group(function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Faculty Role
+        |--------------------------------------------------------------------------
+        */
+
         Route::get('/staff/home', function() {
             return view('staff.dashboard', []);
         })->name('staff.index');
