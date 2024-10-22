@@ -94,6 +94,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])                          ->name('admin.service-credits.index');
 
         /*
+        |   RPMS Routes
+        */
+        Route::get('/admin/rpms', function(){
+            return view('admin.rpms.index');
+        })->name('admin.rpms.index');
+
+        /*
         |   Configuration Routes
         */
         Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])                  ->name('admin.config.company_details.index');

@@ -6,14 +6,9 @@
     <!-- Main Content -->
     <main class="block h-full p-4 sm:ml-80">
 
-
-        <div class="flex items-center pb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                 stroke="currentColor" class="w-9 h-9 text-blue-900">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-            </svg>
-            <h1 class="text-3xl text-blue-900 font-bold ml-2">Edit Employee [{{ $faculty->faculty_code }}]</h1>
-        </div>
+        <x-admin.page_header>
+            Edit Employee [{{ $faculty->faculty_code }}]
+        </x-admin.page_header>
 
         <form method="POST" action="/admin/employees/{{$faculty->id}}">
             @csrf
