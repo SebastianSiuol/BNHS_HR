@@ -138,7 +138,7 @@
                         <x-admin.sidebar-button href="{{ route('admin.config.position.index') }}" :active="request()->is('admin/config/position')" type="sub">Position</x-admin.sidebar-button>
                     </li>
                     <li>
-                        <x-admin.sidebar-button href="{{ route('admin.config.shift.index') }}" :active="request()->is('admin/config/shift')" type="sub">Shift</x-admin.sidebar-button>
+                        <x-admin.sidebar-button href="{{ route('admin.config.shift.index') }}" :active="request()->is('admin/config/shift*')" type="sub">Shift</x-admin.sidebar-button>
                     </li>
                     <li>
                         <x-admin.sidebar-button href="#" :active="request()->is('admin/home')" type="sub">Roles</x-admin.sidebar-button>

@@ -233,8 +233,7 @@ class FacultyController extends Controller
             })
             ->paginate(5);
 
-        return view('admin.employee.index')
-            ->with('faculties', $faculties);
+        return view('admin.employee.index', compact('faculties'));
     }
 
     public function export(){

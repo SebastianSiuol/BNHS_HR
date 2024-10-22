@@ -15,7 +15,10 @@ return new class extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('time');
+            $table->string('from');
+            $table->string('to');
+            $table->string('days')->nullable()->default(null);
+            $table->string('description')->nullable();
             $table->timestamps();
         });
 
