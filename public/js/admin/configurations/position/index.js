@@ -17,3 +17,19 @@ editButtons.forEach(button => {
     });
 
 });
+
+
+const deleteButtons = document.querySelectorAll('button[data-modal-target="delete-position-modal"]');
+const deletePopup = document.getElementById("delete-position-modal");
+
+deleteButtons.forEach(button => {
+    button.addEventListener('click', function () {
+
+        // Get data from button attributes
+        const positionId = this.getAttribute('data-position-id');
+
+        // Inject data into modal inputs
+        deletePopup.querySelector('#destroy_position').setAttribute('action', '/admin/config/position/' + positionId + '/delete');
+    });
+
+});

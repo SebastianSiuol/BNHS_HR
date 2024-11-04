@@ -83,7 +83,10 @@
                                         type="button">
                                     <x-icons.edit />
                                 </button>
-                                <button type="button">
+                                <button data-modal-target="delete-position-modal"
+                                        data-modal-toggle="delete-position-modal"
+                                        data-position-id="{{ $position->id }}"
+                                        type="button">
                                     <x-icons.delete />
                                 </button>
                             </div>
@@ -96,10 +99,13 @@
             </div>
 
             {{-- Add Position modal --}}
-            <x-admin.configuration.position.add-modal />
+            <x-admin.configuration.position.create />
 
             {{-- Edit Department Details modal --}}
-            <x-admin.configuration.position.edit-modal />
+            <x-admin.configuration.position.edit />
+
+            {{-- Delete Popup --}}
+            <x-admin.configuration.position.destroy />
 
             {{-- Pagination --}}
                 {{ $school_positions->links() }}

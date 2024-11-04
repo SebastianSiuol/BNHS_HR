@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Configuration;
 
 use App\Http\Controllers\Controller;
 use App\Models\Configuration\SchoolPosition;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,7 +43,7 @@ class SchoolPositionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, SchoolPosition $school_position)
     {
         $validated_inputs = $request->validate([
             'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
@@ -50,7 +51,7 @@ class SchoolPositionController extends Controller
         ],
         ['position_title.unique' => 'Position title cannot change to an existing position.']);
 
-        $update_position = SchoolPosition::find($id);
+        $update_position = $school_position;
         $update_position->title = $validated_inputs['position_title'];
         $update_position->level = $validated_inputs['position_level'];
         $update_position->save();
@@ -61,8 +62,20 @@ class SchoolPositionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SchoolPosition $school_position)
     {
-        //
+        try {
+            $school_position->delete();
+            return back()->with('success', 'Position deleted successfully!');
+        } catch (QueryException $e) {
+
+            // Check if the error is related to a foreign key constraint
+            if ($e->getCode() == '23000') {
+                return back()->with('error', 'Cannot delete the position because there is an existing faculty account.');
+            }
+            // For any other database-related errors, handle them here
+            return back()->with('error', 'An error occurred while deleting the position. Please try again.');
+
+        }
     }
 }
