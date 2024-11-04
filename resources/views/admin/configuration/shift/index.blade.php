@@ -4,9 +4,9 @@
 
     <x-admin.main_container>
 
-        <x-admin.page_header>
+        <x-admin.page-header>
             Shifts
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <div class="ml-2 bg-white border w-full border-gray-200 rounded-md shadow p-4">
 

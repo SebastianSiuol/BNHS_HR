@@ -6,9 +6,9 @@
     <!-- Main Content -->
     <x-admin.main_container>
 
-        <x-admin.page_header>
+        <x-admin.page-header>
             Edit Employee [{{ $faculty->faculty_code }}]
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <form method="POST" action="/admin/employees/{{$faculty->id}}">
             @csrf

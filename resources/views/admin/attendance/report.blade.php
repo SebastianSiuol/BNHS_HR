@@ -3,9 +3,9 @@
 
 <x-slot:heading>Attendance Report</x-slot:heading>
     <x-admin.main_container>
-        <x-admin.page_header>
+        <x-admin.page-header>
             Attendance Report
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <form id="myForm" action="#">
             <div id="dailyAttendance-filter" class="bg-white mb-5 border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">

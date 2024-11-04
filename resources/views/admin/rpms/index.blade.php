@@ -4,9 +4,9 @@
 
     <x-admin.main_container>
 
-        <x-admin.page_header>
+        <x-admin.page-header>
             RPMS Management
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <div class="mb-5">
             <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">

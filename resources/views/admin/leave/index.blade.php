@@ -4,9 +4,9 @@
 <x-slot:heading>Leave Manage</x-slot:heading>
 
     <x-admin.main_container>
-        <x-admin.page_header>
+        <x-admin.page-header>
             Manage Leaves
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <!-- LEAVE REQUESTS DIV -->
         <div class="mb-5">

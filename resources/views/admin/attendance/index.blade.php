@@ -4,9 +4,9 @@
 <x-slot:heading>Daily Attendance</x-slot:heading>
 
     <x-admin.main_container>
-            <x-admin.page_header>
+            <x-admin.page-header>
                 Attendance
-            </x-admin.page_header>
+            </x-admin.page-header>
 
             <form id="myForm"
                   action="#">

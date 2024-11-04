@@ -3,9 +3,9 @@
 <x-slot:heading>Add Leave</x-slot:heading>
 
     <x-admin.main_container>
-        <x-admin.page_header>
+        <x-admin.page-header>
             Leaves
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         {{-- LEAVE REQUESTS DIV --}}
         <div>

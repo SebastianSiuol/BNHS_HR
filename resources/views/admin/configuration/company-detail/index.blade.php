@@ -3,9 +3,9 @@
     <x-slot:heading>Company Details</x-slot:heading>
 
     <x-admin.main_container>
-        <x-admin.page_header>
+        <x-admin.page-header>
             Company Details
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                 @if($detailsEmpty)
