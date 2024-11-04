@@ -14,13 +14,12 @@ class SchoolPositionController extends Controller
      */
     public function index()
     {
-
-
         return view('admin.configuration.position.index',[
             'admin' => Auth::user(),
             'school_positions' => SchoolPosition::paginate(5),
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -45,7 +44,18 @@ class SchoolPositionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated_inputs = $request->validate([
+            'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
+            'position_level' => ['required'],
+        ],
+        ['position_title.unique' => 'Position title cannot change to an existing position.']);
+
+        $update_position = SchoolPosition::find($id);
+        $update_position->title = $validated_inputs['position_title'];
+        $update_position->level = $validated_inputs['position_level'];
+        $update_position->save();
+
+        return back()->with('success', 'Position edited successfully!');
     }
 
     /**

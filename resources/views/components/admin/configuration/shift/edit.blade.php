@@ -13,7 +13,7 @@
             </div>
 
             <!-- Modal body -->
-            <form method="POST" action="" class="p-4 md:p-5">
+            <form method="POST" class="p-4 md:p-5">
                 @csrf
                 @method('PATCH')
                 <div class="grid gap-4 mb-4 grid-cols-2">
