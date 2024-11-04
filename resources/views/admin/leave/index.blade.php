@@ -43,7 +43,7 @@
 
                         {{-- Main Columns --}}
                         @for($i = 0 ; $i < $max_rows; $i++)
-                            <x-table.row>
+                            <x-table.data-row>
                                 <x-table.data>
                                     @if(isset($approved_requests[$i]))
                                         {{ $approved_requests[$i]->faculty->personal_information->generateFullName() }}
@@ -59,7 +59,7 @@
                                         {{ $pending_requests[$i]->faculty->personal_information->generateFullName() }}
                                     @endif
                                 </x-table.data>
-                            </x-table.row>
+                            </x-table.data-row>
                         @endfor
                         </tbody>
                     </table>
@@ -116,7 +116,7 @@
                     <tbody>
 
                     @foreach($all_leave_requests as $leave_request)
-                    <x-table.row>
+                    <x-table.data-row>
                         <x-table.data>
                             {{ $leave_request->faculty->personal_information->generateFullName() }}
                         </x-table.data>
@@ -141,7 +141,7 @@
                         <x-table.data>
                             {{ $leave_request->totalLeaveDays() }}
                         </x-table.data>
-                    </x-table.row>
+                    </x-table.data-row>
                     @endforeach
 
                     </tbody>

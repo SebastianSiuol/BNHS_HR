@@ -10,7 +10,6 @@
 
         <x-admin.nooutline-content-card>
 
-
             <div class="pb-4 flex items-center justify-between dark:bg-gray-900">
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative mt-1">
@@ -46,40 +45,40 @@
             <!-- TABLE -->
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-sm text-center text-white bg-blue-900  dark:text-gray-400">
+                    <x-table.head>
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <x-table.header>
                             ID
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                        </x-table.header>
+                        <x-table.header>
                             Position Title
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                        </x-table.header>
+                        <x-table.header>
                             Position Level
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                        </x-table.header>
+                        <x-table.header>
                             Total Employees
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                        </x-table.header>
+                        <x-table.header>
                             Action
-                        </th>
+                        </x-table.header>
                     </tr>
-                    </thead>
+                    </x-table.head>
                     <tbody>
-                    <tr class="text-center odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <x-table.data-row>
+                        <x-table.data>
                             1
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </x-table.data>
+                        <x-table.data>
                             IT Department
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </x-table.data>
+                        <x-table.data>
                             Designation 1
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </x-table.data>
+                        <x-table.data>
                             5
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </x-table.data>
+                        <x-table.data>
                             <div class="flex items-center justify-center">
                                 <button data-modal-target="edit-modal" data-modal-toggle="edit-modal" type="button">
                                     <svg class="w-[27px] h-[27px] text-blue-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -93,8 +92,8 @@
                                     </svg>
                                 </button>
                             </div>
-                        </td>
-                    </tr>
+                        </x-table.data>
+                    </x-table.data-row>
                     </tbody>
                 </table>
 

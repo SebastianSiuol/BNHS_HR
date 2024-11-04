@@ -49,7 +49,7 @@
                         <tbody>
 
                         @foreach($leaves as $leave)
-                            <x-table.row>
+                            <x-table.data-row>
 
                                 <x-table.data>
                                     {{ $leave->faculty->personal_information->generateFullName() }}
@@ -116,7 +116,7 @@
                                         Rejected
                                     </div>
                                 </x-table.data>
-                            </x-table.row>
+                            </x-table.data-row>
                         @endforeach
                         </tbody>
                     </table>

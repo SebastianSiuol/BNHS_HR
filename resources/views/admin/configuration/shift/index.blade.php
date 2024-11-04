@@ -71,7 +71,7 @@
 
                     @foreach($shifts as $shift)
 
-                        <x-table.row>
+                        <x-table.data-row>
                             <x-table.data>
                                 {{ ucfirst($shift->name) }}
                             </x-table.data>
@@ -102,7 +102,7 @@
                                     </button>
                                 </div>
                             </x-table.data>
-                        </x-table.row>
+                        </x-table.data-row>
 
                     @endforeach
 

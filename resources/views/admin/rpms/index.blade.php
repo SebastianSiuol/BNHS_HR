@@ -166,7 +166,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <x-table.row>
+                        <x-table.data-row>
                             <x-table.data>
                                 Rosicar Escobar
                             </x-table.data>
@@ -192,7 +192,7 @@
                                     </button>
                                 </div>
                             </x-table.data>
-                        </x-table.row>
+                        </x-table.data-row>
                         </tbody>
                     </table>
                 </div>

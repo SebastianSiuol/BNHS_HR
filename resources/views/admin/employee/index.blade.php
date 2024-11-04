@@ -85,7 +85,7 @@
 
                     {{-- START OF ROWS --}}
                     @foreach($faculties as $faculty)
-                        <x-table.row>
+                        <x-table.data-row>
 
                             <x-table.data>
                                 {{ $faculty->faculty_code }}
@@ -122,7 +122,7 @@
                                     </button>
                                 </div>
                             </x-table.data>
-                        </x-table.row>
+                        </x-table.data-row>
                     @endforeach
                     {{-- END OF ROW --}}
 
