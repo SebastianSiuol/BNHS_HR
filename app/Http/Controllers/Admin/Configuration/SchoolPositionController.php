@@ -3,27 +3,23 @@
 namespace App\Http\Controllers\Admin\Configuration;
 
 use App\Http\Controllers\Controller;
+use App\Models\Configuration\SchoolPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PositionController extends Controller
+class SchoolPositionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.configuration.position.index',[
-            'admin' => Auth::user()
-        ]);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+
+        return view('admin.configuration.position.index',[
+            'admin' => Auth::user(),
+            'school_positions' => SchoolPosition::paginate(5),
+        ]);
     }
 
     /**
@@ -31,23 +27,17 @@ class PositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated_inputs = $request->validate([
+            'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
+            'position_level' => ['required'],
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $store_position = new SchoolPosition();
+        $store_position->title = $validated_inputs['position_title'];
+        $store_position->level = $validated_inputs['position_level'];
+        $store_position->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return back()->with('success', 'Position added successfully!');
     }
 
     /**

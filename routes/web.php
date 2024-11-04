@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\Configuration\CompanyDetailController;
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
-use App\Http\Controllers\Admin\Configuration\PositionController;
+use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Api\LeaveTypeApiController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -112,7 +112,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/config/department/{department}', [DepartmentController::class, 'update'])          ->name('admin.config.department.update');
         Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy']) ->name('admin.config.department.destroy');
 
-        Route::get('/admin/config/position', [PositionController::class, 'index'])                              ->name('admin.config.position.index');
+        Route::get('/admin/config/position', [SchoolPositionController::class, 'index'])                         ->name('admin.config.position.index');
+        Route::post('/admin/config/position/store', [SchoolPositionController::class, 'store'])                   ->name('admin.config.position.store');
+
 
         Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                    ->name('admin.config.shift.index');
         Route::post('/admin/config/shift/store', [ShiftController::class, 'store'])                             ->name('admin.config.shift.store');

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Configuration\SchoolPosition;
 use App\Models\Faculty;
-use App\Models\SchoolPosition;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SchoolPositionSeeder extends Seeder
@@ -15,51 +14,63 @@ class SchoolPositionSeeder extends Seeder
     public function run(): void
     {
         $seeder = new SchoolPosition();
-        $seeder->name = 'Teacher I';
+        $seeder->title = 'Head Teacher';
+        $seeder->level = 'leadership';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Teacher II';
+        $seeder->title = 'Teacher I';
+        $seeder->level = 'entry';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Teacher III';
+        $seeder->title = 'Teacher II';
+        $seeder->level = 'mid';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Head Teacher I';
+        $seeder->title = 'Teacher III';
+        $seeder->level = 'mid';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Head Teacher II';
+        $seeder->title = 'Master Teacher I';
+        $seeder->level = 'senior';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Head Teacher III';
+        $seeder->title = 'Master Teacher II';
+        $seeder->level = 'senior';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'School Principal I';
+        $seeder->title = 'Master Teacher III';
+        $seeder->level = 'senior';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'School Principal II';
+        $seeder->title = 'Master Teacher IV';
+        $seeder->level = 'senior';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'School Principal III';
+        $seeder->title = 'Principal';
+        $seeder->level = 'leadership';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Assistant School Principal I';
+        $seeder->title = 'Assistant Principal';
+        $seeder->level = 'leadership';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Assistant School Principal II';
+        $seeder->title = 'Administrative Officer';
+        $seeder->level = 'mid';
         $seeder->save();
 
         $seeder = new SchoolPosition();
-        $seeder->name = 'Assistant School Principal III';
+        $seeder->title = 'Administrative Assistant';
+        $seeder->level = 'support';
         $seeder->save();
 
         $count = Faculty::all()->count();
