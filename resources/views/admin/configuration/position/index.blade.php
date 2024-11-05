@@ -29,17 +29,17 @@
                 </div>
             </div>
 
-            <div class="flex mb-5">
-                <p class="text-sm mt-2 mr-3">Show</p>
-                <select id="shift" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5" required="">
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                    <option value="">4</option>
-                    <option value="">5</option>
-                </select>
-                <p class="text-sm mt-2 ml-3">entries</p>
-            </div>
+{{--            <div class="flex mb-5">--}}
+{{--                <p class="text-sm mt-2 mr-3">Show</p>--}}
+{{--                <select id="shift" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5" required="">--}}
+{{--                    <option value="">1</option>--}}
+{{--                    <option value="">2</option>--}}
+{{--                    <option value="">3</option>--}}
+{{--                    <option value="">4</option>--}}
+{{--                    <option value="">5</option>--}}
+{{--                </select>--}}
+{{--                <p class="text-sm mt-2 ml-3">entries</p>--}}
+{{--            </div>--}}
 
 
             {{-- TABLE --}}
