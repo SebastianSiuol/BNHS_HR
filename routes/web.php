@@ -122,7 +122,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                         ->name('admin.config.shift.update');
         Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                ->name('admin.config.shift.destroy');
 
-
+        Route::get('/admin/config/calendar', function(){
+            return view('admin.configuration.calendar.index');
+        })->name('admin.config.calendar.index');
     });
 
 
