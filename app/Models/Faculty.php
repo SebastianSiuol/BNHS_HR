@@ -92,6 +92,10 @@ class Faculty extends Authenticatable
         return $this->hasMany(Leave::class);
     }
 
+    public function rpms(){
+        return $this->hasMany(RPMS::class);
+    }
+
     /* NOTE: Belongs Relationships */
 
     public function designation(){
