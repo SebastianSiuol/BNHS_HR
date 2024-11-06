@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Configuration\SchoolPosition;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\FacultyExport;
 use App\Http\Controllers\Admin\PersonalInformationController;
@@ -40,6 +42,7 @@ class FacultyController extends Controller
             'civil_statuses'    => CivilStatus::all(),
             'name_exts'         => NameExtension::all(),
             'max_date'          => date("m/d/Y", strtotime('-21 year')),
+            'positions'  => SchoolPosition::all(),
             'roles'             => Role::all(),
         ]);
     }
@@ -61,6 +64,7 @@ class FacultyController extends Controller
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
         $faculty->employment_status_id = 1;
+        $faculty->school_position_id = $validated_inputs['position'];
         $faculty->save();
         $faculty->roles()->attach($validated_inputs['role']);
 
@@ -254,6 +258,7 @@ class FacultyController extends Controller
             'shift'                         => ['required'],
             'photo'                         => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:5000'],
             'role'                          => ['required'],
+            'position'                      => ['required'],
 
 //          PERSONAL INFORMATION
             'first_name'                    => ['required'],

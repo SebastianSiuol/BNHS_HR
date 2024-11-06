@@ -1,4 +1,4 @@
-@props(['departments', 'designations', 'shifts', 'roles'])
+@props(['departments', 'designations', 'shifts', 'roles', 'positions'])
 
 
 
@@ -73,6 +73,23 @@
             <option selected disabled>Select Manager</option>
             <option value="">Example I</option>
             <option value="">Example II</option>
+
+        </x-forms.select>
+
+    </div>
+    <div>
+
+        <x-forms.label label_name="Position" for="position" />
+
+
+        <x-forms.select name="position">
+
+            <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled value="0">Select Position</option>
+            @foreach($positions as $position)
+                <option value="{{ $position->id }}" {{ old('shift') ==  $position->id ? 'selected=selected' : ''}}>
+                    {{$position->title}}
+                </option>
+            @endforeach
 
         </x-forms.select>
 

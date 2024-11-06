@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/leave/status/action', [AdminLeaveController::class, 'statusAction'])              ->name('staff.leave.statusAction');
 
         Route::get('/admin/service-credits',[ServiceCreditController::class, 'index'])                          ->name('admin.service-credits.index');
+        Route::get('/admin/service-credits/manage',[ServiceCreditController::class, 'edit'])                    ->name('admin.service-credits.edit');
 
         /*
         |   RPMS Routes

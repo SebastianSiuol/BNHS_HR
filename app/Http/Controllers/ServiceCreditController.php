@@ -12,9 +12,8 @@ class ServiceCreditController extends Controller
      */
     public function index()
     {
-        return view('admin.service-credit.index', [
-            'admin' => Auth::user()
-        ]);
+        return view('admin.service-credit.index');
+
     }
 
     /**
@@ -44,9 +43,9 @@ class ServiceCreditController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+        return view('admin.service-credit.edit');
     }
 
     /**
