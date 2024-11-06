@@ -105,7 +105,10 @@
                         <x-admin.sidebar-button href="{{ route('admin.leaves.index') }}" :active="request()->is('admin/leaves')" type="sub">Manage Leave</x-admin.sidebar-button>
                     </li>
                     <li>
-                        <x-admin.sidebar-button href="{{ route('admin.service-credits.index') }}" :active="request()->is('admin/service-credits')" type="sub">Manage Service Credits</x-admin.sidebar-button>
+                        <x-admin.sidebar-button href="{{ route('admin.service-credits.edit') }}" :active="request()->is('admin/service-credits/manage')" type="sub">Manage Service Credits</x-admin.sidebar-button>
+                    </li>
+                    <li>
+                        <x-admin.sidebar-button href="{{ route('admin.service-credits.index') }}" :active="request()->is('admin/service-credits')" type="sub">Service Credit Records</x-admin.sidebar-button>
                     </li>
                 </ul>
             </li>

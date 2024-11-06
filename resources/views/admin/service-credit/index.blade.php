@@ -3,258 +3,136 @@
 
     <x-admin.main_container>
         <x-admin.page-header>
-            Service Credits Management
+            Service Credits Records
         </x-admin.page-header>
 
-        <div class="grid grid-cols-2 grid-flow-row-dense">
+    {{-- Main Content --}}
 
-            {{--  Service Credit Calculation Div --}}
-            <div class="relative p-4 w-full max-w-lg max-h-full">
-                <div class="relative bg-white border border-gray-300 rounded-lg shadow ">
+        <div class="ml-2 bg-white border w-full border-gray-200 rounded-md shadow p-4">
 
-                    {{-- Modal header --}}
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                        <h3 class="text-lg font-semibold text-gray-900">
-                            Service Credit Calculation
-                        </h3>
+
+            <div class="pb-4 flex items-center justify-between dark:bg-gray-900">
+                <label for="table-search" class="sr-only">Search</label>
+                <div class="relative flex mt-1">
+                    <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="table-search" class="mr-3 block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+
+                    <div class="mr-3">
+                        <select id="month" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5" required="">
+                            <option selected disabled value="">Month</option>
+                            <option value="">January</option>
+                            <option value="">February</option>
+                            <option value="">March</option>
+                            <option value="">April</option>
+                            <option value="">May</option>
+                            <option value="">June</option>
+                            <option value="">July</option>
+                            <option value="">August</option>
+                            <option value="">September</option>
+                            <option value="">October</option>
+                            <option value="">November</option>
+                            <option value="">December</option>
+                        </select>
                     </div>
 
-                    {{-- Modal body --}}
-                    <form class="p-4 md:p-5">
-                        <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div class="">
-                                <label for="empID" class="block mb-2 text-sm font-medium text-gray-900">Employee ID</label>
-                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Employee ID" required="">
-                            </div>
-                            <div class="">
-                                <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
-                                <div class="relative w-full">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                        </svg>
-                                    </div>
-                                    <input id="date-picker" datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                                </div>
-                            </div>
-                            <div class="">
-                                <label for="joining-letter" class="block mr-8 mb-2 text-sm font-medium text-gray-900 ">Activity</label>
-                                <select id="extension" class="select-validate bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                    <option value="male">Activity 1</option>
-                                </select>
-                            </div>
-                            <div class="">
-                                <label for="empID" class="block mb-2 text-sm font-medium text-gray-900">Hours Worked</label>
-                                <input type="number" min="0" name="hoursWorked" id="hoursWorked" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required oninput="validateHours()">
-                            </div>
-                        </div>
-                        <div class="mt-8 flex items-center justify-center">
-                            <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Calculate
-                            </button>
-                        </div>
-                    </form>
+                    <div class="flex">
+                        <select id="shift" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5" required="">
+                            <option disabled selected value="">Year</option>
+                            <option value="">2024</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            {{--  Service Credit Usage Div --}}
-            <div class="relative p-4 w-full max-w-lg max-h-full">
-                {{-- Modal content --}}
-                <div class="relative bg-white border border-gray-300 rounded-lg shadow ">
-                    {{-- Modal header --}}
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                        <h3 class="text-lg font-semibold text-gray-900">
-                            Service Credit Usage
-                        </h3>
-                    </div>
-                    {{-- Modal body --}}
-                    <form class="p-4 md:p-5">
-                        <div class="grid gap-4 mb-4">
-                            <div class="">
-                                <label for="joining-letter" class="block mr-8 mb-2 text-sm font-medium text-gray-900 ">Leave type</label>
-                                <select id="extension" class="select-validate bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
-                                    <option selected disabled value="male">Select</option>
-                                    <option value="male">Registration and election duties (mandated by law)</option>
-                                    <option value="male">Services during calamities/rehabilitation (schools as evacuation centers)</option>
-                                    <option value="male">Remedial classes during summer/Christmas or outside regular days</option>
-                                    <option value="male">Early school year opening services</option>
-                                    <option value="male">School sports competitions (outside regular school days)</option>
-                                    <option value="male">Teacher training (beyond regular teaching load)</option>
-                                    <option value="male">Uncompensated teaching overload</option>
-                                    <option value="male">Non-formal education (beyond regular teaching load)</option>
-                                    <option value="male">Extra work during regular school days (beyond teaching load)</option>
-                                    <option value="male">Testing activities (outside school days)</option>
-                                    <option value="male">Special DepEd projects (e.g., workshops, training during summer/weekends) </option>
-                                </select>
-                            </div>
-                            <div class="grid gap-4 grid-cols-2">
-                                <div class="">
-                                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
-                                    <div class="relative w-full">
-                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                            <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                            </svg>
-                                        </div>
-                                        <input id="startDate-picker" datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                                    </div>
-                                </div>
-                                <div class="">
-                                    <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900">End Date</label>
-                                    <div class="relative w-full">
-                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                            <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                            </svg>
-                                        </div>
-                                        <input id="date-picker" datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="mt-8 flex items-center justify-center">
-                            <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Calculate
-                            </button>
-                        </div>
-                    </form>
-                </div>
+            <div class="flex mb-5">
+                <p class="text-sm mt-2 mr-3">Show</p>
+                <select id="shift" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5" required="">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                    <option value="">4</option>
+                    <option value="">5</option>
+                </select>
+                <p class="text-sm mt-2 ml-3">entries</p>
             </div>
 
-            {{--  Service Credit Accrual Div --}}
-            <div class="relative p-4 w-full max-h-full">
-                {{-- Modal content --}}
-                <div class="relative bg-white border border-gray-300 rounded-lg shadow ">
-                    {{-- Modal header --}}
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                        <h3 class="text-lg font-semibold text-gray-900">
-                            Service Credit Accrual
-                        </h3>
-                    </div>
-                    {{-- Modal body --}}
-                    <form class="p-4 md:p-5">
-                        <div class="grid gap-4 mb-4 grid-cols-3">
-                            <div class="">
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Total Service Credits Earned</label>
-                                <input disabled type="text" name="name" id="name" class="bg-blue-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Auto Generated" required="">
-                            </div>
-                            <div class="">
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Total Service Credits Used  </label>
-                                <input disabled type="number" name="name" id="name" class="bg-blue-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Auto Generated" required="">
-                            </div>
-                            <div class="">
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Available Service Credits </label>
-                                <input disabled type="text" name="name" id="name" class="bg-blue-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Auto Generated " required="">
-                            </div>
-                        </div>
-                    </form>
-                </div>
+
+            <!-- TABLE -->
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-sm text-center text-white bg-blue-900  dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Employee Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Employee ID
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Total Service<br>Credits Earned
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Total Service<br>Credits Used
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Available Service Credits
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="text-center odd:bg-blue-100 odd:dark:bg-gray-900 even:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Ryan Basilides
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            0000001
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            9
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            5
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            4
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
-
-            {{--  Manual Adjustment Sectiom Div --}}
-            <div class="relative p-4 w-full max-w-lg max-h-full">
-                {{-- Modal content --}}
-                <div class="relative bg-white border border-gray-300 rounded-lg shadow ">
-                    {{-- Modal header --}}
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                        <h3 class="text-lg font-semibold text-gray-900">
-                            Service Credit Adjustment
-                        </h3>
-                    </div>
-                    {{-- Modal body --}}
-                    <form class="p-4 md:p-5">
-                        <div class="grid gap-4 mb-4">
-                            <div class="">
-                                <label for="empID" class="block mb-2 text-sm font-medium text-gray-900">Employee ID</label>
-                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Employee ID" required="">
-                            </div>
-                            <div class="">
-                                <label for="empID" class="block mb-2 text-sm font-medium text-gray-900">Credits Added / Removed</label>
-                                <input type="number" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="" required="">
-                            </div>
-                            <div class="">
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Adjustment Reason</label>
-                                <textarea type="text" id="comment" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500     "></textarea>
-                            </div>
-                        </div>
-
-
-                        <div class="mt-8 flex items-center justify-center">
-                            <button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Save
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
+            <!-- Pagination -->
+            <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-5</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span></span>
+                <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    </li>
+                    <li>
+                        <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-
-        {{-- REPORT TABLE --}}
-        <div id="dailyAttendance-filter" class="bg-white mb-5 border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
-            <h1 class="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-                Service Credit Reports
-            </h1>
-            <div class="grid gap-4 mb-4 sm:grid-cols-4">
-                <div class="">
-                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                            </svg>
-                        </div>
-                        <input id="reportDate-picker" datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                    </div>
-                </div>
-                <div class="">
-                    <label for="date-join" class="block mb-2 text-sm font-medium text-gray-900">End Date</label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-blue-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                            </svg>
-                        </div>
-                        <input id="EndReport-picker" datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today type="text" class="bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5" placeholder="Select date" required="">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="department" class="block mb-2 text-sm font-medium text-gray-900">File Format</label>
-                    <select id="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                        <option disabled selected>Select</option>
-                        <option value="">Excel</option>
-                        <option value=""> PDF</option>
-                    </select>
-                </div>
-
-
-                <div class="mt-7">
-                    <button id="showReport" type="button" class="w-full text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                        Generate
-                    </button>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -262,4 +140,5 @@
 
 
     </x-admin.main_container>
+
 </x-admin.layout>

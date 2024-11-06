@@ -15,7 +15,10 @@
             @csrf
 
             {{-- Start of Personal Details Form --}}
-            <div id="personalDetails">
+            <div id="personalDetails"
+                 {{--class="hidden"--}}
+                {{--Uncomment for Debug--}}
+            >
 
                 <x-admin.employee.nav-steppers :active_number="1" />
 
@@ -47,7 +50,9 @@
             {{-- End of Personal Details Form --}}
 
             {{-- Start of Account Login Form --}}
-            <div id="accountLogin" class="hidden">
+            <div id="accountLogin"
+                 class="hidden"
+            >
 
             <x-admin.employee.nav-steppers :active_number="2" />
 
@@ -73,7 +78,9 @@
 
 
             {{-- Start of Company Details Form --}}
-            <div id="companyDetails" class="hidden">
+            <div id="companyDetails"
+                 class="hidden"
+            >
 
                 <x-admin.employee.nav-steppers :active_number="3" />
 
@@ -84,7 +91,8 @@
                         :departments="$departments"
                         :designations="$designations"
                         :shifts="$shifts"
-                        :roles="$roles"/>
+                        :roles="$roles"
+                        :positions="$positions"/>
 
                     {{-- Buttons --}}
                     <div class="flex items center justify-between">
@@ -102,7 +110,9 @@
 
 
             {{-- Start of Documents Form --}}
-            <div id="documentsForm" class="hidden">
+            <div id="documentsForm"
+                 class="hidden"
+            >
 
                 <x-admin.employee.nav-steppers :active_number="4" />
 
