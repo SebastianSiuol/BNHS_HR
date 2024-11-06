@@ -7,7 +7,7 @@
             Company Details
         </x-admin.page-header>
 
-        <div class="bg-white border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
+        <x-admin.nooutline-content-card>
                 @if($detailsEmpty)
                     <form method='POST' action="{{ route('admin.config.company_details.store') }}">
                     @method('POST')
@@ -134,7 +134,7 @@
                 </div>
                 @endif
             </form>
-        </div>
+        </x-admin.nooutline-content-card>
 
         @if( Session::has('success'))
             <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
@@ -151,7 +151,7 @@
             </div>
         @endif
 
-    </x-admin.main_container>>
+    </x-admin.main_container>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="{{ asset('js/admin/company_details.js') }}"></script>
