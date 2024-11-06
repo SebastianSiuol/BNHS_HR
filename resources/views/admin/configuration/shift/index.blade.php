@@ -144,15 +144,15 @@
             {{-- Feedback Card --}}
             @if( Session::has('success'))
 
-                <x-feedback_card type="success">
+                <x-feedback-card type="success">
                     {{ Session::get('success') }}
-                </x-feedback_card>
+                </x-feedback-card>
 
             @elseif( Session::has('error') )
 
-                <x-feedback_card type="error">
+                <x-feedback-card type="error">
                     {{ Session::get('error') }}
-                </x-feedback_card>
+                </x-feedback-card>
 
             @endif
 

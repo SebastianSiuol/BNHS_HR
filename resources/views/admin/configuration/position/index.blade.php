@@ -112,7 +112,7 @@
             {{-- Pagination --}}
         </x-admin.nooutline-content-card>
 
-
+        {{-- Input Error --}}
         @if($errors->any())
             <ul class="my-5">
                 @foreach($errors->all() as $error) @endforeach
@@ -120,19 +120,19 @@
             </ul>
         @endif
 
+        {{-- Feedback Card --}}
         @if( Session::has('success'))
-            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                 class="session-alert relative bg-green-500 float-right text-white rounded-lg p-2 m-2"
-            >
+
+            <x-feedback-card type="success">
                 {{ Session::get('success') }}
-            </div>
+            </x-feedback-card>
+
         @elseif( Session::has('error') )
 
-            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                 class="session-alert relative bg-red-500 float-right text-white rounded-lg p-2 m-2"
-            >
+            <x-feedback-card type="error">
                 {{ Session::get('error') }}
-            </div>
+            </x-feedback-card>
+
         @endif
 
 
