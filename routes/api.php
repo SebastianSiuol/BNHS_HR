@@ -8,6 +8,7 @@ use App\Http\Middleware\ApiKeyMiddleware;
 Route::middleware(ApiKeyMiddleware::class)->group(function () {
 
     Route::get("retrieve/faculty", [FacultyApiController::class, "index"]);
+    Route::get("v5/retrieve/faculty", [FacultyApiController::class, "v5"]);
 
 });
 
