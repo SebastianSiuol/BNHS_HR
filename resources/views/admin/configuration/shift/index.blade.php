@@ -4,9 +4,9 @@
 
     <x-admin.main_container>
 
-        <x-admin.page_header>
+        <x-admin.page-header>
             Shifts
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <div class="ml-2 bg-white border w-full border-gray-200 rounded-md shadow p-4">
 
@@ -69,46 +69,42 @@
                     </thead>
                     <tbody>
 
+                    @foreach($shifts as $shift)
 
+                        <x-table.data-row>
+                            <x-table.data>
+                                {{ ucfirst($shift->name) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ date('h:i a', strtotime($shift->from)) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ date('h:i a', strtotime($shift->to)) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ ($shift->days) ?? "No Days Set" }}
+                            </x-table.data>
+                            <x-table.data class="flex">
+                                <div class="flex items-center justify-center">
+                                    <button data-modal-target="edit-shift-modal"
+                                            data-modal-toggle="edit-shift-modal"
+                                            data-shift-id="{{$shift->id}}"
+                                            data-shift-name="{{$shift->name}}"
+                                            data-from-time="{{ $shift->from}}"
+                                            data-to-time="{{$shift->to}}"
+                                            type="button">
+                                        <x-icons.edit/>
+                                    </button>
+                                    <button data-modal-target="delete-shift-{{$shift->id}}-modal"
+                                            data-modal-toggle="delete-shift-{{$shift->id}}-modal"
+                                            type="button">
+                                        <x-icons.delete/>
+                                    </button>
+                                </div>
+                            </x-table.data>
+                        </x-table.data-row>
 
-                        @foreach($shifts as $shift)
-
-                            <x-table.row>
-                                <x-table.data>
-                                    {{ ucfirst($shift->name) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ date('h:i a', strtotime($shift->from)) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ date('h:i a', strtotime($shift->to)) }}
-                                </x-table.data>
-                                <x-table.data>
-                                    {{ ($shift->days) ?? "No Days Set" }}
-                                </x-table.data>
-                                <x-table.data class="flex">
-                                    <div class="flex items-center justify-center">
-                                        <button data-modal-target="edit-shift-modal"
-                                                data-modal-toggle="edit-shift-modal"
-                                                data-shift-id="{{$shift->id}}"
-                                                data-shift-name="{{$shift->name}}"
-                                                data-from-time="{{ $shift->from}}"
-                                                data-to-time="{{$shift->to}}"
-                                                type="button">
-                                            <x-icons.edit/>
-                                        </button>
-                                        <button data-modal-target="delete-shift-{{$shift->id}}-modal"
-                                                data-modal-toggle="delete-shift-{{$shift->id}}-modal"
-                                                type="button">
-                                            <x-icons.delete/>
-                                        </button>
-                                    </div>
-                                </x-table.data>
-                            </x-table.row>
-
-                        @endforeach
-
-
+                    @endforeach
 
                     </tbody>
                 </table>
@@ -148,15 +144,15 @@
             {{-- Feedback Card --}}
             @if( Session::has('success'))
 
-                <x-feedback_card type="success">
+                <x-feedback-card type="success">
                     {{ Session::get('success') }}
-                </x-feedback_card>
+                </x-feedback-card>
 
             @elseif( Session::has('error') )
 
-                <x-feedback_card type="error">
+                <x-feedback-card type="error">
                     {{ Session::get('error') }}
-                </x-feedback_card>
+                </x-feedback-card>
 
             @endif
 

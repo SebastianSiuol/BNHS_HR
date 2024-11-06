@@ -10,6 +10,7 @@
 /.idea
 /.vscode
 /resources/views/template_folder/
+/resources/views/temporary-folder/
 .env
 .env.backup
 .env.production

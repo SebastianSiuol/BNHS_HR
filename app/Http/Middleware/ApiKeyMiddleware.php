@@ -17,8 +17,6 @@ class ApiKeyMiddleware
     {
         $apiKey = env('API_KEY');
 
-//        return response()->json(['api-key' => $apiKey]);
-
         $apiKeyIsValid = (! empty($apiKey) && $request->header('x-api-key') == $apiKey);
 
         if(!$apiKeyIsValid) {

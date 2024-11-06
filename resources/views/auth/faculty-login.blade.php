@@ -7,18 +7,18 @@
             <img src="{{ asset('images/bhnhs_cover.jpg') }}" alt="landingPage_placeholder" class="w-full h-full">
         </div>
 
-        <div class="fixed h-full bg-white items-center justify-center w-max-[300px]  lg:right-0">
+        <div class="fixed h-full items-center justify-center w-max-[300px]  lg:right-0">
 
-            <div class="w-full h-full bg-gray-50 p-8 flex flex-col items-center justify-center">
+            <div class="aside w-full h-full p-8 flex flex-col items-center justify-center">
 
                 <!-- Logo -->
-                <div class="w-48 h-48 bg-gray-300 rounded-full flex items-center justify-center mb-8">
-                    <img src="{{ asset('images/bhnhs_logo.png') }}" class="w-full h-full">
+                <div class="w-45 h-45 rounded-full flex items-center justify-center mb-8">
+                    <img src="{{ asset('images/bhnhs_logo.png') }}" class="w-full h-full object-cover">
                 </div>
 
 
                 <!-- Title -->
-                <h2 class="mb-6 font-bold text-2xl text-center">Log Into Your Account</h2>
+                <h2 class="mb-6 font-bold text-2xl text-center text-white">Log Into Your Account</h2>
                 @if($errors->any())
                     <ul class="my-5">
                         @foreach($errors->all() as $error) @endforeach
@@ -32,7 +32,7 @@
                     @csrf
                     <!-- ADMIN ID -->
                     <div class="mt-4">
-                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="employee_id">Employee ID</label>
+                        <label class="block text-gray-600 text-sm font-semibold mb-2 text-white" for="employee_id">Employee ID</label>
                         <input
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             name="employee_id"
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <label class="block text-gray-600 text-sm font-semibold mb-2" for="password">Password</label>
+                        <label class="block text-gray-600 text-sm font-semibold mb-2 text-white" for="password">Password</label>
                         <input
                             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             name="password"
@@ -56,7 +56,7 @@
 
                     <div class="flex items-end mb-6 py-0">
                         <div class="ml-auto">
-                            <a href="{{ route('auth.forgot-password.create') }}" class="text-sm text-black-500 hover:underline">Forgot Password?</a>
+                            <a href="{{ route('auth.forgot-password.create') }}" class="text-sm text-black-500 hover:underline text-white">Forgot Password?</a>
                         </div>
                     </div>
 
@@ -69,7 +69,7 @@
                     </div>
 
                     <!-- Terms and Conditions -->
-                    <p class="text-center text-gray-600 text-sm mt-4">
+                    <p class="text-center text-gray-600 text-sm mt-4 text-white">
                         By using this service, you understand and agree to the Terms and Conditions of the system.
                     </p>
                 </form>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
 use App\Exports\FacultyExport;
 use App\Http\Controllers\Admin\PersonalInformationController;
 use App\Models\Faculty;
@@ -48,14 +49,18 @@ class FacultyController extends Controller
         /* Validate Request */
         $validated_inputs = $this->validateStoreFaculty($request);
 
+        $photo = Storage::disk('local')->put('photos', $validated_inputs['photo']);
+
         /* Stores Faculty */
         $faculty = new Faculty;
         $faculty->email             = $validated_inputs['email'];
         $faculty->password          = $validated_inputs['password'];
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
+        $faculty->photo             = $photo;
         $faculty->designation_id    = $validated_inputs['designation'];
         $faculty->shift_id          = $validated_inputs['shift'];
+        $faculty->employment_status_id = 1;
         $faculty->save();
         $faculty->roles()->attach($validated_inputs['role']);
 
@@ -247,7 +252,8 @@ class FacultyController extends Controller
             'date_of_joining'               => ['required', 'date_format:m-d-Y', 'after_or_equal:-1 day'],
             'designation'                   => ['required'],
             'shift'                         => ['required'],
-            'role'                           => ['required'],
+            'photo'                         => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:5000'],
+            'role'                          => ['required'],
 
 //          PERSONAL INFORMATION
             'first_name'                    => ['required'],

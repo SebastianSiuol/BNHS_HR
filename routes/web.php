@@ -1,21 +1,21 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminLeaveController;
 use App\Http\Controllers\Admin\Configuration\CompanyDetailController;
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
-use App\Http\Controllers\Admin\Configuration\PositionController;
+use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Api\LeaveTypeApiController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-Use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\FacultySessionController;
-use App\Http\Controllers\AdminLeaveController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
-use Illuminate\Support\Facades\Route;
 use App\Models\Faculty;
+use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-designations', [DesignationController::class, 'getDesignations'])->name('api.get.designations');
@@ -30,7 +30,7 @@ Route::get('/employees/export', [FacultyController::class, 'export'])->name('emp
 Route::middleware('redirectIfAuth')->group(function () {
 
     Route::view('/','index')->name('/');
-    Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty_login');
+    Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty.login');
     Route::post('/faculty/login', [FacultySessionController::class, 'store']);
 
     Route::get('/faculty/forgot-password', [ForgotPasswordController::class, 'create'])->name('auth.forgot-password.create');
@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
         })->name('admin.rpms.index');
 
         /*
-        |   Configuration Routes
+        |   Start of Configuration Routes
         */
         Route::get('/admin/config/company_details', [CompanyDetailController::class, 'index'])                  ->name('admin.config.company_details.index');
         Route::post('/admin/config/company_details', [CompanyDetailController::class, 'store'])                 ->name('admin.config.company_details.store');
@@ -112,13 +112,22 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/config/department/{department}', [DepartmentController::class, 'update'])          ->name('admin.config.department.update');
         Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy']) ->name('admin.config.department.destroy');
 
-        Route::get('/admin/config/position', [PositionController::class, 'index'])                              ->name('admin.config.position.index');
+        Route::get('/admin/config/position', [SchoolPositionController::class, 'index'])                                    ->name('admin.config.position.index');
+        Route::post('/admin/config/position/store', [SchoolPositionController::class, 'store'])                             ->name('admin.config.position.store');
+        Route::patch('/admin/config/position/{school_position}', [SchoolPositionController::class, 'update'])               ->name('admin.config.position.update');
+        Route::delete('/admin/config/position/{school_position}/delete', [SchoolPositionController::class, 'destroy'])      ->name('admin.config.position.destroy');
 
         Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                    ->name('admin.config.shift.index');
         Route::post('/admin/config/shift/store', [ShiftController::class, 'store'])                             ->name('admin.config.shift.store');
         Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                         ->name('admin.config.shift.update');
         Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                ->name('admin.config.shift.destroy');
 
+        Route::get('/admin/config/calendar', function(){
+            return view('admin.configuration.calendar.index');
+        })->name('admin.config.calendar.index');
+        /*
+        |   End of Configuration Routes
+        */
 
     });
 
@@ -128,9 +137,13 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['role:faculty'])->group(function () {
         /*
-        |--------------------------------------------------------------------------
-        | Faculty Role
-        |--------------------------------------------------------------------------
+        |-----------------------------------------------------------------------------
+        |
+        |
+        |   Faculty Role
+        |
+        |
+        |-----------------------------------------------------------------------------
         */
 
         Route::get('/staff/home', function() {

@@ -4,9 +4,9 @@
 
     <!-- Main Content -->
     <x-admin.main_container>
-        <x-admin.page_header>
+        <x-admin.page-header>
             Dashboard
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <section class="text-gray-700 body-font mb-5">
             <div class="container px-5 mx-auto">

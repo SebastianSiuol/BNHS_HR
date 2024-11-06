@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\EmploymentStatus;
-use App\Models\SchoolPosition;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EmploymentStatusSeeder extends Seeder

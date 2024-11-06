@@ -60,7 +60,7 @@
             <div class="mt-4">
                 <x-admin-show-label for="telephone_number">Telephone Number</x-admin-show-label>
                 <x-admin-show-input name="telephone_number" id="telephone_number"
-                                    value="{{$faculty->personal_information->telephone_no == null ? 'None' : $faculty->personal_information->telephone_no}}"/>
+                                    value="{{($faculty->personal_information->telephone_no) ?? 'No Number' }}"/>
             </div>
             <div class="mt-4">
                 <x-admin-show-label for=contact_person_name>Contact Person Name</x-admin-show-label>
@@ -265,7 +265,7 @@
             <div>
                 <div class="mt-4">
                     <label for="photo" class="block mb-2 text-sm font-medium text-gray-900 ">Photo</label>
-                    <img class="rounded-full w-40 h-40" src="emp-photo.jpg" alt="image description">
+                    <img class="rounded-full w-40 h-40 object-cover" src="{{ asset($faculty->photo) }}" alt="Employee Photo">
                 </div>
                 <div class="mt-4">
                     <label for="comment" class="block mb-2 text-sm font-medium text-gray-900 ">Comment</label>

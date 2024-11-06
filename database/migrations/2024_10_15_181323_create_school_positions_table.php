@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('school_positions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title');
+            $table->enum('level', ['leadership', 'entry', 'mid', 'senior', 'support', 'it'])->default('entry');
             $table->timestamps();
         });
     }

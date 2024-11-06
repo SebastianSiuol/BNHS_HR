@@ -7,9 +7,9 @@
     <x-admin.main_container>
 
 
-        <x-admin.page_header>
+        <x-admin.page-header>
             Add Employee
-        </x-admin.page_header>
+        </x-admin.page-header>
 
         <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data">
             @csrf
