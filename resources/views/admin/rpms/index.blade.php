@@ -140,45 +140,46 @@
                 {{-- TABLE --}}
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-sm text-center text-white bg-blue-900  dark:text-gray-400">
+                        <x-table.head>
                         <tr>
-                            <th scope="col" class="px-6 py-3">
+                            <x-table.header>
                                 Teacher Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Department
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Date Submitted
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Status
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Mid-Year Report File
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Year-End Report File
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 View Details
-                            </th>
+                            </x-table.header>
                         </tr>
-                        </thead>
+                        </x-table.head>
                         <tbody>
+                        @foreach($faculties as $faculty)
                         <x-table.data-row>
                             <x-table.data>
-                                Rosicar Escobar
+                                {{ $faculty->personal_information->generateFullName() }}
                             </x-table.data>
                             <x-table.data>
-                                IT Department
+                                {{ $faculty->designation->department->name }}
                             </x-table.data>
                             <x-table.data>
                                 Jan 9 2024
                             </x-table.data>
-                            <td class="px-6 py-4 font-medium text-yellow-500 whitespace-nowrap dark:text-white">
+                            <x-table.data class="text-yellow-500">
                                 Pending
-                            </td>
+                            </x-table.data>
                             <x-table.data>
                                 file
                             </x-table.data>
@@ -193,6 +194,7 @@
                                 </div>
                             </x-table.data>
                         </x-table.data-row>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

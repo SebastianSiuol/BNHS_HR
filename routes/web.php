@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\RPMSController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
 use App\Models\Faculty;
@@ -97,9 +98,7 @@ Route::middleware('auth')->group(function () {
         /*
         |   RPMS Routes
         */
-        Route::get('/admin/rpms', function(){
-            return view('admin.rpms.index');
-        })->name('admin.rpms.index');
+        Route::get('/admin/rpms', [RPMSController::class, 'index'])                                             ->name('admin.rpms.index');
 
         /*
         |   Start of Configuration Routes
