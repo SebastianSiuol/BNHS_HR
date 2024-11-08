@@ -43,6 +43,10 @@ return new class extends Migration
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
             $table->foreign('leave_types_id')->references('id')->on('leave_types');
         });
+
+        Schema::table('r_p_m_s', function(Blueprint $table) {
+            $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
+        });
     }
 
     /**

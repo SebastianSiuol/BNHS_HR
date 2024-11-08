@@ -18,34 +18,34 @@
                 {{-- LEAVE REQUESTS TABLE --}}
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table id="default-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-sm text-white bg-blue-900  dark:text-gray-400">
+                        <x-table.head>
                         <tr>
-                            <th scope="col" class="px-6 py-3">
+                            <x-table.header>
                                 Employee Name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Leave Type
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Start Date
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 End Date
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Service Credits
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Documents
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Status
-                            </th>
-                            <th scope="col" class="px-6 py-3">
+                            </x-table.header>
+                            <x-table.header>
                                 Actions
-                            </th>
+                            </x-table.header>
                         </tr>
-                        </thead>
+                        </x-table.head>
                         <tbody>
 
                         @foreach($leaves as $leave)
