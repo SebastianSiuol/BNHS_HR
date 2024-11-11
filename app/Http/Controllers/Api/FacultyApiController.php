@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FacultyApiController extends Controller
 {
@@ -12,18 +13,9 @@ class FacultyApiController extends Controller
 
         $faculty = Faculty::where('faculty_code', $request->faculty)->get()->first();
 
-        return response()->json([
-            'faculty_code'      => $faculty->faculty_code,
-            'email'             => $faculty->email,
-            'first_name'        => $faculty->personal_information->first_name,
-            'middle_name'       => $faculty->personal_information->middle_name,
-            'last_name'         => $faculty->personal_information->last_name,
-            'contact_number'    => $faculty->personal_information->contact_no,
-            'employmentStatus'  => $faculty->employment_status->name,
-            "teacherLevel"      => $faculty->school_position->title,
-            'department'        => $faculty->designation->department->name,
-            'roles'             => $faculty->roles->pluck('role_name'),
-        ]);
+        return response()->json(
+            $this->jsonFormat($faculty)
+        );
     }
 
     /**
@@ -72,24 +64,44 @@ class FacultyApiController extends Controller
         if (!$faculties->isEmpty()) {
 
             foreach ($faculties as $faculty) {
-                $array_of_faculties[] = [
-
-                    'faculty_code'      => $faculty->faculty_code,
-                    'email'             => $faculty->email,
-                    'first_name'        => $faculty->personal_information->first_name,
-                    'middle_name'       => $faculty->personal_information->middle_name,
-                    'last_name'         => $faculty->personal_information->last_name,
-                    'contact_number'    => $faculty->personal_information->contact_no,
-                    'employmentStatus'  => $faculty->employment_status->name,
-                    "teacherLevel"      => $faculty->school_position->title,
-                    'department'        => $faculty->designation->department->name,
-                    'roles'             => $faculty->roles->pluck('role_name'),
-
-                ];
+                $array_of_faculties[] = $this->jsonFormat($faculty);
             }
             return $array_of_faculties;
         }
 
         return null;
+    }
+
+    public function jsonFormat($faculty){
+        return [
+            'id'                => $faculty->id,
+            'faculty_code'      => $faculty->faculty_code,
+            'email'             => $faculty->email,
+            'first_name'        => $faculty->personal_information->first_name,
+            'middle_name'       => $faculty->personal_information->middle_name,
+            'last_name'         => $faculty->personal_information->last_name,
+            'contact_number'    => $faculty->personal_information->contact_no,
+            'employmentStatus'  => $faculty->employment_status->name,
+            "teacherLevel"      => $faculty->school_position->title,
+            'department'        => $faculty->designation->department->name,
+            'roles'             => $faculty->roles->pluck('role_name'),
+            ];
+    }
+
+    public function destroy(Request $request)
+    {
+        $deleted_count = DB::table('sessions')
+            ->where('user_id', '=', $request->id)
+            ->delete();
+
+        if ($deleted_count > 0) {
+            return response()->json([
+                'message' => 'Logged out successfully.',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No session found for the given user ID.',
+            ], 404);
+        }
     }
 }

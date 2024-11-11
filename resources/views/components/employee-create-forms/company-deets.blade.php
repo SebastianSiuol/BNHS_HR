@@ -87,7 +87,7 @@
             <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled value="0">Select Position</option>
             @foreach($positions as $position)
                 <option value="{{ $position->id }}" {{ old('shift') ==  $position->id ? 'selected=selected' : ''}}>
-                    {{$position->title}}
+                    {{ $position->title }}
                 </option>
             @endforeach
 
@@ -103,7 +103,7 @@
             <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled value="0">Select Shift</option>
         @foreach($shifts as $shift)
             <option value="{{ $shift->id }}" {{ old('shift') ==  $shift->id ? 'selected=selected' : ''}}>
-                {{$shift->name}}
+                {{ ucfirst($shift->name) }}
             </option>
         @endforeach
 
@@ -120,7 +120,7 @@
             <option {{ empty(old('role'))  ? 'selected=selected': '' }} disabled value="0">Select Role</option>
             @foreach($roles as $role)
                 <option value="{{ $role->id }}" {{ old('role') ==  $role->id ? 'selected=selected' : ''}}>
-                    {{ucfirst($role->role_name)}}
+                    {{ucfirst($role->getName())}}
                 </option>
             @endforeach
 

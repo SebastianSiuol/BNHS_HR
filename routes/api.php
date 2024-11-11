@@ -15,6 +15,9 @@ Route::middleware(ApiKeyMiddleware::class)->group(function () {
     /* Retrieves a Single List */
     Route::get("retrieve", [FacultyApiController::class, "retrieveAFaculty"]);
 
+    Route::post("logout", [FacultyApiController::class, "destroy"]);
+
+    Route::post("login", [JWTAuthController::class, "store"]);
 });
 
 

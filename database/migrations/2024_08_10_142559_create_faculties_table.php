@@ -52,6 +52,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('faculties');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+//        Schema::dropIfExists('sessions');
     }
 };

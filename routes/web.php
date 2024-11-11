@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
@@ -27,6 +28,10 @@ Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name
 Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
 
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
+
+Route::get('/sis', [JWTRedirectController::class, 'sis'])->name('sis.redirect');
+Route::get('/logistics', [JWTRedirectController::class, 'logistics'])->name('logistics.redirect');
+
 
 Route::middleware('redirectIfAuth')->group(function () {
 

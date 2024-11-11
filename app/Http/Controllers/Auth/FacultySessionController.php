@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
 
 class FacultySessionController extends Controller
 {
@@ -49,6 +50,9 @@ class FacultySessionController extends Controller
             $isSISRegistrar = $user->roles()->where('role_name', 'sis_registrar')->exists();
             $isSISStaff = $user->roles()->where('role_name', 'sis_faculty')->exists();
 
+            $isLogi = $user->roles()->where('role_name', 'logi_admin')->exists();
+
+//            $request->JWT::parseToken();
 
             /* Start of Experimentation */
             $user_roles = $user->roles->pluck('role_name');
@@ -82,13 +86,14 @@ class FacultySessionController extends Controller
                     ->intended(route('admin.index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
 
-            }else if ($isStaff) {
+            }else
+                if ($isStaff) {
 
                 return redirect()
                     ->intended(route('staff.index'))
                     ->with('success', 'Successfully Logged In!');// Staff dashboard
 
-            }else if ($isSISAdmin) {
+            }else if ($isSISAdmin || $isSISRegistrar) {
 
                 try {
                     if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
@@ -115,18 +120,63 @@ class FacultySessionController extends Controller
                     ], 500);
                 }
 
-            }else if ($isSISRegistrar) {
-
-                return redirect()->away("http://192.168.2.42:8000/admin_dashboard");
-
-
             }else if ($isSISStaff) {
 
-                return redirect()
-                    ->intended(route('staff.index'))
-                    ->with('success', 'Successfully Logged In!');// Staff dashboard
+                    try {
+                        if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                            return response()->json(['error' => 'Invalid credentials'], 401);
+                        }
 
-            } else {
+                        // Get the authenticated user.
+                        $faculty = auth()->user();
+
+                        // Attach data to token
+                        $token = JWTAuth::claims([
+                            'faculty_code' => $faculty->faculty_code,
+                            'role' => $faculty->roles->pluck('role_name'),
+                            env('JWT_SECRET'),
+                            'expiresIn' => '12h'
+                        ])->fromUser($faculty);
+
+                        return redirect()->away("http://192.168.2.62:5173/faculty/home?access_token=" . $token);
+
+                    } catch (JWTException $e) {
+                        return response()->json([
+                            'error' => 'Could not create token',
+                            'error_message' => $e
+                        ], 500);
+                    }
+
+            }else if ($isLogi) {
+
+
+                    try {
+                        if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                            return response()->json(['error' => 'Invalid credentials'], 401);
+                        }
+
+                        // Get the authenticated user.
+                        $faculty = auth()->user();
+
+
+                        // Attach data to token
+                        $token = JWTAuth::claims([
+                            'faculty_code' => $faculty->faculty_code,
+                            'role' => $faculty->roles->pluck('role_name'),
+                            env('JWT_SECRET'),
+                            'expiresIn' => '12h'
+                        ])->fromUser($faculty);
+
+                        return redirect()->away("http://192.168.2.42:8000/logistics?access_token=" . $token);
+
+                    } catch (JWTException $e) {
+                        return response()->json([
+                            'error' => 'Could not create token',
+                            'error_message' => $e
+                        ], 500);
+                    }
+
+                } else {
 
                 Auth::logout();
                 $request->session()->invalidate();

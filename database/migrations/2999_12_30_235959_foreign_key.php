@@ -47,6 +47,7 @@ return new class extends Migration
         Schema::table('r_p_m_s', function(Blueprint $table) {
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
         });
+
     }
 
     /**
