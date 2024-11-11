@@ -80,6 +80,29 @@ class Faculty extends Authenticatable implements JWTSubject
         return $prefix . $year . '-' . $formattedNumber;
     }
 
+    public function checkRoles()
+    {
+        $has_sis = false;
+        $has_logi = false;
+
+        foreach ($this->roles()->pluck('role_name') as $role) {
+            $separated = explode("_", $role);
+
+            if($separated[0] == "sis"){
+                $has_sis = true;
+            };
+
+            if($separated[0] == "logi"){
+                $has_logi = true;
+            };
+        }
+
+        return [
+            'has_sis' => $has_sis,
+            'has_logi' => $has_logi,
+        ];
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
