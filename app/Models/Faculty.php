@@ -10,9 +10,11 @@ use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
 //use Laravel\Sanctum\HasApiTokens;
 
-class Faculty extends Authenticatable
+class Faculty extends Authenticatable implements JWTSubject
 {
 //    use HasApiTokens ,HasFactory, Notifiable;
     use HasFactory, Notifiable;
@@ -78,6 +80,15 @@ class Faculty extends Authenticatable
         return $prefix . $year . '-' . $formattedNumber;
     }
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
 
     /* NOTE: HasOne/Many Relationships */

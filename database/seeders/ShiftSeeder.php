@@ -33,7 +33,7 @@ class ShiftSeeder extends Seeder
         $faculty->shift_id = 1;
         $faculty->save();
         $faculty = Faculty::find(2);
-        $faculty->shift_id =2;
+        $faculty->shift_id = 2;
         $faculty->save();
         $faculty = Faculty::find(3);
         $faculty->shift_id = 1;
@@ -45,6 +45,12 @@ class ShiftSeeder extends Seeder
         $faculty->shift_id = 2;
         $faculty->save();
         $faculty = Faculty::find(6);
+        $faculty->shift_id = 2;
+        $faculty->save();
+        $faculty = Faculty::find(7);
+        $faculty->shift_id = 2;
+        $faculty->save();
+        $faculty = Faculty::find(8);
         $faculty->shift_id = 2;
         $faculty->save();
     }

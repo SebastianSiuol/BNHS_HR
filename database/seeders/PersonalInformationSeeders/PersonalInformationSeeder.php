@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\PersonalInformationSeeders;
 
+use App\Models\Faculty;
 use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -81,8 +82,32 @@ class PersonalInformationSeeder extends Seeder
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Robert',
+            'middle_name' => '',
+            'last_name' => 'Badong',
+            'sex' => 'Male',
+            'date_of_birth' => '01-01-1986',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Poppy',
+            'middle_name' => 'Orlando',
+            'last_name' => 'Pola',
+            'sex' => 'Male',
+            'date_of_birth' => '01-01-1976',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
 
-        for ($i = 1; $i <= 6; $i++) {
+        $faculty_count = Faculty::count();
+
+        for ($i = 1; $i <= $faculty_count; $i++) {
             $personal_information = PersonalInformation::find($i);
             $personal_information->faculty_id = $i;
             $personal_information->save();

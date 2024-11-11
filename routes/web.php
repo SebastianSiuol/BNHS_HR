@@ -30,7 +30,10 @@ Route::get('/employees/export', [FacultyController::class, 'export'])->name('emp
 
 Route::middleware('redirectIfAuth')->group(function () {
 
-    Route::view('/','index')->name('/');
+    Route::get('/', function(){
+        return redirect()->route('faculty.login');
+    })->name('/');
+
     Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty.login');
     Route::post('/faculty/login', [FacultySessionController::class, 'store']);
 

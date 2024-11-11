@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class FacultySessionController extends Controller
 {
@@ -36,7 +38,6 @@ class FacultySessionController extends Controller
             'password' => 'required|min:6',
         ]);
 
-
         if (Auth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
 
             $request->session()->regenerate();
@@ -47,7 +48,6 @@ class FacultySessionController extends Controller
             $isSISAdmin = $user->roles()->where('role_name', 'sis_admin')->exists();
             $isSISRegistrar = $user->roles()->where('role_name', 'sis_registrar')->exists();
             $isSISStaff = $user->roles()->where('role_name', 'sis_faculty')->exists();
-
 
             if ($isAdmin) {
 
@@ -63,7 +63,30 @@ class FacultySessionController extends Controller
 
             }else if ($isSISAdmin) {
 
-                return redirect()->away("http://192.168.2.62:5173/admin/dashboard");
+                try {
+                    if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                        return response()->json(['error' => 'Invalid credentials'], 401);
+                    }
+
+                    // Get the authenticated user.
+                    $faculty = auth()->user();
+
+                    // Attach data to token
+                    $token = JWTAuth::claims([
+                        'faculty_code' => $faculty->faculty_code,
+                        'role' => $faculty->roles->pluck('role_name'),
+                        env('JWT_SECRET'),
+                        'expiresIn' => '12h'
+                    ])->fromUser($faculty);
+
+                    return redirect()->away("http://192.168.2.62:5173/admin/dashboard?access_token=" . $token);
+
+                } catch (JWTException $e) {
+                    return response()->json([
+                        'error' => 'Could not create token',
+                        'error_message' => $e
+                    ], 500);
+                }
 
             }else if ($isSISRegistrar) {
 
@@ -76,10 +99,6 @@ class FacultySessionController extends Controller
                     ->intended(route('staff.index'))
                     ->with('success', 'Successfully Logged In!');// Staff dashboard
 
-
-
-
-
             } else {
 
                 Auth::logout();
@@ -87,13 +106,13 @@ class FacultySessionController extends Controller
                 $request->session()->regenerateToken();
 
                 return back()->withErrors([
-                    'msg' => 'Your account has no dedicated role yet. Please contact management!',
+                    'message' => 'Your account has no dedicated role yet. Please contact management!',
                 ]);
             }
         }
 
         return back()->withErrors([
-            'msg' => 'Invalid credentials, please try again',
+            'message' => 'Invalid credentials, please try again',
         ]);
     }
 

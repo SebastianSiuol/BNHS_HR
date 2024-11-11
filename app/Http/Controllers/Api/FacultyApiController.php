@@ -26,8 +26,6 @@ class FacultyApiController extends Controller
         ]);
     }
 
-
-
     /**
      * Old API
      */
