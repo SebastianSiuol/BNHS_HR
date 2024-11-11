@@ -20,12 +20,12 @@ class AddressSeeder extends Seeder
         PermanentAddress::factory($count)->create();
 
         for($i = 1; $i <= $count; $i++) {
-            $residential_address = ResidentialAddress::find($count);
-            $residential_address->personal_information_id = $count;
+            $residential_address = ResidentialAddress::find($i);
+            $residential_address->personal_information_id = $i;
             $residential_address->save();
 
-            $permanent_address = PermanentAddress::find($count);
-            $permanent_address->personal_information_id = $count;
+            $permanent_address = PermanentAddress::find($i);
+            $permanent_address->personal_information_id = $i;
             $permanent_address->save();
         }
 
