@@ -44,14 +44,42 @@ class FacultySessionController extends Controller
             $isAdmin = $user->roles()->where('role_name', 'admin')->exists();
             $isStaff = $user->roles()->where('role_name', 'faculty')->exists();
 
+            $isSISAdmin = $user->roles()->where('role_name', 'sis_admin')->exists();
+            $isSISRegistrar = $user->roles()->where('role_name', 'sis_registrar')->exists();
+            $isSISStaff = $user->roles()->where('role_name', 'sis_faculty')->exists();
+
+
             if ($isAdmin) {
+
                 return redirect()
                     ->intended(route('admin.index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
+
             }else if ($isStaff) {
+
                 return redirect()
                     ->intended(route('staff.index'))
                     ->with('success', 'Successfully Logged In!');// Staff dashboard
+
+            }else if ($isSISAdmin) {
+
+                return redirect()->away("http://192.168.2.62:5173/admin/dashboard");
+
+            }else if ($isSISRegistrar) {
+
+                return redirect()->away("http://192.168.2.42:8000/admin_dashboard");
+
+
+            }else if ($isSISStaff) {
+
+                return redirect()
+                    ->intended(route('staff.index'))
+                    ->with('success', 'Successfully Logged In!');// Staff dashboard
+
+
+
+
+
             } else {
 
                 Auth::logout();

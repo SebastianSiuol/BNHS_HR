@@ -35,20 +35,28 @@ class RoleSeeder extends Seeder
             'role_name' => 'schoolAdmin',
         ]);
 
+        Role::factory()->create([
+            'role_name' => 'sis_admin',
+        ]);
+
+        Role::factory()->create([
+            'role_name' => 'sis_registrar',
+        ]);
+
+        Role::factory()->create([
+            'role_name' => 'sis_faculty',
+        ]);
+
         Faculty::find(1)->roles()->attach([1]);
         Faculty::find(2)->roles()->attach([3]);
 
         Faculty::find(3)->roles()->attach([3]);
         Faculty::find(3)->roles()->attach([4]);
 
-        Faculty::find(4)->roles()->attach([3]);
-        Faculty::find(4)->roles()->attach([4]);
-        Faculty::find(4)->roles()->attach([5]);
+        Faculty::find(4)->roles()->attach([6]);
 
-        Faculty::find(5)->roles()->attach([2]);
-        Faculty::find(5)->roles()->attach([1]);
+        Faculty::find(5)->roles()->attach([7]);
 
-        Faculty::find(6)->roles()->attach([3]);
-        Faculty::find(6)->roles()->attach([2]);
+        Faculty::find(6)->roles()->attach([8]);
     }
 }

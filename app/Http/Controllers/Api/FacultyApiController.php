@@ -8,6 +8,25 @@ use Illuminate\Http\Request;
 
 class FacultyApiController extends Controller
 {
+    public function retrieveAFaculty(Request $request){
+
+        $faculty = Faculty::where('faculty_code', $request->faculty)->get()->first();
+
+        return response()->json([
+            'faculty_code'      => $faculty->faculty_code,
+            'email'             => $faculty->email,
+            'first_name'        => $faculty->personal_information->first_name,
+            'middle_name'       => $faculty->personal_information->middle_name,
+            'last_name'         => $faculty->personal_information->last_name,
+            'contact_number'    => $faculty->personal_information->contact_no,
+            'employmentStatus'  => $faculty->employment_status->name,
+            "teacherLevel"      => $faculty->school_position->title,
+            'department'        => $faculty->designation->department->name,
+            'roles'             => $faculty->roles->pluck('role_name'),
+        ]);
+    }
+
+
 
     /**
      * Old API
@@ -64,7 +83,7 @@ class FacultyApiController extends Controller
                     'last_name'         => $faculty->personal_information->last_name,
                     'contact_number'    => $faculty->personal_information->contact_no,
                     'employmentStatus'  => $faculty->employment_status->name,
-                    "teacherLevel"      => $faculty->school_position->name,
+                    "teacherLevel"      => $faculty->school_position->title,
                     'department'        => $faculty->designation->department->name,
                     'roles'             => $faculty->roles->pluck('role_name'),
 
