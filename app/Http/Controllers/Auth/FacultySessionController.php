@@ -42,12 +42,39 @@ class FacultySessionController extends Controller
 
             $request->session()->regenerate();
             $user = Auth::user();
-            $isAdmin = $user->roles()->where('role_name', 'admin')->exists();
-            $isStaff = $user->roles()->where('role_name', 'faculty')->exists();
+            $isAdmin = $user->roles()->where('role_name', 'hr_admin')->exists();
+            $isStaff = $user->roles()->where('role_name', 'hr_faculty')->exists();
 
             $isSISAdmin = $user->roles()->where('role_name', 'sis_admin')->exists();
             $isSISRegistrar = $user->roles()->where('role_name', 'sis_registrar')->exists();
             $isSISStaff = $user->roles()->where('role_name', 'sis_faculty')->exists();
+
+
+            /* Start of Experimentation */
+            $user_roles = $user->roles->pluck('role_name');
+
+            $separated = $user_roles->map(function ($role) {
+               return explode("_", $role);
+            });
+
+            $module_name = $separated->map(function ($separated_role) {
+                return $separated_role[0];
+            });
+
+            $role_name = $separated->map(function ($separated_role) {
+                return $separated_role[1];
+            });
+
+            $roleHaveSIS = false;
+            $roleHaveHR = false;
+
+            foreach ($module_name as $name) {
+                if($name == "sis"){
+                    $roleHaveSIS = true;
+                    break;
+                }
+            }
+            /* End of Experimentation */
 
             if ($isAdmin) {
 

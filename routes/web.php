@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
-    Route::middleware(['role:admin'])->group(function () { // Routes for admin
+    Route::middleware(['role:hr_admin'])->group(function () { // Routes for admin
         /*
         |-----------------------------------------------------------------------------
         |
@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::middleware(['role:faculty'])->group(function () {
+    Route::middleware(['role:hr_faculty'])->group(function () {
         /*
         |-----------------------------------------------------------------------------
         |
