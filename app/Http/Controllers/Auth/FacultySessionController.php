@@ -167,7 +167,7 @@ class FacultySessionController extends Controller
                             'expiresIn' => '12h'
                         ])->fromUser($faculty);
 
-                        return redirect()->away("https://batasan-logistics.onrender.com/logistics?access_token=" . $token);
+                        return redirect()->away("https://batasan-logistics.onrender.com/admin_dashboard?access_token=" . $token);
 
                     } catch (JWTException $e) {
                         return response()->json([
