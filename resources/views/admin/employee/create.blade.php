@@ -16,7 +16,7 @@
 
             {{-- Start of Personal Details Form --}}
             <div id="personalDetails"
-                 {{--class="hidden"--}}
+{{--                 class="hidden"--}}
                 {{--Uncomment for Debug--}}
             >
 

@@ -8,10 +8,9 @@ use Database\Seeders\LeaveTypeSeeder;
 use Database\Seeders\PersonalInformationSeeders\CivilStatusSeeder;
 use Database\Seeders\PersonalInformationSeeders\ContactPersonSeeder;
 use Database\Seeders\PersonalInformationSeeders\NameExtensionSeeder;
-use Database\Seeders\PersonalInformationSeeders\PermanentAddressSeeder;
 use Database\Seeders\PersonalInformationSeeders\PersonalInformationSeeder;
 use Database\Seeders\PersonalInformationSeeders\ReferenceMemberSeeder;
-use Database\Seeders\PersonalInformationSeeders\ResidentialAddressSeeder;
+use Database\Seeders\PersonalInformationSeeders\AddressSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\SchoolPositionSeeder;
 use Database\Seeders\ShiftSeeder;
@@ -56,11 +55,8 @@ return new class extends Migration
         $personal_info_seeder = new PersonalInformationSeeder();
         $personal_info_seeder->run();
 
-        $residential_seeder = new ResidentialAddressSeeder();
-        $residential_seeder->run();
-
-        $permanent_seeder = new PermanentAddressSeeder();
-        $permanent_seeder->run();
+        $address_seeder = new AddressSeeder();
+        $address_seeder->run();
 
         $reference_member_seeder = new ReferenceMemberSeeder();
         $reference_member_seeder->run();

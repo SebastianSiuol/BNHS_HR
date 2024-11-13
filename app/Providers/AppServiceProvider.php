@@ -33,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
             $view->with('loggedUser', Auth::user());
         });
 
+        View::composer('components.admin.sidebar', function ($view) {
+            $view->with('logged_user', Auth::user());
+        });
 
         Paginator::useTailwind();
     }

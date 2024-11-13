@@ -1,12 +1,12 @@
-@props(['departments', 'designations', 'shifts', 'roles', 'positions'])
+@props(['generated_id','departments', 'designations', 'shifts', 'roles', 'positions'])
 
 
 
-<div class="validate-comp-txt-inputs grid gap-4 mb-4 sm:grid-cols-2">
+<div class="validate-comp-txt-inputs grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
     <div>
         <x-forms.label label_name="Employee ID" for="emp_id" />
-        <x-forms.input name="emp_id" />
+        <x-forms.input name="emp_id" disabled placeholder="{{ $generated_id }}"/>
     </div>
 
     <div>
@@ -87,7 +87,7 @@
             <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled value="0">Select Position</option>
             @foreach($positions as $position)
                 <option value="{{ $position->id }}" {{ old('shift') ==  $position->id ? 'selected=selected' : ''}}>
-                    {{$position->title}}
+                    {{ $position->title }}
                 </option>
             @endforeach
 
@@ -103,7 +103,7 @@
             <option {{ empty(old('shift'))  ? 'selected=selected': '' }} disabled value="0">Select Shift</option>
         @foreach($shifts as $shift)
             <option value="{{ $shift->id }}" {{ old('shift') ==  $shift->id ? 'selected=selected' : ''}}>
-                {{$shift->name}}
+                {{ ucfirst($shift->name) }}
             </option>
         @endforeach
 
@@ -111,21 +111,58 @@
 
     </div>
 
-    <div>
+{{--    <div>--}}
 
-        <x-forms.label label_name="Select Role" for="role" />
+{{--        <x-forms.label label_name="Select Role" for="role" />--}}
 
-        <x-forms.select name="role">
+{{--        <x-forms.select name="role">--}}
 
-            <option {{ empty(old('role'))  ? 'selected=selected': '' }} disabled value="0">Select Role</option>
-            @foreach($roles as $role)
-                <option value="{{ $role->id }}" {{ old('role') ==  $role->id ? 'selected=selected' : ''}}>
-                    {{ucfirst($role->role_name)}}
-                </option>
-            @endforeach
+{{--            <option {{ empty(old('role'))  ? 'selected=selected': '' }} disabled value="0">Select Role</option>--}}
+{{--            @foreach($roles as $role)--}}
+{{--                <option value="{{ $role->id }}" {{ old('role') ==  $role->id ? 'selected=selected' : ''}}>--}}
+{{--                    {{ucfirst($role->getName())}}--}}
+{{--                </option>--}}
+{{--            @endforeach--}}
 
-        </x-forms.select>
+{{--        </x-forms.select>--}}
 
+{{--    </div>--}}
+
+    <div class="w-full">
+
+        <x-forms.label label_name="Select Roles" for="role" />
+
+
+        <button id="dropdown_roles_button" data-dropdown-toggle="dropdown_roles"
+                class="inline-flex w-full items-center px-4 py-2 text-sm font-medium text-center text-black border border-gray-300 bg-[#f9fafb] rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+                type="button">
+            Roles
+        </button>
+
+        {{-- Dropdown menu --}}
+        <div id="dropdown_roles" class="bg-[#f9fafb] hidden rounded-lg shadow w-[50%] sm:w-[35%]">
+            <ul class="h-48 w-full pb-3 overflow-y-auto text-sm text-gray-700">
+
+                @foreach($roles as $role)
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100">
+                        <input id="checkbox-roles[]"
+                               name="checkbox_roles[]"
+                               type="checkbox"
+                               value="{{ $role->id }}"
+                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                        <label for="checkbox_roles[]"
+                               class="w-full ms-2 text-sm font-medium text-gray-900 rounded">
+                            {{ $role->getName() }}
+                        </label>
+                    </div>
+                </li>
+                @endforeach
+
+            </ul>
+        </div>
     </div>
+
+
 
 </div>

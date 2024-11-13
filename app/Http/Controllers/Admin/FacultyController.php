@@ -34,6 +34,8 @@ class FacultyController extends Controller
     }
 
     public function create(){
+
+
         return view('admin.employee.create', [
             'generated_id'      => Faculty::generateFacultyCode(),
             'shifts'            => Shift::all(),
@@ -66,8 +68,11 @@ class FacultyController extends Controller
         $faculty->employment_status_id = 1;
         $faculty->school_position_id = $validated_inputs['position'];
         $faculty->save();
-        $faculty->roles()->attach($validated_inputs['role']);
 
+        foreach ($validated_inputs['checkbox_roles'] as $role) {
+            $faculty->roles()->attach($role);
+
+        }
         /* Instantiates Service for Storing Faculty Details */
         $store_faculty_service = new StoreFacultyService();
 
@@ -257,7 +262,7 @@ class FacultyController extends Controller
             'designation'                   => ['required'],
             'shift'                         => ['required'],
             'photo'                         => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:5000'],
-            'role'                          => ['required'],
+            'checkbox_roles'                => ['required', 'array'],
             'position'                      => ['required'],
 
 //          PERSONAL INFORMATION

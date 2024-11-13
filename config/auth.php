@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'faculties',
         ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'faculties',
+        ]
     ],
 
     /*

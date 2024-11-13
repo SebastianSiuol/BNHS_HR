@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\FacultyController;
+use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSController;
 use App\Http\Controllers\ServiceCreditController;
 use App\Http\Controllers\Staff\StaffLeaveController;
@@ -28,9 +29,16 @@ Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name
 
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
+Route::get('/sis', [JWTRedirectController::class, 'sis'])->name('sis.redirect');
+Route::get('/logistics', [JWTRedirectController::class, 'logistics'])->name('logistics.redirect');
+
+
 Route::middleware('redirectIfAuth')->group(function () {
 
-    Route::view('/','index')->name('/');
+    Route::get('/', function(){
+        return redirect()->route('faculty.login');
+    })->name('/');
+
     Route::get('/faculty/login', [FacultySessionController::class, 'create'])->name('faculty.login');
     Route::post('/faculty/login', [FacultySessionController::class, 'store']);
 
@@ -45,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
-    Route::middleware(['role:admin'])->group(function () { // Routes for admin
+    Route::middleware(['role:hr_admin'])->group(function () { // Routes for admin
         /*
         |-----------------------------------------------------------------------------
         |
@@ -135,7 +143,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::middleware(['role:faculty'])->group(function () {
+    Route::middleware(['role:hr_faculty'])->group(function () {
         /*
         |-----------------------------------------------------------------------------
         |

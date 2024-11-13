@@ -80,20 +80,33 @@ class DesignationSeeder extends Seeder
         $faculty = Faculty::find(1);
         $faculty->designation_id = 1;
         $faculty->save();
+
         $faculty = Faculty::find(2);
         $faculty->designation_id = 9;
         $faculty->save();
+
         $faculty = Faculty::find(3);
         $faculty->designation_id = 6;
         $faculty->save();
+
         $faculty = Faculty::find(4);
         $faculty->designation_id = 7;
         $faculty->save();
+
         $faculty = Faculty::find(5);
         $faculty->designation_id = 10;
         $faculty->save();
+
         $faculty = Faculty::find(6);
         $faculty->designation_id = 11;
+        $faculty->save();
+
+        $faculty = Faculty::find(7);
+        $faculty->designation_id = 5;
+        $faculty->save();
+
+        $faculty = Faculty::find(8);
+        $faculty->designation_id = 4;
         $faculty->save();
 
     }
