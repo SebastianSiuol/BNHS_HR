@@ -111,7 +111,7 @@ class FacultySessionController extends Controller
                         'expiresIn' => '12h'
                     ])->fromUser($faculty);
 
-                    return redirect()->away("http://192.168.2.62:5173/admin/dashboard?access_token=" . $token);
+                    return redirect()->away("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
 
                 } catch (JWTException $e) {
                     return response()->json([
@@ -138,7 +138,7 @@ class FacultySessionController extends Controller
                             'expiresIn' => '12h'
                         ])->fromUser($faculty);
 
-                        return redirect()->away("http://192.168.2.62:5173/faculty/home?access_token=" . $token);
+                        return redirect()->away("https://bhnhs-sis.onrender.com/faculty/home?access_token=" . $token);
 
                     } catch (JWTException $e) {
                         return response()->json([
@@ -167,7 +167,7 @@ class FacultySessionController extends Controller
                             'expiresIn' => '12h'
                         ])->fromUser($faculty);
 
-                        return redirect()->away("http://192.168.2.42:8000/logistics?access_token=" . $token);
+                        return redirect()->away("https://batasan-logistics.onrender.com/logistics?access_token=" . $token);
 
                     } catch (JWTException $e) {
                         return response()->json([

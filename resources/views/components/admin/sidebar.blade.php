@@ -160,6 +160,9 @@
                 </ul>
 
             </li>
+            <div>
+                <div class="bg-white my-5 h-px w-full"></div>
+            </div>
             <li class="{{ $logged_user->checkRoles()['has_sis'] ? '' : 'hidden' }}">
                 <x-admin.sidebar-button href="{{ route('sis.redirect') }}" :active="request()->is('sis*')" type="top">
                     <span class="material-symbols-outlined">account_box</span>
