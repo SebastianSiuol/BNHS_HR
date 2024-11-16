@@ -160,6 +160,25 @@
                 </ul>
 
             </li>
+            <div>
+                <div class="bg-white my-5 h-px w-full"></div>
+            </div>
+            <li class="{{ $logged_user->checkRoles()['has_sis'] ? '' : 'hidden' }}">
+                <x-admin.sidebar-button href="{{ route('sis.redirect') }}" :active="request()->is('sis*')" type="top">
+                    <span class="material-symbols-outlined">account_box</span>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900">
+                        SIS
+                    </span>
+                </x-admin.sidebar-button>
+            </li>
+            <li class="{{ $logged_user->checkRoles()['has_logi'] ? '' : 'hidden' }}">
+                <x-admin.sidebar-button href="http://192.168.2.42:8000/logistics" :active="request()->is('logistics')" type="top">
+                    <span class="material-symbols-outlined text-light">conveyor_belt</span>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900">
+                        Logistics
+                    </span>
+                </x-admin.sidebar-button>
+            </li>
         </ul>
     </div>
 </aside>
