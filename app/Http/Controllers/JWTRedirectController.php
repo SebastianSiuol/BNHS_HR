@@ -21,7 +21,7 @@ class JWTRedirectController extends Controller
                 'expiresIn' => '12h'
             ])->fromUser($faculty);
 
-            return redirect()->away("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
+            return redirect()->away("http://localhost:5173/admin/dashboard?access_token=" . $token);
 
         } catch (JWTException $e) {
             return response()->json([
@@ -45,7 +45,7 @@ class JWTRedirectController extends Controller
                 'expiresIn' => '12h'
             ])->fromUser($faculty);
 
-            return redirect()->away("https://batasan-logistics.onrender.com/admin_dashboard?access_token=" . $token);
+            return redirect()->away("http://localhost:8000/admin_dashboard?access_token=" . $token);
 
         } catch (JWTException $e) {
             return response()->json([
