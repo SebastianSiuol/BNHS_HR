@@ -7,6 +7,7 @@ use App\Models\Configuration\SchoolPosition;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class SchoolPositionController extends Controller
 {
@@ -46,10 +47,10 @@ class SchoolPositionController extends Controller
     public function update(Request $request, SchoolPosition $school_position)
     {
         $validated_inputs = $request->validate([
-            'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
+            'position_title' => ['required', 'string', 'max:255', Rule::unique('school_positions', 'title')->ignore($school_position->id),],
             'position_level' => ['required'],
         ],
-        ['position_title.unique' => 'Position title cannot change to an existing position.']);
+            ['position_title.unique' => 'Position title cannot change to an existing position.']);
 
         $update_position = $school_position;
         $update_position->title = $validated_inputs['position_title'];

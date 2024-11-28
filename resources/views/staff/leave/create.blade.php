@@ -1,4 +1,4 @@
-<x-staff.layout :with_nav="false">
+<x-staff.layout>
 
     <x-staff.content-panel>
         <h3 class="text-blue-800 text-3xl font-bold">Apply for a Leave</h3>

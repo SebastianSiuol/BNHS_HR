@@ -48,9 +48,11 @@ class RoleSeeder extends Seeder
         ]);
 
 
-        // 0001 and 0002
-        Faculty::find(1)->roles()->attach([1]); // hr_admin // 0001
-        Faculty::find(2)->roles()->attach([3]); // hr_faculty // 0002
+        // 0001
+        Faculty::find(1)->roles()->attach([1]); // hr_admin
+
+        // 002
+        Faculty::find(2)->roles()->attach([3]); // hr_faculty
 
         // 0003
         Faculty::find(3)->roles()->attach([1]); // hr_admin
@@ -69,7 +71,7 @@ class RoleSeeder extends Seeder
         Faculty::find(6)->roles()->attach([4]); // sis_admin
 
         // 0007
-        Faculty::find(7)->roles()->attach([7]);
+        Faculty::find(7)->roles()->attach([7]); // logi_admin
 
         // 0008
         Faculty::find(8)->roles()->attach([6]); // sis_registrar

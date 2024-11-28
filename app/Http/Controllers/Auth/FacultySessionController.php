@@ -58,7 +58,7 @@ class FacultySessionController extends Controller
             $user_roles = $user->roles->pluck('role_name');
 
             $separated = $user_roles->map(function ($role) {
-               return explode("_", $role);
+                return explode("_", $role);
             });
 
             $module_name = $separated->map(function ($separated_role) {
@@ -73,7 +73,7 @@ class FacultySessionController extends Controller
             $roleHaveHR = false;
 
             foreach ($module_name as $name) {
-                if($name == "sis"){
+                if ($name == "sis") {
                     $roleHaveSIS = true;
                     break;
                 }
@@ -86,44 +86,44 @@ class FacultySessionController extends Controller
                     ->intended(route('admin.index'))
                     ->with('success', 'Successfully Logged In!');// Admin dashboard
 
-            }else
+            } else
                 if ($isStaff) {
 
-                return redirect()
-                    ->intended(route('staff.index'))
-                    ->with('success', 'Successfully Logged In!');// Staff dashboard
+                    return redirect()
+                        ->intended(route('staff.index'))
+                        ->with('success', 'Successfully Logged In!');// Staff dashboard
 
-            }else if ($isSISAdmin || $isSISRegistrar) {
-
-                try {
-                    if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
-                        return response()->json(['error' => 'Invalid credentials'], 401);
-                    }
-
-                    // Get the authenticated user.
-                    $faculty = auth()->user();
-
-                    // Attach data to token
-                    $token = JWTAuth::claims([
-                        'faculty_code' => $faculty->faculty_code,
-                        'role' => $faculty->roles->pluck('role_name'),
-                        env('JWT_SECRET'),
-                        'expiresIn' => '12h'
-                    ])->fromUser($faculty);
-
-                    return redirect()->away("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
-
-                } catch (JWTException $e) {
-                    return response()->json([
-                        'error' => 'Could not create token',
-                        'error_message' => $e
-                    ], 500);
-                }
-
-            }else if ($isSISStaff) {
+                } else if ($isSISAdmin || $isSISRegistrar) {
 
                     try {
-                        if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                        if (!$token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                            return response()->json(['error' => 'Invalid credentials'], 401);
+                        }
+
+                        // Get the authenticated user.
+                        $faculty = auth()->user();
+
+                        // Attach data to token
+                        $token = JWTAuth::claims([
+                            'faculty_code' => $faculty->faculty_code,
+                            'role' => $faculty->roles->pluck('role_name'),
+                            env('JWT_SECRET'),
+                            'expiresIn' => '12h'
+                        ])->fromUser($faculty);
+
+                        return redirect()->away("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
+
+                    } catch (JWTException $e) {
+                        return response()->json([
+                            'error' => 'Could not create token',
+                            'error_message' => $e
+                        ], 500);
+                    }
+
+                } else if ($isSISStaff) {
+
+                    try {
+                        if (!$token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
                             return response()->json(['error' => 'Invalid credentials'], 401);
                         }
 
@@ -147,11 +147,11 @@ class FacultySessionController extends Controller
                         ], 500);
                     }
 
-            }else if ($isLogi) {
+                } else if ($isLogi) {
 
 
                     try {
-                        if (! $token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
+                        if (!$token = JWTAuth::attempt(['faculty_code' => $credentials['employee_id'], 'password' => $credentials['password']])) {
                             return response()->json(['error' => 'Invalid credentials'], 401);
                         }
 
@@ -178,14 +178,14 @@ class FacultySessionController extends Controller
 
                 } else {
 
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
 
-                return back()->withErrors([
-                    'message' => 'Your account has no dedicated role yet. Please contact management!',
-                ]);
-            }
+                    return back()->withErrors([
+                        'message' => 'Your account has no dedicated role yet. Please contact management!',
+                    ]);
+                }
         }
 
         return back()->withErrors([

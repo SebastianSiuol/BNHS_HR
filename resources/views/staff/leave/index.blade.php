@@ -1,4 +1,4 @@
-<x-staff.layout :with_nav="false">
+<x-staff.layout>
 
     <x-staff.content-panel>
         <div class="flex justify-between">
