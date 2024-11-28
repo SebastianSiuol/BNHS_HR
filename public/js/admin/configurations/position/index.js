@@ -12,6 +12,7 @@ editButtons.forEach(button => {
 
         // Inject data into modal inputs
         editModal.querySelector('input[name="position_title"]').value = positionTitle;
+        editModal.querySelector('input[name="position_title"]').value = positionTitle;
         editModal.querySelector('select[name="position_level"]').value = positionLevel;
         editModal.querySelector('#update_position').setAttribute('action', '/admin/config/position/' + positionId);
     });

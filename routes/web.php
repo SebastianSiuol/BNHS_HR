@@ -15,22 +15,22 @@ use App\Http\Controllers\Admin\FacultyController;
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSController;
 use App\Http\Controllers\ServiceCreditController;
+use App\Http\Controllers\Staff\PersonalInformationController;
 use App\Http\Controllers\Staff\StaffLeaveController;
+use App\Http\Controllers\Staff\StaffRPMSController;
 use App\Models\Faculty;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-designations', [DesignationController::class, 'getDesignations'])->name('api.get.designations');
 Route::get('/get-leave-type', [LeaveTypeApiController::class, 'getLeaveType'])->name('api.get.leave.type');
 
-Route::get('/staff/leave', [StaffLeaveController::class, 'index'])->name('staff.leave.index');
-Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name('staff.leave.create');
-Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
 
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
 
-Route::get('/sis', [JWTRedirectController::class, 'sis'])->name('sis.redirect');
-Route::get('/logistics', [JWTRedirectController::class, 'logistics'])->name('logistics.redirect');
+Route::get('/redirect/sis', [JWTRedirectController::class, 'sis'])->name('sis.redirect');
+Route::get('/redirect/logistics', [JWTRedirectController::class, 'logistics'])->name('logistics.redirect');
 
 
 Route::middleware('redirectIfAuth')->group(function () {
@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
     Route::middleware(['role:hr_admin'])->group(function () { // Routes for admin
+
         /*
         |-----------------------------------------------------------------------------
         |
@@ -63,7 +64,6 @@ Route::middleware('auth')->group(function () {
         |
         |-----------------------------------------------------------------------------
         */
-
         Route::get('/admin/home', function () {
             return view('admin.dashboard', [
                 'total_employees' => Faculty::all()->count(),
@@ -155,8 +155,18 @@ Route::middleware('auth')->group(function () {
         */
 
         Route::get('/staff/home', function() {
-            return view('staff.dashboard', []);
+            $auth = Auth::user();
+            return view('staff.dashboard', compact('auth'));
         })->name('staff.index');
+
+        Route::get('/staff/leave', [StaffLeaveController::class, 'index'])->name('staff.leave.index');
+        Route::get('/staff/leave/create', [StaffLeaveController::class, 'create'])->name('staff.leave.create');
+        Route::post('/staff/leave/create', [StaffLeaveController::class, 'store'])->name('staff.leave.store');
+
+        Route::get('/staff/rpms', [StaffRPMSController::class, 'index'])->name('staff.rpms.index');
+
+        Route::get('/staff/personal-information', [PersonalInformationController::class, 'index'])->name('staff.person.info.index');
+
     });
 
 });

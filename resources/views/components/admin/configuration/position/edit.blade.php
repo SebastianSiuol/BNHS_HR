@@ -29,6 +29,8 @@
 
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
+                        <x-forms.input name="position_id" type="hidden"/>
+
                         <x-forms.label for="position_title" label_name="Position Title"/>
                         <x-forms.input name="position_title" placeholder="Position Title" required/>
                     </div>
