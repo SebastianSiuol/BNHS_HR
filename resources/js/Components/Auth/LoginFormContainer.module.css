@@ -1,0 +1,5 @@
+.div {
+    background-color: rgba(22, 49, 114, 0.7); /* 70% opacity */
+    backdrop-filter: blur(40px); /* Adjust the blur value as needed */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+}
