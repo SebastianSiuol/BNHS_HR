@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacultyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,8 +19,10 @@ Route::post('/faculty/login', [FacultySessionController::class, 'store'])->name(
 
 Route::middleware('auth')->group(function () {
 
+    Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('login.destroy');
+
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/admin/faculty', [DashboardController::class, 'index2'])->name('admin.faculty');
+    Route::get('/admin/faculty/create', [FacultyController::class, 'create'])->name('faculty.create');
 
 });

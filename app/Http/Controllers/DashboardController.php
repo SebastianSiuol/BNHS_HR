@@ -9,9 +9,8 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     public function index() {
-        $auth = Auth::user();
 
-        return Inertia::render('Admin/Dashboard', compact('auth'));
+        return Inertia::render('Admin/Dashboard');
     }
 
     public function index2() {

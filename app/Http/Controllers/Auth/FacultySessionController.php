@@ -44,4 +44,16 @@ class FacultySessionController extends Controller
             ]);
         }
     }
+
+    /**
+     * Destroys resource.
+     */
+    public function destroy(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('/');
+    }
 }
