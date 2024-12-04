@@ -4,7 +4,7 @@ import {InputContainer} from "@/Components/InputContainer.jsx";
 import {InputField} from "@/Components/InputField.jsx";
 import {InputLabel} from "@/Components/InputLabel.jsx";
 
-export function LoginForm() {
+export function LoginForm({error}) {
     const {data, setData, post, processing, errors, reset} = useForm({
         'faculty_code': '',
         'password': '',
@@ -19,11 +19,13 @@ export function LoginForm() {
         });
     }
 
+    console.log(errors);
+
     return <>
         <div className={'mb-6 font-bold text-2xl text-center text-white'}>Log-In to your Account</div>
         <form className={'flex flex-col w-full'} onSubmit={handleSubmit}>
             <InputContainer>
-                <InputLabel htmlFor="faculty_code">Faculty Code</InputLabel>
+                <InputLabel labelFor="faculty_code" color={'white'}>Faculty Code</InputLabel>
                 <InputField id={"faculty_code"}
                             state={data.faculty_code}
                             onChange={(e) => setData("faculty_code", e.target.value)}>
@@ -32,7 +34,7 @@ export function LoginForm() {
             </InputContainer>
 
             <InputContainer>
-                <InputLabel htmlFor="password">Password</InputLabel>
+                <InputLabel labelFor="password" color={'white'}>Password</InputLabel>
                 <InputField id={"password"}
                             state={data.password}
                             onChange={(e) => setData("password", e.target.value)}
@@ -42,6 +44,8 @@ export function LoginForm() {
             </InputContainer>
 
             <Link href={route('/')} className={'ml-auto text-white text-sm hover:underline'}>Forgot Password?</Link>
+
+            { error && <div>{error.message}</div>}
 
             <button
                 className={'w-full my-5 py-2 text-center bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400'}>Log-In
