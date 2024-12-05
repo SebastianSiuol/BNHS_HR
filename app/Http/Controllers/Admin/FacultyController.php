@@ -44,7 +44,7 @@ class FacultyController extends Controller
             'civil_statuses'    => CivilStatus::all(),
             'name_exts'         => NameExtension::all(),
             'max_date'          => date("m/d/Y", strtotime('-21 year')),
-            'positions'  => SchoolPosition::all(),
+            'positions'         => SchoolPosition::all(),
             'roles'             => Role::all(),
         ]);
     }
@@ -73,6 +73,7 @@ class FacultyController extends Controller
             $faculty->roles()->attach($role);
 
         }
+
         /* Instantiates Service for Storing Faculty Details */
         $store_faculty_service = new StoreFacultyService();
 

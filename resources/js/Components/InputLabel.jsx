@@ -1,13 +1,13 @@
 import React from 'react';
 
-export function InputLabel({labelFor, color = 'white', thickness = 'bold', children}) {
+export function InputLabel({labelFor, color = 'white', width = 'bold', children}) {
 
     const fontColor = {
         'white': 'text-white ',
         'black':'text-black '
     }
 
-    const fontThickness = {
+    const fontWidth = {
         'normal' : 'font-normal ',
         'bold' : 'font-bold '
     }
@@ -16,7 +16,7 @@ export function InputLabel({labelFor, color = 'white', thickness = 'bold', child
         <label
             htmlFor={labelFor}
             className={'mb-2 text-sm font-bold font ' +
-                (fontColor[color]) + (fontThickness[thickness])
+                (fontColor[color]) + (fontWidth[width])
         }>
             {children}
         </label></>;

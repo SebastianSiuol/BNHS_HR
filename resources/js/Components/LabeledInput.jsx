@@ -1,3 +1,4 @@
+// For React Hook Forms
 export function LabeledInput ({  id, register, label, placeholder, color, width, error, ...props}) {
 
     const fontColor = {
@@ -11,7 +12,7 @@ export function LabeledInput ({  id, register, label, placeholder, color, width,
     };
 
     const inputClass =
-        "w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 " ;
+        "w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600" ;
 
 
     return (
@@ -33,7 +34,7 @@ export function LabeledInput ({  id, register, label, placeholder, color, width,
                 id={id}
                 type={"text"}
                 placeholder={placeholder}
-                className={inputClass + (error[id] ? 'border-red-200' : '')}
+                className={inputClass + (error[id] ? ' border-red-500 ' : '')}
             />
 
 

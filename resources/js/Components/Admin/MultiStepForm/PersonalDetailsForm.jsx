@@ -1,12 +1,18 @@
+// Libraries and Dependencies
 import { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+// Components
+import { InputLabel } from "@/Components/InputLabel";
 import { NavButton } from "@/Pages/Admin/Faculty/Create"
 import { LabeledInput } from "@/Components/LabeledInput";
+
+// Hooks and Contexts
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
+import { InputSelect } from "../../InputSelect";
 
 const personalDataSchema = z.object({
 
@@ -80,15 +86,26 @@ export function PersonalDetailsForm() {
                     width={"normal"}
                     error={errors}
                 />
-                <LabeledInput
-                    id={"name_extension"}
-                    register={register}
-                    label={"Name Extension"}
-                    placeholder={"Name Extension"}
-                    color={"black"}
-                    width={"normal"}
-                    error={errors}
-                />
+
+                <div className={"my-2"}>
+
+                    <InputLabel labelFor={"name_extension_id"} color={"black"} width={"normal"}>
+                        Name Extension
+                    </InputLabel>
+
+                    <InputSelect id={"name_extension_id"} register={register}>
+                        <option value="1">None</option>
+                        <option value="2">Sr. </option>
+                        <option value="3">Jr. </option>
+                        <option value="4">I</option>
+                        <option value="5">II</option>
+                        <option value="6">III</option>
+                        <option value="7">IV</option>
+                        <option value="8">V</option>
+                    </InputSelect>
+
+                </div>
+
                 <LabeledInput
                     id={"place_of_birth"}
                     register={register}
@@ -116,15 +133,20 @@ export function PersonalDetailsForm() {
                     width={"normal"}
                     error={errors}
                 />
-                <LabeledInput
-                    id={"marital_status"}
-                    register={register}
-                    label={"Marital Status"}
-                    placeholder={"Marital Status"}
-                    color={"black"}
-                    width={"normal"}
-                    error={errors}
-                />
+                <div className={"my-2"}>
+
+                    <InputLabel labelFor={"civil_status_id"} color={"black"} width={"normal"}>
+                        Civil Status
+                    </InputLabel>
+
+                    <InputSelect id={"civil_status_id"} register={register}>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        <option value="3">Widowed</option>
+                        <option value="4">Separated</option>
+                    </InputSelect>
+
+                </div>
                 <LabeledInput
                     id={"contact_number"}
                     register={register}
@@ -164,8 +186,10 @@ export function PersonalDetailsForm() {
             </div>
 
             <div className={"flex justify-end mt-16"}>
-
-                <NavButton type={'next'} onClick={handleSubmit(onFirstFormSubmit)}>
+                <NavButton
+                    type={"next"}
+                    onClick={handleSubmit(onFirstFormSubmit)}
+                >
                     Next: Address
                 </NavButton>
             </div>
