@@ -1,5 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {Link, useForm, usePage} from "@inertiajs/react";
+import {Link, usePage} from "@inertiajs/react";
+
 import React, {useState} from 'react';
 
 // Icons
@@ -12,8 +13,7 @@ import { LuClipboardList } from "react-icons/lu";
 
 
 import {SchoolLogo} from "@/Components/SchoolLogo.jsx";
-import {SidebarNavLink} from "@/Components/Admin/SidebarNavLink.jsx";
-import { AuthSidebarProvider, useAuthSidebar } from "../Context/AuthSidebarContext";
+import { AuthSidebarProvider, useAuthSidebar } from "@/Context/AuthSidebarContext";
 
 
 
@@ -107,15 +107,16 @@ function SideNavbar() {
                         <SidebarNavLink
                             href={route("admin.dashboard")}
                             active={route().current("admin.dashboard")}
+                            type={'top'}
                         >
                             <HiMiniSquares2X2
                                 className={
-                                    "flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
                                 }
                             />
                             <span
                                 className={
-                                    "flex-1 ms-3 text-left whitespace-nowrap group-hover:text-gray-900"
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
                                 }
                             >
                                 Dashboard
@@ -128,21 +129,8 @@ function SideNavbar() {
                     </div>
 
                     <li>
-                        <button
-                            onClick={() =>toggleTab('faculty')}
-                            className="flex items-center w-full p-2 my-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
-                        >
-                            <RiTeamFill className="ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900" />
 
-                            <span className="flex-1 ms-3 text-white text-left transition duration-75 whitespace-nowrap group-hover:text-gray-900">
-                                Faculties
-                            </span>
-                            {openTabs.faculty ? (
-                                <IoIosArrowUp className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            ) : (
-                                <IoIosArrowDown className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            )}
-                        </button>
+                        <DropdownButton icon={RiTeamFill} label={'Faculties'} state={'faculty'} />
 
                         <ul
                             className={`${
@@ -151,8 +139,8 @@ function SideNavbar() {
                         >
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.create")}
-                                    active={route().current("faculty.create")}
+                                    href={route("admin.faculty.create")}
+                                    active={route().current("admin.faculty.create")}
                                     type={"sub"}
                                 >
                                     Add Faculties
@@ -160,8 +148,8 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.index")}
-                                    active={route().current("faculty.index")}
+                                    href={route("admin.faculty.index")}
+                                    active={route().current("admin.faculty.index")}
                                     type={"sub"}
                                 >
                                     Manage Faculties
@@ -171,21 +159,9 @@ function SideNavbar() {
                     </li>
                     {/* One Tab */}
                     <li>
-                        <button
-                            onClick={() =>toggleTab('attendance')}
-                            className="flex items-center w-full p-2 my-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
-                        >
-                            <BiCalendar className="ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900" />
 
-                            <span className="flex-1 ms-3 text-white text-left transition duration-75 whitespace-nowrap group-hover:text-gray-900">
-                                Attendance
-                            </span>
-                            {openTabs.attendance ? (
-                                <IoIosArrowUp className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            ) : (
-                                <IoIosArrowDown className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            )}
-                        </button>
+                        <DropdownButton icon={BiCalendar} label={'Attendance'} state={'attendance'} />
+
 
                         <ul
                             className={`${
@@ -194,8 +170,17 @@ function SideNavbar() {
                         >
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.create")}
-                                    active={route().current("faculty.create")}
+                                    href={route("admin.attendances.create")}
+                                    active={route().current("admin.attendances.create")}
+                                    type={"sub"}
+                                >
+                                    Attendance
+                                </SidebarNavLink>
+                            </li>
+                            <li>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.index")}
+                                    active={route().current("admin.attendances.index")}
                                     type={"sub"}
                                 >
                                     Daily Attendance
@@ -203,8 +188,8 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.index")}
-                                    active={route().current("faculty.index")}
+                                    href={route("admin.attendances.report")}
+                                    active={route().current("admin.attendances.report")}
                                     type={"sub"}
                                 >
                                     Attendance Report
@@ -213,21 +198,8 @@ function SideNavbar() {
                         </ul>
                     </li>
                     <li>
-                        <button
-                            onClick={() =>toggleTab('leave')}
-                            className="flex items-center w-full p-2 my-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
-                        >
-                            <LuClipboardList className="ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900" />
 
-                            <span className="flex-1 ms-3 text-white text-left transition duration-75 whitespace-nowrap group-hover:text-gray-900">
-                                Leave
-                            </span>
-                            {openTabs.leave ? (
-                                <IoIosArrowUp className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            ) : (
-                                <IoIosArrowDown className="text-white transition duration-75 group-hover:text-gray-900 " />
-                            )}
-                        </button>
+                        <DropdownButton icon={LuClipboardList} label={'Leave'} state={'leave'} />
 
                         <ul
                             className={`${
@@ -236,8 +208,8 @@ function SideNavbar() {
                         >
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.create")}
-                                    active={route().current("faculty.create")}
+                                    href={route("admin.leaves.create")}
+                                    active={route().current("admin.leaves.create")}
                                     type={"sub"}
                                 >
                                     Request Leave
@@ -245,8 +217,8 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.index")}
-                                    active={route().current("faculty.index")}
+                                    href={route("admin.leaves.index")}
+                                    active={route().current("admin.leaves.index")}
                                     type={"sub"}
                                 >
                                     Manage Leave
@@ -254,20 +226,20 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.index")}
-                                    active={route().current("faculty.index")}
+                                    href={route("admin.service-credits.index")}
+                                    active={route().current("admin.service-credits.index")}
                                     type={"sub"}
                                 >
-                                    Service Credit Records
+                                    Manage Service Credits
                                 </SidebarNavLink>
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("faculty.index")}
-                                    active={route().current("faculty.index")}
+                                    href={route("admin.service-credits.report")}
+                                    active={route().current("admin.service-credits.report")}
                                     type={"sub"}
                                 >
-                                    Manage Service Credits
+                                    Service Credit Records
                                 </SidebarNavLink>
                             </li>
                         </ul>
@@ -279,3 +251,49 @@ function SideNavbar() {
 }
 
 // className={`${route().current('admin.faculty') ? '' : 'hidden'} ml-10 py-2 space-y-2`}>
+function DropdownButton({ icon: Icon, label, state }) {
+    const { openTabs, toggleTab } = useAuthSidebar();
+
+
+    const iconClass = 'ml-5 w-5 h-5 text-white transition duration-75 group-hover:text-gray-900';
+
+
+    return (
+        <button
+            onClick={() => toggleTab(`${state}`)}
+            className="flex items-center w-full p-2 my-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+        >
+            {/* Icon How? */}
+            <Icon className={iconClass} />
+
+            <span className="flex-1 ms-3 text-white text-left transition duration-75 whitespace-nowrap group-hover:text-gray-900">
+                { label }
+            </span>
+            {openTabs[state] ? (
+                <IoIosArrowUp className="text-white transition duration-75 group-hover:text-gray-900 " />
+            ) : (
+                <IoIosArrowDown className="text-white transition duration-75 group-hover:text-gray-900 " />
+            )}
+        </button>
+    );
+}
+
+
+export function SidebarNavLink({active = false, type = 'sub', className = '', children, ...props}) {
+    return (
+        <Link
+            {...props}
+            className={'flex items-center rounded-lg ' +
+                (type === 'top'
+                    ? ' mb-1 p-2 '
+                    : 'w-full p-2 pl-11 transition duration-75 '
+                ) +
+                (active
+                    ? 'text-gray-900 bg-gray-100 '
+                    : 'transition-all duration-300 hover:bg-gray-100 hover:text-black ')
+            }
+        >
+            {children}
+        </Link>
+    );
+}

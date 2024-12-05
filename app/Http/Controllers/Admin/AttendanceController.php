@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\Department;
 use App\Models\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AttendanceController extends Controller
 {
@@ -34,12 +36,14 @@ class AttendanceController extends Controller
         }
 //        dd($faculties->isEmpty());
 
-        return view('admin.attendance.index', [
-            'admin'     => Auth::user(),
-            'faculties' => $faculties,
-            'departments' => Department::all(),
-            'shifts'    => Shift::all(),
-        ]);
+        // return view('admin.attendance.index', [
+        //     'admin'     => Auth::user(),
+        //     'faculties' => $faculties,
+        //     'departments' => Department::all(),
+        //     'shifts'    => Shift::all(),
+        // ]);
+
+        return Inertia::render('Admin/Attendance/Index');
 
     }
 
@@ -48,7 +52,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Attendance/Create');
     }
 
     /**
@@ -92,10 +96,11 @@ class AttendanceController extends Controller
     }
 
     public function report(){
-        return view('admin.attendance.report', [
-            'admin'     => Auth::user(),
-            'faculties'  => Faculty::all()->first()->paginate(5)
-        ]);
+        return Inertia::render('Admin/Attendance/IndexReport');
+
+        // return view('admin.attendance.report', [
+        //     'faculties'  => Faculty::all()->first()->paginate(5)
+        // ]);
     }
 
 }

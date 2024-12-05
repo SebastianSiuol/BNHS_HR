@@ -134,7 +134,7 @@ export function MultiStepFormProvider({ children }) {
 
     function postData() {
         const allData = getAllSavedData();
-        post(route("faculty.store", [allData]));
+        post(route("admin.faculty.store", [allData]));
     }
 
     return (

@@ -93,7 +93,7 @@ function Table({ faculties }) {
 
 function TableRow({ faculty }) {
 
-  console.log(faculty);
+//   console.log(faculty);
 
   const { faculty_code, email, personal_information, designation, shift } = faculty;
   const { department } = designation;

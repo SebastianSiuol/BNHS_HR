@@ -3,6 +3,12 @@
 use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
+
+// Admin Controllers
+use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\LeaveController;
+use App\Http\Controllers\Admin\ServiceCreditController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,9 +29,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/admin/faculties', [FacultyController::class, 'index'])->name('faculty.index');
-    Route::get('/admin/faculty/create', [FacultyController::class, 'create'])->name('faculty.create');
-    Route::post('/admin/faculty', [FacultyController::class, 'store'])->name('faculty.store');
+    Route::get('/admin/faculties', [FacultyController::class, 'index'])->name('admin.faculty.index');
+    Route::get('/admin/faculty/create', [FacultyController::class, 'create'])->name('admin.faculty.create');
+    Route::post('/admin/faculty', [FacultyController::class, 'store'])->name('admin.faculty.store');
 
+    Route::get('/admin/attendances/create', [AttendanceController::class, 'create'])->name('admin.attendances.create');
+    Route::get('/admin/attendances', [AttendanceController::class, 'index'])->name('admin.attendances.index');
+    Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])->name('admin.attendances.report');
+
+    Route::get('/admin/leaves', [LeaveController::class, 'index'])                                     ->name('admin.leaves.index');
+    Route::get('/admin/leaves/create', [LeaveController::class, 'create'])                             ->name('admin.leaves.create');
+
+    Route::get('/admin/service-credits', [ServiceCreditController::class, 'index'])->name('admin.service-credits.index');
+    Route::get('/admin/service-credits/report', [ServiceCreditController::class, 'report'])->name('admin.service-credits.report');
 
 });
