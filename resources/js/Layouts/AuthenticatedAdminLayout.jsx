@@ -9,8 +9,7 @@ import {HiMiniSquares2X2} from "react-icons/hi2";
 import {RiTeamFill} from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
 import { LuClipboardList } from "react-icons/lu";
-
-
+import { FaMedal } from "react-icons/fa";
 
 import {SchoolLogo} from "@/Components/SchoolLogo.jsx";
 import { AuthSidebarProvider, useAuthSidebar } from "@/Context/AuthSidebarContext";
@@ -243,6 +242,26 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <SidebarNavLink
+                            href={route("admin.dashboard")}
+                            active={route().current("admin.dashboard")}
+                            type={'top'}
+                        >
+                            <FaMedal
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }
+                            >
+                                RPMS
+                            </span>
+                        </SidebarNavLink>
                     </li>
                 </ul>
             </div>
