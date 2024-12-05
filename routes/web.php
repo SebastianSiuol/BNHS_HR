@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
+    Route::get('/admin/faculties', [FacultyController::class, 'index'])->name('faculty.index');
     Route::get('/admin/faculty/create', [FacultyController::class, 'create'])->name('faculty.create');
+    Route::post('/admin/faculty', [FacultyController::class, 'store'])->name('faculty.store');
+
 
 });

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { NavButton } from "@/Pages/Admin/Faculty/Create";
 import { LabeledInput } from "@/Components/LabeledInput";
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
@@ -26,8 +27,8 @@ const addressDataSchema = z.object({
     permanent_zip_code: z.string().min(1, { message: "Required" }),
 });
 
-export function AddressForm({ prevStep, nextStep }) {
-    const { nextForm } = useMultiStepForm();
+export function AddressForm() {
+    const { getSavedData, prevStep, nextStep } = useMultiStepForm();
 
     const {
         register,
@@ -36,28 +37,14 @@ export function AddressForm({ prevStep, nextStep }) {
         watch,
     } = useForm({
         resolver: zodResolver(addressDataSchema),
-        defaultValues: getSavedData(),
+        defaultValues: getSavedData(FORM_DATA_KEY),
     });
-
-    // Initially gets Data
-    function getSavedData() {
-        let data = localStorage.getItem(FORM_DATA_KEY);
-        if (data) {
-            try {
-                data = JSON.parse(data);
-            } catch (err) {
-                console.log(err);
-            }
-            return data;
-        }
-        return;
-    }
 
     // Persistantly Uploads Form Data
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    function onSecondFormSubmit(data) {
-        nextForm(data);
+    function onSecondFormSubmit(e) {
+        e.preventDefault;
         nextStep();
     }
 
@@ -238,23 +225,16 @@ export function AddressForm({ prevStep, nextStep }) {
                         </div>
                     </div>
                 </div>
-                <div className={"flex justify-between"}>
-                    <button
-                        onClick={prevStep}
-                        className={
-                            "text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                        }
-                    >
+                <div className={"flex justify-between mt-16"}>
+                    <NavButton type={"prev"} onClick={prevStep}>
                         Back
-                    </button>
-                    <button
+                    </NavButton>
+                    <NavButton
+                        type={"next"}
                         onClick={handleSubmit(onSecondFormSubmit)}
-                        className={
-                            "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        }
                     >
-                        Next: Account Login
-                    </button>
+                        Next: Account
+                    </NavButton>
                 </div>
             </form>
         </>

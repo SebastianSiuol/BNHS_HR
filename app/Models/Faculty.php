@@ -47,6 +47,7 @@ class Faculty extends Authenticatable
 
         static::creating(function ($faculty) {
             $faculty->faculty_code = Faculty::generateFacultyCode();
+            $faculty->password = "Password123";
         });
     }
 

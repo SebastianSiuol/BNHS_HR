@@ -3,27 +3,33 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { NavButton } from "@/Pages/Admin/Faculty/Create"
 import { LabeledInput } from "@/Components/LabeledInput";
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
 
 const personalDataSchema = z.object({
+
     first_name: z.string().min(1, { message: "Required" }),
     middle_name: z.string().min(1, { message: "Required" }),
     last_name: z.string().min(1, { message: "Required" }),
+    name_extension: z.string().min(1, { message: "Required" }),
+
     place_of_birth: z.string().min(1, { message: "Required" }),
     date_of_birth: z.string().min(1, { message: "Required" }),
     sex: z.string().min(1, { message: "Required" }),
     marital_status: z.string().min(1, { message: "Required" }),
+
     contact_number: z.string().min(1, { message: "Required" }),
+    telephone_number: z.string().min(1, { message: "Required" }),
     contact_person_name: z.string().min(1, { message: "Required" }),
     contact_person_number: z.string().min(1, { message: "Required" }),
 });
 
 const FORM_DATA_KEY = "first_form_local_data";
 
-export function PersonalDetailsForm({ nextStep }) {
-    const { nextForm } = useMultiStepForm();
+export function PersonalDetailsForm() {
+    const { getSavedData, nextStep } = useMultiStepForm();
 
     const {
         register,
@@ -32,29 +38,14 @@ export function PersonalDetailsForm({ nextStep }) {
         watch,
     } = useForm({
         resolver: zodResolver(personalDataSchema),
-        defaultValues: getSavedData(),
+        defaultValues: getSavedData( FORM_DATA_KEY ),
     });
-
-    // Initially gets Data
-    function getSavedData() {
-        let data = localStorage.getItem(FORM_DATA_KEY);
-        if (data) {
-            try {
-                data = JSON.parse(data);
-            } catch (err) {
-                console.log(err);
-            }
-            return data;
-        }
-        return;
-    }
 
     // Persistantly Uplaods Form Data
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    function onFirstFormSubmit(data, e) {
+    function onFirstFormSubmit(e) {
         e.preventDefault;
-        nextForm(data);
         nextStep();
     }
 
@@ -172,16 +163,11 @@ export function PersonalDetailsForm({ nextStep }) {
                 />
             </div>
 
-            <div className={"flex justify-end"}>
-                <button
-                    // disabled={isSubmitting}
-                    onClick={handleSubmit(onFirstFormSubmit)}
-                    className={
-                        "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    }
-                >
+            <div className={"flex justify-end mt-16"}>
+
+                <NavButton type={'next'} onClick={handleSubmit(onFirstFormSubmit)}>
                     Next: Address
-                </button>
+                </NavButton>
             </div>
         </form>
     );

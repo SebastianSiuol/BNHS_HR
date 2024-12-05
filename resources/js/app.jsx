@@ -10,7 +10,8 @@ createInertiaApp({
         const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
         return pages[`./Pages/${name}.jsx`]
     },
-    setup({ el, App, props }) {
+    setup({ el, App, props, auth }) {
+        console.log(auth);
         createRoot(el).render(<App {...props} />)
     },
 })
