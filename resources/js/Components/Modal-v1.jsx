@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 
+// Utilizes Portal
 export default function Modal({ toggle, onToggle, children }) {
     if (!toggle) return null;
 

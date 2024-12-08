@@ -1,3 +1,4 @@
+// For Value and onChange
 
 export function LabeledInput({ id, label, color, width, value, onChange, required, placeholder, error}) {
     const fontColor = {

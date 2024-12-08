@@ -2,14 +2,14 @@ import { useEffect } from "react";
 
 import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
-import { LabeledInput, RHFShow, Label } from "@/Components/LabeledInput";
+import { LabeledInput, InputShow, Label } from "@/Components/LabeledInput";
 
 import { useFacultiesIndex } from "@/Context/FacultiesIndexContext";
 
 export function Show() {
     const { isLoading } = useFacultiesIndex();
 
-    if (isLoading) return <p className={'text-bold text-xl pb-16 px-8'}>Loading...</p>;
+    if (isLoading) return <p className={'text-bold text-xl mb-16'}>Loading...</p>;
 
     return (
         <>
@@ -105,7 +105,7 @@ function AccountDetails() {
 
                     <div className="grid grid-cols-2">
                         <Label label={"Email"} color={"black"} width={"normal"} />
-                        <RHFShow id={"email"} value={selectedFacultyDetails.email} />
+                        <InputShow id={"email"} value={selectedFacultyDetails.email} />
                     </div>
                 </div>
             </ContentContainer>
@@ -125,27 +125,27 @@ function CompanyDetails() {
                 <div className={"lg:space-y-4"}>
                     <TwoColumnContainer>
                         <Label label={"Faculty Code"} color={"black"} width={"normal"} />
-                        <RHFShow id={"faculty_code"} value={faculty_code} />
+                        <InputShow id={"faculty_code"} value={faculty_code} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Department"} color={"black"} width={"normal"} />
-                        <RHFShow id={"department"} value={department} />
+                        <InputShow id={"department"} value={department} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Designation"} color={"black"} width={"normal"} />
-                        <RHFShow id={"designation"} value={designation.name} />
+                        <InputShow id={"designation"} value={designation.name} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Date of Joining"} color={"black"} width={"normal"} />
-                        <RHFShow id={"date_of_joining"} value={date_of_joining} />
+                        <InputShow id={"date_of_joining"} value={date_of_joining} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Manager/Department Head"} color={"black"} width={"normal"} />
-                        <RHFShow id={"depart_head"} value={"Blank"} />
+                        <InputShow id={"depart_head"} value={"Blank"} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Shift"} color={"black"} width={"normal"} />
-                        <RHFShow id={"shift"} value={shift} />
+                        <InputShow id={"shift"} value={shift} />
                     </TwoColumnContainer>
                 </div>
             </ContentContainer>
