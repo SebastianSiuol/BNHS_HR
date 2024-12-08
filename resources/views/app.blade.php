@@ -12,5 +12,6 @@
 </head>
 <body>
     @inertia
+    <div id="portal"></div>
 </body>
 </html>

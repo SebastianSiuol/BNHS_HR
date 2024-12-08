@@ -251,9 +251,9 @@ class FacultyController extends Controller
         return view('admin.employee.index', compact('faculties'));
     }
 
-    public function export(){
-        return Excel::download(new FacultyExport, 'faculties.xlsx');
-    }
+    // public function export(){
+    //     return Excel::download(new FacultyExport, 'faculties.xlsx');
+    // }
 
     public function validateStoreFaculty(Request $request){
         return $request->validate([

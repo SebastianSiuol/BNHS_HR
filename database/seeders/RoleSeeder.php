@@ -15,66 +15,99 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
 //      NOTE: Production Data
-        Role::factory()->create([
-            'role_name' => 'hr_admin', // 1
-        ]);
 
-        Role::factory()->create([
-            'role_name' => 'hr_manager', // 2
-        ]);
+        $roles = [
+            [
+                'role_name' => 'sis_admin', // 1
+                'type' => 'sis',
+                'description' => 'Admin SIS',
+            ],
+            [
+                'role_name' => 'sis_registrar', // 2
+                'type' => 'sis',
+                'description' => 'Registrar SIS',
+            ],
+            [
+                'role_name' => 'sis_faculty', // 3
+                'type' => 'sis',
+                'description' => 'Faculty SIS',
+            ],
+            [
+                'role_name' => 'sis_admin_dashboard', // 4
+                'type' => 'sis',
+                'description' => 'Admin Dashboard SIS',
+            ],
+            [
+                'role_name' => 'hr_admin', // 5
+                'type' => 'hr',
+                'description' => 'Super Admin HR',
+            ],
+            [
+                'role_name' => 'hr_manager', // 6
+                'type' => 'hr',
+                'description' => 'Manager HR',
+            ],
+            [
+                'role_name' => 'hr_faculty', // 7
+                'type' => 'hr',
+                'description' => 'Faculty HR',
+            ],
+            [
+                'role_name' => 'hr_admin_dashboard', // 8
+                'type' => 'hr',
+                'description' => 'Super Admin Dashboard HR',
+            ],
+            [
+                'role_name' => 'logi_admin', // 9
+                'type' => 'logi',
+                'description' => 'Property Custodian LS',
+            ],
+            [
+                'role_name' => 'logi_faculty', // 10
+                'type' => 'logi',
+                'description' => 'Faculty LS',
+            ],
+            [
+                'role_name' => 'logi_admin_dashboard', // 11
+                'type' => 'logi',
+                'description' => 'Property Custodian Dashboard LS',
+            ]
+        ];
 
-        Role::factory()->create([
-            'role_name' => 'hr_faculty', // 3
-        ]);
+        foreach($roles as $role){
+            Role::factory()->create($role);
+        }
 
-        Role::factory()->create([
-            'role_name' => 'sis_admin', // 4
-        ]);
 
-        Role::factory()->create([
-            'role_name' => 'sis_registrar', // 5
-        ]);
-
-        Role::factory()->create([
-            'role_name' => 'sis_faculty', // 6
-        ]);
-
-        Role::factory()->create([
-            'role_name' => 'logi_admin', // 7
-        ]);
-
-        Role::factory()->create([
-            'role_name' => 'logi_faculty', // 8
-        ]);
 
 
         // 0001
-        Faculty::find(1)->roles()->attach([1]); // hr_admin
+        Faculty::find(1)->roles()->attach([5]); // hr_admin
 
         // 002
-        Faculty::find(2)->roles()->attach([3]); // hr_faculty
+        Faculty::find(2)->roles()->attach([7]); // hr_faculty
 
         // 0003
-        Faculty::find(3)->roles()->attach([1]); // hr_admin
-        Faculty::find(3)->roles()->attach([4]); // sis_admin
+        Faculty::find(3)->roles()->attach([5]); // hr_admin
+        Faculty::find(3)->roles()->attach([7]); // sis_admin
 
         // 0004
-        Faculty::find(4)->roles()->attach([4]); // sis_admin
-        Faculty::find(4)->roles()->attach([7]); // logi_admin
+        Faculty::find(4)->roles()->attach([1]); // sis_admin
+        Faculty::find(4)->roles()->attach([9]); // logi_admin
 
         // 0005
+        Faculty::find(5)->roles()->attach([5]); // sis_admin
         Faculty::find(5)->roles()->attach([1]); // hr_admin
-        Faculty::find(5)->roles()->attach([4]); // sis_admin
-        Faculty::find(5)->roles()->attach([7]); // logi_admin
+        Faculty::find(5)->roles()->attach([9]); // logi_admin
 
         // 0006
-        Faculty::find(6)->roles()->attach([4]); // sis_admin
+        Faculty::find(6)->roles()->attach([1]); // sis_admin
 
         // 0007
-        Faculty::find(7)->roles()->attach([7]); // logi_admin
+        Faculty::find(7)->roles()->attach([9]); // logi_admin
 
         // 0008
-        Faculty::find(8)->roles()->attach([6]); // sis_registrar
+        Faculty::find(8)->roles()->attach([2]); // sis_registrar
 
     }
 }

@@ -16,13 +16,13 @@ class StoreFacultyService{
             'first_name'        => $validated_inputs['first_name'],
             'middle_name'       => $validated_inputs['middle_name'],
             'last_name'         => $validated_inputs['last_name'],
-            'name_extension_id' => $validated_inputs['name_extension'],
             'sex'               => $validated_inputs['sex'],
             'place_of_birth'    => $validated_inputs['place_of_birth'],
             'date_of_birth'     => $validated_inputs['date_of_birth'],
             'telephone_no'      => $validated_inputs['telephone_number'],
             'contact_no'        => $validated_inputs['contact_number'],
-            'civil_status_id'   => $validated_inputs['civil_status'],
+            'name_extension_id' => $validated_inputs['name_extension_id'],
+            'civil_status_id'   => $validated_inputs['civil_status_id'],
         ]);
 
         $faculty->personal_information()->save($psn_info);

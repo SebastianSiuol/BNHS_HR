@@ -12,6 +12,7 @@ export default {
             colors: {
                 'welcome': 'rgba(22, 49, 114, 0.7)',
                 'sidebar': '#163172',
+                'darken' : 'rgba(0, 0, 0, 0.4)',
             }
         },
     },

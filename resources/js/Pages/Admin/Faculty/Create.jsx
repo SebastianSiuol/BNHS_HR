@@ -7,6 +7,8 @@ import { useForm } from "@inertiajs/react";
 import { AuthenticatedAdminLayout } from "@/Layouts/AuthenticatedAdminLayout.jsx";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { ContentContainer } from "@/Components/ContentContainer.jsx";
+import { ContentHeader } from "@/Components/ContentHeader.jsx";
+import { NavStepper } from "@/Components/MultiStepForm/NavStepper";
 import { MultiStepFormProvider, useMultiStepForm } from "@/Context/MultiStepFormContext";
 
 // Forms
@@ -15,7 +17,7 @@ import { AccountLoginForm } from "@/Components/Admin/MultiStepForm/AccountLoginF
 import { AddressForm } from "@/Components/Admin/MultiStepForm/AddressForm";
 import { CompanyDetailsForm } from "@/Components/Admin/MultiStepForm/CompanyDetailsForm";
 import { DocumentForm } from "@/Components/Admin/MultiStepForm/DocumentForm";
-import { AuthSidebarProvider } from "@/Context/AuthSidebarContext";
+import { RolesForm } from "@/Components/Admin/MultiStepForm/RolesForm";
 
 export default function Create() {
     return (
@@ -38,6 +40,7 @@ function FormHandling() {
         "Address",
         "Account Login",
         "Company Details",
+        "Roles",
         "Documents",
     ];
 
@@ -46,6 +49,7 @@ function FormHandling() {
         <AddressForm />,
         <AccountLoginForm />,
         <CompanyDetailsForm />,
+        <RolesForm />,
         <DocumentForm  />,
     ];
 
@@ -54,7 +58,7 @@ function FormHandling() {
         <>
             <ol
                 className={
-                    "items-center w-full mb-6 space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse"
+                    "mb-6 space-y-4 lg:justify-between lg:flex lg:space-x-8 lg:space-y-0"
                 }
             >
                 {headerValue.map((header, index) => (
@@ -67,9 +71,9 @@ function FormHandling() {
                 ))}
             </ol>
             <ContentContainer>
-                    <FormHeaders>
+                    <ContentHeader>
                         {headerValue[step]}
-                    </FormHeaders>
+                    </ContentHeader>
 
                     {formComponents[step]}
             </ContentContainer>
@@ -77,43 +81,8 @@ function FormHandling() {
     );
 }
 
-function NavStepper({ header, index, step }) {
-    const isActive = index === step;
 
-    const listItemClass =
-        "flex items-center space-x-2.5 rtl:space-x-reverse rounded-full shrink-0 ";
-    const spanLabelClass =
-        "flex items-center justify-center w-8 h-8 border rounded-full shrink-0 ";
-
-    return (
-        <li
-            className={
-                listItemClass + (isActive ? " text-blue-600" : " text-gray-500")}
-        >
-            <span
-                className={
-                    spanLabelClass + (isActive ? "  border-blue-600" : " border-gray-500")}
-            >
-                {index + 1}
-            </span>
-            <span>
-                <h3 className={"font-medium leading-tight"}>{header}</h3>
-            </span>
-        </li>
-    );
-}
-
-function FormHeaders({children}) {
-    return (
-        <h1 className="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">
-
-            {children}
-
-        </h1>);
-}
-
-
-export function NavButton({ type, onClick, children }) {
+export function NavButton({ type, onClick, disabled=false, children }) {
 
     // prev, next, submit
     const buttonStyle = {
@@ -123,7 +92,7 @@ export function NavButton({ type, onClick, children }) {
     };
 
     return (
-        <button onClick={onClick} className={buttonStyle[type]}>
+        <button onClick={onClick} className={buttonStyle[type]} disabled={disabled}>
             {children}
         </button>
     );

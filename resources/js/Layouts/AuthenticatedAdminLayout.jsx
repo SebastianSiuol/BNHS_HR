@@ -1,7 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {Link, usePage} from "@inertiajs/react";
-
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 // Icons
 import {IoIosArrowDown, IoIosArrowUp} from "react-icons/io";
@@ -12,56 +11,84 @@ import { LuClipboardList } from "react-icons/lu";
 import { FaMedal } from "react-icons/fa";
 
 import {SchoolLogo} from "@/Components/SchoolLogo.jsx";
+import { FlashMessage } from "@/Components/FlashMessage";
 import { AuthSidebarProvider, useAuthSidebar } from "@/Context/AuthSidebarContext";
 
 
 
 export function AuthenticatedAdminLayout({ children }) {
-    const { auth } = usePage().props
+    const { auth, flash } = usePage().props
     const [headerDropdown, setHeaderDropdown] = useState(false);
+    const [ flashMessage, setFlashMessage] = useState(flash)
+
+    useEffect(() => {
+        setFlashMessage(flash);
+
+        setTimeout(() => {
+            setFlashMessage(null);
+        }, 5000);
+
+        return () => {
+            setFlashMessage(null), clearTimeout();
+        };
+    }, [flash]);
+
 
     return (
         <>
             <header className={'class="px-3 py-2 lg:px-5 lg:pl-3'}>
-
                 <div className="flex justify-end">
-                    <DropdownMenu.Root open={headerDropdown} onOpenChange={()=>{setHeaderDropdown((el)=>!el)}}>
-                        <DropdownMenu.Trigger
-                            className="bg-gray-200 rounded-lg py-2 px-4 inline-flex items-center space-x-2 hover:bg-gray-300">
+                    <DropdownMenu.Root
+                        open={headerDropdown}
+                        onOpenChange={() => {
+                            setHeaderDropdown((el) => !el);
+                        }}
+                    >
+                        <DropdownMenu.Trigger className="bg-gray-200 rounded-lg py-2 px-4 inline-flex items-center space-x-2 hover:bg-gray-300">
                             <div>
-                                <p className="font-semibold text-black text-sm">{auth.email}</p>
+                                <p className="font-semibold text-black text-sm">
+                                    {auth.email}
+                                </p>
                                 <p className="text-gray-600 text-sm">X Role</p>
                             </div>
 
-                            {headerDropdown
-                                ? (<IoIosArrowUp className={'w-8 h-8 text-gray-800 hover:bg-gray-300'} />)
-                                : (<IoIosArrowDown className={'w-8 h-8 text-gray-800 hover:bg-gray-300'} />)
-                            }
-
+                            {headerDropdown ? (
+                                <IoIosArrowUp
+                                    className={
+                                        "w-8 h-8 text-gray-800 hover:bg-gray-300"
+                                    }
+                                />
+                            ) : (
+                                <IoIosArrowDown
+                                    className={
+                                        "w-8 h-8 text-gray-800 hover:bg-gray-300"
+                                    }
+                                />
+                            )}
                         </DropdownMenu.Trigger>
 
-                        <DropdownMenu.Content
-                            className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow">
-
+                        <DropdownMenu.Content className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow">
                             <DropdownMenu.Item>
-                                <a href="#"
-                                   className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+                                <a
+                                    href="#"
+                                    className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                                >
                                     Switch to Faculty
                                 </a>
                             </DropdownMenu.Item>
 
                             <DropdownMenu.Item>
-                                <Link href={route('login.destroy')}
-                                      method="post"
-                                        className="block px-4 py-2 text-sm text-red-700 w-full text-left hover:bg-gray-100">
-                                        Log Out
+                                <Link
+                                    href={route("login.destroy")}
+                                    method="post"
+                                    className="block px-4 py-2 text-sm text-red-700 w-full text-left hover:bg-gray-100"
+                                >
+                                    Log Out
                                 </Link>
-
                             </DropdownMenu.Item>
                         </DropdownMenu.Content>
                     </DropdownMenu.Root>
                 </div>
-
             </header>
 
             <AuthSidebarProvider>
@@ -69,11 +96,12 @@ export function AuthenticatedAdminLayout({ children }) {
             </AuthSidebarProvider>
 
 
-            <main className="block p-4 sm:ml-80">
-                {children}
-            </main>
+                <div className="fixed">
+                    {flashMessage && <FlashMessage flash={flashMessage} />}
+                </div>
+            <main className="relative p-4 sm:ml-80">{children}</main>
         </>
-    )
+    );
 }
 
 function SideNavbar() {

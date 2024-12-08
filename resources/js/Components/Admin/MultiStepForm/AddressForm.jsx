@@ -1,31 +1,17 @@
-import React from "react";
-import { z } from "zod";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { NavButton } from "@/Pages/Admin/Faculty/Create";
-import { LabeledInput } from "@/Components/LabeledInput";
+
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
 
-const FORM_DATA_KEY = "second_form_local_data";
+import { NavButton } from "@/Components/MultiStepForm/NavButton";
+import { LabeledInput } from "@/Components/LabeledInput";
 
-const addressDataSchema = z.object({
-    residential_house_num: z.string().min(1, { message: "Required" }),
-    residential_street: z.string().min(1, { message: "Required" }),
-    residential_subdivision: z.string().min(1, { message: "Required" }),
-    residential_barangay: z.string().min(1, { message: "Required" }),
-    residential_city: z.string().min(1, { message: "Required" }),
-    residential_province: z.string().min(1, { message: "Required" }),
-    residential_zip_code: z.string().min(1, { message: "Required" }),
-    permanent_house_num: z.string().min(1, { message: "Required" }),
-    permanent_street: z.string().min(1, { message: "Required" }),
-    permanent_subdivision: z.string().min(1, { message: "Required" }),
-    permanent_barangay: z.string().min(1, { message: "Required" }),
-    permanent_city: z.string().min(1, { message: "Required" }),
-    permanent_province: z.string().min(1, { message: "Required" }),
-    permanent_zip_code: z.string().min(1, { message: "Required" }),
-});
+import { addressDataSchema } from "@/Schemas/MultistepFormSchema";
+
+const FORM_DATA_KEY = "second_form_local_data";
 
 export function AddressForm() {
     const { getSavedData, prevStep, nextStep } = useMultiStepForm();
@@ -35,13 +21,36 @@ export function AddressForm() {
         formState: { errors },
         handleSubmit,
         watch,
+        setValue,
     } = useForm({
         resolver: zodResolver(addressDataSchema),
         defaultValues: getSavedData(FORM_DATA_KEY),
     });
 
-    // Persistantly Uploads Form Data
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
+
+    function copyAddress(e) {
+        e.preventDefault();
+
+        const residentialFields = watch([
+            "residential_house_num",
+            "residential_street",
+            "residential_subdivision",
+            "residential_barangay",
+            "residential_city",
+            "residential_province",
+            "residential_zip_code",
+        ]);
+
+        // Set permanent fields
+        setValue("permanent_house_num", residentialFields[0]);
+        setValue("permanent_street", residentialFields[1]);
+        setValue("permanent_subdivision", residentialFields[2]);
+        setValue("permanent_barangay", residentialFields[3]);
+        setValue("permanent_city", residentialFields[4]);
+        setValue("permanent_province", residentialFields[5]);
+        setValue("permanent_zip_code", residentialFields[6]);
+    }
 
     function onSecondFormSubmit(e) {
         e.preventDefault;
@@ -51,9 +60,20 @@ export function AddressForm() {
     return (
         <>
             <form>
-                <div className="grid grid-cols-none lg:grid-cols-2 gap-16">
+                {/* Container */}
+
+                <div className="relative grid grid-cols-none lg:grid-cols-2 gap-16">
+                    <button
+                        onClick={(e) => copyAddress(e)}
+                        className={
+                            "absolute right-2 -top-20 my-2 py-1 px-4 bg-blue-600 text-sm font-bold text-white border border-blue-600 rounded-3xl hover:bg-blue-800 hover:text-grey-600 hover:border-blue-800"
+                        }
+                    >
+                        Copy Residential to Permanent
+                    </button>
+
                     <div>
-                        <div>
+                        <div className="flex items-center">
                             <h6 className="font-semibold">
                                 Residential Address
                             </h6>
@@ -141,7 +161,7 @@ export function AddressForm() {
                     </div>
 
                     <div>
-                        <div>
+                        <div className={"flex items-center"}>
                             <h6 className="font-semibold">Permanent Address</h6>
                         </div>
                         {/* First Row! */}
@@ -225,7 +245,7 @@ export function AddressForm() {
                         </div>
                     </div>
                 </div>
-                <div className={"flex justify-between mt-16"}>
+                <div className={"flex justify-between mt-8"}>
                     <NavButton type={"prev"} onClick={prevStep}>
                         Back
                     </NavButton>

@@ -19,7 +19,6 @@ export function LoginForm({error}) {
         });
     }
 
-    console.log(errors);
 
     return <>
         <div className={'mb-6 font-bold text-2xl text-center text-white'}>Log-In to your Account</div>

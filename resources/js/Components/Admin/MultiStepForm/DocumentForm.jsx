@@ -1,45 +1,36 @@
+// Libraries and Dependencies
 import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { NavButton } from "@/Pages/Admin/Faculty/Create"
+// Components
+import { NavButton } from "@/Components/MultiStepForm/NavButton";
+
 import { LabeledInput } from "@/Components/LabeledInput";
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
-import { usePersistsData } from "@/Hooks/usePersistsData";
 
-const FORM_DATA_KEY = "fifth_form_local_data";
 
 const documentsDataSchema = z.object({
-    resume_file: z.string().min(4, { message: "Required" }),
-    joining_letter: z.string(),
+    resume_file: z.any(),
+    joining_letter: z.any(),
+    offer_letter: z.any(),
+    csc_form_212: z.any(),
     dropbox_url: z.string(),
-    offer_letter: z.string(),
-    csc_form_212: z.string(),
     gdrive_url: z.string(),
 });
 
 export function DocumentForm() {
-    const { prevStep, getSavedData, postData } = useMultiStepForm();
-
-
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-        watch,
-    } = useForm({
+    const { prevStep, postFormDatatoServer } = useMultiStepForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(documentsDataSchema),
-        defaultValues: getSavedData(FORM_DATA_KEY),
     });
 
-    // Persistantly Uploads Form Data
-    usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
+    function onFinalSubmit(submittedData) {
 
-    function onFinalSubmit(e) {
-        e.preventDefault;
-        postData();
+        postFormDatatoServer(submittedData);
     }
+
     return (
         <>
             <div className="grid grid-cols-none lg:grid-cols-2 gap-16">
@@ -49,15 +40,18 @@ export function DocumentForm() {
                         id={"resume_file"}
                         register={register}
                         label={"Resume File"}
+                        type={'file'}
                         placeholder={"Resume File"}
                         color={"black"}
                         width={"normal"}
                         error={errors}
                     />
+
                     <LabeledInput
                         id={"joining_letter"}
                         register={register}
                         label={"Joining Letter"}
+                        type={'file'}
                         placeholder={"Joining Letter"}
                         color={"black"}
                         width={"normal"}
@@ -78,6 +72,7 @@ export function DocumentForm() {
                         id={"offer_letter"}
                         register={register}
                         label={"Offer Letter"}
+                        type={'file'}
                         placeholder={"Offer Letter"}
                         color={"black"}
                         width={"normal"}
@@ -87,6 +82,7 @@ export function DocumentForm() {
                         id={"csc_form_212"}
                         register={register}
                         label={"CSC Form 212"}
+                        type={'file'}
                         placeholder={"CSC Form 212"}
                         color={"black"}
                         width={"normal"}

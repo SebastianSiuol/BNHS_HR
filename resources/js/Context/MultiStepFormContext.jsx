@@ -1,57 +1,7 @@
-import {
-    createContext,
-    useContext,
-    useReducer,
-    useEffect,
-    useState,
-} from "react";
-import { useForm as inertiaForm } from "@inertiajs/react";
+import {createContext, useContext, useReducer } from "react";
+import { useForm as useInertiaForm, router } from "@inertiajs/react";
 
 const MultiStepFormContext = createContext();
-
-const initialData = {
-    contact_number: "",
-    contact_person_name: "",
-    contact_person_number: "",
-    csc_form_212: "",
-    date_of_birth: "",
-    date_of_joining: "",
-    depart_head: "",
-    department: "",
-    designation: "",
-    dropbox_url: "",
-    email: "",
-    faculty_code: "",
-    first_name: "",
-    gdrive_url: "",
-    joining_letter: "",
-    last_name: "",
-    marital_status: "",
-    middle_name: "",
-    name_extension: "",
-    place_of_birth: "",
-    position: "",
-    residential_barangay: "",
-    residential_city: "",
-    residential_house_num: "",
-    residential_province: "",
-    residential_street: "",
-    residential_subdivision: "",
-    residential_zip_code: "",
-    permanent_barangay: "",
-    permanent_city: "",
-    permanent_house_num: "",
-    permanent_province: "",
-    permanent_street: "",
-    permanent_subdivision: "",
-    permanent_zip_code: "",
-    resume_file: "",
-    offer_letter: "",
-    roles: "",
-    sex: "",
-    shift: "",
-    telephone_number: "",
-};
 
 const formDataKeys = [
     "first_form_local_data",
@@ -63,12 +13,19 @@ const formDataKeys = [
 
 const initialStates = {
     step: 0,
-    formData: {},
-    submitData: {}
+    isLoading: false,
+    formData: []
 }
+
+const AUTH_API_KEY = 'eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC';
 
 function reducer(state, action) {
     switch (action.type) {
+        case 'IS_LOADING':
+            return {...state, isLoading: true}
+        case 'FINISHED_LOADING':
+            return {...state, isLoading: false}
+
         case "PREV_STEP":
             return {
                 ...state,
@@ -85,9 +42,7 @@ function reducer(state, action) {
 }
 
 export function MultiStepFormProvider({ children }) {
-    const [{ step }, dispatch] = useReducer(reducer, initialStates);
-
-    const { post } = inertiaForm({});
+    const [{ step, isLoading }, dispatch] = useReducer(reducer, initialStates);
 
     function prevStep() {
         dispatch({ type: "PREV_STEP" });
@@ -97,7 +52,7 @@ export function MultiStepFormProvider({ children }) {
         dispatch({ type: "NEXT_STEP" });
     }
 
-    // Initially gets Data
+    // Initially gets Data for Form Persistance
     function getSavedData(dataKey) {
         let retrievedData = localStorage.getItem(dataKey);
         if (retrievedData) {
@@ -111,7 +66,8 @@ export function MultiStepFormProvider({ children }) {
         return;
     }
 
-    function getAllSavedData() {
+    // Retrieve all Data in the Local Storage
+    function getAllSavedDataFromLocalStorage() {
         const combinedData = {};
 
         formDataKeys.forEach((formKey) => {
@@ -132,19 +88,32 @@ export function MultiStepFormProvider({ children }) {
         return combinedData;
     }
 
-    function postData() {
-        const allData = getAllSavedData();
-        post(route("admin.faculty.store", [allData]));
+    function postFormDatatoServer(value) {
+        const retrievedData = getAllSavedDataFromLocalStorage();
+
+        const mergedData = {...retrievedData, ...value,};
+
+        // Use this fooking way, or else it wont upload the files.
+        router.post(route('admin.faculty.store'), mergedData, {
+            onError: errors => {console.log(errors)},
+            onSuccess: (success) => {
+                localStorage.clear();
+                router.visit(route('admin.faculty.index'));
+            },
+        });
     }
 
     return (
         <MultiStepFormContext.Provider
             value={{
+                dispatch,
                 step,
+                isLoading,
                 prevStep,
                 nextStep,
                 getSavedData,
-                postData,
+                postFormDatatoServer,
+                AUTH_API_KEY,
             }}
         >
             {children}

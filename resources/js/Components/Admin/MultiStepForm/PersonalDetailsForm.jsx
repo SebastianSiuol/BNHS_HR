@@ -1,30 +1,34 @@
 // Libraries and Dependencies
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller, useController } from "react-hook-form";
 
 // Components
+import CustomDatePicker from "@/Components/CustomDatePicker";
 import { InputLabel } from "@/Components/InputLabel";
-import { NavButton } from "@/Pages/Admin/Faculty/Create"
+import { InputSelect } from "@/Components/InputSelect";
 import { LabeledInput } from "@/Components/LabeledInput";
+import { NavButton } from "@/Components/MultiStepForm/NavButton";
+
 
 // Hooks and Contexts
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
-import { InputSelect } from "../../InputSelect";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const personalDataSchema = z.object({
-
     first_name: z.string().min(1, { message: "Required" }),
     middle_name: z.string().min(1, { message: "Required" }),
     last_name: z.string().min(1, { message: "Required" }),
-    name_extension: z.string().min(1, { message: "Required" }),
+    name_extension_id: z.string().min(1, { message: "Required" }),
 
     place_of_birth: z.string().min(1, { message: "Required" }),
     date_of_birth: z.string().min(1, { message: "Required" }),
     sex: z.string().min(1, { message: "Required" }),
-    marital_status: z.string().min(1, { message: "Required" }),
+    civil_status_id: z.string().min(1, { message: "Required" }),
 
     contact_number: z.string().min(1, { message: "Required" }),
     telephone_number: z.string().min(1, { message: "Required" }),
@@ -42,9 +46,15 @@ export function PersonalDetailsForm() {
         handleSubmit,
         formState: { errors },
         watch,
+        control,
     } = useForm({
         resolver: zodResolver(personalDataSchema),
-        defaultValues: getSavedData( FORM_DATA_KEY ),
+        defaultValues: getSavedData(FORM_DATA_KEY),
+    });
+
+    const { field } = useController({
+        control: control,
+        name: "date_of_birth"
     });
 
     // Persistantly Uplaods Form Data
@@ -56,7 +66,7 @@ export function PersonalDetailsForm() {
     }
 
     return (
-        <form>
+        <form encType={'multi-part/formdata'}>
             {/* First Row! */}
             <div className="grid grid-cols-none lg:grid-cols-4 gap-4">
                 <LabeledInput
@@ -88,8 +98,11 @@ export function PersonalDetailsForm() {
                 />
 
                 <div className={"my-2"}>
-
-                    <InputLabel labelFor={"name_extension_id"} color={"black"} width={"normal"}>
+                    <InputLabel
+                        labelFor={"name_extension_id"}
+                        color={"black"}
+                        width={"normal"}
+                    >
                         Name Extension
                     </InputLabel>
 
@@ -103,7 +116,6 @@ export function PersonalDetailsForm() {
                         <option value="7">IV</option>
                         <option value="8">V</option>
                     </InputSelect>
-
                 </div>
 
                 <LabeledInput
@@ -115,15 +127,22 @@ export function PersonalDetailsForm() {
                     width={"normal"}
                     error={errors}
                 />
-                <LabeledInput
-                    id={"date_of_birth"}
-                    register={register}
-                    label={"Date of Birth"}
-                    placeholder={"Date of Birth"}
-                    color={"black"}
-                    width={"normal"}
-                    error={errors}
-                />
+
+                <div className={"flex flex-col lg:my-2"}>
+                    <InputLabel
+                        labelFor={"date_of_birth"}
+                        color={"black"}
+                        width={"normal"}
+                    >
+                        Date of Birth
+                    </InputLabel>
+
+                    <Controller control={control} name={'date_of_birth'}
+                        render={({ field }) => (
+                            <CustomDatePicker value={field} error={errors} name={'date_of_birth'}/>
+                        )}/>
+                </div>
+
                 <LabeledInput
                     id={"sex"}
                     register={register}
@@ -134,8 +153,11 @@ export function PersonalDetailsForm() {
                     error={errors}
                 />
                 <div className={"my-2"}>
-
-                    <InputLabel labelFor={"civil_status_id"} color={"black"} width={"normal"}>
+                    <InputLabel
+                        labelFor={"civil_status_id"}
+                        color={"black"}
+                        width={"normal"}
+                    >
                         Civil Status
                     </InputLabel>
 
@@ -145,7 +167,6 @@ export function PersonalDetailsForm() {
                         <option value="3">Widowed</option>
                         <option value="4">Separated</option>
                     </InputSelect>
-
                 </div>
                 <LabeledInput
                     id={"contact_number"}
@@ -195,34 +216,4 @@ export function PersonalDetailsForm() {
             </div>
         </form>
     );
-}
-
-{
-    /*<InputContainer>
-        <InputLabel
-            labelFor="name_extension"
-            color={"black"}
-            thickness={"normal"}
-        >
-            Name Extension
-        </InputLabel>
-
-        <InputSelect
-            id={"name_extension"}
-            value={data.name_extension}
-            onChange={(e) => {
-                setData("name_extension", e.target.value);
-            }}
-        >
-            <option value={"0"}>None</option>
-            <option value={"1"}>Sr.</option>
-            <option value={"2"}>Jr.</option>
-            <option value={"3"}>I</option>
-            <option value={"4"}>II</option>
-            <option value={"5"}>III</option>
-            <option value={"6"}>IV</option>
-            <option value={"7"}>V</option>
-        </InputSelect>
-    </InputContainer>
-</div> */
 }
