@@ -8,7 +8,6 @@ import { CoverPhoto } from "@/Components/Auth/CoverPhoto";
 import { SchoolLogo } from "@/Components/SchoolLogo.jsx";
 import { LabeledInput } from "@/Components/LabeledInput";
 import { InputContainer } from "@/Components/InputContainer.jsx";
-import { InputField } from "@/Components/InputField.jsx";
 import { InputLabel } from "@/Components/InputLabel.jsx";
 
 import styles from "./Login.module.css";
