@@ -19,4 +19,17 @@ Route::middleware('intApiKey')->group(function (){
     Route::get('/roles', [RoleApiController::class, 'get'])->name('api.roles.get');
     Route::get('/get-designations', [DesignationApiController::class, 'getDesignations'])->name('api.get.designations');
 
+
+
+});
+
+Route::middleware('apiKey')->group(function () {
+
+/* Retrieves List */
+Route::get("retrieve/faculties", [FacultyApiController::class, "index"]);
+Route::get("v5/retrieve/faculty", [FacultyApiController::class, "v5"]);
+
+/* Retrieves a Single List */
+Route::get("retrieve", [FacultyApiController::class, "retrieveAFaculty"]);
+
 });

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
-class Faculty extends Authenticatable
+class Faculty extends Authenticatable implements JWTSubject
 {
 //    use HasApiTokens ,HasFactory, Notifiable;
     use HasFactory, Notifiable;

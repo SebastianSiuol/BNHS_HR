@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Config;
 
 class ExternalApiKeyMiddleware
 {
@@ -15,7 +16,7 @@ class ExternalApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $apiKey = env('API_KEY');
+        $apiKey = Config::get('app.external-api-key');
 
         $apiKeyIsValid = (! empty($apiKey) && $request->header('x-api-key') == $apiKey);
 

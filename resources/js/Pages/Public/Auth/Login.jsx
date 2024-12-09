@@ -1,4 +1,4 @@
-import { Link, useForm as useInertiaForm, router } from "@inertiajs/react";
+import { Link, useForm as useInertiaForm, router, usePage } from "@inertiajs/react";
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 
@@ -23,7 +23,7 @@ export default function Login() {
 }
 
 function LoginForm() {
-    const { data, setData, post, processing, reset } = useInertiaForm({});
+    const { error : InertiaError, reset } = useInertiaForm({});
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -31,18 +31,20 @@ function LoginForm() {
         setShowPassword((sP) => !sP);
     }
 
+    const { register, setValue, handleSubmit, formState: { errors }} = useForm({});
+
     function submitForm(data){
         router.post(route("login.store"), data, {
             preserveScroll: true,
             onSuccess: () => reset("password"),
+            onError: () => setValue('password', "")
         });
     }
 
-    const { register, handleSubmit, formState: { errors }, control} = useForm({});
-
     return (
         <>
-            <div className={"mb-6 font-bold text-2xl text-center text-white"}>Log-In to your Account</div>
+            <div className={"relative mb-6 font-bold text-2xl text-center text-white"}>Log-In to your Account</div>
+            <FlashMessage />
             <form className={"flex flex-col w-full"} onSubmit={handleSubmit(submitForm)}>
                 <LabeledInput id={"faculty_code"} register={register} label={"Faculty Code"} placeholder={"Faculty Code"} error={errors} color={"white"} width={"bold"} />
 
@@ -52,13 +54,12 @@ function LoginForm() {
                     </InputLabel>
 
                     <div className="relative">
-                        <input id={"password"} className={"w-full my-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"} {...register("password")} type={!showPassword ? "password" : "text"} placeholder="Password"/>
+                        <input id={"password"} className={"w-full my-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"} {...register("password")} type={!showPassword ? "password" : "text"} placeholder="Password" />
 
                         <span className={"absolute inset-y-1/2 -translate-y-3 right-2 cursor-pointer"} onClick={handleTextType}>
                             {showPassword ? <img src={"/icons/close.svg"} alt={"Hide Password"} /> : <img src={"/icons/show.svg"} alt={"Show Password"} />}
                         </span>
                     </div>
-
                 </InputContainer>
 
                 <Link href={route("/")} className={"ml-auto text-white text-sm hover:underline"}>
@@ -80,5 +81,24 @@ function LoginFormContainer({ children }) {
         >
             {children}
         </div>
+    );
+}
+
+function FlashMessage() {
+    const { errors } = usePage().props;
+
+    if (!errors || Object.keys(errors).length === 0) return null;
+
+    return (
+        <>
+            {Object.entries(errors).map(([field, message]) => (
+                <div
+                    key={field}
+                    className="fixed right-[5vh] top-[2vh] font-md text-lg text-gray-100 p-1 px-2 rounded-xl shadow drop-shadow-md z-[1000] bg-red-600"
+                >
+                    {message}
+                </div>
+            ))}
+        </>
     );
 }
