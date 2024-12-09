@@ -13,7 +13,7 @@ class LeaveType extends Model
     public static function calculateLeaveEndDate($startDate, $leaveDays) {
 
         // Parse the start date using Carbon
-        $currentDate = Carbon::createFromFormat('m-d-Y', $startDate);
+        $currentDate = Carbon::createFromFormat('Y-m-d', $startDate);
         $daysCounted = 0;
 
         // Loop until we have counted the desired leave days, excluding weekends

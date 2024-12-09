@@ -17,7 +17,7 @@ class Leave extends Model
 
     public function totalLeaveDays(){
 
-        $startDate = Carbon::createFromFormat('m-d-Y', $this->start_date);
+        $startDate = Carbon::createFromFormat('Y-m-d', $this->start_date);
         $endDate = Carbon::createFromFormat('Y-m-d', $this->leave_date);
 
         $totalDays = 0;

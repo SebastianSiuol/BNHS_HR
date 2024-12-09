@@ -22,12 +22,10 @@ import { RolesForm } from "@/Components/Admin/MultiStepForm/RolesForm";
 export default function Create() {
     return (
         <>
-            <AuthenticatedAdminLayout>
                 <PageHeaders>Create a Faculty Account</PageHeaders>
                 <MultiStepFormProvider>
                     <FormHandling />
                 </MultiStepFormProvider>
-            </AuthenticatedAdminLayout>
         </>
     );
 }

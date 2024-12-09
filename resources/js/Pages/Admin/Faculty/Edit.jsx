@@ -17,7 +17,6 @@ import { emailDataSchema } from "@/Schemas/MultistepFormSchema";
 
 
 // Structural Components
-import { AuthenticatedAdminLayout } from "@/Layouts/AuthenticatedAdminLayout.jsx";
 import { ContentContainer } from "@/Components/ContentContainer.jsx";
 import { ContentHeader } from "@/Components/ContentHeader.jsx";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
@@ -35,12 +34,10 @@ import CustomDatePicker from "@/Components/CustomDatePicker";
 export default function Edit() {
     return (
         <>
-            <AuthenticatedAdminLayout>
                 <PageHeaders>Edit Faculty Account</PageHeaders>
                 <EditMultiStepFormProvider>
                     <HandlePage />
                 </EditMultiStepFormProvider>
-            </AuthenticatedAdminLayout>
         </>
     );
 }

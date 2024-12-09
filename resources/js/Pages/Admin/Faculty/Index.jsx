@@ -1,17 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-    router,
-    Link,
-    usePage,
-    useForm as useInertiaForm,
-} from "@inertiajs/react";
+import { router, Link, usePage, useForm as useInertiaForm } from "@inertiajs/react";
 import { Description, DialogTitle} from '@headlessui/react';
 
 // Icons
 import { FaSearch } from "react-icons/fa";
-
-// Layouts
-import { AuthenticatedAdminLayout } from "@/Layouts/AuthenticatedAdminLayout.jsx";
 
 // Context
 import { FacultiesIndexProvider } from "@/Context/FacultiesIndexContext";
@@ -25,33 +17,24 @@ import CustomIcon from "@/Components/CustomIcon";
 import Modal from "@/Components/Modal.jsx";
 import Pagination from "@/Components/Pagination";
 
-
-const headers = [
-    "Employee ID",
-    "Name",
-    "Email",
-    "Department",
-    "Shift",
-    "Status",
-    "Action",
-];
+import { Table } from '@/Components/Table';
+import { TableRow } from '@/Components/Table';
+import { TableItem } from '@/Components/Table';
 
 export default function Index() {
     return (
         <>
-            <AuthenticatedAdminLayout>
             <PageHeaders>Manage Faculties</PageHeaders>
 
                 <FacultiesIndexProvider>
                     <HandlePage />
                 </FacultiesIndexProvider>
-            </AuthenticatedAdminLayout>
         </>
     );
 }
 
 function HandlePage() {
-    const { faculties, flash } = usePage().props;
+    const { faculties } = usePage().props;
     const { showModal, toggleShowModal, deleteModal, isLoading, selectedFacultyDetails, cancelFacultyDelete, confirmFacultyDelete} = useFacultiesIndex();
     const [storedFaculties, setStoredFaculties] = useState([]);
 
@@ -65,7 +48,7 @@ function HandlePage() {
         <>
                 <ContentContainer type={"noOutline"}>
                     <SearchHeader />
-                    <Table faculties={storedFaculties} />
+                    <FacultyTable faculties={storedFaculties}/>
                     <Pagination data={faculties} />
 
                     <Modal state={showModal} onToggle={toggleShowModal}>
@@ -152,98 +135,51 @@ function SearchHeader() {
     );
 }
 
-function Table({ faculties }) {
-    return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead className="text-sm text-white bg-blue-900 text-center">
-                    <tr>
-                        {headers.map((header, i) => (
-                            <th className={"px-6 py-3"} key={i}>
-                                {header}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {faculties.length === 0 && (
-                        <tr
-                            className={
-                                "odd:bg-blue-100 even:bg-white border-b text-center"
-                            }
-                        >
-                            <td
-                                className={
-                                    "px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                                }
-                                colSpan={7}
-                            >
-                                No Faculties Found
-                            </td>
-                        </tr>
-                    )}
-                    {faculties.map((faculty) => {
-                        return <TableRow faculty={faculty} key={faculty.id} />;
-                    })}
-                </tbody>
-            </table>
-        </div>
-    );
+function FacultyTable({ faculties }){
+    const { capitalizeFirstLetter } = useFacultiesIndex();
+    const { handleShowFaculty, handleFacultyDeletion } = useFacultyActions();
+
+    // Headers
+    const headers = ["Code", "Name", "Email", "Department", "Shift", "Status", "Actions"];
+
+    // Columns Data
+    const columns = [
+        (faculty) => faculty.faculty_code,
+        (faculty) => `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
+        (faculty) => faculty.email,
+        (faculty) => faculty.designation.department.name,
+        (faculty) => capitalizeFirstLetter(faculty.shift.name),
+        () => "Active",
+        (faculty) => (
+            <div className="flex items-center justify-end">
+                <button onClick={() => handleShowFaculty(faculty.id)}>
+                    <CustomIcon type="view" />
+                </button>
+                <Link href={route("admin.faculty.edit", { faculty: faculty.id })}>
+                    <CustomIcon type="edit" />
+                </Link>
+                <button onClick={() => handleFacultyDeletion(faculty.id)}>
+                    <CustomIcon type="delete" />
+                </button>
+            </div>
+        ),
+    ];
+
+    return <Table data={faculties} headers={headers} renderRow={(faculty) => <TableRow key={faculty.id} data={faculty} columns={columns} />} />;
+
 }
 
-function TableRow({ faculty }) {
-    const { capitalizeFirstLetter, fetchFacultyMember, toggleShowModal, toggleDeleteModal } = useFacultiesIndex();
+function useFacultyActions() {
+    const { fetchFacultyMember, toggleShowModal, toggleDeleteModal } = useFacultiesIndex();
 
-    // Data Destructuring and Constructuring
-    const {
-        id,
-        faculty_code,
-        email,
-        personal_information,
-        designation,
-        shift,
-    } = faculty;
-    const { department } = designation;
-    const fullName = `${personal_information.first_name} ${personal_information.last_name}`;
-
-    function handleShowFaculty() {
+    function handleShowFaculty(id) {
         fetchFacultyMember(id);
         toggleShowModal();
     }
 
-    function handleFacultyDeletion(facultyId){
-        toggleDeleteModal({data: facultyId});
+    function handleFacultyDeletion(facultyId) {
+        toggleDeleteModal({ data: facultyId });
     }
 
-    return (
-        <tr className={"odd:bg-blue-100 even:bg-white border-b text-center"}>
-            <TableItem>{faculty_code}</TableItem>
-            <TableItem>{fullName}</TableItem>
-            <TableItem>{email}</TableItem>
-            <TableItem>{department.name}</TableItem>
-            <TableItem>{capitalizeFirstLetter(shift.name)}</TableItem>
-            <TableItem>Active</TableItem>
-            <TableItem>
-                <div className={"flex items-center justify-end"}>
-                    <button onClick={handleShowFaculty}>
-                        <CustomIcon type={"view"} />
-                    </button>
-                    <Link href={route('admin.faculty.edit', {'faculty': id})}>
-                        <CustomIcon type={"edit"} />
-                    </Link>
-                    <button onClick={()=>{handleFacultyDeletion(id)}}>
-                        <CustomIcon type={"delete"} />
-                    </button>
-                </div>
-            </TableItem>
-        </tr>
-    );
-}
-
-function TableItem({ children }) {
-    return (
-        <td className={"px-6 py-4 font-medium text-gray-900 whitespace-nowrap"}>
-            {children}
-        </td>
-    );
+    return { handleShowFaculty, handleFacultyDeletion}
 }

@@ -235,8 +235,8 @@ function SideNavbar() {
                         >
                             <li>
                                 <SidebarNavLink
-                                    href={route("admin.leaves.create")}
-                                    active={route().current("admin.leaves.create")}
+                                    href={route("admin.leaves.index")}
+                                    active={route().current("admin.leaves.create") || route().current("admin.leaves.index")}
                                     type={"sub"}
                                 >
                                     Request Leave
@@ -244,8 +244,8 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    href={route("admin.leaves.index")}
-                                    active={route().current("admin.leaves.index")}
+                                    // href={route("admin.leaves.index")}
+                                    // active={route().current("admin.leaves.index")}
                                     type={"sub"}
                                 >
                                     Manage Leave

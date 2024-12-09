@@ -2,8 +2,6 @@ import { Link, useForm as useInertiaForm, router } from "@inertiajs/react";
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 
-import { GuestLayout } from "@/Layouts/GuestLayout.jsx";
-
 import { CoverPhoto } from "@/Components/Auth/CoverPhoto";
 import { SchoolLogo } from "@/Components/SchoolLogo.jsx";
 import { LabeledInput } from "@/Components/LabeledInput";
@@ -14,13 +12,13 @@ import styles from "./Login.module.css";
 
 export default function Login() {
     return (
-        <GuestLayout>
+        <>
             <CoverPhoto />
             <LoginFormContainer>
                 <SchoolLogo type={"welcome"} />
                 <LoginForm />
             </LoginFormContainer>
-        </GuestLayout>
+        </>
     );
 }
 

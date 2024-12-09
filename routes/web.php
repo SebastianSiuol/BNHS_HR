@@ -41,8 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/attendances', [AttendanceController::class, 'index'])->name('admin.attendances.index');
     Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])->name('admin.attendances.report');
 
+    Route::get('/admin/leave/create', [LeaveController::class, 'create'])->name('admin.leaves.create');
     Route::get('/admin/leaves', [LeaveController::class, 'index'])->name('admin.leaves.index');
-    Route::get('/admin/leaves/create', [LeaveController::class, 'create'])->name('admin.leaves.create');
+    Route::post('/admin/leave/store', [LeaveController::class, 'store'])->name('admin.leaves.store');
 
     Route::get('/admin/service-credits', [ServiceCreditController::class, 'index'])->name('admin.service-credits.index');
     Route::get('/admin/service-credits/report', [ServiceCreditController::class, 'report'])->name('admin.service-credits.report');
