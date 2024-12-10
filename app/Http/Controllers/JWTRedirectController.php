@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JWTRedirectController extends Controller
 {
-    public function sis(){
+    public function sisAdmin(){
         try {
             // Get the authenticated user.
             $faculty = auth()->user();
@@ -21,7 +22,7 @@ class JWTRedirectController extends Controller
                 'expiresIn' => '12h'
             ])->fromUser($faculty);
 
-            return redirect()->away("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
+            return Inertia::location("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
 
         } catch (JWTException $e) {
             return response()->json([
@@ -31,7 +32,7 @@ class JWTRedirectController extends Controller
         }
     }
 
-    public function logistics()
+    public function logiAdmin()
     {
         try {
             // Get the authenticated user.
@@ -45,7 +46,7 @@ class JWTRedirectController extends Controller
                 'expiresIn' => '12h'
             ])->fromUser($faculty);
 
-            return redirect()->away("https://batasan-logistics.onrender.com/admin_dashboard?access_token=" . $token);
+            return Inertia::location("https://batasan-logistics.onrender.com/admin_dashboard?access_token=" . $token);
 
         } catch (JWTException $e) {
             return response()->json([

@@ -5,13 +5,22 @@ import "./app.module.css";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 
-import { AuthenticatedAdminLayout } from '@/Layouts/AuthenticatedAdminLayout.jsx';
+import AuthenticatedFacultyLayout from '@/Layouts/AuthenticatedFacultyLayout';
+import { AuthenticatedAdminLayout } from '@/Layouts/AuthenticatedAdminLayout';
 
 createInertiaApp({
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
         let page = pages[`./Pages/${name}.jsx`];
-        page.default.layout = name.startsWith('Admin/') ? page => <AuthenticatedAdminLayout children={page} /> : undefined;
+
+        if (name.startsWith('Faculty/')) {
+            page.default.layout = (page) => <AuthenticatedFacultyLayout children={page}/>;
+        } else if (name.startsWith('Admin/')) {
+            page.default.layout = (page) => <AuthenticatedAdminLayout children={page} />;
+        } else {
+            undefined; // Optional: Add a fallback layout
+        }
+
         return page
     },
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -13,7 +13,4 @@ class DashboardController extends Controller
         return Inertia::render('Admin/Dashboard');
     }
 
-    public function index2() {
-        return Inertia::render('Admin/Dashboard2');
-    }
 }

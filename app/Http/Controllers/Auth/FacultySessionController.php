@@ -40,7 +40,7 @@ class FacultySessionController extends Controller
     // Map roles to redirect paths
     $roleRedirects = [
         'hr_admin' => route('admin.dashboard'),
-        'hr_faculty' => route('admin.dashboard'),
+        'hr_faculty' => route('faculty.dashboard'),
         'sis_admin' => "https://bhnhs-sis.onrender.com/admin/dashboard",
         'sis_registrar' => "https://bhnhs-sis.onrender.com/admin/dashboard",
         'sis_faculty' => "https://bhnhs-sis.onrender.com/faculty/home",

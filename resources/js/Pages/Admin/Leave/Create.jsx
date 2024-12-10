@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { router, usePage, useForm as useInertiaForm } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 
+import { leaveRequestSchema } from "@/Schemas/LeaveSchema";
+
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { ContentContainer } from "@/Components/ContentContainer";
 import CustomDatePicker from "@/Components/CustomDatePicker";
@@ -20,13 +22,6 @@ export default function Create() {
         </>
     );
 }
-
-export const leaveRequestSchema = z.object({
-    leave_type: z.any().optional(),
-    start_date: z.string().min(1, { message: "Required" }),
-    reason: z.string().min(15, { message: "Too short!" }),
-    no_of_days: z.any().optional(),
-});
 
 function HandlePage() {
     const { leaveTypes, serviceCredit } = usePage().props;
@@ -65,8 +60,7 @@ function HandlePage() {
     function submitLeaveRequest(data, event) {
         event.preventDefault();
 
-        router.post(route('admin.leaves.store'), data);
-
+        router.post(route("admin.leaves.store"), data);
     }
 
     return (
@@ -126,13 +120,12 @@ function HandlePage() {
                 <div className="grid grid-cols-2 items-center">
                     <label className="text-lg font-bold">Reason for Request</label>
                     <div>
-
-                    <textarea {...register("reason")} error={errors} className={"w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600 "  + (errors['reason'] ? ' border-red-500 ' : '')} />
-                    {errors['reason'] && (
-                      <div className={errors ? "block" : "hidden"}>
-                            <p className="text-red-500 text-sm italic">{errors['reason']?.message}</p>
-                        </div>
-                    )}
+                        <textarea {...register("reason")} error={errors} className={"w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600 " + (errors["reason"] ? " border-red-500 " : "")} />
+                        {errors["reason"] && (
+                            <div className={errors ? "block" : "hidden"}>
+                                <p className="text-red-500 text-sm italic">{errors["reason"]?.message}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <button

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('date_submitted');
             $table->boolean('mid_year')->default(false);
             $table->boolean('year_end')->default(false);
+            $table->string('year');
             $table->timestamps();
         });
     }

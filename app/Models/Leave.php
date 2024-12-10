@@ -5,6 +5,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
 
 class Leave extends Model
 {
@@ -34,6 +36,25 @@ class Leave extends Model
 
         return (int) round($totalDays, 0);
     }
+
+
+    public static function isThereLeaveActive()
+    {
+        $user = Auth::user();
+
+        $leave = $user->leaves()->latest('leave_date')->first();
+
+        if (!$leave) {
+            return false; // No leave requests found
+        }
+
+        // Compare dates
+        $dateToday = Carbon::now();
+        $endDate = Carbon::parse($leave->end_date);
+
+        return $dateToday->lessThanOrEqualTo($endDate);
+    }
+
 
     public function faculty(){
         return $this->belongsTo(Faculty::class);
