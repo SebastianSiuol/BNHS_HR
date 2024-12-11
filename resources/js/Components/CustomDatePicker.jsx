@@ -3,7 +3,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
 
-export default function CustomDatePicker({ value, error, name, minDate, maxDate}) {
+export default function CustomDatePicker({ value, error, name, minimumDate, maximumDate}) {
 
   const datePickerClass = "grow w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600"
 
@@ -20,8 +20,8 @@ export default function CustomDatePicker({ value, error, name, minDate, maxDate}
                 dateFormat={"MM-dd-yyyy"}
                 showMonthDropdown
                 showYearDropdown
-                minDate={!minDate ? dayjs().toDate() : minDate}
-                maxDate={maxDate}
+                minDate={minimumDate ?? dayjs().toDate()}
+                maxDate={maximumDate ?? null}
                 dropdownMode="select"
                 placeholderText={dayjs().toDate().toLocaleDateString()}
                 // Icons

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Configuration\RPMSConfiguration;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DesignationSeeder;
 use Database\Seeders\EmploymentStatusSeeder;
@@ -12,6 +13,7 @@ use Database\Seeders\PersonalInformationSeeders\PersonalInformationSeeder;
 use Database\Seeders\PersonalInformationSeeders\ReferenceMemberSeeder;
 use Database\Seeders\PersonalInformationSeeders\AddressSeeder;
 use Database\Seeders\RoleSeeder;
+use Database\Seeders\RPMSSeeder;
 use Database\Seeders\SchoolPositionSeeder;
 use Database\Seeders\ShiftSeeder;
 use Illuminate\Database\Migrations\Migration;
@@ -66,6 +68,9 @@ return new class extends Migration
 
         $name_ext_seeder = new NameExtensionSeeder();
         $name_ext_seeder->run();
+
+        $rpms_config_seeder = new RPMSSeeder();
+        $rpms_config_seeder->run();
     }
 
     /**

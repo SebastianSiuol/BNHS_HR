@@ -19,7 +19,6 @@ import Pagination from "@/Components/Pagination";
 
 import { Table } from '@/Components/Table';
 import { TableRow } from '@/Components/Table';
-import { TableItem } from '@/Components/Table';
 
 export default function Index() {
     return (
@@ -36,13 +35,8 @@ export default function Index() {
 function HandlePage() {
     const { faculties } = usePage().props;
     const { showModal, toggleShowModal, deleteModal, isLoading, selectedFacultyDetails, cancelFacultyDelete, confirmFacultyDelete} = useFacultiesIndex();
-    const [storedFaculties, setStoredFaculties] = useState([]);
+    const [storedFaculties, setStoredFaculties] = useState(faculties?.data);
 
-    useEffect(() => {
-        setStoredFaculties(faculties?.data ?? []);
-    }, [faculties]);
-
-    // console.log(flash?.message)
 
     return (
         <>
@@ -138,6 +132,7 @@ function SearchHeader() {
 function FacultyTable({ faculties }){
     const { capitalizeFirstLetter } = useFacultiesIndex();
     const { handleShowFaculty, handleFacultyDeletion } = useFacultyActions();
+
 
     // Headers
     const headers = ["Code", "Name", "Email", "Department", "Shift", "Status", "Actions"];

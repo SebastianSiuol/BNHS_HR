@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('r_p_m_s_configurations', function (Blueprint $table) {
             $table->id();
             $table->date('mid_year_date');
-            $table->date('year_end_date');
+            $table->date('end_year_date');
             $table->string('year');
             $table->timestamps();
         });

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration\RPMSConfiguration;
 use App\Models\Faculty;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class RPMSController extends Controller
 {
@@ -12,10 +15,22 @@ class RPMSController extends Controller
      */
     public function index()
     {
-        $faculties = Faculty::paginate(5);
+        $faculties = Faculty::select('id','faculty_code', 'designation_id')
+            ->with([
+                'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+                'designation' => fn($query) => $query->select('id','department_id')
+                    ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+            ])
+            ->paginate(5);
 
-        return view('admin.rpms.index', [
+        $year_now = Carbon::now()->format('Y');
+
+        $rpms_config = RPMSConfiguration::where('year', $year_now)->select('id', 'mid_year_date', 'end_year_date', 'year')->first();
+
+
+        return Inertia::render('Admin/RPMS/Index', [
             'faculties' => $faculties,
+            'rpms_config' => $rpms_config
         ]);
     }
 

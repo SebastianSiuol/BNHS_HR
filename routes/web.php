@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Faculty\DashboardController as FacultyDashboardController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\RPMSController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\AttendanceController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\LeaveController;
 use App\Http\Controllers\Admin\ServiceCreditController;
 
 use App\Http\Controllers\JWTRedirectController;
+use App\Http\Controllers\RPMSConfigurationController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,7 +51,9 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/service-credits', [ServiceCreditController::class, 'index'])->name('admin.service-credits.index');
     Route::get('/admin/service-credits/report', [ServiceCreditController::class, 'report'])->name('admin.service-credits.report');
 
+    Route::get('/admin/rpms', [RPMSController::class, 'index'])->name('admin.rpms.index');
 
+    Route::post('/admin/rpms/config/set-date', [RPMSConfigurationController::class, 'store'])->name('admin.rpms.config.store');
 
 
     Route::get('/faculty/dashboard', [FacultyDashboardController::class, 'index'])->name('faculty.dashboard');
