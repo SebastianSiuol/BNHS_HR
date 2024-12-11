@@ -52,7 +52,23 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Attendance/Create');
+        // $shift = Auth::user()->select('id','shift_id')
+        // ->with([
+        //     'personal_information:id',
+        //     'shift' => fn($query) => $query->select('id','from','to')
+        // ])->get()->first();
+
+
+            $shift_id = Auth::user()->select('id','shift_id')->get()->first();
+
+
+            $shift = Shift::where('id', $shift_id->shift_id)->select('name','from','to')->get()->first();
+
+
+
+        return Inertia::render('Admin/Attendance/Create', [
+            'shift' => $shift,
+        ]);
     }
 
     /**

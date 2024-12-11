@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AttendanceApiController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\DesignationApiController;
 use App\Http\Controllers\Api\FacultyApiController;
@@ -19,7 +20,7 @@ Route::middleware('intApiKey')->group(function (){
     Route::get('/roles', [RoleApiController::class, 'get'])->name('api.roles.get');
     Route::get('/get-designations', [DesignationApiController::class, 'getDesignations'])->name('api.get.designations');
 
-
+    Route::post('/attendance/action', [AttendanceApiController::class, 'attendanceAction'])->name('api.attendance.action');
 
 });
 
@@ -31,5 +32,9 @@ Route::get("v5/retrieve/faculty", [FacultyApiController::class, "v5"]);
 
 /* Retrieves a Single List */
 Route::get("retrieve", [FacultyApiController::class, "retrieveAFaculty"]);
+
+
+Route::get('/all/departments', [DepartmentApiController::class, 'get'])->name('api.all.get.departments');
+
 
 });

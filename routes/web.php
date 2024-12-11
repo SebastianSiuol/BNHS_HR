@@ -41,6 +41,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/faculty/search', [FacultyController::class, 'search'])->name('admin.faculty.search');
 
     Route::get('/admin/attendances/create', [AttendanceController::class, 'create'])->name('admin.attendances.create');
+
     Route::get('/admin/attendances', [AttendanceController::class, 'index'])->name('admin.attendances.index');
     Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])->name('admin.attendances.report');
 

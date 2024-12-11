@@ -130,6 +130,10 @@ class Faculty extends Authenticatable implements JWTSubject
         return $this->hasMany(RPMS::class);
     }
 
+    public function attendances(){
+        return $this->hasMany(Attendance::class);
+    }
+
     /* NOTE: Belongs Relationships */
 
     public function designation(){
@@ -153,4 +157,5 @@ class Faculty extends Authenticatable implements JWTSubject
     public function roles(){
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
+
 }

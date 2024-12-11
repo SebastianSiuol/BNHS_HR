@@ -169,7 +169,10 @@ function SideNavbar() {
 
                         <ul className={`${!openTabs.attendance && "hidden"} ml-8 space-y-2`}>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.create")} active={route().current("admin.attendances.create")} type={"sub"}>
+                                <SidebarNavLink
+                                href={route("admin.attendances.create")}
+                                active={route().current("admin.attendances.create")}
+                                type={"sub"}>
                                     Attendance
                                 </SidebarNavLink>
                             </li>
@@ -190,7 +193,9 @@ function SideNavbar() {
 
                         <ul className={`${!openTabs.leave && "hidden"} ml-8 space-y-2`}>
                             <li>
-                                <SidebarNavLink href={route("admin.leaves.index")} active={route().current("admin.leaves.create") || route().current("admin.leaves.index")} type={"sub"}>
+                                <SidebarNavLink
+                                href={route("admin.leaves.index")}
+                                active={route().current("admin.leaves.create") || route().current("admin.leaves.index")} type={"sub"}>
                                     Request Leave
                                 </SidebarNavLink>
                             </li>
@@ -221,11 +226,6 @@ function SideNavbar() {
                             <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>RPMS</span>
                         </SidebarNavLink>
                     </li>
-
-
-
-
-
 
 
 
@@ -284,6 +284,7 @@ function DropdownButton({ icon: Icon, label, state }) {
 
 
 export function SidebarNavLink({active = false, type = 'sub', className = '', children, ...props}) {
+
     return (
         <Link
             {...props}
