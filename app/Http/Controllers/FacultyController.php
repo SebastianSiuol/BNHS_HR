@@ -7,10 +7,13 @@ use App\Http\Requests\StoreFacultyRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 
 // Models
 use App\Models\Faculty;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 
 class FacultyController extends Controller
@@ -61,7 +64,7 @@ class FacultyController extends Controller
         $personal_information = $this->store_faculty->storePersonalInformation($faculty, $validated_inputs);
         $this->store_faculty->storeAddresses($personal_information, $validated_inputs);
         $this->store_faculty->storeContactPerson($personal_information, $validated_inputs);
-
+        return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
 
 
@@ -81,6 +84,9 @@ class FacultyController extends Controller
         $companyDetails = $request->get('companyDetails');
         $addresses = $request->get('addresses');
         $accountLoginDetails = $request->get('accountLoginDetails');
+        $new_roles = $request->get('roles');
+
+
 
         // dd($request->collect());
         // dd($companyDetails['designation_id']);
@@ -132,12 +138,21 @@ class FacultyController extends Controller
         $perm_addr->province                = $addresses['permanent_province'];
         $perm_addr->zip_code                = $addresses['permanent_zip_code'];
 
+        $old_roles = $faculty->roles->pluck('id');
+        $user_id = $faculty->id;
 
+
+        $faculty->roles()->detach($old_roles);
+        $faculty->roles()->attach($new_roles['roles_id']);
         $faculty->save();
         $psn_info->save();
         $cont_psn->save();
         $res_addr->save();
         $perm_addr->save();
+
+        DB::table('sessions')
+        ->whereUserId($user_id)
+        ->delete();
 
         return redirect()
         ->route('admin.faculty.index')

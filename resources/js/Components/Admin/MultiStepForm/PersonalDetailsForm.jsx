@@ -154,15 +154,24 @@ export function PersonalDetailsForm() {
                         )}/>
                 </div>
 
-                <LabeledInput
-                    id={"sex"}
-                    register={register}
-                    label={"Sex"}
-                    placeholder={"Sex"}
-                    color={"black"}
-                    width={"normal"}
-                    error={errors}
-                />
+                 <div className={"my-2"}>
+                    <InputLabel
+                        labelFor={"sex"}
+                        color={"black"}
+                        width={"normal"}
+                    >
+                        Sex
+                    </InputLabel>
+
+                    <InputSelect id={"sex"} register={register} defaultValues={'Male'}>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </InputSelect>
+                </div>
+
+
+
+
                 <div className={"my-2"}>
                     <InputLabel
                         labelFor={"civil_status_id"}

@@ -516,7 +516,6 @@ function RolesForm(){
     <>
         <div className="mb-6 relative">
             <h3 className="text-lg font-medium text-gray-700 mb-4">Select User Roles:</h3>
-            <button onClick={()=>{setValue('roles_id', ["1", "2"])}}>Click me</button>
 
             {roleError && <p className="text-red-600 italic font-bold absolute top-0 right-0">{roleError}</p>}
 
@@ -565,8 +564,8 @@ function RolesForm(){
             <NavButton type={"prev"} onClick={previousStep}>
                 Back
             </NavButton>
-            <NavButton type={"next"} onClick={handleSubmit(onFormSubmit)}>
-                Next: Documents
+            <NavButton type={"submit"} onClick={handleSubmit(onFormSubmit)}>
+                Submit
             </NavButton>
         </div>
     </>

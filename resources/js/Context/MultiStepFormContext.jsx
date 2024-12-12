@@ -104,7 +104,6 @@ export function MultiStepFormProvider({ children }) {
             },
             onSuccess: (success) => {
                 localStorage.clear();
-                router.visit(route('admin.faculty.index'));
             },
         });
     }
