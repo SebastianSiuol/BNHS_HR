@@ -1,18 +1,20 @@
 import { usePage, router } from "@inertiajs/react";
 import { useState } from "react";
 import dayjs from "dayjs";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+import { MdOutlineNoEncryptionGmailerrorred } from "react-icons/md";
+
+
 
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-// Extend dayjs with the plugins
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const AUTH_API_KEY = import.meta.env.VITE_AUTH_API_KEY;
 
+const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
+const postUrl = "/api/attendance/action";
 
 export default function Create() {
     return (
@@ -26,56 +28,39 @@ export default function Create() {
 function HandlePage() {
     const { shift, auth } = usePage().props;
 
-    const postUrl = "/api/attendance/action";
+
 
     async function onTimeIn() {
-        const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
         try {
-            const response = fetch(postUrl, {
+            const response = await fetch(postUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-api-key": AUTH_API_KEY,
                 },
-                body: JSON.stringify(postFormat({ id:auth.id, shiftTime:shift.from, postTime:currentTime, action: 'check_in'})),
+                body: JSON.stringify(
+                    postFormat({id: auth.id, shiftTime: shift.from,
+                        postTime: currentTime,
+                        action: "check_in",
+                    })
+                ),
             });
 
+            const parsedResponse = await response.json();
+
             if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
+                errorSwal(parsedResponse.error);
             }
 
-            const json = await response.json();
-            console.log(json);
         } catch (e) {
-            console.log(e);
+            errorSwal('Something went wrong!');
         }
     }
 
 
 
     function onTimeOut() {
-    //     fetch(postAttendanceUrl, {
-    //         method: "POST",
-    //         headers: {
-    //             "x-auth-api-key": AUTH_API_KEY,
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(
-    //             postFormat({ id: auth.id, shiftTime: shift.from, postTime: getDateToday(), action: "check_in"})
-    //         ),
-    //     })
-    //         .then((response) => {
-    //             if (!response.ok) {
-    //                 throw new Error(response.error);
-    //             }
-    //             return response.json();
-    //         })
-    //         .then((data) => {
-    //             console.log("Success:", data);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
+
     }
 
     function formatTimeTo12H(hour) {
@@ -182,4 +167,25 @@ function postFormat({ id, shiftTime, postTime, action }) {
         'action': action
     };
 
+}
+
+
+function errorSwal( error ) {
+    withReactContent(Swal).fire({
+        title: <b>ERROR</b>,
+        iconHtml: <MdOutlineNoEncryptionGmailerrorred/>,
+        text: error,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-500',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-800',
+          }
+    });
 }

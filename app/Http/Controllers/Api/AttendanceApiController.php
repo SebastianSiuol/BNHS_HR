@@ -39,7 +39,7 @@ class AttendanceApiController extends Controller
 
 
         if ($existingAttendance) {
-            return response()->json(['error' => 'Already checked in for the current day.'], 400);
+            return response()->json(['error' => 'Already checked-in for the current day!'], 400);
         }
 
 
@@ -49,9 +49,6 @@ class AttendanceApiController extends Controller
         $attendance->check_in = $post_time;
         $attendance->status = 'present'; // Assuming status can be set to 'checked_in'
         $attendance->save();
-
-
-
 
         return response()->json(['message' => 'Check-in successful.', 'attendance' => $attendance], 201);
 
