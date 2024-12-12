@@ -32,46 +32,46 @@ class RoleSeeder extends Seeder
                 'type' => 'sis',
                 'description' => 'Faculty SIS',
             ],
+            // [
+            //     'role_name' => 'sis_admin_dashboard',
+            //     'type' => 'sis',
+            //     'description' => 'Admin Dashboard SIS',
+            // ],
             [
-                'role_name' => 'sis_admin_dashboard', // 4
-                'type' => 'sis',
-                'description' => 'Admin Dashboard SIS',
-            ],
-            [
-                'role_name' => 'hr_admin', // 5
+                'role_name' => 'hr_admin', // 4
                 'type' => 'hr',
                 'description' => 'Super Admin HR',
             ],
+            // [
+            //     'role_name' => 'hr_manager',
+            //     'type' => 'hr',
+            //     'description' => 'Manager HR',
+            // ],
             [
-                'role_name' => 'hr_manager', // 6
-                'type' => 'hr',
-                'description' => 'Manager HR',
-            ],
-            [
-                'role_name' => 'hr_faculty', // 7
+                'role_name' => 'hr_faculty', //5
                 'type' => 'hr',
                 'description' => 'Faculty HR',
             ],
+            // [
+            //     'role_name' => 'hr_admin_dashboard',
+            //     'type' => 'hr',
+            //     'description' => 'Super Admin Dashboard HR',
+            // ],
             [
-                'role_name' => 'hr_admin_dashboard', // 8
-                'type' => 'hr',
-                'description' => 'Super Admin Dashboard HR',
-            ],
-            [
-                'role_name' => 'logi_admin', // 9
+                'role_name' => 'logi_admin', // 6
                 'type' => 'logi',
                 'description' => 'Property Custodian LS',
             ],
             [
-                'role_name' => 'logi_faculty', // 10
+                'role_name' => 'logi_faculty', // 7
                 'type' => 'logi',
                 'description' => 'Faculty LS',
             ],
-            [
-                'role_name' => 'logi_admin_dashboard', // 11
-                'type' => 'logi',
-                'description' => 'Property Custodian Dashboard LS',
-            ]
+            // [
+            //     'role_name' => 'logi_admin_dashboard',
+            //     'type' => 'logi',
+            //     'description' => 'Property Custodian Dashboard LS',
+            // ]
         ];
 
         foreach($roles as $role){
@@ -82,23 +82,23 @@ class RoleSeeder extends Seeder
 
 
         // 0001
-        Faculty::find(1)->roles()->attach([5]); // hr_admin
+        Faculty::find(1)->roles()->attach([4]); // hr_admin
 
         // 002
-        Faculty::find(2)->roles()->attach([7]); // hr_faculty
+        Faculty::find(2)->roles()->attach([5]); // hr_faculty
 
         // 0003
-        Faculty::find(3)->roles()->attach([5]); // hr_admin
-        Faculty::find(3)->roles()->attach([1]); // hr_faculty
+        Faculty::find(3)->roles()->attach([4]); // hr_admin
+        Faculty::find(3)->roles()->attach([1]); // sis_faculty
 
         // 0004
         Faculty::find(4)->roles()->attach([1]); // sis_admin
-        Faculty::find(4)->roles()->attach([9]); // logi_admin
+        Faculty::find(4)->roles()->attach([6]); // logi_admin
 
         // 0005
-        Faculty::find(5)->roles()->attach([5]); // sis_admin
-        Faculty::find(5)->roles()->attach([1]); // hr_admin
-        Faculty::find(5)->roles()->attach([9]); // logi_admin
+        Faculty::find(5)->roles()->attach([1]); // sis_admin
+        Faculty::find(5)->roles()->attach([4]); // hr_admin
+        Faculty::find(5)->roles()->attach([6]); // logi_admin
 
         // 0006
         Faculty::find(6)->roles()->attach([1]); // sis_admin

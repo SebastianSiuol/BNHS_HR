@@ -82,6 +82,7 @@ class FacultyApiController extends Controller
             'first_name'        => $faculty->personal_information->first_name,
             'middle_name'       => $faculty->personal_information->middle_name,
             'last_name'         => $faculty->personal_information->last_name,
+            'sex'               => $faculty->personal_information->sex,
             'contact_number'    => $faculty->personal_information->contact_no,
             'employmentStatus'  => $faculty->employment_status->name,
             "teacherLevel"      => $faculty->school_position->title,
@@ -92,8 +93,14 @@ class FacultyApiController extends Controller
 
     public function destroy(Request $request)
     {
+        $faculty_code = $request->query('facultyCode');
+
+        if (!$faculty_code) return response()->json(['message' => 'Faculty code not found'], 404);
+
+        $user_id = Faculty::where('faculty_code', $faculty_code)->select('id')->get()->first();
+
         $deleted_count = DB::table('sessions')
-            ->where('user_id', '=', $request->id)
+            ->where('user_id', '=', $user_id->id)
             ->delete();
 
         if ($deleted_count > 0) {
@@ -106,6 +113,11 @@ class FacultyApiController extends Controller
             ], 404);
         }
     }
+
+
+
+
+
 
     // PrivateAPI
     public function checkEmail(Request $request){

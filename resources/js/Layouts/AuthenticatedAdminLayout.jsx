@@ -23,7 +23,8 @@ function hasRole(userRoles, targetRole) {
 
 
 const redirectLinks = [
-    { role: 'sis_admin', path: route('sis.admin.redirect'), label: 'SIS Admin', icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
+    { role: 'sis_admin', path: route('sis.admin.redirect'), label: 'SIS', icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
+    { role: 'sis_faculty', path: route('sis.admin.redirect'), label: 'SIS', icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
     { role: 'logi_admin', path: route('logistics.admin.redirect'), label: 'Logistics System', icon: <MdConveyorBelt className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
 ];
 
@@ -118,12 +119,19 @@ function SideNavbar() {
     const [ roles, setRoles ] = useState(userRoles);
     const { openTabs, toggleTab } = useAuthSidebar();
 
+    console.log(roles.includes('sis_admin'))
 
     return (
-        <aside className={"fixed h-screen bg-sidebar text-white top-0 left-0 z-40 w-80 transition-transform -translate-x-full sm:translate-x-0"}>
+        <aside
+            className={
+                "fixed h-screen bg-sidebar text-white top-0 left-0 z-40 w-80 transition-transform -translate-x-full sm:translate-x-0"
+            }
+        >
             <div className="flex space-x-1 items-center ml-4 mt-11">
                 <SchoolLogo type={"sidebar"} />
-                <span className="font-bold text-lg hidden md:block text-white">Batasan Hills National High School</span>
+                <span className="font-bold text-lg hidden md:block text-white">
+                    Batasan Hills National High School
+                </span>
             </div>
 
             <div className="pt-5 mb-9">
@@ -137,9 +145,23 @@ function SideNavbar() {
                     </div>
 
                     <li>
-                        <SidebarNavLink href={route("admin.dashboard")} active={route().current("admin.dashboard")} type={"top"}>
-                            <HiMiniSquares2X2 className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>Dashboard</span>
+                        <SidebarNavLink
+                            href={route("admin.dashboard")}
+                            active={route().current("admin.dashboard")}
+                            type={"top"}
+                        >
+                            <HiMiniSquares2X2
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }
+                            >
+                                Dashboard
+                            </span>
                         </SidebarNavLink>
                     </li>
 
@@ -148,16 +170,36 @@ function SideNavbar() {
                     </div>
 
                     <li>
-                        <DropdownButton icon={RiTeamFill} label={"Faculties"} state={"faculty"} />
+                        <DropdownButton
+                            icon={RiTeamFill}
+                            label={"Faculties"}
+                            state={"faculty"}
+                        />
 
-                        <ul className={`${!openTabs.faculty && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.faculty && "hidden"
+                            } ml-8 space-y-2`}
+                        >
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.faculty.create")}
+                                    active={route().current(
+                                        "admin.faculty.create"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Add Faculties
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.index")} active={route().current("admin.faculty.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.faculty.index")}
+                                    active={route().current(
+                                        "admin.faculty.index"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Manage Faculties
                                 </SidebarNavLink>
                             </li>
@@ -165,37 +207,75 @@ function SideNavbar() {
                     </li>
                     {/* One Tab */}
                     <li>
-                        <DropdownButton icon={BiCalendar} label={"Attendance"} state={"attendance"} />
+                        <DropdownButton
+                            icon={BiCalendar}
+                            label={"Attendance"}
+                            state={"attendance"}
+                        />
 
-                        <ul className={`${!openTabs.attendance && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.attendance && "hidden"
+                            } ml-8 space-y-2`}
+                        >
                             <li>
                                 <SidebarNavLink
-                                href={route("admin.attendances.create")}
-                                active={route().current("admin.attendances.create")}
-                                type={"sub"}>
+                                    href={route("admin.attendances.create")}
+                                    active={route().current(
+                                        "admin.attendances.create"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Attendance
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.index")} active={route().current("admin.attendances.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.index")}
+                                    active={route().current(
+                                        "admin.attendances.index"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Daily Attendance
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.report")} active={route().current("admin.attendances.report")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.report")}
+                                    active={route().current(
+                                        "admin.attendances.report"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Attendance Report
                                 </SidebarNavLink>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <DropdownButton icon={LuClipboardList} label={"Leave"} state={"leave"} />
+                        <DropdownButton
+                            icon={LuClipboardList}
+                            label={"Leave"}
+                            state={"leave"}
+                        />
 
-                        <ul className={`${!openTabs.leave && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.leave && "hidden"
+                            } ml-8 space-y-2`}
+                        >
                             <li>
                                 <SidebarNavLink
-                                href={route("admin.leaves.index")}
-                                active={route().current("admin.leaves.create") || route().current("admin.leaves.index")} type={"sub"}>
+                                    href={route("admin.leaves.index")}
+                                    active={
+                                        route().current(
+                                            "admin.leaves.create"
+                                        ) ||
+                                        route().current("admin.leaves.index")
+                                    }
+                                    type={"sub"}
+                                >
                                     Request Leave
                                 </SidebarNavLink>
                             </li>
@@ -209,50 +289,115 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.service-credits.index")} active={route().current("admin.service-credits.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.service-credits.index")}
+                                    active={route().current(
+                                        "admin.service-credits.index"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Manage Service Credits
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.service-credits.report")} active={route().current("admin.service-credits.report")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.service-credits.report")}
+                                    active={route().current(
+                                        "admin.service-credits.report"
+                                    )}
+                                    type={"sub"}
+                                >
                                     Service Credit Records
                                 </SidebarNavLink>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <SidebarNavLink href={route("admin.rpms.index")} active={route().current("admin.rpms.index")} type={"top"}>
-                            <FaMedal className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>RPMS</span>
+                        <SidebarNavLink
+                            href={route("admin.rpms.index")}
+                            active={route().current("admin.rpms.index")}
+                            type={"top"}
+                        >
+                            <FaMedal
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }
+                            >
+                                RPMS
+                            </span>
                         </SidebarNavLink>
                     </li>
-
-
-
-
-
 
                     <div className="ml-3">
                         <p className="text-sm">Other Systems</p>
                     </div>
 
-                    {redirectLinks.map(({ role, path, label, icon }) =>
-                        hasRole(roles, role)
-                    ? (<SidebarNavLink key={role} href={path} type={"top"}>
-                        {icon}
-                        <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>{label}</span>
-                        </SidebarNavLink>)
-                    : null
-                    )}
+                    {/* {redirectLinks.map(({ role, path, label, icon }) =>
+                        hasRole(roles, role) ? (
+                            <SidebarNavLink key={role} href={path} type={"top"}>
+                                {icon}
+                                <span
+                                    className={
+                                        "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                    }
+                                >
+                                    {label}
+                                </span>
+                            </SidebarNavLink>
+                        ) : null
+                    )} */}
 
-
-
-
+                    {userRoles.includes('sis_admin') &&
+                    <SidebarNavLink
+                        href={route("sis.admin.redirect")}
+                        type={"top"}
+                    >
+                        <MdOutlineAccountBox
+                            className={
+                                "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                            }
+                        />
+                        <span
+                            className={
+                                "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                            }
+                        >
+                            SIS
+                        </span>
+                    </SidebarNavLink>
+                    }
+                    {hasRole(roles, 'logi_admin') && <SidebarNavLink
+                        href={route("logistics.admin.redirect")}
+                        type={"top"}
+                    >
+                        <MdConveyorBelt
+                            className={
+                                "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                            }
+                        />
+                        <span
+                            className={
+                                "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                            }
+                        >
+                            Logistics
+                        </span>
+                    </SidebarNavLink>}
                 </ul>
             </div>
         </aside>
     );
 }
+// { role: 'sis_admin', path: route('sis.admin.redirect'), label: 'SIS', icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
+// { role: 'logi_admin', path: route('logistics.admin.redirect'), label: 'Logistics System', icon: <MdConveyorBelt className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
+
+
+
 
 // className={`${route().current('admin.faculty') ? '' : 'hidden'} ml-10 py-2 space-y-2`}>
 function DropdownButton({ icon: Icon, label, state }) {

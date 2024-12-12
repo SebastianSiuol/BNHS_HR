@@ -1,5 +1,7 @@
 import {createContext, useContext, useReducer } from "react";
 import { useForm as useInertiaForm, router } from "@inertiajs/react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const MultiStepFormContext = createContext();
 
@@ -95,7 +97,11 @@ export function MultiStepFormProvider({ children }) {
 
         // Use this fooking way, or else it wont upload the files.
         router.post(route('admin.faculty.store'), mergedData, {
-            onError: errors => {console.log(errors)},
+            onError: errors => {
+                const errorMessages = Object.values(errors).flat().map((error) => error);
+
+                errorSwal(errorMessages);
+            },
             onSuccess: (success) => {
                 localStorage.clear();
                 router.visit(route('admin.faculty.index'));
@@ -125,4 +131,29 @@ export function useMultiStepForm() {
     const context = useContext(MultiStepFormContext);
     if (context === undefined) throw new Error("Context used outside scope!");
     return context;
+}
+
+
+
+function errorSwal( error ) {
+
+    const swalText = error.join('<br>');
+
+    withReactContent(Swal).fire({
+        title: <b>ERROR</b>,
+        icon: 'error',
+        html: swalText,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-500',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-800',
+          }
+    });
 }

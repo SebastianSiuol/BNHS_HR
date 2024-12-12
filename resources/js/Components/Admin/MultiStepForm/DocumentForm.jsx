@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useForm as useInertiaForm } from '@inertiajs/react';
 
 // Components
 import { NavButton } from "@/Components/MultiStepForm/NavButton";
@@ -26,10 +27,14 @@ export function DocumentForm() {
         resolver: zodResolver(documentsDataSchema),
     });
 
+    const { errors:inertiaError } = useInertiaForm();
+
     function onFinalSubmit(submittedData) {
 
         postFormDatatoServer(submittedData);
     }
+
+    console.log(inertiaError);
 
     return (
         <>

@@ -19,6 +19,17 @@ import { usePersistsData } from "@/Hooks/usePersistsData";
 import "react-datepicker/dist/react-datepicker.css";
 
 
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+const eighteenYearsAgo = dayjs().subtract(18, 'year');
+
+console.log(eighteenYearsAgo.format('YYYY-MM-DD'));
+
+
 const personalDataSchema = z.object({
     first_name: z.string().min(1, { message: "Required" }),
     middle_name: z.string().min(1, { message: "Required" }),
@@ -139,7 +150,7 @@ export function PersonalDetailsForm() {
 
                     <Controller control={control} name={'date_of_birth'}
                         render={({ field }) => (
-                            <CustomDatePicker value={field} error={errors} name={'date_of_birth'}/>
+                            <CustomDatePicker value={field} error={errors} name={'date_of_birth'} minimumDate={'1950-01-01'} maximumDate={eighteenYearsAgo.format('YYYY-MM-DD')}/>
                         )}/>
                 </div>
 

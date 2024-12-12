@@ -68,6 +68,7 @@ Route::middleware('redirUnauthUser')->group(function () {
 
 
 
-    Route::get('/redirect/sis', [JWTRedirectController::class, 'sisAdmin'])->name('sis.admin.redirect');
-    Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])->name('logistics.admin.redirect');
 });
+Route::get('/redirect/admin/sis', [JWTRedirectController::class, 'sisAdmin'])->name('sis.admin.redirect');
+
+Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])->name('logistics.admin.redirect');

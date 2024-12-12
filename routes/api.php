@@ -26,15 +26,17 @@ Route::middleware('intApiKey')->group(function (){
 
 Route::middleware('apiKey')->group(function () {
 
-/* Retrieves List */
-Route::get("retrieve/faculties", [FacultyApiController::class, "index"]);
-Route::get("v5/retrieve/faculty", [FacultyApiController::class, "v5"]);
+    /* Retrieves List */
+    Route::get("retrieve/faculties", [FacultyApiController::class, "index"]);
+    Route::get("v5/retrieve/faculty", [FacultyApiController::class, "v5"]);
 
-/* Retrieves a Single List */
-Route::get("retrieve", [FacultyApiController::class, "retrieveAFaculty"]);
+    /* Retrieves a Single List */
+    Route::get("retrieve", [FacultyApiController::class, "retrieveAFaculty"]);
+
+    Route::post("logout", [FacultyApiController::class, "destroy"]);
 
 
-Route::get('/all/departments', [DepartmentApiController::class, 'get'])->name('api.all.get.departments');
+    Route::get('/all/departments', [DepartmentApiController::class, 'get'])->name('api.all.get.departments');
 
 
 });
