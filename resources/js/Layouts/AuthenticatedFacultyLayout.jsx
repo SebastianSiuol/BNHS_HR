@@ -24,7 +24,7 @@ export default function AuthenticatedFacultyLayout({ children }) {
 
 function Header({ children }) {
     const [userContextMenu, setUserContextMenu] = useState(false);
-    const { auth } = usePage().props;
+    const { auth, role : userRoles } = usePage().props;
 
     return (
         <>
@@ -49,12 +49,18 @@ function Header({ children }) {
                             <DropdownMenu.Trigger className="items-center space-x-4 flex">
                                 <div className={"md:block hidden"}>
                                     <h6 className="font-bold">{auth.email}</h6>
-                                    <p className="text-normal text-end">HR Faculty</p>
+                                    <p className="text-normal text-end">{ userRoles.includes('hr_admin') && ('Admin | ') }Faculty</p>
                                 </div>
                                 {userContextMenu ? <IoIosArrowUp className={"text-2xl"} /> : <IoIosArrowDown className={"text-2xl"} />}
                             </DropdownMenu.Trigger>
 
                             <DropdownMenu.Content className="z-50 w-min-[30vh] w-max-[50vh] text-base bg-white divide-gray-100 rounded shadow">
+                                {userRoles.includes('hr_admin') && (<Link
+                                    href={route('admin.dashboard')}
+                                    className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                                >
+                                    Switch to Admin
+                                </Link>)}
                                 <DropdownMenu.Item>
                                     <button onClick={()=>{router.post(route('session.destroy'))}} className="block px-4 py-2 text-sm text-red-700 w-full text-left hover:bg-gray-100">
                                         Log Out

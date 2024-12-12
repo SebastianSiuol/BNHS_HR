@@ -60,7 +60,7 @@ export function AuthenticatedAdminLayout({ children }) {
                                 <p className="font-semibold text-black text-sm">
                                     {auth.email}
                                 </p>
-                                <p className="text-gray-600 text-sm">X Role</p>
+                                <p className="text-gray-600 text-sm">Admin{ userRoles.includes('hr_faculty') && (' | Faculty') }</p>
                             </div>
 
                             {headerDropdown ? (
@@ -79,13 +79,13 @@ export function AuthenticatedAdminLayout({ children }) {
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Content className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow">
-                            {userRoles.includes('sis_admin') && <DropdownMenu.Item>
-                                <a
-                                    href="#"
+                            {userRoles.includes('hr_faculty') && <DropdownMenu.Item>
+                                <Link
+                                    href={route('faculty.dashboard')}
                                     className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
                                 >
                                     Switch to Faculty
-                                </a>
+                                </Link>
                             </DropdownMenu.Item>}
 
                             <DropdownMenu.Item>
