@@ -81,6 +81,7 @@ class FacultyApiController extends Controller
             'middle_name'       => $faculty->personal_information->middle_name,
             'last_name'         => $faculty->personal_information->last_name,
             'contact_number'    => $faculty->personal_information->contact_no,
+            'sex'               => $faculty->personal_information->sex,
             'employmentStatus'  => $faculty->employment_status->name,
             "teacherLevel"      => $faculty->school_position->title,
             'department'        => $faculty->designation->department->name,
@@ -90,8 +91,14 @@ class FacultyApiController extends Controller
 
     public function destroy(Request $request)
     {
+        $faculty_code = $request->query('facultyCode');
+
+        if (!$faculty_code) return response()->json(['message' => 'Faculty code not found'], 404);
+
+        $user_id = Faculty::where('faculty_code', $faculty_code)->select('id')->get()->first();
+
         $deleted_count = DB::table('sessions')
-            ->where('user_id', '=', $request->id)
+            ->where('user_id', '=', $user_id->id)
             ->delete();
 
         if ($deleted_count > 0) {

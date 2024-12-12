@@ -3,6 +3,8 @@
 
     $classes = 'flex items-center rounded-lg ';
 
+//    flex items-center rounded-lg ml-5 mb-1 p-2
+
     if($type === 'top')
         $classes .= 'ml-5 mb-1 p-2 ';
 

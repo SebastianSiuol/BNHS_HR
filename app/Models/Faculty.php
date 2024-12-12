@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Configuration\SchoolPosition;
 use App\Models\FacultyAccountInformation\Designation;
 use App\Models\FacultyAccountInformation\EmploymentStatus;
@@ -12,7 +11,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-//use Laravel\Sanctum\HasApiTokens;
 
 class Faculty extends Authenticatable implements JWTSubject
 {

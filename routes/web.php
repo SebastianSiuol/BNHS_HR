@@ -23,8 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/get-designations', [DesignationController::class, 'getDesignations'])->name('api.get.designations');
-Route::get('/get-leave-type', [LeaveTypeApiController::class, 'getLeaveType'])->name('api.get.leave.type');
+
 
 
 Route::get('/employees/export', [FacultyController::class, 'export'])->name('employees_export');
@@ -50,6 +49,9 @@ Route::middleware('redirectIfAuth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/get-designations', [DesignationController::class, 'getDesignations'])->name('api.get.designations');
+    Route::get('/get-leave-type', [LeaveTypeApiController::class, 'getLeaveType'])->name('api.get.leave.type');
 
     Route::post('/faculty/logout', [FacultySessionController::class, 'destroy'])->name('faculty_logout');
 
