@@ -29,7 +29,7 @@ const redirectLinks = [
 ];
 
 export function AuthenticatedAdminLayout({ children }) {
-    const { auth, flash, role } = usePage().props
+    const { auth, flash, role : userRoles } = usePage().props
     const [ headerDropdown, setHeaderDropdown ] = useState(false);
     const [ flashMessage, setFlashMessage] = useState(flash)
 
@@ -79,14 +79,14 @@ export function AuthenticatedAdminLayout({ children }) {
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Content className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow">
-                            <DropdownMenu.Item>
+                            {userRoles.includes('sis_admin') && <DropdownMenu.Item>
                                 <a
                                     href="#"
                                     className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
                                 >
                                     Switch to Faculty
                                 </a>
-                            </DropdownMenu.Item>
+                            </DropdownMenu.Item>}
 
                             <DropdownMenu.Item>
                                 <button
