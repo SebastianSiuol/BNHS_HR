@@ -9,6 +9,9 @@ export default {
     extend: {
         fontFamily: {
             'poppins' : ['Poppins', 'sans-serif' ],
+        },
+        colors: {
+            'welcome-form-bg' : 'rgba(22, 49, 114, 0.7)',
         }
     },
   },

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\FacultyApiController;
 use App\Http\Controllers\Api\JWTAuthController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::middleware(ApiKeyMiddleware::class)->group(function () {
     Route::post("logout", [FacultyApiController::class, "destroy"]);
 
     Route::post("login", [JWTAuthController::class, "store"]);
+
+    Route::get('/all/departments', [DepartmentApiController::class, 'get'])->name('api.all.get.departments');
+
 });
 
 

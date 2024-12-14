@@ -1,9 +1,4 @@
 <aside id="sidebar-multi-level-sidebar" class="fixed bg-[#163172] text-white top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-{{--    <div id="burger" class="cursor-pointer text-white p-4 flex justify-end h-7">--}}
-{{--        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-110 hover:text-gray-300">--}}
-{{--            <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />--}}
-{{--        </svg>--}}
-{{--    </div>--}}
 
     <div class="flex items-center ml-5 justify-center mb-0">
         <div class=" rounded-full w-20 h-15 flex items-center justify-center mt-10 overflow-hidden">

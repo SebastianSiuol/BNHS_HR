@@ -66,6 +66,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
     {{-- Start of Sidebar --}}
