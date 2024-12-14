@@ -2,7 +2,10 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { useForm, Controller, useController } from "react-hook-form";
+import "react-datepicker/dist/react-datepicker.css";
 
 // Components
 import CustomDatePicker from "@/Components/CustomDatePicker";
@@ -16,36 +19,12 @@ import { NavButton } from "@/Components/MultiStepForm/NavButton";
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
 
-import "react-datepicker/dist/react-datepicker.css";
+import { personalDataSchema } from "@/Schemas/MultistepFormSchema";
 
-
-
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(relativeTime);
 
 const eighteenYearsAgo = dayjs().subtract(18, 'year');
-
-console.log(eighteenYearsAgo.format('YYYY-MM-DD'));
-
-
-const personalDataSchema = z.object({
-    first_name: z.string().min(1, { message: "Required" }),
-    middle_name: z.string().min(1, { message: "Required" }),
-    last_name: z.string().min(1, { message: "Required" }),
-    name_extension_id: z.string().min(1, { message: "Required" }),
-
-    place_of_birth: z.string().min(1, { message: "Required" }),
-    date_of_birth: z.string().min(1, { message: "Required" }),
-    sex: z.string().min(1, { message: "Required" }),
-    civil_status_id: z.string().min(1, { message: "Required" }),
-
-    contact_number: z.string().min(1, { message: "Required" }),
-    telephone_number: z.string().min(1, { message: "Required" }),
-    contact_person_name: z.string().min(1, { message: "Required" }),
-    contact_person_number: z.string().min(1, { message: "Required" }),
-});
 
 const FORM_DATA_KEY = "first_form_local_data";
 

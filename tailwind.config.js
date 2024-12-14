@@ -5,6 +5,9 @@ export default {
     content: ["./resources/**/*.blade.php", "./resources/**/*.jsx", "./resources/**/*.js"],
     theme: {
         extend: {
+            fontFamily: {
+                'poppins' : ['Poppins', 'sans-serif' ],
+            },
             colors: {
                 welcome: "rgba(22, 49, 114, 0.7)",
                 sidebar: "#163172",

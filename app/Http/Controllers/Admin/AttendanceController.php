@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Faculty;
-use App\Models\FacultyAccountInformation\Department;
+
+// Models
+use App\Models\Attendance;
 use App\Models\Shift;
+use App\Models\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -117,6 +120,47 @@ class AttendanceController extends Controller
         // return view('admin.attendance.report', [
         //     'faculties'  => Faculty::all()->first()->paginate(5)
         // ]);
+    }
+
+    public function checkIn(Request $request){
+
+        $validated = $request->validate([
+            'id' => ['required'],
+            'shiftTime' => ['required'],
+            'postTime' => ['required'],
+            'action' => ['required'],
+        ]);
+
+
+        $user_id = $validated['id'];
+        $post_time = Carbon::parse($validated['postTime']);
+
+
+        // Check if the user exists
+        $faculty = Faculty::find($user_id);
+        if (!$faculty) {
+            return redirect()->route('admin.attendances.create')->with(['error' => 'User not found.'], 404);
+        }
+
+
+        // Check if a check-in exists for the current day
+        $existingAttendance = Attendance::where('faculty_id', $user_id)
+            ->whereDate('check_in', $post_time->toDateString())
+            ->first();
+
+        if ($existingAttendance) {
+            return redirect()->route('admin.attendances.create')->with(['error' => 'Already checked-in for the current day!'], 400);
+        }
+
+
+        // Create a new attendance record
+        $attendance = new Attendance();
+        $attendance->faculty_id = $user_id;
+        $attendance->check_in = $post_time;
+        $attendance->status = 'present';
+        $attendance->save();
+
+        return redirect()->route('admin.attendances.create')->with(['message' => 'Check-in successful.', 'attendance' => $attendance], 201);
     }
 
 }

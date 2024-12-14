@@ -84,9 +84,9 @@ function NavBar({ children }) {
                 <nav className={"text-lg items-center space-x-16"}>
                     <NavBarLink href={route("faculty.dashboard")} active={route().current("faculty.dashboard")}>Home</NavBarLink>
                     <NavBarLink href={route("faculty.leaves.index")} active={route().current("faculty.leaves.create") || route().current("faculty.leaves.index")}>Leave Request</NavBarLink>
-                    <NavBarLink>RPMS</NavBarLink>
-                    <NavBarLink>Attendance</NavBarLink>
-                    <NavBarLink>Personal Details</NavBarLink>
+                    <NavBarLink href={route('faculty.rpms.index')} active={route().current("faculty.rpms.index")}>RPMS</NavBarLink>
+                    <NavBarLink href={route('faculty.attendance.create')} active={route().current("faculty.attendance.create")}>Attendance</NavBarLink>
+                    <NavBarLink >Personal Details</NavBarLink>
                 </nav>
             </div>
 

@@ -1,23 +1,19 @@
 import { usePage, router } from "@inertiajs/react";
 import { useState } from "react";
 import dayjs from "dayjs";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 import { MdOutlineNoEncryptionGmailerrorred } from "react-icons/md";
 
-import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
-
-
-const AUTH_API_KEY = 'eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC';
+const AUTH_API_KEY = import.meta.env.VITE_AUTH_API_KEY;
 
 const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
 const postUrl = "/api/attendance/action";
 
-export default function Create() {
+export default function Index() {
     return (
         <>
-            <PageHeaders>Attendance</PageHeaders>
             <HandlePage />
         </>
     );
@@ -26,29 +22,35 @@ export default function Create() {
 function HandlePage() {
     const { shift, auth } = usePage().props;
 
-
-
     async function onTimeIn() {
         try {
+            const response = await fetch(postUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-api-key": AUTH_API_KEY,
+                },
+                body: JSON.stringify(
+                    postFormat({
+                        id: auth.id,
+                        shiftTime: shift.from,
+                        postTime: currentTime,
+                        action: "check_in",
+                    })
+                ),
+            });
 
-            await router.post(route('admin.attendances.check-in'), {
-                id: auth.id,
-                shiftTime: shift.from,
-                postTime: currentTime,
-                action: "check_in",
-            },);
+            const parsedResponse = await response.json();
 
+            if (!response.ok) {
+                errorSwal(parsedResponse.error);
+            }
         } catch (e) {
-            console.log(e);
-            errorSwal('Something went wrong! Please try again later.');
+            errorSwal("Something went wrong!");
         }
     }
 
-
-
-    function onTimeOut() {
-
-    }
+    function onTimeOut() {}
 
     function formatTimeTo12H(hour) {
         const timeTo12H = dayjs("1/1/1 " + hour).format("hh:mm A");
@@ -145,54 +147,22 @@ function HandlePage() {
     );
 }
 
-// Late, Present, Absent, Not Timed Out
-function postFormat({ id, shiftTime, postTime, action }) {
-    return  {
-        'user_id': id,
-        'shift_time': shiftTime,
-        'post_time': postTime,
-        'action': action
-    };
-
-}
-
-
-function errorSwal( error ) {
+function errorSwal(error) {
     withReactContent(Swal).fire({
         title: <b>ERROR</b>,
-        iconHtml: <MdOutlineNoEncryptionGmailerrorred/>,
+        iconHtml: <MdOutlineNoEncryptionGmailerrorred />,
         text: error,
-        confirmButtonText: 'Confirm',
+        confirmButtonText: "Confirm",
         customClass: {
-            container: '...',
-            popup: 'border rounded-3xl',
-            header: '...',
-            title: 'text-gray-500',
-            icon: '...',
-            htmlContainer: '...',
-            validationMessage: '...',
-            actions: '...',
-            confirmButton: 'bg-blue-800',
-          }
-    });
-}
-
-function successSwal( message ) {
-    withReactContent(Swal).fire({
-        title: <b>SUCCESS!</b>,
-        icon: 'success',
-        text: message,
-        confirmButtonText: 'Confirm',
-        customClass: {
-            container: '...',
-            popup: 'border rounded-3xl',
-            header: '...',
-            title: 'text-green-500',
-            icon: 'text-green-900',
-            htmlContainer: '...',
-            validationMessage: '...',
-            actions: '...',
-            confirmButton: 'bg-blue-800',
-          }
+            container: "...",
+            popup: "border rounded-3xl",
+            header: "...",
+            title: "text-gray-500",
+            icon: "...",
+            htmlContainer: "...",
+            validationMessage: "...",
+            actions: "...",
+            confirmButton: "bg-blue-800",
+        },
     });
 }

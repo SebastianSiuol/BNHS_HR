@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
             $this->app['request']->server->set('HTTPS','on');
         }
+
+        Inertia::share(['errors' => function () {
+            return Session::get('errors') ? Session::get('errors')->getBag('default')->getMessages() : (object) []; }]);
 
     }
 }

@@ -36,12 +36,12 @@ export function AuthenticatedAdminLayout({ children }) {
     useEffect(() => {
         setFlashMessage(flash);
 
-        setTimeout(() => {
+        let flashTimer = setTimeout(() => {
             setFlashMessage(null);
         }, 5000);
 
         return () => {
-            setFlashMessage(null), clearTimeout();
+            setFlashMessage(null), clearTimeout(flashTimer);
         };
     }, [flash]);
 

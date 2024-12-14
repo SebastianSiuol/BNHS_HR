@@ -12,17 +12,18 @@ class AttendanceApiController extends Controller
 {
     public function attendanceAction(Request $request)
     {
+        // dd($request->all());
 
         $validated = $request->validate([
-            'user_id' => 'required',
-            'shift_time' => 'required',
-            'post_time' => 'required',
-            'action' => 'required'
+            'id' => ['required', 'string'],
+            'shiftTime' => ['required'],
+            'postTime' => ['required'],
+            'action' => ['required'],
         ]);
 
 
-        $user_id = $validated['user_id'];
-        $post_time = Carbon::parse($validated['post_time']);
+        $user_id = $validated['id'];
+        $post_time = Carbon::parse($validated['postTime']);
 
 
         // Check if the user exists
@@ -36,7 +37,7 @@ class AttendanceApiController extends Controller
         $existingAttendance = Attendance::where('faculty_id', $user_id)
             ->whereDate('check_in', $post_time->toDateString())
             ->first();
-
+        dd($existingAttendance);
 
         if ($existingAttendance) {
             return response()->json(['error' => 'Already checked-in for the current day!'], 400);
@@ -47,7 +48,7 @@ class AttendanceApiController extends Controller
         $attendance = new Attendance();
         $attendance->faculty_id = $user_id;
         $attendance->check_in = $post_time;
-        $attendance->status = 'present'; // Assuming status can be set to 'checked_in'
+        $attendance->status = 'present';
         $attendance->save();
 
         return response()->json(['message' => 'Check-in successful.', 'attendance' => $attendance], 201);
