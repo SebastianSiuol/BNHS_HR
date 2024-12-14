@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('r_p_m_s_configurations', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->date('mid_year_date');
-            $table->date('end_year_date');
-            $table->string('year');
+            $table->foreignId('faculty_id');
+            $table->string('check_in');
+            $table->string('check_out')->nullable();
+            $table->enum('status', ['present', 'late', 'absent', 'not_timed_out']);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('r_p_m_s_configurations');
+        Schema::dropIfExists('attendances');
     }
 };

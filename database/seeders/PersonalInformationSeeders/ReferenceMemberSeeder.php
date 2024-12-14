@@ -78,5 +78,21 @@ class ReferenceMemberSeeder extends Seeder
         $ref_member->personal_information_id = PersonalInformation::find(8)->id;
         $ref_member->save();
 
+        $ref_member = new ReferenceMember();
+        $ref_member->name = 'Sixpac Doe';
+        $ref_member->contact_number = '09987654321';
+        $ref_member->address = 'Quezon City';
+        $ref_member->reference_number = '1';
+        $ref_member->personal_information_id = PersonalInformation::find(9)->id;
+        $ref_member->save();
+
+        $ref_member = new ReferenceMember();
+        $ref_member->name = 'Sevenpac Doe';
+        $ref_member->contact_number = '09987654321';
+        $ref_member->address = 'Quezon City';
+        $ref_member->reference_number = '1';
+        $ref_member->personal_information_id = PersonalInformation::find(10)->id;
+        $ref_member->save();
+
     }
 }

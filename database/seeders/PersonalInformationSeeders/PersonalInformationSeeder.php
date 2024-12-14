@@ -19,7 +19,7 @@ class PersonalInformationSeeder extends Seeder
             'middle_name' => 'Merlin',
             'last_name' => 'Santiago',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1993',
+            'date_of_birth' => '1993-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
@@ -31,7 +31,7 @@ class PersonalInformationSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Bakers',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1995',
+            'date_of_birth' => '1995-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
@@ -43,67 +43,95 @@ class PersonalInformationSeeder extends Seeder
             'middle_name' => 'Deludo',
             'last_name' => 'Vasquez',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1997',
+            'date_of_birth' => '1997-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+
         PersonalInformation::factory()->create([
             'first_name' => 'Romeo',
             'middle_name' => 'Juleite',
             'last_name' => 'Velazquez',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-2000',
+            'date_of_birth' => '2000-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+
         PersonalInformation::factory()->create([
             'first_name' => 'Davy',
             'middle_name' => 'Jonas',
             'last_name' => 'Dakito',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-2000',
+            'date_of_birth' => '2000-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+
         PersonalInformation::factory()->create([
             'first_name' => 'Gabriel',
             'middle_name' => '',
             'last_name' => 'Gobota',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1996',
+            'date_of_birth' => '1996-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+
         PersonalInformation::factory()->create([
             'first_name' => 'Robert',
             'middle_name' => '',
             'last_name' => 'Badong',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1986',
+            'date_of_birth' => '1986-01-01',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
+
+        PersonalInformation::factory()->create([
+            'first_name' => 'Poppy',
+            'middle_name' => 'Orlando',
+            'last_name' => 'Pola',
+            'sex' => 'Male',
+            'date_of_birth' => '1976-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
         PersonalInformation::factory()->create([
-            'first_name' => 'Poppy',
-            'middle_name' => 'Orlando',
-            'last_name' => 'Pola',
+            'first_name' => 'Tuffin',
+            'middle_name' => '',
+            'last_name' => 'Rojel',
             'sex' => 'Male',
-            'date_of_birth' => '01-01-1976',
+            'date_of_birth' => '1980-01-01',
             'place_of_birth' => 'Quezon City',
             'telephone_no' => '',
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Rijel',
+            'middle_name' => 'Toge',
+            'last_name' => 'Lihe',
+            'sex' => 'Male',
+            'date_of_birth' => '1999-05-01',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
+
 
         $faculty_count = Faculty::count();
 
