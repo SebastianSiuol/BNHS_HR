@@ -7,9 +7,9 @@ export default function Approve() {
     return (
         <>
             <PageHeaders>Manage Leave</PageHeaders>
-            <ContentContainer type={"noOutline"}>
+            {/* <ContentContainer type={"noOutline"}> */}
                 <HandlePage />
-            </ContentContainer>
+            {/* </ContentContainer> */}
         </>
     );
 }
@@ -19,6 +19,6 @@ function HandlePage(){
 
 
   return (<>
-  <div>Yayeet</div>
+  <div></div>
   </>);
 }
