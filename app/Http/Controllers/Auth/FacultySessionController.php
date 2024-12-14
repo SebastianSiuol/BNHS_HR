@@ -44,7 +44,10 @@ class FacultySessionController extends Controller
         'sis_admin' => "https://bhnhs-sis.onrender.com/admin/dashboard",
         'sis_registrar' => "https://bhnhs-sis.onrender.com/admin/dashboard",
         'sis_faculty' => "https://bhnhs-sis.onrender.com/faculty/home",
-        'logi_admin' => "https://batasan-logistics.onrender.com/admin_dashboard",
+        // 'logi_admin' => "https://batasan-logistics.onrender.com/admin_dashboard",
+        // 'logi_admin' => "http://192.168.0.111:8000/admin_dashboard",
+        'logi_admin' => "http://192.168.0.111:8000/redirect",
+
     ];
 
     foreach ($roleRedirects as $role => $redirectUrl) {

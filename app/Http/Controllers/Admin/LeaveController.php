@@ -112,6 +112,11 @@ class LeaveController extends Controller
         return redirect($render_url)->with('success', 'Leave request addded successfully!');
     }
 
+    public function approve(){
+
+        return Inertia::render('Admin/Leave/Approve');
+    }
+
     private function getRenderUrl(Request $request, array $url_map, bool $use_route_format = false)
     {
         $url_request = strtolower($request->segment(1));

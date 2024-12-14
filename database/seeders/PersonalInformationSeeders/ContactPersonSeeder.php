@@ -59,5 +59,17 @@ class ContactPersonSeeder extends Seeder
         $cont_psn->contact_no = '09876543321';
         $cont_psn->personal_information_id = 8;
         $cont_psn->save();
+
+        $cont_psn = new ContactPerson();
+        $cont_psn->name = 'Muki Pai';
+        $cont_psn->contact_no = '09876543321';
+        $cont_psn->personal_information_id = 9;
+        $cont_psn->save();
+
+        $cont_psn = new ContactPerson();
+        $cont_psn->name = 'Tusi Pai';
+        $cont_psn->contact_no = '09876543321';
+        $cont_psn->personal_information_id = 10;
+        $cont_psn->save();
     }
 }

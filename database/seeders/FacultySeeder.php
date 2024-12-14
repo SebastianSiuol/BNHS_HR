@@ -62,5 +62,17 @@ class FacultySeeder extends Seeder
             'date_of_joining' => '2002-01-02',
             'service_credit' => 8,
         ]);
+        Faculty::factory()->create([
+            'email' => 'tuffin@example.com',
+            'password' => 'Password123',
+            'date_of_joining' => '2002-01-02',
+            'service_credit' => 8,
+        ]);
+        Faculty::factory()->create([
+            'email' => 'rijel@example.com',
+            'password' => 'Password123',
+            'date_of_joining' => '2002-01-02',
+            'service_credit' => 8,
+        ]);
     }
 }

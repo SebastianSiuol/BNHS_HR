@@ -109,6 +109,28 @@ class PersonalInformationSeeder extends Seeder
             'contact_no' => '09987654321',
             'civil_status_id' => 1,
         ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Tuffin',
+            'middle_name' => '',
+            'last_name' => 'Rojel',
+            'sex' => 'Male',
+            'date_of_birth' => '1980-01-01',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
+        PersonalInformation::factory()->create([
+            'first_name' => 'Rijel',
+            'middle_name' => 'Toge',
+            'last_name' => 'Lihe',
+            'sex' => 'Male',
+            'date_of_birth' => '1999-05-01',
+            'place_of_birth' => 'Quezon City',
+            'telephone_no' => '',
+            'contact_no' => '09987654321',
+            'civil_status_id' => 1,
+        ]);
 
 
         $faculty_count = Faculty::count();

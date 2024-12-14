@@ -281,8 +281,8 @@ function SideNavbar() {
                             </li>
                             <li>
                                 <SidebarNavLink
-                                    // href={route("admin.leaves.index")}
-                                    // active={route().current("admin.leaves.index")}
+                                    href={route("admin.leaves.approve")}
+                                    active={route().current("admin.leaves.approve")}
                                     type={"sub"}
                                 >
                                     Manage Leave
