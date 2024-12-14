@@ -69,8 +69,8 @@ return new class extends Migration
         $name_ext_seeder = new NameExtensionSeeder();
         $name_ext_seeder->run();
 
-        $rpms_config_seeder = new RPMSSeeder();
-        $rpms_config_seeder->run();
+        // $rpms_config_seeder = new RPMSSeeder();
+    //     $rpms_config_seeder->run();
     }
 
     /**
