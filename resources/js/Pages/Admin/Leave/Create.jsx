@@ -14,11 +14,9 @@ export default function Create() {
     return (
         <>
             <PageHeaders>Request Leave</PageHeaders>
-            <ContentContainer type={"noOutline"}>
                 <ContentContainer>
                     <HandlePage />
                 </ContentContainer>
-            </ContentContainer>
         </>
     );
 }

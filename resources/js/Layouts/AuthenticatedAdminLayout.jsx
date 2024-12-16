@@ -119,8 +119,6 @@ function SideNavbar() {
     const [ roles, setRoles ] = useState(userRoles);
     const { openTabs, toggleTab } = useAuthSidebar();
 
-    console.log(roles.includes('sis_admin'))
-
     return (
         <aside
             className={
@@ -138,7 +136,7 @@ function SideNavbar() {
                 <hr className="mx-5" />
             </div>
 
-            <div className="h-full px-3 py-4 overflow-y-auto">
+            <div className="h-full px-3 py-4">
                 <ul className="space-y-2 font-medium">
                     <div className="ml-3">
                         <p className="text-sm">Main</p>
