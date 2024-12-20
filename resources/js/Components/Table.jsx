@@ -40,8 +40,8 @@ export function Table({ data, headers, renderRow }) {
 
 /***
  * Renders the Table Rows
- * @param {} data -
- * @param {} columns -
+ * @param {} data - The data of objects received from the Table Component
+ * @param {()=>{}} columns - The columns of arrow functions
  */
 export function TableRow({ data, columns }) {
   return (

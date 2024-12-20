@@ -138,7 +138,7 @@ function FacultyTable() {
 
     // Headers
     const headers = [
-        "Teaacher Name",
+        "Teacher Name",
         "Department",
         "Date Submitted",
         "Status",

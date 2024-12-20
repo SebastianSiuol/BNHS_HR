@@ -14,9 +14,9 @@ export default function Create() {
     return (
         <>
             <PageHeaders>Request Leave</PageHeaders>
-                <ContentContainer>
-                    <HandlePage />
-                </ContentContainer>
+            <ContentContainer>
+                <HandlePage />
+            </ContentContainer>
         </>
     );
 }
@@ -71,7 +71,10 @@ function HandlePage() {
                 <div className="grid grid-cols-2 items-center">
                     <label className="text-lg font-bold">Leave Type:</label>
                     <span className={"flex"}>
-                        <select {...register("leave_type")} className="grow p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <select
+                            {...register("leave_type")}
+                            className="grow p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        >
                             {leaveTypes.map((leaveType) => (
                                 <option key={leaveType.id} value={leaveType.id}>
                                     {leaveType.name}
@@ -83,7 +86,17 @@ function HandlePage() {
 
                 <div className="grid grid-cols-2 items-center">
                     <label className="text-lg font-bold">Start Date:</label>
-                    <Controller control={control} name="start_date" render={({ field }) => <CustomDatePicker value={field} error={errors} name="start_date" />} />
+                    <Controller
+                        control={control}
+                        name="start_date"
+                        render={({ field }) => (
+                            <CustomDatePicker
+                                value={field}
+                                error={errors}
+                                name="start_date"
+                            />
+                        )}
+                    />
                 </div>
 
                 {leaveType === "3" && (
@@ -100,7 +113,11 @@ function HandlePage() {
                                 -
                             </button>
 
-                            <input {...register("no_of_days")} readOnly className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 mx-12 py-2.5" />
+                            <input
+                                {...register("no_of_days")}
+                                readOnly
+                                className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 mx-12 py-2.5"
+                            />
 
                             <button
                                 onClick={(e) => {
@@ -116,19 +133,32 @@ function HandlePage() {
                 )}
 
                 <div className="grid grid-cols-2 items-center">
-                    <label className="text-lg font-bold">Reason for Request</label>
+                    <label className="text-lg font-bold">
+                        Reason for Request
+                    </label>
                     <div>
-                        <textarea {...register("reason")} error={errors} className={"w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600 " + (errors["reason"] ? " border-red-500 " : "")} />
+                        <textarea
+                            {...register("reason")}
+                            error={errors}
+                            className={
+                                "w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600 " +
+                                (errors["reason"] ? " border-red-500 " : "")
+                            }
+                        />
                         {errors["reason"] && (
                             <div className={errors ? "block" : "hidden"}>
-                                <p className="text-red-500 text-sm italic">{errors["reason"]?.message}</p>
+                                <p className="text-red-500 text-sm italic">
+                                    {errors["reason"]?.message}
+                                </p>
                             </div>
                         )}
                     </div>
                 </div>
                 <button
                     onClick={handleSubmit(submitLeaveRequest)}
-                    className={"text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"}
+                    className={
+                        "text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    }
                 >
                     Submit
                 </button>

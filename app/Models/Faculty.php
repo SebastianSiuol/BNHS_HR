@@ -6,6 +6,7 @@ use App\Models\Configuration\SchoolPosition;
 use App\Models\FacultyAccountInformation\Designation;
 use App\Models\FacultyAccountInformation\EmploymentStatus;
 use App\Models\PersonalInformation\PersonalInformation;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -134,8 +135,12 @@ class Faculty extends Authenticatable implements JWTSubject
         return $this->hasMany(Attendance::class);
     }
 
-    /* NOTE: Belongs Relationships */
+    public function current_attendance()
+    {
+        return $this->hasOne(Attendance::class)->whereDate('check_in', Carbon::today());
+    }
 
+    /* NOTE: Belongs Relationships */
     public function designation(){
         return $this->belongsTo(Designation::class);
     }

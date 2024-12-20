@@ -1,18 +1,14 @@
-import { usePage, router } from "@inertiajs/react";
 import { useState } from "react";
+import { usePage, router } from "@inertiajs/react";
 import dayjs from "dayjs";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 import { MdOutlineNoEncryptionGmailerrorred } from "react-icons/md";
-
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 
+import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 
-const AUTH_API_KEY = 'eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC';
-
-const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
-const postUrl = "/api/attendance/action";
 
 export default function Create() {
     return (
@@ -24,36 +20,50 @@ export default function Create() {
 }
 
 function HandlePage() {
-    const { shift, auth } = usePage().props;
+    const { shift, auth, attendance } = usePage().props;
 
+    const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
 
 
     async function onTimeIn() {
         try {
-
-            await router.post(route('admin.attendances.check-in'), {
+                router.post(route("admin.attendances.check-in"), {
                 id: auth.id,
                 shiftTime: shift.from,
                 postTime: currentTime,
                 action: "check_in",
-            },);
-
+            });
         } catch (e) {
             console.log(e);
-            errorSwal('Something went wrong! Please try again later.');
+            errorSwal("Something went wrong! Please try again later.");
+        }
+    }
+
+    function onTimeOut() {
+        try {
+            router.post(route("admin.attendances.check-out"), {
+                id: auth.id,
+                shiftTime: shift.to,
+                postTime: currentTime,
+                action: "check_out",
+            });
+        } catch (e) {
+            console.log(e);
+            errorSwal("Something went wrong! Please try again later.");
         }
     }
 
 
-
-    function onTimeOut() {
-
-    }
-
-    function formatTimeTo12H(hour) {
+    function formatHourTo12H(hour) {
         const timeTo12H = dayjs("1/1/1 " + hour).format("hh:mm A");
 
         return timeTo12H;
+    }
+
+    function formatDateToTime(date){
+        const dateToTime = dayjs(date).format("hh:mm A")
+
+        return dateToTime;
     }
 
     return (
@@ -114,27 +124,29 @@ function HandlePage() {
                         <tbody id="attendanceBody">
                             <tr className="odd:bg-blue-100 even:bg-white border-b">
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                    {`${formatTimeTo12H(
+                                    {`${formatHourTo12H(
                                         shift.from
-                                    )} - ${formatTimeTo12H(shift.to)}`}
+                                    )} - ${formatHourTo12H(shift.to)}`}
                                 </td>
                                 <td
                                     id="timeIn"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.check_in ? formatDateToTime(attendance?.check_in) : '--'}
                                 </td>
                                 <td
                                     id="timeOut"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.check_out ? formatDateToTime(attendance?.check_out) : '--'}
+
                                 </td>
                                 <td
                                     id="status"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.status ? capitalizeFirstLetter(attendance?.status) : '--'}
+
                                 </td>
                             </tr>
                         </tbody>
@@ -155,7 +167,6 @@ function postFormat({ id, shiftTime, postTime, action }) {
     };
 
 }
-
 
 function errorSwal( error ) {
     withReactContent(Swal).fire({
