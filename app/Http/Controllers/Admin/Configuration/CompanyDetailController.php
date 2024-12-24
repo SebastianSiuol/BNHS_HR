@@ -22,16 +22,8 @@ class CompanyDetailController extends Controller
 
         return Inertia::render('Admin/Config/CompanyDetail/Index', [
             'companyDetails' => $companyDetails,
-            'detailsEmpty' => is_null($companyDetails),
+            'isDetailsEmpty' => is_null($companyDetails),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -39,6 +31,10 @@ class CompanyDetailController extends Controller
      */
     public function store(Request $request)
     {
+        if(CompanyDetail::all()->count() >= 1){
+            return back()->with('error', 'Company detail is already added');
+        }
+
         $validatedData = $request->validate([
             'company_name'      => ['required'],
             'contact_number'    => ['required'],
@@ -53,34 +49,18 @@ class CompanyDetailController extends Controller
 
         $company = new CompanyDetail();
 
-        $company->name              = $validatedData['company_name'];
+        $company->company_name      = $validatedData['company_name'];
         $company->contact_number    = $validatedData['contact_number'];
         $company->email             = $validatedData['email'];
-        $company->url               = $validatedData['website_url'];
-        $company->address           = $validatedData['company_address'];
+        $company->website_url       = $validatedData['website_url'];
+        $company->company_address   = $validatedData['company_address'];
         $company->city              = $validatedData['city'];
         $company->state             = $validatedData['state'];
         $company->postal_code       = $validatedData['postal_code'];
         $company->country           = $validatedData['country'];
         $company->save();
 
-        return back()->with('success', 'Company detail added successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return redirect()->route('admin.config.company-details.index')->with('success', 'Company detail added successfully');
     }
 
     /**
@@ -102,11 +82,11 @@ class CompanyDetailController extends Controller
 
         $company = CompanyDetail::latest()->get()->first();
 
-        $company->name              = $validatedData['company_name'];
+        $company->company_name      = $validatedData['company_name'];
         $company->contact_number    = $validatedData['contact_number'];
         $company->email             = $validatedData['email'];
-        $company->url               = $validatedData['website_url'];
-        $company->address           = $validatedData['company_address'];
+        $company->website_url       = $validatedData['website_url'];
+        $company->company_address   = $validatedData['company_address'];
         $company->city              = $validatedData['city'];
         $company->state             = $validatedData['state'];
         $company->postal_code       = $validatedData['postal_code'];
