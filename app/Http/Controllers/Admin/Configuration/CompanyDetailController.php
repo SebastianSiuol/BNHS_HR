@@ -7,6 +7,7 @@ use App\Models\Configuration\CompanyDetail;
 use Faker\Provider\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use function PHPUnit\Framework\isEmpty;
 
 class CompanyDetailController extends Controller
@@ -19,8 +20,7 @@ class CompanyDetailController extends Controller
         $companyDetails = CompanyDetail::latest()->get()->first();
 //        dd($companyDetails->name);
 
-        return view('admin.configuration.company-detail.index', [
-            'admin' => Auth::user(),
+        return Inertia::render('Admin/Config/CompanyDetail/Index', [
             'companyDetails' => $companyDetails,
             'detailsEmpty' => is_null($companyDetails),
         ]);

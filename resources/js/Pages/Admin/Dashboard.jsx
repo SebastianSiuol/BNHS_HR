@@ -5,7 +5,6 @@ import {FaCircleXmark} from "react-icons/fa6";
 import {GrLogout} from "react-icons/gr";
 
 // Components
-import {AuthenticatedAdminLayout} from "@/Layouts/AuthenticatedAdminLayout.jsx";
 import {PageHeaders} from "@/Components/Admin/PageHeaders.jsx";
 
 
