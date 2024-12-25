@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class SchoolPositionController extends Controller
 {
@@ -16,9 +17,13 @@ class SchoolPositionController extends Controller
      */
     public function index()
     {
-        return view('admin.configuration.position.index',[
-            'admin' => Auth::user(),
-            'school_positions' => SchoolPosition::paginate(5),
+        $school_positions = SchoolPosition::select('id','title','level')
+            ->withCount('faculties')
+            ->paginate(5);
+
+
+        return Inertia::render('Admin/Config/Position/Index',[
+            'school_positions' => $school_positions,
         ]);
     }
 

@@ -10,14 +10,17 @@ export function Table({ data, headers, renderRow }) {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-sm text-white bg-blue-900 text-center">
                   <tr>
+
                       {headers.map((header, i) => (
                           <th className="px-6 py-3" key={i}>
                               {header}
                           </th>
                       ))}
+
                   </tr>
               </thead>
               <tbody>
+
                   {data.length === 0 ? (
                       <tr className="odd:bg-blue-100 even:bg-white border-b text-center">
                           <td
@@ -30,6 +33,7 @@ export function Table({ data, headers, renderRow }) {
                   ) : (
                       data.map(renderRow)
                   )}
+
               </tbody>
           </table>
       </div>

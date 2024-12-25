@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin\Configuration;
 use App\Http\Controllers\Controller;
 use App\Models\FacultyAccountInformation\Department;
 use App\Models\FacultyAccountInformation\Designation;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class DepartmentController extends Controller
 {
@@ -16,20 +19,24 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::with(['designations' => ['faculties']])->paginate(5);
 
-        return view('admin.configuration.department.index', [
-            'admin' => Auth::user(),
+        $departments = Department::select('id', 'name')
+        ->with([
+            'designations' => function($query) {
+                $query->select('id', 'name', 'department_id');
+            }
+        ])
+        ->withCount([
+            'designations as faculties_count' => function ($query) {
+                $query->join('faculties', 'designations.id', '=', 'faculties.designation_id')
+                      ->selectRaw('COUNT(faculties.id)');
+            }
+        ])
+        ->paginate(5);
+
+        return Inertia::render('Admin/Config/Department/Index', [
             'departments' => $departments
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -60,7 +67,7 @@ class DepartmentController extends Controller
         }
 
         /* Redirect */
-        return back();
+        return redirect()->route('admin.config.department.index')->with('success', 'Department added successfully');;
     }
 
     /**
@@ -83,9 +90,61 @@ class DepartmentController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Department $department)
-    {
-        dd($request->all());
+{
+    try {
+        // Validate input data
+        $validated = $request->validate([
+            'department_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('departments', 'name')->ignore($department->id),
+            ],
+            'designations' => 'array',
+            'designations.*.id' => 'nullable|exists:designations,id',
+            'designations.*.name' => 'required|string|max:255',
+        ]);
+
+        // Perform operations in a database transaction
+        DB::transaction(function () use ($validated, $department) {
+            // Update department name
+            $department->update(['name' => $validated['department_name']]);
+
+            // Process designations
+            $designations = collect($validated['designations']);
+            $existingIds = $designations->pluck('id')->filter(); // Only include non-null IDs
+
+            // Delete removed designations
+            $department->designations()->whereNotIn('id', $existingIds)->delete();
+
+            // Update existing or create new designations
+            foreach ($designations as $designation) {
+                $department->designations()->updateOrCreate(
+                    ['id' => $designation['id'] ?? null], // Match by ID if available
+                    ['name' => $designation['name']]
+                );
+            }
+        });
+
+        // Redirect with success message
+        return to_route('admin.config.department.index')
+            ->with('success', 'Department updated successfully.');
+    } catch (ValidationException $e) {
+        // Handle validation errors
+        return back()->withErrors($e->errors())
+            ->withInput(); // Preserve input for correction
+    } catch (\Throwable $e) {
+        // Log unexpected errors for debugging
+        \Log::error('Department update failed', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+
+        // Redirect with error message
+        return to_route('admin.config.department.index')
+            ->with('error', 'An unexpected error occurred while updating the department.');
     }
+}
 
     /**
      * Remove the specified resource from storage.

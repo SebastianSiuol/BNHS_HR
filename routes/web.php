@@ -85,8 +85,8 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::post('/admin/config/company-details', [CompanyDetailController::class, 'store'])                             ->name('admin.config.company-details.store');
     Route::patch('/admin/config/company-details', [CompanyDetailController::class, 'update'])                           ->name('admin.config.company-details.update');
 
-    Route::get('/admin/config/department', [DepartmentController::class, 'index'])                                      ->name('admin.config.department.index');
-    Route::post('/admin/config/department/store', [DepartmentController::class, 'store'])                               ->name('admin.config.department.store');
+    Route::get('/admin/config/departments', [DepartmentController::class, 'index'])                                     ->name('admin.config.department.index');
+    Route::post('/admin/config/department', [DepartmentController::class, 'store'])                                     ->name('admin.config.department.store');
     Route::patch('/admin/config/department/{department}', [DepartmentController::class, 'update'])                      ->name('admin.config.department.update');
     Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy'])             ->name('admin.config.department.destroy');
 

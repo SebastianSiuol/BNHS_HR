@@ -191,12 +191,12 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink href={route("admin.config.department.index")} active={route().current("admin.config.department.index")} type={"sub"}>
                                     Department
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink href={route("admin.config.position.index")} active={route().current("admin.config.position.index")} type={"sub"}>
                                     Position
                                 </SidebarNavLink>
                             </li>
