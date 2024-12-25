@@ -36,6 +36,8 @@ class SchoolPositionController extends Controller
         $validated_inputs = $request->validate([
             'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
             'position_level' => ['required'],
+        ],[
+            'position_title.required' => 'Position title is required!',
         ]);
 
         $store_position = new SchoolPosition();

@@ -1,7 +1,7 @@
 /*
  * Dependencies and Libraries
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useForm as useInertiaForm } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
@@ -39,34 +39,35 @@ function HandlePage() {
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedPosition, setSelectedPosition] = useState(null);
+    const [selectedPos, setSelectedPos] = useState(null);
 
     const handleAddModal = () => {
         setOpenAddModal((e) => !e);
     };
 
     const handleEditModal = (id) => {
-        setSelectedPosition(schoolPositions?.data.find((pos) => pos.id === id));
+        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
         setOpenEditModal((e) => !e);
     };
 
     const handleDeleteModal = (id) => {
-        setSelectedPosition(schoolPositions?.data.find((pos) => pos.id === id));
+        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
         setOpenDeleteModal((e) => !e);
     };
 
     return (
         <>
             <AddModal state={openAddModal} onToggle={handleAddModal} />
-            {/* <EditModal
+            <EditModal
                 state={openEditModal}
                 onToggle={handleEditModal}
-                selectedDept={selectedDept}
+                selectedPos={selectedPos}
             />
             <DeleteModal
                 state={openDeleteModal}
                 onToggle={handleDeleteModal}
-                selectedDept={selectedDept} />  */}
+                selectedPos={selectedPos}
+                />
             <div className="pb-4 flex items-center justify-between dark:bg-gray-900">
                 <SearchHeader />
                 <AddPosition onAddClick={handleAddModal} />
@@ -201,7 +202,6 @@ function PositionTable({ positions, onEditClick, onDeleteClick }) {
 
 
 function AddModal({ state, onToggle }) {
-
     const {
         register,
         handleSubmit,
@@ -220,16 +220,19 @@ function AddModal({ state, onToggle }) {
     }
 
     return (
-        <Modal state={state} onToggle={onToggle}>
+        <Modal
+            state={state}
+            onToggle={onToggle}>
             <div className={"flex flex-col space-y-8 p-4"}>
-                <DialogTitle className="flex font-bold text-blue-900 justify-between items-center" as={"div"}>
+                <DialogTitle
+                    className="flex font-bold text-blue-900 justify-between items-center"
+                    as={"div"}>
                     <span>Add New Position</span>
                     <button
                         onClick={onToggle}
                         className={
                             "text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"
-                        }
-                    >
+                        }>
                         &times;
                     </button>
                 </DialogTitle>
@@ -242,21 +245,27 @@ function AddModal({ state, onToggle }) {
                                 register={register}
                                 error={errors}
                             />
-                            <select {...register('position_level')} className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"}>
-                            <option value="leadership">Leadership</option>
-                            <option value="entry">Entry-Level</option>
-                            <option value="mid">Mid-Level</option>
-                            <option value="senior">Senior-Level</option>
-                            <option value="support">Support Staff</option>
-                            <option value="it">IT Staff</option>
-                        </select>
+                            <label className={'my-2 text-sm space-y-2 text-black font-normal'}>
+                              Position Level
+                            <select
+                                {...register("position_level")}
+                                className={
+                                  "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                }>
+                                <option value="leadership">Leadership</option>
+                                <option value="entry">Entry-Level</option>
+                                <option value="mid">Mid-Level</option>
+                                <option value="senior">Senior-Level</option>
+                                <option value="support">Support Staff</option>
+                                <option value="it">IT Staff</option>
+                            </select>
+                                  </label>
                         </form>
 
                         <div>
                             <Buttons
                                 type={"submit"}
-                                onClick={handleSubmit(handleDepartmentSubmit)}
-                            >
+                                onClick={handleSubmit(handleDepartmentSubmit)}>
                                 Submit
                             </Buttons>
                         </div>
@@ -265,4 +274,146 @@ function AddModal({ state, onToggle }) {
             </div>
         </Modal>
     );
+}
+
+
+function EditModal({ state, onToggle, selectedPos }) {
+
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        reset,
+    } = useForm();
+
+    useEffect(() => {
+        if (selectedPos) {
+            setValue("position_title", selectedPos.title);
+            setValue("position_level", selectedPos.level);
+        }
+
+    }, [selectedPos]);
+
+    function handlePositionUpdate(data, e) {
+        e.preventDefault();
+        router.patch(route("admin.config.position.update", selectedPos.id), data, {
+            onSuccess: () => {
+                reset();
+                onToggle();
+            },
+        });
+    }
+
+    return (
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <div className={"flex flex-col space-y-8 p-4"}>
+                <DialogTitle
+                    className="flex font-bold text-blue-900 justify-between items-center"
+                    as={"div"}>
+                    <span>Edit Position</span>
+                    <button
+                        onClick={onToggle}
+                        className={"text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"}>
+                        &times;
+                    </button>
+                </DialogTitle>
+                <Description as={"div"}>
+                    <div className={"space-y-6"}>
+                        <form>
+                            <LabelInput
+                                id={"position_title"}
+                                label={"Position Title"}
+                                register={register}
+                                error={errors}
+                            />
+                            <label className={"my-2 text-sm space-y-2 text-black font-normal"}>
+                                Position Level
+                                <select
+                                    {...register("position_level")}
+                                    className={
+                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    }>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="entry">Entry-Level</option>
+                                    <option value="mid">Mid-Level</option>
+                                    <option value="senior">Senior-Level</option>
+                                    <option value="support">Support Staff</option>
+                                    <option value="it">IT Staff</option>
+                                </select>
+                            </label>
+                        </form>
+
+                        <div>
+                            <Buttons
+                                type={"submit"}
+                                onClick={handleSubmit(handlePositionUpdate)}>
+                                Update
+                            </Buttons>
+                        </div>
+                    </div>
+                </Description>
+            </div>
+        </Modal>
+    );
+}
+
+function DeleteModal({ state, onToggle, selectedPos }) {
+
+  function handleDelete(){
+      router.delete(route('admin.config.position.destroy', selectedPos.id), {
+          onSuccess: ()=>{
+              onToggle();
+          }
+      });
+
+  }
+
+  return (
+      <Modal
+          state={state}
+          onToggle={onToggle}>
+          <DialogTitle className="flex font-bold text-2xl text-black justify-between items-center p-4">
+              <span>
+                  Confirm{" "}
+                  <span className={"font-bold text-red-600"}>delete?</span>
+              </span>
+              <button
+                  onClick={onToggle}
+                  className={"text-red-800"}>
+                  &times;
+              </button>
+          </DialogTitle>
+          <Description>
+              <div className={"px-12 pb-8"}>
+                  <p className={"text-lg"}>
+                      Are you sure you want to delete this position?
+                  </p>
+                  <p className={"text-lg text-red-600 text-end"}>
+                      *This action is irreversible!
+                  </p>
+              </div>
+              <div className={"flex justify-between px-12 mb-8"}>
+                  <button
+                      onClick={handleDelete}
+                      className={
+                          "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                      }>
+                      Confirm delete
+                  </button>
+                  <button
+                      onClick={onToggle}
+                      className={
+                          "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                      }>
+                      Cancel
+                  </button>
+              </div>
+          </Description>
+      </Modal>
+  );
 }

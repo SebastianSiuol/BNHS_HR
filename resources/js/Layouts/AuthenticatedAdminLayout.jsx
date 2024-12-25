@@ -1,6 +1,8 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link, usePage, router } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 // Icons
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -19,31 +21,12 @@ import { AuthSidebarProvider, useAuthSidebar } from "@/Context/AuthSidebarContex
 
 import styles from './AuthenticatedAdminLayout.module.css';
 
-
-const redirectLinks = [
-    {
-        role: "sis_admin",
-        path: route("sis.admin.redirect"),
-        label: "SIS",
-        icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />,
-    },
-    {
-        role: "sis_faculty",
-        path: route("sis.admin.redirect"),
-        label: "SIS",
-        icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />,
-    },
-    {
-        role: "logi_admin",
-        path: route("logistics.admin.redirect"),
-        label: "Logistics System",
-        icon: <MdConveyorBelt className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />,
-    },
-];
-
 export function AuthenticatedAdminLayout({ children }) {
-    const { flash } = usePage().props;
+    const { flash, errors: validationError } = usePage().props;
     const [ flashMessage, setFlashMessage ] = useState(flash);
+
+    const serverValidationError = validationError || null;
+    const combinedErrors = Object.values(serverValidationError).flat().join(" ");
 
     useEffect(() => {
         setFlashMessage(flash);
@@ -56,6 +39,13 @@ export function AuthenticatedAdminLayout({ children }) {
             setFlashMessage(null), clearTimeout(flashTimer);
         };
     }, [flash]);
+
+    useEffect(() => {
+        if(Object.keys(validationError). length !== 0){
+
+            validationSwal(combinedErrors);
+        }
+    }, [validationError]);
 
     return (
         <>
@@ -235,9 +225,6 @@ function SideNavbar() {
         </aside>
     );
 }
-// { role: 'sis_admin', path: route('sis.admin.redirect'), label: 'SIS', icon: <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
-// { role: 'logi_admin', path: route('logistics.admin.redirect'), label: 'Logistics System', icon: <MdConveyorBelt className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />},
-// className={`${route().current('admin.faculty') ? '' : 'hidden'} ml-10 py-2 space-y-2`}>
 
 function DropdownButton({ icon: Icon, label, state }) {
     const { openTabs, toggleTab } = useAuthSidebar();
@@ -265,18 +252,12 @@ function DropdownButton({ icon: Icon, label, state }) {
     );
 }
 
-export function SidebarNavLink({
-    active = false,
-    type = "sub",
-    className = "",
-    children,
-    ...props
-}) {
+function SidebarNavLink({ active = false, type = "sub", className = "", children, ...props }) {
     return (
         <Link
             {...props}
             className={
-                "flex items-center rounded-lg " +
+            "flex items-center rounded-lg " +
                 (type === "top"
                     ? " mb-1 p-2 "
                     : "w-full p-2 pl-11 transition duration-75 ") +
@@ -356,4 +337,25 @@ function HeaderUserContextMenu(){
             </DropdownMenu.Root>
         </div>
     </header>);
+}
+
+
+function validationSwal( error ) {
+    withReactContent(Swal).fire({
+        title: <p>Server Validation</p>,
+        icon: 'error',
+        text: error,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-700',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-600',
+          }
+    });
 }

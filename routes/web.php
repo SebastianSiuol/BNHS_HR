@@ -91,7 +91,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy'])             ->name('admin.config.department.destroy');
 
     Route::get('/admin/config/position', [SchoolPositionController::class, 'index'])                                    ->name('admin.config.position.index');
-    Route::post('/admin/config/position/store', [SchoolPositionController::class, 'store'])                             ->name('admin.config.position.store');
+    Route::post('/admin/config/position', [SchoolPositionController::class, 'store'])                                   ->name('admin.config.position.store');
     Route::patch('/admin/config/position/{school_position}', [SchoolPositionController::class, 'update'])               ->name('admin.config.position.update');
     Route::delete('/admin/config/position/{school_position}/delete', [SchoolPositionController::class, 'destroy'])      ->name('admin.config.position.destroy');
 
