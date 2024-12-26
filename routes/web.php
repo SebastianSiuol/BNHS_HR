@@ -96,7 +96,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::delete('/admin/config/position/{school_position}/delete', [SchoolPositionController::class, 'destroy'])      ->name('admin.config.position.destroy');
 
     Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                                ->name('admin.config.shift.index');
-    Route::post('/admin/config/shift/store', [ShiftController::class, 'store'])                                         ->name('admin.config.shift.store');
+    Route::post('/admin/config/shift', [ShiftController::class, 'store'])                                               ->name('admin.config.shift.store');
     Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                                     ->name('admin.config.shift.update');
     Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                            ->name('admin.config.shift.destroy');
 

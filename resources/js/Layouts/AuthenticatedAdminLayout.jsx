@@ -26,7 +26,7 @@ export function AuthenticatedAdminLayout({ children }) {
     const [ flashMessage, setFlashMessage ] = useState(flash);
 
     const serverValidationError = validationError || null;
-    const combinedErrors = Object.values(serverValidationError).flat().join(" ");
+    const combinedErrors = Object.values(serverValidationError).flat().map((error) => error);
 
     useEffect(() => {
         setFlashMessage(flash);
@@ -191,7 +191,7 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink href={route("admin.config.shift.index")} active={route().current("admin.config.shift.index")} type={"sub"}>
                                     Shift
                                 </SidebarNavLink>
                             </li>
@@ -341,10 +341,13 @@ function HeaderUserContextMenu(){
 
 
 function validationSwal( error ) {
+
+    const swalText = error.join(', ');
+
     withReactContent(Swal).fire({
         title: <p>Server Validation</p>,
         icon: 'error',
-        text: error,
+        text: swalText,
         confirmButtonText: 'Confirm',
         customClass: {
             container: '...',

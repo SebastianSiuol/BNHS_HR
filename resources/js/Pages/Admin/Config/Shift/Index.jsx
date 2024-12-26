@@ -2,9 +2,13 @@
  * Dependencies and Libraries
  */
 import { useState, useEffect, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useForm as useInertiaForm } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
+import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { Description, DialogTitle } from "@headlessui/react";
 
 import { FaSearch } from "react-icons/fa";
@@ -23,10 +27,14 @@ import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { Table } from "@/Components/Table";
 import { TableRow } from "@/Components/Table";
 
+import { capitalizeFirstLetter } from "@/Utils/stringUtils.js";
+
+
+
 export default function Index() {
     return (
         <>
-            <PageHeaders>Position</PageHeaders>
+            <PageHeaders>Shift</PageHeaders>
             <ContentContainer type="noOutline">
                 <HandlePage />
             </ContentContainer>
@@ -35,54 +43,53 @@ export default function Index() {
 }
 
 function HandlePage() {
-    const { school_positions: schoolPositions } = usePage().props;
+    const { shifts } = usePage().props;
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedPos, setSelectedPos] = useState(null);
+    const [selectedShift, setSelectedShift] = useState(null);
 
     const handleAddModal = () => {
         setOpenAddModal((e) => !e);
     };
 
     const handleEditModal = (id) => {
-        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
+        setSelectedShift(shifts?.data.find((pos) => pos.id === id));
         setOpenEditModal((e) => !e);
     };
 
     const handleDeleteModal = (id) => {
-        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
+        setSelectedShift(shifts?.data.find((pos) => pos.id === id));
         setOpenDeleteModal((e) => !e);
     };
 
     return (
         <>
-            <AddModal state={openAddModal} onToggle={handleAddModal} />
+            <AddModal
+                state={openAddModal}
+                onToggle={handleAddModal}
+            />
             <EditModal
                 state={openEditModal}
                 onToggle={handleEditModal}
-                selectedPos={selectedPos}
+                selectedShift={selectedShift}
             />
             <DeleteModal
                 state={openDeleteModal}
                 onToggle={handleDeleteModal}
-                selectedPos={selectedPos}
+                selectedShift={selectedShift}
                 />
             <div className="pb-4 flex items-center justify-between dark:bg-gray-900">
                 <SearchHeader />
-                <AddPosition onAddClick={handleAddModal} />
+                <AddButton onAddClick={handleAddModal} />
             </div>
-            <PositionTable
-                positions={schoolPositions?.data}
-                onEditClick={handleEditModal}
-                onDeleteClick={handleDeleteModal}
-            />
-            <Pagination data={schoolPositions} />
+            <ShiftsTable shifts={shifts.data} onEditClick={handleEditModal} onDeleteClick={handleDeleteModal}/>
+            <Pagination data={shifts} />
         </>
     );
 }
 
-function AddPosition({ onAddClick }) {
+function AddButton({ onAddClick }) {
     return (
         <div className="mt-2 sm:flex">
             <div className="flex items-center justify-end">
@@ -90,7 +97,7 @@ function AddPosition({ onAddClick }) {
                     onClick={onAddClick}
                     className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     type="button">
-                    Add Position
+                    Add Shift
                 </button>
             </div>
         </div>
@@ -111,8 +118,7 @@ function SearchHeader() {
             <div className="pb-4 flex items-center justify-between">
                 <form
                     className="relative mt-1 grid grid-cols-1 sm:grid-cols-2"
-                    onSubmit={searchQuery}
-                >
+                    onSubmit={searchQuery}>
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
                         <FaSearch className="w-4 h-4 text-gray-500 " />
                     </div>
@@ -124,8 +130,7 @@ function SearchHeader() {
                     />
                     <button
                         type="submit"
-                        className="w-32 ml-4 px-4 py-2.5 text-white text-sm text-center font-medium bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300"
-                    >
+                        className="w-32 ml-4 px-4 py-2.5 text-white text-sm text-center font-medium bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300">
                         Search
                     </button>
                 </form>
@@ -134,50 +139,33 @@ function SearchHeader() {
     );
 }
 
-function PositionTable({ positions, onEditClick, onDeleteClick }) {
+function ShiftsTable({ shifts, onEditClick, onDeleteClick }) {
     // Headers
-    const headers = [
-        "Position Title",
-        "Position Level",
-        "Total Faculties",
-        "Action",
-    ];
+    const headers = ["Shift Name", "From Time", "To Time", "Action"];
 
-    function formatLevel(level) {
-        switch (level) {
-            case "leadership":
-                return "Leadership";
-            case "entry":
-                return "Entry-Level";
-            case "mid":
-                return "Mid-Level";
-            case "senior":
-                return "Senior-Level";
-            case "support":
-                return "Support Staff";
-            case "it":
-                return "IT Staff";
-            default:
-                return "Unknown Position";
-        }
+    function parseTime(date){
+        return dayjs(date).format('hh:mm A');
     }
 
+    // Columns
     const columns = [
-        (position) => position.title,
-        (position) => formatLevel(position.level),
-        (position) => position.faculties_count,
-        (position) => (
+        (shift) => capitalizeFirstLetter(shift.name),
+        (shift) => parseTime(shift.from),
+        // (shift) => shift.from,
+        (shift) => parseTime(shift.to),
+        // (shift) => shift.to,
+        (shift) => (
             <div className="flex items-center gap-x-4 justify-center">
                 <button
                     onClick={() => {
-                        onEditClick(position.id);
+                        onEditClick(shift.id);
                     }}>
                     <CustomIcon type="edit" />
                 </button>
 
                 <button
                     onClick={() => {
-                        onDeleteClick(position.id);
+                        onDeleteClick(shift.id);
                     }}>
                     <CustomIcon type="delete" />
                 </button>
@@ -187,12 +175,12 @@ function PositionTable({ positions, onEditClick, onDeleteClick }) {
 
     return (
         <Table
-            data={positions}
+            data={shifts}
             headers={headers}
-            renderRow={(position) => (
+            renderRow={(shift) => (
                 <TableRow
-                    key={position.id}
-                    data={position}
+                    key={shift.id}
+                    data={shift}
                     columns={columns}
                 />
             )}
@@ -200,18 +188,27 @@ function PositionTable({ positions, onEditClick, onDeleteClick }) {
     );
 }
 
-
 function AddModal({ state, onToggle }) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        control,
         reset,
+        setValue,
+        formState: { errors },
     } = useForm();
 
-    function handleDepartmentSubmit(data, e) {
+    useEffect(() => {
+
+        setValue('start_time', dayjs().toDate());
+        setValue('end_time', dayjs().add(5, 'hours').toDate());
+
+    }, [state]);
+
+    function handleShiftStore(data, e) {
         e.preventDefault();
-        router.post(route("admin.config.position.store"), data, {
+        console.log(data);
+        router.post(route("admin.config.shift.store"), data, {
             onSuccess: () => {
                 reset();
                 onToggle();
@@ -224,10 +221,8 @@ function AddModal({ state, onToggle }) {
             state={state}
             onToggle={onToggle}>
             <div className={"flex flex-col space-y-8 p-4"}>
-                <DialogTitle
-                    className="flex font-bold text-blue-900 justify-between items-center"
-                    as={"div"}>
-                    <span>Add New Position</span>
+                <DialogTitle className="flex font-bold text-blue-900 justify-between items-center">
+                    <span>Add New Shift</span>
                     <button
                         onClick={onToggle}
                         className={"text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"}>
@@ -238,32 +233,42 @@ function AddModal({ state, onToggle }) {
                     <div className={"space-y-6"}>
                         <form>
                             <LabelInput
-                                id={"position_title"}
-                                label={"Position Title"}
+                                id={"name"}
+                                label={"Shift Name"}
                                 register={register}
                                 error={errors}
                             />
-                            <label className={"my-2 text-sm space-y-2 text-black font-normal"}>
-                                Position Level
-                                <select
-                                    {...register("position_level")}
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                Start Time
+                                <Controller
+                                    control={control}
+                                    name={"start_time"}
+                                    render={({ field }) => <CustomTimePicker value={field} />}
+                                />
+                            </label>
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                End Time
+                                <Controller
+                                    control={control}
+                                    name={"end_time"}
+                                    render={({ field }) => <CustomTimePicker value={field} />}
+                                />
+                            </label>
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                Shift Description
+                                <textarea
+                                    {...register("shift_description")}
                                     className={
-                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    }>
-                                    <option value="leadership">Leadership</option>
-                                    <option value="entry">Entry-Level</option>
-                                    <option value="mid">Mid-Level</option>
-                                    <option value="senior">Senior-Level</option>
-                                    <option value="support">Support Staff</option>
-                                    <option value="it">IT Staff</option>
-                                </select>
+                                        "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                    }
+                                />
                             </label>
                         </form>
 
                         <div>
                             <Buttons
                                 type={"submit"}
-                                onClick={handleSubmit(handleDepartmentSubmit)}>
+                                onClick={handleSubmit(handleShiftStore)}>
                                 Submit
                             </Buttons>
                         </div>
@@ -274,30 +279,29 @@ function AddModal({ state, onToggle }) {
     );
 }
 
-
-function EditModal({ state, onToggle, selectedPos }) {
-
-
+function EditModal({ state, onToggle, selectedShift }) {
 
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        setValue,
+        control,
         reset,
+        setValue,
+        formState: { errors },
     } = useForm();
 
     useEffect(() => {
-        if (selectedPos) {
-            setValue("position_title", selectedPos.title);
-            setValue("position_level", selectedPos.level);
-        }
+        // console.log(Intl.supportedValuesOf('timeZone'));
+        setValue('name', capitalizeFirstLetter(selectedShift?.name));
+        setValue('start_time', dayjs(selectedShift?.from).toDate());
+        setValue('end_time', dayjs(selectedShift?.to).toDate());
+        setValue('shift_description', selectedShift?.description);
 
-    }, [selectedPos]);
+    }, [selectedShift]);
 
-    function handlePositionUpdate(data, e) {
+    function handleShiftUpdate(data, e) {
         e.preventDefault();
-        router.patch(route("admin.config.position.update", selectedPos.id), data, {
+        router.patch(route("admin.config.shift.update", selectedShift?.id), data, {
             onSuccess: () => {
                 reset();
                 onToggle();
@@ -310,10 +314,8 @@ function EditModal({ state, onToggle, selectedPos }) {
             state={state}
             onToggle={onToggle}>
             <div className={"flex flex-col space-y-8 p-4"}>
-                <DialogTitle
-                    className="flex font-bold text-blue-900 justify-between items-center"
-                    as={"div"}>
-                    <span>Edit Position</span>
+                <DialogTitle className="flex font-bold text-blue-900 justify-between items-center">
+                    <span>Edit Shift</span>
                     <button
                         onClick={onToggle}
                         className={"text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"}>
@@ -324,33 +326,43 @@ function EditModal({ state, onToggle, selectedPos }) {
                     <div className={"space-y-6"}>
                         <form>
                             <LabelInput
-                                id={"position_title"}
-                                label={"Position Title"}
+                                id={"name"}
+                                label={"Shift Name"}
                                 register={register}
                                 error={errors}
                             />
-                            <label className={"my-2 text-sm space-y-2 text-black font-normal"}>
-                                Position Level
-                                <select
-                                    {...register("position_level")}
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                Start Time
+                                <Controller
+                                    control={control}
+                                    name={"start_time"}
+                                    render={({ field }) => <CustomTimePicker value={field} />}
+                                />
+                            </label>
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                End Time
+                                <Controller
+                                    control={control}
+                                    name={"end_time"}
+                                    render={({ field }) => <CustomTimePicker value={field} />}
+                                />
+                            </label>
+                            <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                                Shift Description
+                                <textarea
+                                    {...register("shift_description")}
                                     className={
-                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    }>
-                                    <option value="leadership">Leadership</option>
-                                    <option value="entry">Entry-Level</option>
-                                    <option value="mid">Mid-Level</option>
-                                    <option value="senior">Senior-Level</option>
-                                    <option value="support">Support Staff</option>
-                                    <option value="it">IT Staff</option>
-                                </select>
+                                        "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                    }
+                                />
                             </label>
                         </form>
 
                         <div>
                             <Buttons
                                 type={"submit"}
-                                onClick={handleSubmit(handlePositionUpdate)}>
-                                Update
+                                onClick={handleSubmit(handleShiftUpdate)}>
+                                Submit
                             </Buttons>
                         </div>
                     </div>
@@ -360,10 +372,10 @@ function EditModal({ state, onToggle, selectedPos }) {
     );
 }
 
-function DeleteModal({ state, onToggle, selectedPos }) {
+function DeleteModal({ state, onToggle, selectedShift }) {
 
-  function handleDelete(){
-      router.delete(route('admin.config.position.destroy', selectedPos.id), {
+  function handleShiftDelete(){
+      router.delete(route('admin.config.shift.destroy', selectedShift?.id), {
           onSuccess: ()=>{
               onToggle();
           }
@@ -389,7 +401,7 @@ function DeleteModal({ state, onToggle, selectedPos }) {
           <Description>
               <div className={"px-12 pb-8"}>
                   <p className={"text-lg"}>
-                      Are you sure you want to delete this position?
+                      Are you sure you want to delete this shift?
                   </p>
                   <p className={"text-lg text-red-600 text-end"}>
                       *This action is irreversible!
@@ -397,7 +409,7 @@ function DeleteModal({ state, onToggle, selectedPos }) {
               </div>
               <div className={"flex justify-between px-12 mb-8"}>
                   <button
-                      onClick={handleDelete}
+                      onClick={handleShiftDelete}
                       className={
                           "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                       }>
@@ -414,4 +426,24 @@ function DeleteModal({ state, onToggle, selectedPos }) {
           </Description>
       </Modal>
   );
+}
+
+function CustomTimePicker({ value, error, name }) {
+    const timePickerClass =
+        "grow w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:border-blue-600";
+
+    return (
+        <>
+            <DatePicker
+                selected={value.value}
+                onChange={(time) => value.onChange(time)}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
+                className={timePickerClass}
+            />
+        </>
+    );
 }

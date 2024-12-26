@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin\Configuration;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shift;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use function Symfony\Component\String\s;
 
 class ShiftController extends Controller
@@ -18,7 +20,7 @@ class ShiftController extends Controller
     {
         $shifts = Shift::paginate(5);
 
-        return view('admin.configuration.shift.index', compact('shifts'));
+        return Inertia::render('Admin/Config/Shift/Index', compact('shifts'));
     }
 
     /**
@@ -29,8 +31,8 @@ class ShiftController extends Controller
         /* Validate Requests */
         $validated_inputs = $request->validate([
             'name'              => ['required', 'string', 'max:255', 'unique:shifts,name'],
-            'start_time'        => ['required', 'date_format:H:i'],
-            'end_time'          => ['required', 'date_format:H:i','after:start_time'],
+            'start_time'        => ['required', 'date'],
+            'end_time'          => ['required', 'date','after:start_time'],
             'shift_description' => ['required', 'string', 'max:255'],
         ],[
             'name.required' => 'Shift Name is required',
@@ -41,11 +43,15 @@ class ShiftController extends Controller
             'shift_description.required' => 'Shift Description is required',
         ]);
 
+        $formatted_start_date = Carbon::parse($request->start_time)->setTimezone('GMT+8')->setDate(2000, 1, 1);
+        $formatted_end_date = Carbon::parse($request->end_time)->setTimezone('GMT+8')->setDate(2000, 1, 1);
+
+
         /* Insert validated requests */
         $shift = new Shift;
         $shift->name = strtolower($validated_inputs['name']);
-        $shift->from = $validated_inputs['start_time'];
-        $shift->to = $validated_inputs['end_time'];
+        $shift->from = $formatted_start_date;
+        $shift->to = $formatted_end_date;
         $shift->description = $validated_inputs['shift_description'];
         $shift->save();
 
@@ -61,8 +67,8 @@ class ShiftController extends Controller
         /* Validate Requests */
         $validated_inputs = $request->validate([
             'name'              => ['required', 'string', 'max:255'],
-            'start_time'        => ['required', 'date_format:H:i'],
-            'end_time'          => ['required', 'date_format:H:i','after:start_time'],
+            'start_time'        => ['required', 'date'],
+            'end_time'          => ['required', 'date','after:start_time'],
         ],[
             'name.required' => 'Shift Name is required',
             'start_time.required' => 'Start Time is required',
@@ -70,9 +76,12 @@ class ShiftController extends Controller
             'end_time.after' => 'End time must be after Start Time',
         ]);
 
+        $formatted_start_date = Carbon::parse($request->start_time)->setTimezone('GMT+8')->setDate(2000, 1, 1);
+        $formatted_end_date = Carbon::parse($request->end_time)->setTimezone('GMT+8')->setDate(2000, 1, 1);
+
         $shift->name = strtolower($validated_inputs['name']);
-        $shift->from = $validated_inputs['start_time'];
-        $shift->to = $validated_inputs['end_time'];
+        $shift->from = $formatted_start_date;
+        $shift->to = $formatted_end_date;
         $shift->save();
 
         return back()->with('success', 'Shift has been updated!');
@@ -90,7 +99,7 @@ class ShiftController extends Controller
 
             // Check if the error is related to a foreign key constraint
             if ($e->getCode() == '23000') {
-                return back()->with('error', 'Cannot delete the shift because there is an existing faculty account in the department.');
+                return back()->with('error', 'Cannot delete shift because there is an existing faculty using the shift!');
             }
             // For any other database-related errors, handle them here
             return back()->with('error', 'An error occurred while deleting the shift. Please try again.');
