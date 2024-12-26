@@ -196,7 +196,7 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink href={route("admin.config.role.index")} active={route().current("admin.config.role.index")} type={"sub"}>
                                     Roles
                                 </SidebarNavLink>
                             </li>

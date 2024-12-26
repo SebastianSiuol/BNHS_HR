@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\DesignationController;
 use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
+use App\Http\Controllers\Admin\Configuration\RoleController;
 
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSConfigurationController;
@@ -100,7 +101,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                                     ->name('admin.config.shift.update');
     Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                            ->name('admin.config.shift.destroy');
 
-
+    Route::get('/admin/config/roles', [RoleController::class, 'index'])                                                 ->name('admin.config.role.index');
 
 
     /**
