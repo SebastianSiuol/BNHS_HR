@@ -22,6 +22,8 @@ Route::middleware('intApiKey')->group(function (){
 
     Route::post('/attendance/action', [AttendanceApiController::class, 'attendanceAction'])                             ->name('api.attendance.action');
 
+    Route::get('/faculty/autocomplete', [FacultyApiController::class, 'autocomplete'])                                  ->name('api.faculty.autocomplete');
+
 });
 
 Route::middleware('apiKey')->group(function () {

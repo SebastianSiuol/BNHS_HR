@@ -177,6 +177,35 @@ class FacultyApiController extends Controller
             ]
         ]);
     }
+
+
+
+
+    public function autocomplete(Request $request){
+
+        $query = $request->search;
+
+        $faculties = Faculty::with(['personal_information',])
+            ->WhereHas('personal_information', function($subQuery) use($query){
+                $subQuery->where('first_name', 'LIKE' , '%' . $query . '%')
+                ->orWhere('last_name', 'LIKE' , '%' . $query . '%');
+            })->select('id','faculty_code')->get();
+
+            $formattedFaculties = $faculties->map(function ($faculty) {
+                return [
+                    'id' => $faculty->id ?? null,
+                    'faculty_code' => $faculty->faculty_code ?? null,
+                    'personal_information' => [
+                        'first_name' => $faculty->personal_information->first_name ?? null,
+                        'last_name' => $faculty->personal_information->last_name ?? null,
+                    ],
+                ];
+            });
+
+        return response()->json([
+            'faculties' => $formattedFaculties,
+        ]);
+    }
     // PrivateAPI
 
 }
