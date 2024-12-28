@@ -5,23 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Configuration\SchoolPosition;
 use Illuminate\Support\Facades\Storage;
-use App\Exports\FacultyExport;
-use App\Http\Controllers\Admin\PersonalInformationController;
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\Department;
 use App\Models\FacultyAccountInformation\Designation;
 use App\Models\PersonalInformation\CivilStatus;
-use App\Models\PersonalInformation\ContactPerson;
 use App\Models\PersonalInformation\NameExtension;
-use App\Models\PersonalInformation\PermanentAddress;
-use App\Models\PersonalInformation\PersonalInformation;
-use App\Models\PersonalInformation\ResidentialAddress;
 use App\Models\Role;
 use App\Models\Shift;
 use App\Services\StoreFacultyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 
 class FacultyController extends Controller
 {

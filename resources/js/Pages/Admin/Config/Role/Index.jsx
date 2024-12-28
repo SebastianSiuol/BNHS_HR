@@ -41,25 +41,35 @@ export default function Index() {
 
 function HandlePage() {
     const [roles, setRoles] = useState([]);
-    const [selectedFaculty, setSelectedFaculty] = useState();
+    const [selectedFaculty, setSelectedFaculty] = useState({});
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm();
 
     useFetchToFillDataToSelect({ setState: setRoles, apiKey: AUTH_API_KEY, link: "/api/roles" });
 
+    useEffect(() => {
+        setValue('roles_id', selectedFaculty?.roles?.map((role)=>role.id.toString()));
+
+    }, [selectedFaculty])
+
+
     function rolesUpdate(data, e) {
         e.preventDefault();
-        console.log(selectedFaculty);
+        if (Object.keys(selectedFaculty || {}).length !== 0) {
+            console.log(selectedFaculty);
+            router.patch(route('admin.config.role.update', selectedFaculty?.id), data)
+        }
     }
 
     return (
         <>
-            <div className={"grid grid-cols-2"}>
-                <div className="relative ">
+            <>
+                <form className="relative ">
                     <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
                         <span>Search Faculty</span>
                         <AutoComplete
@@ -73,8 +83,8 @@ function HandlePage() {
                     <div>
                         <span>
                             Selected Faculty:{" "}
-                            {selectedFaculty
-                                ? `[${selectedFaculty?.faculty_code}] ${selectedFaculty?.personal_information.first_name} ${selectedFaculty?.personal_information.last_name}`
+                            {(Object.keys(selectedFaculty || {}).length !== 0)
+                                ? `[${selectedFaculty?.faculty_code}] ${selectedFaculty?.personal_information?.first_name} ${selectedFaculty?.personal_information?.last_name}`
                                 : "N/A"}
                         </span>
                     </div>
@@ -97,17 +107,16 @@ function HandlePage() {
                             Save
                         </Buttons>
                     </div>
-                </div>
-            </div>
+                </form>
+            </>
         </>
     );
 }
 
 function AutoComplete({ selected, setSelected }) {
 
-    const [query, setQuery] = useState();
+    const [query, setQuery] = useState("");
     const [facultyList, setFacultyList] = useState([]);
-    // const [selectedFaculty, setSelectedFaculty] = useState();
 
     useEffect(() => {
         const autoCompleteController = new AbortController();
@@ -148,25 +157,24 @@ function AutoComplete({ selected, setSelected }) {
 
     }, [query]);
 
-    function handleAutoCompleteSelection(id){
-        setSelectedFaculty(id);
-    }
+
+    function handleSetSelectedFaculty (faculty){
+        setSelected(faculty || {});
+    };
 
     return (
         <>
             <Combobox
-                value={selected}
-                onChange={(faculty) => {setSelected(faculty)}}
+                onChange={(faculty)=>{handleSetSelectedFaculty(faculty)}}
                 onClose={() =>
                     setQuery('')
                 }>
                 <div className={"relative w-full"}>
                     <ComboboxInput
                         placeholder="Faculty Name"
-                        value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         className={
-                            "p-2.5 text-gray-900 text-sm bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-600 focus:border-blue-600"
+                            "w-full p-2.5 text-gray-900 text-sm bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-600 focus:border-blue-600"
                         }
                     />
                     {facultyList && facultyList.length !== 0 && (
@@ -181,7 +189,7 @@ function AutoComplete({ selected, setSelected }) {
                                     className={({ active }) =>
                                         `cursor-pointer px-4 py-2 ${active ? "bg-blue-100" : ""}`
                                     }>
-                                    {`${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`}
+                                    {`[${faculty?.faculty_code}] ${faculty?.personal_information.first_name} ${faculty?.personal_information.last_name}`}
                                 </ComboboxOption>
                             ))}
                         </ComboboxOptions>

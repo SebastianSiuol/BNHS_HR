@@ -103,6 +103,8 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     Route::get('/admin/config/roles', [RoleController::class, 'index'])                                                 ->name('admin.config.role.index');
 
+    Route::patch('/admin/config/roles/{faculty}/update', [RoleController::class, 'update'])                             ->name('admin.config.role.update');
+
 
     /**
      * ===============================================================================

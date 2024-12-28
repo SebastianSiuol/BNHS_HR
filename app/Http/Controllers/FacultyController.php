@@ -86,11 +86,6 @@ class FacultyController extends Controller
         $accountLoginDetails = $request->get('accountLoginDetails');
         $new_roles = $request->get('roles');
 
-
-
-        // dd($request->collect());
-        // dd($companyDetails['designation_id']);
-
         // Start Updating
         $faculty->update([
             'email' => $accountLoginDetails['email'],
