@@ -8,7 +8,12 @@ export default function CustomDatePicker({ value, error, name, minimumDate, maxi
   const datePickerClass = "grow w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600"
 
   function formatToIso(date) {
-      return dayjs(date, "MM-DD-YYYY").format("YYYY-MM-DD");
+    if(date){
+        return dayjs(date, "MM-DD-YYYY").format("YYYY-MM-DD");
+
+    }
+
+    return ""
   }
 
     return (
@@ -25,7 +30,8 @@ export default function CustomDatePicker({ value, error, name, minimumDate, maxi
                 dropdownMode="select"
                 placeholderText={dayjs().toDate().toLocaleDateString()}
                 // Icons
-                icon={<FaCalendarAlt className="text-blue-900"/>}
+                icon={<FaCalendarAlt />}
+                calendarIconClassName={"text-blue-900"}
                 showIcon={true}
             />
             {error && (

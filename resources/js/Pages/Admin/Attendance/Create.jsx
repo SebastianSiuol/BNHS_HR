@@ -55,7 +55,7 @@ function HandlePage() {
 
 
     function formatHourTo12H(hour) {
-        const timeTo12H = dayjs("1/1/1 " + hour).format("hh:mm A");
+        const timeTo12H = dayjs(hour).format("hh:mm A");
 
         return timeTo12H;
     }
@@ -121,7 +121,7 @@ function HandlePage() {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="attendanceBody">
+                        <tbody>
                             <tr className="odd:bg-blue-100 even:bg-white border-b">
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     {`${formatHourTo12H(

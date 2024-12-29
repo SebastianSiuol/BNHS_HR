@@ -42,11 +42,6 @@ export function PersonalDetailsForm() {
         defaultValues: getSavedData(FORM_DATA_KEY),
     });
 
-    const { field } = useController({
-        control: control,
-        name: "date_of_birth"
-    });
-
     // Persistantly Uplaods Form Data
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 

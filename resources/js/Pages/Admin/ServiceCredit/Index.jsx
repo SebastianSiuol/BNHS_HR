@@ -1,5 +1,15 @@
-import { AuthenticatedAdminLayout } from "@/Layouts/AuthenticatedAdminLayout.jsx";
+import { useState, useEffect, useCallback } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useForm as useInertiaForm } from "@inertiajs/react";
+import { usePage, router } from "@inertiajs/react";
+import dayjs from "dayjs";
+import { Description, DialogTitle } from "@headlessui/react";
+
+import CustomDatePicker from "@/Components/CustomDatePicker";
+import { FaPlusCircle, FaTimesCircle } from "react-icons/fa";
+
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
+import { FacultyAutoComplete } from '@/Components/FacultyAutoComplete';
 
 export default function Index() {
     return (
@@ -13,577 +23,294 @@ export default function Index() {
 function HandlePage() {
     return (
         <>
-            <div className="sm:flex">
-                <div className="relative p-4 w-full max-h-full">
-                    <div className="relative bg-white border border-gray-300 rounded-lg shadow ">
-                        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                            <h3 className="text-lg font-semibold text-gray-900 ">
-                                Service Credit Calculation
-                            </h3>
-                        </div>
-                        <form className="p-4 md:p-5">
-                            <div className="grid gap-4 mb-4">
-                                <div id="employeeFields" className="">
-                                    <label
-                                        for="empID"
-                                        className="block mb-2 text-sm font-medium text-gray-900 "
-                                    >
-                                        Employee Name
-                                    </label>
+            <CreditCalculation />
+            <ManualAdjustment />
+        </>
+    );
+}
 
-                                    <div
-                                        id="field1"
-                                        className="flex items-center mb-2"
-                                    >
-                                        <input
-                                            id="emp1"
-                                            type="text"
-                                            pattern="[A-Za-z\s]+"
-                                            name="name"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder="Employee name"
-                                            required=""
-                                        />
-                                    </div>
+function CreditCalculation() {
+    const [selectedFaculties, setSelectedFaculties] = useState([]);
 
-                                    <div
-                                        id="field2"
-                                        className="flex items-center hidden mb-2"
-                                    >
-                                        <input
-                                            id="emp2"
-                                            type="text"
-                                            pattern="[A-Za-z\s]+"
-                                            name="name"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder="Employee name"
-                                        />
-                                        <button
-                                            type="button"
-                                            className="ml-2"
-                                            onclick="removeField(2)"
-                                        >
-                                            <svg
-                                                className="w-6 h-6 text-gray-800 "
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                fill="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                    clip-rule="evenodd"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
+     const {
+            register,
+            handleSubmit,
+            control,
+            formState: { errors },
+        } = useForm({
+            defaultValues: {
+                hours_worked: '1',
+                date: dayjs().toDate().toDateString(),
+            }
+        });
 
-                                    <div
-                                        id="field3"
-                                        className="flex items-center hidden mb-2"
-                                    >
-                                        <input
-                                            id="emp3"
-                                            type="text"
-                                            pattern="[A-Za-z\s]+"
-                                            name="name"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder="Employee name"
-                                        />
-                                        <button
-                                            type="button"
-                                            className="ml-2 "
-                                            onclick="removeField(3)"
-                                        >
-                                            <svg
-                                                className="w-6 h-6 text-gray-800 "
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                fill="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                    clip-rule="evenodd"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
 
-                                    <div
-                                        id="field4"
-                                        className="flex items-center hidden mb-2"
-                                    >
-                                        <input
-                                            id="emp4"
-                                            type="text"
-                                            pattern="[A-Za-z\s]+"
-                                            name="name"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder="Employee name"
-                                        />
-                                        <button
-                                            type="button"
-                                            className="ml-2 text-red-500"
-                                            onclick="removeField(4)"
-                                        >
-                                            <svg
-                                                className="w-6 h-6 text-gray-800 "
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                fill="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                    clip-rule="evenodd"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
+        function handleSelection(faculty){
+            console.log(selectedFaculties);
+            console.log(selectedFaculties.includes(faculty.id));
+            if (faculty && !selectedFaculties.some((f) => f.id === faculty.id)) {
+                setSelectedFaculties([...selectedFaculties, faculty]);
+            }
+        }
 
-                                    <div
-                                        id="field5"
-                                        className="flex items-center hidden mb-2"
-                                    >
-                                        <input
-                                            id="emp5"
-                                            type="text"
-                                            pattern="[A-Za-z\s]+"
-                                            name="name"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder="Employee name"
-                                        />
-                                        <button
-                                            type="button"
-                                            className="ml-2"
-                                            onclick="removeField(5)"
-                                        >
-                                            <svg
-                                                className="w-6 h-6 text-gray-800 "
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                fill="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    fill-rule="evenodd"
-                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                    clip-rule="evenodd"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
+        function handleRemoveFaculty(facultyToRemove) {
+            setSelectedFaculties(
+                selectedFaculties.filter((faculty) => faculty !== facultyToRemove)
+            );
+        }
 
-                                <div
-                                    id="add-btn-container"
-                                    className="flex items-center justify-center"
-                                >
-                                    <button
-                                        id="add-desig"
-                                        type="button"
-                                        onclick="addField()"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-gray-800 "
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
+        function handleCreditCalculation(data, e){
+            e.preventDefault();
+            const payloads = {
+                selected_faculties: selectedFaculties?.map((faculty)=>({ id: faculty.id, faculty_code: faculty.faculty_code })),
+                date: data.date,
+                hours_worked: data.hours_worked,
+            }
+            router.post(route('admin.service-credits.store.calc'), payloads,{
+                onSuccess: ()=>{
+                    setSelectedFaculties([]);
+                }
+            })
+        }
 
-                                <div className="">
-                                    <label
-                                        for="date-join"
-                                        className="block mb-2 text-sm font-medium text-gray-900 "
-                                    >
-                                        Date
-                                    </label>
-                                    <div className="relative w-full">
-                                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                            <svg
-                                                className="w-4 h-4 text-blue-900 "
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                            </svg>
-                                        </div>
-                                        <input
-                                            id="date-picker"
-                                            datepicker
-                                            datepicker-autohide
-                                            datepicker-buttons
-                                            datepicker-autoselect-today
-                                            type="text"
-                                            className="bg-gray-100 w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5"
-                                            placeholder="Select date"
-                                            required=""
-                                        />
-                                    </div>
-                                </div>
-                                <div className="grid gap-4 grid-cols-2">
-                                    <div className="">
-                                        <label
-                                            for="joining-letter"
-                                            className="block mr-8 mb-2 text-sm font-medium text-gray-900 "
-                                        >
-                                            Activity
-                                        </label>
-                                        <select
-                                            id="extension"
-                                            className="select-validate bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     "
-                                        >
-                                            <option value="male">
-                                                Activity 1
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <label
-                                            for="empID"
-                                            className="block mb-2 text-sm font-medium text-gray-900 "
-                                        >
-                                            Hours Worked
-                                        </label>
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            name="hoursWorked"
-                                            id="hoursWorked"
-                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                            placeholder=""
-                                            required
-                                            oninput="validateHours()"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="mt-8 flex items-center justify-center">
-                                <button
-                                    type="submit"
-                                    className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                >
-                                    Calculate
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div className="relative p-4 w-full  max-h-full">
+    return (
+        <div className="sm:flex">
+            <div className="relative p-4 w-full max-h-full">
                 <div className="relative bg-white border border-gray-300 rounded-lg shadow ">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                        <h3 className="text-lg font-semibold text-gray-900 ">
-                            Manual Adjustment
-                        </h3>
+                        <h3 className="text-lg font-semibold text-gray-900 ">Service Credit Calculation</h3>
                     </div>
                     <form className="p-4 md:p-5">
                         <div className="grid gap-4 mb-4">
-                            <div id="employeeIDFields" className="">
-                                <label
-                                    for="empID"
-                                    className="block mb-2 text-sm font-medium text-gray-900 "
-                                >
-                                    Employee Name
+                            <div>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 ">Faculty Name</label>
+
+                                <FacultyAutoComplete selected={null} setSelected={handleSelection} />
+                            </div>
+
+                            <div>
+                                <label className="block mb-2 text-sm font-medium text-gray-900">
+                                    Selected Faculties:
                                 </label>
-
-                                <div
-                                    id="empIDField1"
-                                    className="flex items-center mb-2"
-                                >
-                                    <input
-                                        id="empID1"
-                                        type="text"
-                                        pattern="[A-Za-z\s]+"
-                                        name="name"
-                                        className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                        placeholder="Employee name"
-                                        required=""
-                                    />
-                                </div>
-
-                                <div
-                                    id="empIDField2"
-                                    className="flex items-center hidden mb-2"
-                                >
-                                    <input
-                                        id="empID2"
-                                        type="text"
-                                        pattern="[A-Za-z\s]+"
-                                        name="name"
-                                        className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                        placeholder="Employee name"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="ml-2 text-red-500"
-                                        onclick="removeIDField(2)"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-gray-800 "
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
+                                <div>
+                                    {selectedFaculties?.map((faculty, index) => (
+                                        <div
+                                            key={index}
+                                            className="flex justify-between items-center space-x-2 border border-gray-400 bg-gray-100 p-2 rounded-lg mb-2"
                                         >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div
-                                    id="empIDField3"
-                                    className="flex items-center hidden mb-2"
-                                >
-                                    <input
-                                        id="empID3"
-                                        type="text"
-                                        pattern="[A-Za-z\s]+"
-                                        name="name"
-                                        className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                        placeholder="Employee name"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="ml-2 text-red-500"
-                                        onclick="removeIDField(3)"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-gray-800 "
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div
-                                    id="empIDField4"
-                                    className="flex items-center hidden mb-2"
-                                >
-                                    <input
-                                        id="empID4"
-                                        type="text"
-                                        pattern="[A-Za-z\s]+"
-                                        name="name"
-                                        className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                        placeholder="Employee name"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="ml-2 text-red-500"
-                                        onclick="removeIDField(4)"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-gray-800 "
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <div
-                                    id="empIDField5"
-                                    className="flex items-center hidden mb-2"
-                                >
-                                    <input
-                                        id="empID5"
-                                        type="text"
-                                        pattern="[A-Za-z\s]+"
-                                        name="name"
-                                        className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                        placeholder="Employee name"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="ml-2 text-red-500"
-                                        onclick="removeIDField(5)"
-                                    >
-                                        <svg
-                                            className="w-6 h-6 text-gray-800 "
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            fill="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
+                                            <span>{`[${faculty?.faculty_code}] ${faculty?.personal_information?.first_name} ${faculty?.personal_information?.last_name}`}</span>
+                                            <button
+                                                type="button"
+                                                className="text-red-700 hover:text-red-600 hover:scale-125 transition-all"
+                                                onClick={() =>
+                                                    handleRemoveFaculty(faculty)
+                                                }
+                                            >
+                                                <FaTimesCircle />
+                                            </button>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
-                            <div
-                                id="addIDBtnContainer"
-                                className="flex items-center justify-center"
-                            >
-                                <button
-                                    id="addIDButton"
-                                    type="button"
-                                    onclick="addIDField()"
-                                >
-                                    <svg
-                                        className="w-6 h-6 text-gray-800 "
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
-                                            clip-rule="evenodd"
+                            <div>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                                    Date
+                                    <Controller
+                                        control={control}
+                                        name={"date"}
+                                        render={({ field }) => (
+                                            <CustomDatePicker
+                                                value={field}
+                                                error={errors}
+                                                minimumDate={'2000-01-01'}
+                                            />
+                                        )}
+                                    />
+                                </label>
+                            </div>
+                            <div className="grid gap-4 grid-cols-2">
+                                <div >
+                                    <label className="block mr-8 mb-2 text-sm font-medium text-gray-900 ">
+                                        Activity
+                                        <select className="select-validate bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5     ">
+                                            <option value="act_01">Activity 1</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                                        Hours Worked
+                                        <input
+                                            {...register('hours_worked')}
+                                            type="number"
+                                            min="1"
+                                            max="48"
+                                            className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
+                                            required
                                         />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <div className="">
-                                <label
-                                    for=""
-                                    className="block mb-2 text-sm font-medium text-gray-900 "
-                                >
-                                    Adjustment Reason
-                                </label>
-                                <textarea
-                                    type="text"
-                                    pattern="[A-Za-z\s]+"
-                                    id="comment"
-                                    className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-100 text-base focus:ring-blue-500 focus:border-blue-500     "
-                                ></textarea>
-                            </div>
-
-                            <div className="">
-                                <div className="flex mb-1">
-                                    <div className="mr-5">
-                                        <label
-                                            for="empID"
-                                            className="block mb-2 text-sm font-medium text-gray-900 "
-                                        >
-                                            Credits:
-                                        </label>
-                                    </div>
-
-                                    <div className="flex -mt-2">
-                                        <div className="flex items-center me-4">
-                                            <input
-                                                id="inline-2-checkbox"
-                                                type="checkbox"
-                                                value="add"
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2   single-checkbox"
-                                            />
-                                            <label
-                                                for="inline-2-checkbox"
-                                                className="ms-2 text-sm font-medium text-gray-900 "
-                                            >
-                                                Add
-                                            </label>
-                                        </div>
-                                        <div className="flex items-center me-4">
-                                            <input
-                                                id="inline-checked-checkbox"
-                                                type="checkbox"
-                                                value="remove"
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2   single-checkbox"
-                                            />
-                                            <label
-                                                for="inline-checked-checkbox"
-                                                className="ms-2 text-sm font-medium text-gray-900 "
-                                            >
-                                                Remove
-                                            </label>
-                                        </div>
-                                    </div>
+                                    </label>
                                 </div>
-                                <p
-                                    id="checkbox-error"
-                                    className="text-red-600 text-sm hidden"
-                                >
-                                    Please select either 'Add' or 'Remove'
-                                    before saving.
-                                </p>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    name="hoursWorked"
-                                    id="creditAmount"
-                                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
-                                    placeholder=""
-                                    required
-                                />
                             </div>
-
-                            <div className="mt-8 flex items-center justify-center">
-                                <button
-                                    type="submit"
-                                    className="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                    onclick="validateForm(event)"
-                                >
-                                    Save
-                                </button>
-                            </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-center">
+                            <button
+                                onClick={handleSubmit(handleCreditCalculation)}
+                                className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Calculate
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
-        </>
+        </div>
+    );
+}
+
+function ManualAdjustment() {
+    const [selectedFaculties, setSelectedFaculties] = useState([]);
+    const [creditAction, setCreditAction] = useState(null);
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+    } = useForm({
+        defaultValues: {
+            serviceCredits: '1',
+        },
+    });
+
+    function handleSelection(faculty) {
+        console.log(selectedFaculties.includes(faculty.id));
+        if (faculty && !selectedFaculties.some((f) => f.id === faculty.id)) {
+            setSelectedFaculties([...selectedFaculties, faculty]);
+        }
+    }
+
+    function handleRemoveFaculty(facultyToRemove) {
+        setSelectedFaculties(selectedFaculties.filter((faculty) => faculty !== facultyToRemove));
+    }
+
+    function handleManualAdjustment(data, e) {
+        e.preventDefault();
+        const payloads = {
+            selected_faculties: selectedFaculties?.map((faculty) => ({
+                id: faculty.id,
+                faculty_code: faculty.faculty_code,
+            })),
+            adjustment_reason: data.adjustmentReason,
+            service_credits: data.serviceCredits,
+            credit_action: creditAction,
+        };
+        console.log(payloads);
+        router.post(route('admin.service-credits.store.adjust'), payloads,{
+            onSuccess: ()=>{
+                setSelectedFaculties([]);
+                reset();
+            }
+        })
+    }
+
+    return (
+        <div className="relative p-4 w-full  max-h-full">
+            <div className="relative bg-white border border-gray-300 rounded-lg shadow ">
+                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                    <h3 className="text-lg font-semibold text-gray-900 ">Manual Adjustment</h3>
+                </div>
+                <form className="p-4 md:p-5">
+                    <div className="grid gap-4 mb-4">
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 ">Faculty Name</label>
+
+                            <FacultyAutoComplete
+                                selected={null}
+                                setSelected={handleSelection}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-900">Selected Faculties:</label>
+                            <div>
+                                {selectedFaculties?.map((faculty, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex justify-between items-center space-x-2 border border-gray-400 bg-gray-100 p-2 rounded-lg mb-2">
+                                        <span>{`[${faculty?.faculty_code}] ${faculty?.personal_information?.first_name} ${faculty?.personal_information?.last_name}`}</span>
+                                        <button
+                                            type="button"
+                                            className="text-red-700 hover:text-red-600 hover:scale-125 transition-all"
+                                            onClick={() => handleRemoveFaculty(faculty)}>
+                                            <FaTimesCircle />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 ">
+                                Adjustment Reason
+                                <textarea
+                                    {...register("adjustmentReason")}
+                                    type="text"
+                                    placeholder="Adjustment Reason"
+                                    className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-100 text-base focus:ring-blue-500 focus:border-blue-500"
+                                />
+                            </label>
+                        </div>
+
+                        <div>
+                            <div className="flex mb-1">
+                                <div className="mr-5">
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 ">Credits:</label>
+                                </div>
+
+                                <div className="flex -mt-2">
+                                    <div className="flex items-center me-4">
+                                        <label className="ms-2 text-sm font-medium text-gray-900 ">
+                                            <input
+                                                type="checkbox"
+                                                value="add"
+                                                checked={creditAction === "add"}
+                                                onChange={() => setCreditAction("add")}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                            />{" "}
+                                            Add
+                                        </label>
+                                    </div>
+                                    <div className="flex items-center me-4">
+                                        <label className="ms-2 text-sm font-medium text-gray-900 ">
+                                            <input
+                                                type="checkbox"
+                                                value="remove"
+                                                checked={creditAction === "remove"}
+                                                onChange={() => setCreditAction("remove")}
+                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                            />{" "}
+                                            Remove
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input
+                                {...register("serviceCredits")}
+                                type="number"
+                                min="1"
+                                className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5     "
+                                required
+                            />
+                        </div>
+
+                        <div className="mt-8 flex items-center justify-center">
+                            <button
+                                onClick={handleSubmit(handleManualAdjustment)}
+                                className="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 }

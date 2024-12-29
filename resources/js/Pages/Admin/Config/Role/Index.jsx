@@ -1,22 +1,17 @@
 /*
  * Dependencies and Libraries
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useForm as useInertiaForm } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 
 /*
  Components
  */
-import Pagination from "@/Components/Pagination";
-import CustomIcon from "@/Components/CustomIcon";
-import Modal from "@/Components/Modal";
-import { LabelInput } from "@/Components/LabelInput";
 import { Buttons } from "@/Components/Buttons";
 import { ContentContainer } from "@/Components/ContentContainer";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
+import { FacultyAutoComplete } from "@/Components/FacultyAutoComplete";
 
 import { useFetchToFillDataToSelect } from "@/Hooks/useFetchToFillDataToSelect";
 
@@ -61,7 +56,6 @@ function HandlePage() {
     function rolesUpdate(data, e) {
         e.preventDefault();
         if (Object.keys(selectedFaculty || {}).length !== 0) {
-            console.log(selectedFaculty);
             router.patch(route('admin.config.role.update', selectedFaculty?.id), data)
         }
     }
@@ -72,7 +66,7 @@ function HandlePage() {
                 <form className="relative ">
                     <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
                         <span>Search Faculty</span>
-                        <AutoComplete
+                        <FacultyAutoComplete
                             selected={selectedFaculty}
                             setSelected={setSelectedFaculty}
                         />
@@ -113,92 +107,7 @@ function HandlePage() {
     );
 }
 
-function AutoComplete({ selected, setSelected }) {
 
-    const [query, setQuery] = useState("");
-    const [facultyList, setFacultyList] = useState([]);
-
-    useEffect(() => {
-        const autoCompleteController = new AbortController();
-
-        async function autoComplete() {
-          try {
-            if(query){
-
-              const response = await fetch(`/api/faculty/autocomplete?search=${query}`, {
-                method: "GET",
-                headers: {
-                  "x-auth-api-key": AUTH_API_KEY,
-                  "content-type": "application/json",
-                },
-                signal: autoCompleteController.signal
-              });
-
-              if (!response.ok) throw new Error(`Error: ${response.statusText}`);
-
-
-              const parsedResponse = await response.json();
-              setFacultyList(parsedResponse);
-
-
-            }
-          } catch(err){
-            if (err.name !== "AbortError") {
-              console.log(err.message);
-            }
-          }
-
-        }
-        autoComplete();
-
-        return () => {
-          autoCompleteController.abort();
-        };
-
-    }, [query]);
-
-
-    function handleSetSelectedFaculty (faculty){
-        setSelected(faculty || {});
-    };
-
-    return (
-        <>
-            <Combobox
-                onChange={(faculty)=>{handleSetSelectedFaculty(faculty)}}
-                onClose={() =>
-                    setQuery('')
-                }>
-                <div className={"relative w-full"}>
-                    <ComboboxInput
-                        placeholder="Faculty Name"
-                        onChange={(e) => setQuery(e.target.value)}
-                        className={
-                            "w-full p-2.5 text-gray-900 text-sm bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-600 focus:border-blue-600"
-                        }
-                    />
-                    {facultyList && facultyList.length !== 0 && (
-                        <ComboboxOptions
-                            anchor="bottom"
-                            transition
-                            className="absolute w-[var(--input-width)] z-10 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto">
-                            {facultyList.faculties?.map((faculty) => (
-                                <ComboboxOption
-                                    key={faculty.id}
-                                    value={faculty}
-                                    className={({ active }) =>
-                                        `cursor-pointer px-4 py-2 ${active ? "bg-blue-100" : ""}`
-                                    }>
-                                    {`[${faculty?.faculty_code}] ${faculty?.personal_information.first_name} ${faculty?.personal_information.last_name}`}
-                                </ComboboxOption>
-                            ))}
-                        </ComboboxOptions>
-                    )}
-                </div>
-            </Combobox>
-        </>
-    );
-}
 
 function RoleCheckboxGroup({ roles, type, label, register }) {
     return (
@@ -208,7 +117,7 @@ function RoleCheckboxGroup({ roles, type, label, register }) {
           {roles.filter((role) => role.type === type).map((role) => (
             <label key={role.id}>
               <input type="checkbox" value={role.id} {...register("roles_id")} />
-              {role.description}
+              {" "}{role.description}
             </label>
           ))}
         </div>

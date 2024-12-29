@@ -9,7 +9,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use function Symfony\Component\String\s;
 
 class ShiftController extends Controller
 {

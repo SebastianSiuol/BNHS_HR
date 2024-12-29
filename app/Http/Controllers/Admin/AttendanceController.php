@@ -51,14 +51,6 @@ class AttendanceController extends Controller
         $departments = Department::all()->select('id', 'name');
         $shift = Shift::all()->select('id', 'name');
 
-
-        // return view('admin.attendance.index', [
-        //     'admin'     => Auth::user(),
-        //     'faculties' => $faculties,
-        //     'departments' => Department::all(),
-        //     'shifts'    => Shift::all(),
-        // ]);
-
         return Inertia::render('Admin/Attendance/Index', [
             'faculties' => $faculties,
             'departments' => $departments,
@@ -75,11 +67,12 @@ class AttendanceController extends Controller
         $faculty_id = Auth::user()->id;
         $shift_id = Auth::user()->shift_id;
 
-        $today = Carbon::today();
+        $today = Carbon::now()->timezone('GMT+8');
 
         $attendance = Attendance::where('faculty_id', $faculty_id)
             ->whereDate('check_in', $today)
             ->first();
+
 
         $shift = Shift::where('id', $shift_id)
             ->select('name', 'from', 'to')
@@ -91,45 +84,6 @@ class AttendanceController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function report()
     {
@@ -201,7 +155,7 @@ class AttendanceController extends Controller
 
         if ($type == 'check_in') {
             if ($attendance) {
-                return $this->redirectWithError("Already checked in for the current day!", 400);
+                return $this->redirectWithError("Already checked in for the day!", 400);
             }
 
             $attendance = new Attendance();
@@ -217,14 +171,14 @@ class AttendanceController extends Controller
             }
 
             if ($attendance->check_out) {
-                return $this->redirectWithError("Already checked out for the current day!", 400);
+                return $this->redirectWithError("Already checked out for the day!", 400);
             }
 
             $attendance->check_out = $post_time;
             $attendance->save();
         }
 
-        return $this->redirectWithMessage("$type successful.", $attendance, 201);
+        return $this->redirectWithMessage($type, $attendance, 201);
     }
 
     private function validateRequest(Request $request)
@@ -242,8 +196,15 @@ class AttendanceController extends Controller
         return redirect()->route('admin.attendances.create')->with(['error' => $message], $status);
     }
 
-    private function redirectWithMessage($message, $attendance, $status)
+    private function redirectWithMessage($type, $attendance, $status)
     {
+        switch ($type){
+            case 'check_in':
+                $message = 'Check-in successful!';
+            case 'check_out':
+                $message = 'Check-out successful!';
+        }
+
         return redirect()->route('admin.attendances.create')->with(['message' => $message, 'attendance' => $attendance], $status);
     }
 }

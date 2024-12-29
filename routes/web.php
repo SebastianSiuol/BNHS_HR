@@ -75,6 +75,8 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     // Service Credits
     Route::get('/admin/service-credits', [ServiceCreditController::class, 'index'])                                     ->name('admin.service-credits.index');
+    Route::post('/admin/service-credits/calc', [ServiceCreditController::class, 'storeCalc'])                           ->name('admin.service-credits.store.calc');
+    Route::post('/admin/service-credits/mnl-adjust', [ServiceCreditController::class, 'mnlAdjust'])                     ->name('admin.service-credits.store.adjust');
     Route::get('/admin/service-credits/report', [ServiceCreditController::class, 'report'])                             ->name('admin.service-credits.report');
 
     // RPMS

@@ -342,12 +342,12 @@ function HeaderUserContextMenu(){
 
 function validationSwal( error ) {
 
-    const swalText = error.join(', ');
+    const swalText = error.join(' <br/> ');
 
     withReactContent(Swal).fire({
         title: <p>Server Validation</p>,
         icon: 'error',
-        text: swalText,
+        html: swalText,
         confirmButtonText: 'Confirm',
         customClass: {
             container: '...',

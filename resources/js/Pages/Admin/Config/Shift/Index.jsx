@@ -7,8 +7,6 @@ import { useForm as useInertiaForm } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
 import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import { Description, DialogTitle } from "@headlessui/react";
 
 import { FaSearch } from "react-icons/fa";
