@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('leave_types_id')->nullable();
             $table->foreignId('faculty_id')->nullable();
             $table->string('start_date');
-            $table->string('leave_date');
+            $table->string('end_date');
             $table->string('document');
             $table->string('reason');
             $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'cancelled'])->default('pending');

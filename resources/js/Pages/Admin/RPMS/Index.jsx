@@ -14,8 +14,7 @@ import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
 import { Description, DialogTitle } from "@headlessui/react";
 import Modal from "@/Components/Modal.jsx";
-import { Table } from "@/Components/Table";
-import { TableRow } from "@/Components/Table";
+import { Table, TableRow } from "@/Components/Table";
 import Pagination from "@/Components/Pagination";
 import CustomIcon from "@/Components/CustomIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,7 +52,7 @@ function HandlePage() {
 
 function Header({ onToggle }) {
     const { mid_year_date: midYearDate, end_year_date: endYearDate } =
-        usePage().props.rpms_config;
+        usePage().props.rpmsConfig;
 
     return (
         <>

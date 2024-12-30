@@ -70,8 +70,10 @@ Route::middleware('redirUnauthUser')->group(function () {
     // Leaves
     Route::get('/admin/leave/create', [LeaveController::class, 'create'])                                               ->name('admin.leaves.create');
     Route::get('/admin/leaves', [LeaveController::class, 'index'])                                                      ->name('admin.leaves.index');
-    Route::get('/admin/leaves/approve', [LeaveController::class, 'approve'])                                            ->name('admin.leaves.approve');
+    Route::get('/admin/leaves/manage', [LeaveController::class, 'manage'])                                              ->name('admin.leaves.manage');
     Route::post('/admin/leave/store', [LeaveController::class, 'store'])                                                ->name('admin.leaves.store');
+    Route::patch('/admin/leave/{leave}/cancel', [LeaveController::class, 'cancel'])                                     ->name('admin.leaves.patch.cancel');
+    Route::patch('/admin/leave/manage/{leave}/action', [LeaveController::class, 'leaveAction'])                         ->name('admin.leaves.manage.action');
 
     // Service Credits
     Route::get('/admin/service-credits', [ServiceCreditController::class, 'index'])                                     ->name('admin.service-credits.index');

@@ -98,6 +98,7 @@ function HandlePage() {
 
 function FacultyTable({ data }) {
 
+    console.log(data);
 
     function formatDateToTime(date){
         const dateToTime = dayjs(date).format("hh:mm A")
@@ -122,9 +123,9 @@ function FacultyTable({ data }) {
         (faculty) =>
             `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
         (faculty) => capitalizeFirstLetter(faculty.shift.name),
-        (faculty) => {return faculty.current_attendance ? formatDateToTime(faculty.current_attendance.check_in) : '--'},
-        (faculty) => {return faculty.current_attendance ? formatDateToTime(faculty.current_attendance.check_out) : '--'},
-        (faculty) => {return faculty.current_attendance ? capitalizeFirstLetter(faculty.current_attendance?.status) : '--'},
+        (faculty) => ( faculty.current_attendance?.check_in ? formatDateToTime(faculty.current_attendance.check_in) : '--'),
+        (faculty) => ( faculty.current_attendance?.check_out ? formatDateToTime(faculty.current_attendance.check_out) : '--'),
+        (faculty) => ( faculty.current_attendance ? capitalizeFirstLetter(faculty.current_attendance?.status) : '--'),
     ];
 
     return (

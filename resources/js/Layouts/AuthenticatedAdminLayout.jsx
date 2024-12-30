@@ -144,7 +144,7 @@ function SideNavbar() {
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.leaves.approve")} active={route().current("admin.leaves.approve")} type={"sub"}>
+                                <SidebarNavLink href={route("admin.leaves.manage")} active={route().current("admin.leaves.manage")} type={"sub"}>
                                     Manage Leave
                                 </SidebarNavLink>
                             </li>

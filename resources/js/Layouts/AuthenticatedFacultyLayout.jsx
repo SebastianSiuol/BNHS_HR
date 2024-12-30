@@ -1,7 +1,9 @@
 // Libraries and Dependencies
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Link, usePage, router } from "@inertiajs/react";
 import { useState, useEffect } from "react";
-import { usePage, Link, router } from "@inertiajs/react";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 // ReactIcons
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -96,20 +98,30 @@ function NavBar({ children }) {
 }
 
 function MainContentContainer({ children }) {
-    const { flash } = usePage().props;
-    const [flashMessage, setFlashMessage] = useState(flash);
+    const { flash, errors: validationError } = usePage().props;
+    const [ flashMessage, setFlashMessage ] = useState(flash);
+
+    const serverValidationError = validationError || null;
+    const combinedErrors = Object.values(serverValidationError).flat().map((error) => error);
 
     useEffect(() => {
         setFlashMessage(flash);
 
-        setTimeout(() => {
+        let flashTimer = setTimeout(() => {
             setFlashMessage(null);
         }, 5000);
 
         return () => {
-            setFlashMessage(null), clearTimeout();
+            setFlashMessage(null), clearTimeout(flashTimer);
         };
     }, [flash]);
+
+    useEffect(() => {
+        if(Object.keys(validationError). length !== 0){
+
+            validationSwal(combinedErrors);
+        }
+    }, [validationError]);
 
     return (
         <>
@@ -130,4 +142,27 @@ function NavBarLink({ active = false, children, ...props }) {
             {children}
         </Link>
     );
+}
+
+function validationSwal( error ) {
+
+    const swalText = error.join(' <br/> ');
+
+    withReactContent(Swal).fire({
+        title: <p>Server Validation</p>,
+        icon: 'error',
+        html: swalText,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-700',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-600',
+          }
+    });
 }

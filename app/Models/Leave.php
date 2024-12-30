@@ -14,10 +14,11 @@ class Leave extends Model
 
     protected $guarded = [];
 
-    protected $with = ['leave_types','faculty.personal_information'];
+    protected $with = ['leave_types', 'faculty.personal_information'];
 
 
-    public function totalLeaveDays(){
+    public function totalLeaveDays()
+    {
 
         $startDate = Carbon::createFromFormat('Y-m-d', $this->start_date);
         $endDate = Carbon::createFromFormat('Y-m-d', $this->leave_date);
@@ -42,25 +43,33 @@ class Leave extends Model
     {
         $user = Auth::user();
 
-        $leave = $user->leaves()->latest('leave_date')->first();
+        $leave = $user->leaves()->latest('end_date')->first();
 
         if (!$leave) {
-            return false; // No leave requests found
+            return false;
         }
 
-        // Compare dates
-        $dateToday = Carbon::now();
-        $endDate = Carbon::parse($leave->end_date);
+        $validStatuses = ['pending', 'approved', 'ongoing'];
+        if (in_array($leave->status, $validStatuses)) {
+            $dateToday = Carbon::now();
+            $endDate = Carbon::parse($leave->end_date);
 
-        return $dateToday->lessThanOrEqualTo($endDate);
+            if ($dateToday->lessThanOrEqualTo($endDate)) {
+                return true; // Active leave based on status and date range
+            }
+        }
+
+        return false; // No active leave
     }
 
 
-    public function faculty(){
+    public function faculty()
+    {
         return $this->belongsTo(Faculty::class);
     }
 
-    public function leave_types(){
+    public function leave_types()
+    {
         return $this->belongsTo(LeaveType::class);
     }
 }
