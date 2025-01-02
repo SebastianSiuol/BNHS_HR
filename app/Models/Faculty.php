@@ -46,7 +46,9 @@ class Faculty extends Authenticatable implements JWTSubject
         parent::boot();
 
         static::creating(function ($faculty) {
-            $faculty->faculty_code = Faculty::generateFacultyCode();
+            if (empty($faculty->faculty_code)) {
+                $faculty->faculty_code = Faculty::generateFacultyCode();
+            }
         });
     }
 

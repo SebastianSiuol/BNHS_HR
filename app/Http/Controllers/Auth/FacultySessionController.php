@@ -52,32 +52,31 @@ class FacultySessionController extends Controller
 
             $isLogi = $user->roles()->where('role_name', 'logi_admin')->exists();
 
-//            $request->JWT::parseToken();
 
             /* Start of Experimentation */
-            $user_roles = $user->roles->pluck('role_name');
-
-            $separated = $user_roles->map(function ($role) {
-                return explode("_", $role);
-            });
-
-            $module_name = $separated->map(function ($separated_role) {
-                return $separated_role[0];
-            });
-
-            $role_name = $separated->map(function ($separated_role) {
-                return $separated_role[1];
-            });
-
-            $roleHaveSIS = false;
-            $roleHaveHR = false;
-
-            foreach ($module_name as $name) {
-                if ($name == "sis") {
-                    $roleHaveSIS = true;
-                    break;
-                }
-            }
+//            $user_roles = $user->roles->pluck('role_name');
+//
+//            $separated = $user_roles->map(function ($role) {
+//                return explode("_", $role);
+//            });
+//
+//            $module_name = $separated->map(function ($separated_role) {
+//                return $separated_role[0];
+//            });
+//
+//            $role_name = $separated->map(function ($separated_role) {
+//                return $separated_role[1];
+//            });
+//
+//            $roleHaveSIS = false;
+//            $roleHaveHR = false;
+//
+//            foreach ($module_name as $name) {
+//                if ($name == "sis") {
+//                    $roleHaveSIS = true;
+//                    break;
+//                }
+//            }
             // /* End of Experimentation yeet
 
             if ($isAdmin) {
