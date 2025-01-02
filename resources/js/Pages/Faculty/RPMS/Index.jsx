@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
+import { Description, DialogTitle } from "@headlessui/react";
 
 import { FaCalendar } from "react-icons/fa6";
-import { IoArchive } from "react-icons/io5";
-import { IoSearchSharp } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
+import { IoSearchSharp, IoDocumentTextOutline } from "react-icons/io5";
 
 import Pagination from "@/Components/Pagination";
+import Modal from "@/Components/Modal";
+import { FileInput } from "@/Components/FileInput";
 import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
 import { Table, TableRow } from "@/Components/Table";
@@ -23,17 +26,23 @@ export default function Index() {
 
 function HandlePage() {
     const { rpms } = usePage().props;
+    const [openUploadModal, setOpenUploadModal] = useState(false);
+
+    function handleUploadModal(){
+        setOpenUploadModal((e)=>!e);
+    }
 
     return (
         <>
-            <SearchHeaders />
+            <SearchHeaders onUploadModal={handleUploadModal} />
             <RPMSTable data={rpms?.data}/>
             <Pagination data={rpms} />
+            <UploadModal state={openUploadModal} onToggle={handleUploadModal} />
         </>
     );
 }
 
-function SearchHeaders() {
+function SearchHeaders({ onUploadModal }) {
     const { mid_year_date: midYearDate, end_year_date: endYearDate } =
         usePage().props.rpmsConfig;
 
@@ -90,26 +99,10 @@ function SearchHeaders() {
 
             <div>
                 <button
-                    data-modal-target="UploadFile"
-                    data-modal-toggle="UploadFile"
                     type="button"
+                    onClick={onUploadModal}
                     className="text-white mt-3 flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <svg
-                        className="mr-1 w-6 h-6 text-white dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24">
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 12h14m-7 7V5"
-                        />
-                    </svg>
+                    <FaPlus className={'mr-1 w-4 h-4 text-white'}/>
                     Upload File
                 </button>
             </div>
@@ -415,8 +408,6 @@ function ViewDocument() {
 function UploadDocument() {
     return (
         <div
-            id="UploadFile"
-            tabindex="-1"
             aria-hidden="true"
             className="hidden fixed inset-0 z-50 justify-center items-center w-full h-full overflow-y-auto">
             <div className="relative w-full my-auto max-w-3xl p-4 mx-auto">
@@ -602,5 +593,72 @@ function UploadDocument() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function UploadModal({ state, onToggle }) {
+
+    return (
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <DialogTitle className="flex font-bold text-2xl text-gray-900 justify-between items-center p-4">
+                <span>
+                    Upload Document
+                </span>
+                <button
+                    onClick={onToggle}
+                    className={"text-red-800"}>
+                    &times;
+                </button>
+            </DialogTitle>
+            <Description as={"div"}>
+                <hr />
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mr-5">
+                            <div className="items-center justify-center flex mb-5">
+                                <h1 className="text-lg">{`Upload document for {uploadPeriod}`}</h1>
+                            </div>
+
+                            <div className="py-5 px-5">
+                                <form action="">
+                                    <div className="w-full py-9 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed">
+                                        <div className="grid gap-1">
+                                            <IoDocumentTextOutline className={'mx-auto w-[40px] h-[40px] text-violet-500'}/>
+                                            <h2 className="text-center text-gray-400   text-xs leading-4">
+                                                PDF, DOCX, or EXCEL, maximum of 5MB
+                                            </h2>
+                                        </div>
+                                        <div className="grid gap-2">
+
+                                            <div className="flex px-3 items-center justify-center">
+                                                <div>
+                                                    <FileInput />
+
+                                                    <label
+                                                        className="block mt-5 text-center mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                        Additional Files (Optional)
+                                                    </label>
+                                                    <div className={'flex flex-col gap-y-2'}>
+
+                                                    <FileInput />
+                                                    <FileInput />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-8 flex items-center justify-center">
+                                        <button
+                                            type="submit"
+                                            className="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+            </Description>
+        </Modal>
     );
 }
