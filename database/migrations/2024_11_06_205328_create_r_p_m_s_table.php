@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('r_p_m_s', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id');
-            $table->string('file_name');
-            $table->string('date_submitted');
-            $table->boolean('mid_year')->default(false);
-            $table->boolean('year_end')->default(false);
-            $table->string('year');
+            $table->string('file_path');
+            $table->string('filename')->nullable();
+            $table->enum('upload_period', ['mid_year', 'end_year']);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

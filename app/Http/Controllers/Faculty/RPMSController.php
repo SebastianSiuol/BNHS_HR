@@ -8,11 +8,13 @@ use App\Models\RPMS;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RPMSController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $rpms = RPMS::paginate(5);
 
         $year_now = Carbon::now()->format('Y');
@@ -22,5 +24,83 @@ class RPMSController extends Controller
             'rpms' => $rpms,
             'rpmsConfig' => $rpms_config,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the file inputs
+        $request->validate([
+            'mainFile' => 'required|file|mimes:pdf|max:5120', // 5MB limit
+            'additionalFiles.*' => 'nullable|file|mimes:pdf|max:5120',
+        ]);
+
+        // Get current date
+        $currentDate = now();
+
+        // Fetch the current RPMS configuration
+        $config = RPMSConfiguration::where('year', $currentDate->year)->first();
+
+        if (!$config) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'No RPMS configuration found for the current year.']);
+        }
+
+        // Determine the upload period based on the configuration
+        $uploadPeriod = $currentDate->lessThan($config->mid_year_date)
+            ? 'mid_year'
+            : 'end_year';
+
+        // Check if the current faculty member has already uploaded 5 files in this period
+        $fileCount = RPMS::where('faculty_id', auth()->id())
+            ->where('upload_period', $uploadPeriod)
+            ->count();
+
+        $newFilesCount = 1 + (is_array($request->file('additionalFiles')) ? count($request->file('additionalFiles')) : 0);
+
+        if ($fileCount + $newFilesCount > 5) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Upload limit exceeded. You can only upload a maximum of 5 files per upload period.']);
+        }
+
+        // Store the main file
+        $mainFile = $request->file('mainFile');
+        $mainFilePath = $mainFile->store('uploads'); // Save the file in the "uploads" directory
+        RPMS::create([
+            'filename' => $mainFile->getClientOriginalName(),
+            'file_path' => $mainFilePath,
+            'upload_period' => $uploadPeriod,
+            'faculty_id' => auth()->id(),
+        ]);
+
+        // Store additional files (if any)
+        $additionalFiles = $request->file('additionalFiles') ?? [];
+        foreach ($additionalFiles as $file) {
+            $filePath = $file->store('uploads');
+            RPMS::create([
+                'filename' => $file->getClientOriginalName(),
+                'file_path' => $filePath,
+                'upload_period' => $uploadPeriod,
+                'faculty_id' => auth()->id(),
+            ]);
+        }
+
+        // Redirect with success message
+        return redirect()
+            ->route('faculty.rpms.store')
+            ->with('success', 'RPMS uploaded successfully!');
+    }
+
+    public function download(Request $request, $file)
+    {
+        $rpms_file = RPMS::find($file);
+
+        if (!Storage::exists($rpms_file->file_path)) {
+            abort(404, 'File not found.');
+        }
+
+
+        return Storage::download($rpms_file->file_path);
     }
 }

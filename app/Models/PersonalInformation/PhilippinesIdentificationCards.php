@@ -11,6 +11,8 @@ class PhilippinesIdentificationCards extends Model
 
     protected $table = 'phil_id_cards';
 
+    protected $guarded = [];
+
     public function personal_information()
     {
         return $this->belongsTo(PersonalInformation::class);

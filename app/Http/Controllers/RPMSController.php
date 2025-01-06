@@ -30,7 +30,7 @@ class RPMSController extends Controller
 
         return Inertia::render('Admin/RPMS/Index', [
             'faculties' => $faculties,
-            'rpms_config' => $rpms_config
+            'rpmsConfig' => $rpms_config
         ]);
     }
 

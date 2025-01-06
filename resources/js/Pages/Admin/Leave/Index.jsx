@@ -12,7 +12,7 @@ import { Description, DialogTitle } from "@headlessui/react";
 
 
 // Utilities
-import { handleLeaveStatus } from "@/Utils/formatTableDataUtils";
+import { handleStatus } from "@/Utils/formatTableDataUtils";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 
 export default function Index() {
@@ -72,7 +72,7 @@ function LeaveTable({ data, handleCancelClick }) {
         (leave) => leave.leave_types?.name,
         (leave) => leave.leave_types?.days,
         (leave) => leave.start_date,
-        (leave) => handleLeaveStatus(capitalizeFirstLetter(leave.status)),
+        (leave) => handleStatus(capitalizeFirstLetter(leave.status)),
         (leave) => leave.reason,
         (leave) => (
             <div className="flex items-center justify-evenly">

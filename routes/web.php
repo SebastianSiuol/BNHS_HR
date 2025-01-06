@@ -1,21 +1,23 @@
 <?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 use App\Http\Controllers\Auth\FacultySessionController;
+use App\Http\Controllers\CivilServiceController;
 use App\Http\Controllers\Faculty\DashboardController as FacultyDashboardController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\RPMSController;
 use App\Http\Controllers\Faculty\RPMSController as FacultyRPMSController;
 use App\Http\Controllers\Faculty\AttendanceController as FacultyAttendanceController;
+use App\Http\Controllers\Faculty\PersonalDetailsController;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\LeaveController;
 use App\Http\Controllers\Admin\ServiceCreditController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+
 // Configurations
 use App\Http\Controllers\Admin\Configuration\CompanyDetailController;
 use App\Http\Controllers\Admin\Configuration\DepartmentController;
-use App\Http\Controllers\Admin\Configuration\DesignationController;
 use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Admin\Configuration\RoleController;
@@ -128,10 +130,43 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     // RPMS
     Route::get('/faculty/rpms', [FacultyRPMSController::class, 'index'])                                                ->name('faculty.rpms.index');
+    Route::post('/faculty/rpms', [FacultyRPMSController::class, 'store'])                                               ->name('faculty.rpms.store');
+    Route::get('/faculty/rpms/{file}', [FacultyRPMSController::class, 'download'])                                      ->name('faculty.rpms.file.download');
+
 
     // Attendances
     Route::get('/faculty/attendances/create', [FacultyAttendanceController::class, 'create'])                           ->name('faculty.attendance.create');
 
+    //Personal Details
+    Route::get('/faculty/personal-details', [PersonalDetailsController::class, 'index'])                                ->name('faculty.personal-details.index');
+
+
+    /**
+     * ===============================================================================
+     *
+     * API Routes
+     *
+     * ===============================================================================
+     *
+    */
+
+    Route::middleware('validate.api.req')->group(function () {
+
+        Route::get('/civil-service/all', [CivilServiceController::class, 'all'])                                        ->name('api.civil-service.all');
+    });
+
+    /**
+     * ===============================================================================
+     *
+     * General Routes
+     *
+     * ===============================================================================
+     *
+    */
+
+
+    Route::patch('/civil-service', [CivilServiceController::class, 'update'])                                           ->name('civil-service.update');
+    Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
 
 });
 

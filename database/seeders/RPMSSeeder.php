@@ -14,10 +14,12 @@ class RPMSSeeder extends Seeder
      */
     public function run(): void
     {
+        $currentYear = date('Y');
+
         RPMSConfiguration::create([
-            'mid_year_date' => new Carbon('2024-05-30'),
-            'end_year_date' => new Carbon('2024-12-20'),
-            'year' => '2024',
+            'mid_year_date' => new Carbon("$currentYear-05-30"),
+            'end_year_date' => new Carbon("$currentYear-12-20"),
+            'year' => $currentYear,
         ]);
     }
 }

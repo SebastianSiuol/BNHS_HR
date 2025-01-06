@@ -12,7 +12,7 @@ import CustomIcon from "@/Components/CustomIcon";
 import Pagination from "@/Components/Pagination";
 
 import { capitalizeFirstLetter } from '@/Utils/stringUtils';
-import { getFullName, handleLeaveStatus } from '@/Utils/formatTableDataUtils';
+import { getFullName, handleStatus } from '@/Utils/formatTableDataUtils';
 
 export default function Approve() {
     return (
@@ -138,7 +138,7 @@ function LeavesTable({ data }) {
                 </button>
             </div>
         ),
-        (leaveRequest) => handleLeaveStatus(capitalizeFirstLetter(leaveRequest.status)),
+        (leaveRequest) => handleStatus(capitalizeFirstLetter(leaveRequest.status)),
         (leaveRequest) => renderActions(leaveRequest.status, leaveRequest.id),
     ];
     return (

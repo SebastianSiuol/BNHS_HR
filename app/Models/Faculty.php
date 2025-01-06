@@ -19,6 +19,7 @@ class Faculty extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'faculty_code',
         'email',
         'password',
         'date_of_joining',
@@ -47,7 +48,12 @@ class Faculty extends Authenticatable implements JWTSubject
         parent::boot();
 
         static::creating(function ($faculty) {
-            $faculty->faculty_code = Faculty::generateFacultyCode();
+            // Conditionally generate a faculty code only if it's not provided
+            if (empty($faculty->faculty_code)) {
+                $faculty->faculty_code = Faculty::generateFacultyCode();
+            }
+
+            // Set a default password for all faculty (for testing purposes)
             $faculty->password = "Password123";
         });
     }

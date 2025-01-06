@@ -10,6 +10,9 @@ class MedicalInformation extends Model
     use HasFactory;
 
     protected $table = 'medical_information';
+    protected $guarded = [];
+
+
 
     public function personal_information()
     {

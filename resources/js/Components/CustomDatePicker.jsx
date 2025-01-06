@@ -3,9 +3,9 @@ import { FaCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
 
-export default function CustomDatePicker({ value, error, name, minimumDate, maximumDate}) {
+export default function CustomDatePicker({ value, error, name, minimumDate, maximumDate, disabled=false}) {
 
-  const datePickerClass = "grow w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-blue-600 focus:border-blue-600"
+  const datePickerClass = "w-full p-2.5 text-gray-900 text-sm bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-600 focus:border-blue-600"
 
   function formatToIso(date) {
     if(date){
@@ -33,6 +33,7 @@ export default function CustomDatePicker({ value, error, name, minimumDate, maxi
                 icon={<FaCalendarAlt />}
                 calendarIconClassName={"text-blue-900"}
                 showIcon={true}
+                disabled={disabled}
             />
             {error && (
                 <div className={error ? 'block' : 'hidden'}>

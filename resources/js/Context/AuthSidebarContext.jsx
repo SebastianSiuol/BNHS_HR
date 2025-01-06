@@ -16,7 +16,6 @@ export function AuthSidebarProvider({ children }) {
 
     function toggleTab(tab){
         setOpenTabs((prev)=>({... prev, [tab]: !prev[tab]}));
-
     }
 
     return (

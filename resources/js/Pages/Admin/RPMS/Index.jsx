@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
+import dayjs from "dayjs";
 
 import { FaCalendar } from "react-icons/fa6";
 import { IoArchive } from "react-icons/io5";
@@ -51,22 +52,23 @@ function HandlePage() {
 }
 
 function Header({ onToggle }) {
-    const { mid_year_date: midYearDate, end_year_date: endYearDate } =
-        usePage().props.rpmsConfig;
+    const { rpmsConfig } = usePage().props;
+
+    // Destructure only if rpmsConfig is not null
+    const midYearDate = rpmsConfig?.mid_year_date;
+    const endYearDate = rpmsConfig?.end_year_date;
 
     return (
         <>
             <div className="pb-4 flex items-center justify-between dark:bg-gray-900">
-                <label htmlFor="table-search" className="sr-only">
+                <label
+                    htmlFor="table-search"
+                    className="sr-only">
                     Search
                 </label>
                 <div className="relative flex mt-1">
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <IoSearchSharp
-                            className={
-                                "w-4 h-4 text-gray-500 dark:text-gray-400"
-                            }
-                        />
+                        <IoSearchSharp className={"w-4 h-4 text-gray-500 dark:text-gray-400"} />
                     </div>
                     <input
                         type="text"
@@ -80,9 +82,10 @@ function Header({ onToggle }) {
                             id="shift"
                             defaultValue="0"
                             className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5"
-                            required=""
-                        >
-                            <option disabled value="0">
+                            required="">
+                            <option
+                                disabled
+                                value="0">
                                 Year
                             </option>
                             <option value="1">2024</option>
@@ -96,34 +99,27 @@ function Header({ onToggle }) {
                     </div>
                     <div className="block">
                         <h1 className="text-sm">
-                            Mid Year <span className="mr-3"></span> |{" "}
-                            <span className="mr-3"></span> Year End
+                            Mid Year <span className="mr-3"></span> | <span className="mr-3"></span> Year End
                         </h1>
                         <div className="flex">
-                            <p className="text-sm mr-2">{midYearDate}</p>
-                            <p className="text-sm">{endYearDate}</p>
+                            <p className="text-sm mr-2">{midYearDate ?? ""}</p>
+                            <p className="text-sm">{endYearDate ?? ""}</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex">
                     <div className="mt-2">
-                        <button onClick={onToggle} className="hover:scale-110">
-                            <FaCalendar
-                                className={
-                                    "w-6 h-6 text-blue-800 dark:text-white"
-                                }
-                            />
+                        <button
+                            onClick={onToggle}
+                            className="hover:scale-110">
+                            <FaCalendar className={"w-6 h-6 text-blue-800 dark:text-white"} />
                         </button>
                     </div>
 
                     <div className="justify-end flex ml-5 mt-px ">
                         <button className="hover:scale-110">
-                            <IoArchive
-                                className={
-                                    "w-9 h-9 text-blue-800 dark:text-white"
-                                }
-                            />
+                            <IoArchive className={"w-9 h-9 text-blue-800 dark:text-white"} />
                         </button>
                     </div>
                 </div>
@@ -170,7 +166,8 @@ function FacultyTable() {
 }
 
 function SetDateModal({ state, onToggle }) {
-    const { year } = usePage().props.rpms_config;
+
+    const year = dayjs().year();
 
     const {
         handleSubmit,

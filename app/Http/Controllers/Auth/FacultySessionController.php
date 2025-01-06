@@ -30,7 +30,7 @@ class FacultySessionController extends Controller
         'password' => 'required|min:6',
     ]);
 
-    dd(Auth::attempt($credentials));
+    error_log(Auth::attempt($credentials));
 
     if (!Auth::attempt($credentials)) {
         return back()->withErrors(['message' => 'Invalid credentials, please try again']);

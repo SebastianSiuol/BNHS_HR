@@ -2,6 +2,7 @@
 
 namespace App\Models\PersonalInformation;
 
+use App\Models\CivilService;
 use App\Models\Faculty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +29,6 @@ class PersonalInformation extends Model
         return $this->hasOne(PhilippinesIdentificationCards::class);
     }
 
-    public function address(){
-        return $this->hasOne(Address::class);
-    }
     public function residentiaL_address(){
         return $this->hasOne(ResidentialAddress::class);
     }
@@ -41,6 +39,10 @@ class PersonalInformation extends Model
 
     public function contact_person(){
         return $this->hasOne(ContactPerson::class);
+    }
+
+    public function civil_services(){
+        return $this->hasMany(CivilService::class);
     }
 
 

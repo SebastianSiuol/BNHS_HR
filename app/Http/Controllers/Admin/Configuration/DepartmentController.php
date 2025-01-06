@@ -90,61 +90,61 @@ class DepartmentController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Department $department)
-{
-    try {
-        // Validate input data
-        $validated = $request->validate([
-            'department_name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('departments', 'name')->ignore($department->id),
-            ],
-            'designations' => 'array',
-            'designations.*.id' => 'nullable|exists:designations,id',
-            'designations.*.name' => 'required|string|max:255',
-        ]);
+    {
+        try {
+            // Validate input data
+            $validated = $request->validate([
+                'department_name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('departments', 'name')->ignore($department->id),
+                ],
+                'designations' => 'array',
+                'designations.*.id' => 'nullable|exists:designations,id',
+                'designations.*.name' => 'required|string|max:255',
+            ]);
 
-        // Perform operations in a database transaction
-        DB::transaction(function () use ($validated, $department) {
-            // Update department name
-            $department->update(['name' => $validated['department_name']]);
+            // Perform operations in a database transaction
+            DB::transaction(function () use ($validated, $department) {
+                // Update department name
+                $department->update(['name' => $validated['department_name']]);
 
-            // Process designations
-            $designations = collect($validated['designations']);
-            $existingIds = $designations->pluck('id')->filter(); // Only include non-null IDs
+                // Process designations
+                $designations = collect($validated['designations']);
+                $existingIds = $designations->pluck('id')->filter(); // Only include non-null IDs
 
-            // Delete removed designations
-            $department->designations()->whereNotIn('id', $existingIds)->delete();
+                // Delete removed designations
+                $department->designations()->whereNotIn('id', $existingIds)->delete();
 
-            // Update existing or create new designations
-            foreach ($designations as $designation) {
-                $department->designations()->updateOrCreate(
-                    ['id' => $designation['id'] ?? null], // Match by ID if available
-                    ['name' => $designation['name']]
-                );
-            }
-        });
+                // Update existing or create new designations
+                foreach ($designations as $designation) {
+                    $department->designations()->updateOrCreate(
+                        ['id' => $designation['id'] ?? null], // Match by ID if available
+                        ['name' => $designation['name']]
+                    );
+                }
+            });
 
-        // Redirect with success message
-        return to_route('admin.config.department.index')
-            ->with('success', 'Department updated successfully.');
-    } catch (ValidationException $e) {
-        // Handle validation errors
-        return back()->withErrors($e->errors())
-            ->withInput(); // Preserve input for correction
-    } catch (\Throwable $e) {
-        // Log unexpected errors for debugging
-        \Log::error('Department update failed', [
-            'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-        ]);
+            // Redirect with success message
+            return to_route('admin.config.department.index')
+                ->with('success', 'Department updated successfully.');
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return back()->withErrors($e->errors())
+                ->withInput(); // Preserve input for correction
+        } catch (\Throwable $e) {
+            // Log unexpected errors for debugging
+            \Log::error('Department update failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-        // Redirect with error message
-        return to_route('admin.config.department.index')
-            ->with('error', 'An unexpected error occurred while updating the department.');
+            // Redirect with error message
+            return to_route('admin.config.department.index')
+                ->with('error', 'An unexpected error occurred while updating the department.');
+        }
     }
-}
 
     /**
      * Remove the specified resource from storage.

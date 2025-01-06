@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Configuration\RPMSConfiguration;
+use Database\Seeders\CivilServiceSeeder;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DesignationSeeder;
 use Database\Seeders\EmploymentStatusSeeder;
@@ -71,6 +72,10 @@ return new class extends Migration
 
         $rpms_config_seeder = new RPMSSeeder();
         $rpms_config_seeder->run();
+
+        $seeder = new CivilServiceSeeder();
+        $seeder->run();
+
     }
 
     /**

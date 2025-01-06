@@ -11,6 +11,7 @@ use App\Http\Middleware\ExternalApiKeyMiddleware;
 use App\Http\Middleware\CheckAuthenticatedRoleMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RedirectUnauthorizedUser;
+use App\Http\Middleware\ValidateAPIRequest;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => CheckAuthenticatedRoleMiddleware::class,
             'redirUnauthUser' => RedirectUnauthorizedUser::class,
             'intApiKey' => InternalApiKeyMiddleware::class,
+            'validate.api.req' => ValidateAPIRequest::class,
         ]);
 
 

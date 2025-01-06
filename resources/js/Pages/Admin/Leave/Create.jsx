@@ -10,7 +10,7 @@ import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { ContentContainer } from "@/Components/ContentContainer";
 import CustomDatePicker from "@/Components/CustomDatePicker";
 
-import { handleLeaveStatus } from '@/Utils/formatTableDataUtils';
+import { handleStatus } from '@/Utils/formatTableDataUtils';
 
 
 export default function Create() {
