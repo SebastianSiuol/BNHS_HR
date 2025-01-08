@@ -17,4 +17,17 @@ export default defineConfig({
             "@": "/resources/js",
         }
     },
+    // build: {
+    //     rollupOptions: {
+    //       output: {
+    //         manualChunks(id) {
+    //           if (id.includes('node_modules')) {
+    //             if (id.includes('pdfjs-dist')) return 'pdf-worker';
+    //             if (id.includes('react-datepicker')) return 'datepicker';
+    //             if (id.includes('sweetalert2')) return 'sweetalert';
+    //           }
+    //         },
+    //       },
+    //     },
+    //   },
 });

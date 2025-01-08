@@ -1,6 +1,8 @@
 import { FaCalendarAlt } from "react-icons/fa";
 
 import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+
 import dayjs from "dayjs";
 
 export default function CustomDatePicker({ value, error, name, minimumDate, maximumDate, disabled=false}) {
