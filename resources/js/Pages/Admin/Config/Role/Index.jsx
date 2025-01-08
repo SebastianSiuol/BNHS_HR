@@ -15,13 +15,14 @@ import { FacultyAutoComplete } from "@/Components/FacultyAutoComplete";
 
 import { useFetchToFillDataToSelect } from "@/Hooks/useFetchToFillDataToSelect";
 
-const AUTH_API_KEY = 'eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC';
+
+
 
 const roleTypes = [
     { type: "sis", label: "Student Information System" },
     { type: "hr", label: "Human Resources Management System" },
     { type: "logi", label: "Logistics System" },
-  ];
+];
 
 export default function Index() {
     return (
@@ -45,7 +46,7 @@ function HandlePage() {
         formState: { errors },
     } = useForm();
 
-    useFetchToFillDataToSelect({ setState: setRoles, apiKey: AUTH_API_KEY, link: "/api/roles" });
+    useFetchToFillDataToSelect({ setState: setRoles, apiKey: import.meta.env.VITE_AUTH_API_KEY, link: "/api/roles" });
 
     useEffect(() => {
         setValue('roles_id', selectedFaculty?.roles?.map((role)=>role.id.toString()));

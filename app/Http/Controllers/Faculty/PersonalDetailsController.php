@@ -55,16 +55,16 @@ class PersonalDetailsController extends Controller
                 'permanent_zip_code' => $psn_info->permanent_address->zip_code,
             ],
             'phil_ids' => [
-                'gsis_id_no' => $psn_info->phil_id_cards->gsis_id_no,
-                'pag_ibig_id_no' => $psn_info->phil_id_cards->pag_ibig_id_no,
-                'sss_no' => $psn_info->phil_id_cards->sss_no,
-                'tin_no' => $psn_info->phil_id_cards->tin_no,
-                'philhealth_no' => $psn_info->phil_id_cards->philhealth_no,
+                'gsis_id_no' => $psn_info->phil_id_cards->gsis_id_no ?? "",
+                'pag_ibig_id_no' => $psn_info->phil_id_cards->pag_ibig_id_no ?? "",
+                'sss_no' => $psn_info->phil_id_cards->sss_no ?? "",
+                'tin_no' => $psn_info->phil_id_cards->tin_no ?? "",
+                'philhealth_no' => $psn_info->phil_id_cards->philhealth_no ?? "",
             ],
             'medical_info' => [
-                'height' => $psn_info->medical_info->height,
-                'weight' => $psn_info->medical_info->weight,
-                'blood_type' => $psn_info->medical_info->blood_type,
+                'height' => $psn_info->medical_info->height ?? "",
+                'weight' => $psn_info->medical_info->weight ?? "",
+                'blood_type' => $psn_info->medical_info->blood_type ?? "",
             ]
         ];
 

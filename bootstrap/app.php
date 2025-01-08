@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AssignApiKeyMiddleware;
 use App\Http\Middleware\InternalApiKeyMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -34,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'redirUnauthUser' => RedirectUnauthorizedUser::class,
             'intApiKey' => InternalApiKeyMiddleware::class,
             'validate.api.req' => ValidateAPIRequest::class,
+            'assign.api.key.req' => AssignApiKeyMiddleware::class,
         ]);
 
 

@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\ShiftApiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-Route::middleware('intApiKey')->group(function (){
+
+Route::middleware(['intApiKey'])->group(function (){
 
     Route::get('/admin/faculty/create/check-email', [FacultyApiController::class, 'checkEmail'])                        ->name('api.check.email');
     Route::get('/admin/faculty/show',[FacultyApiController::class, 'showFaculty'])                                      ->name('api.admin.faculty.show');
@@ -25,6 +26,7 @@ Route::middleware('intApiKey')->group(function (){
     Route::get('/faculty/autocomplete', [FacultyApiController::class, 'autocomplete'])                                  ->name('api.faculty.autocomplete');
 
 });
+
 
 Route::middleware('apiKey')->group(function () {
 

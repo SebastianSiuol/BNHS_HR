@@ -87,6 +87,8 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/rpms', [RPMSController::class, 'index'])                                                         ->name('admin.rpms.index');
     Route::post('/admin/rpms/config/set-date', [RPMSConfigurationController::class, 'store'])                           ->name('admin.rpms.config.store');
 
+    Route::middleware('assign.api.key.req')->group(function () {
+
     // Configurations
     Route::get('/admin/config/company-details', [CompanyDetailController::class, 'index'])                              ->name('admin.config.company-details.index');
     Route::post('/admin/config/company-details', [CompanyDetailController::class, 'store'])                             ->name('admin.config.company-details.store');
@@ -110,6 +112,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/config/roles', [RoleController::class, 'index'])                                                 ->name('admin.config.role.index');
 
     Route::patch('/admin/config/roles/{faculty}/update', [RoleController::class, 'update'])                             ->name('admin.config.role.update');
+});
 
 
     /**
@@ -148,12 +151,16 @@ Route::middleware('redirUnauthUser')->group(function () {
      *
      * ===============================================================================
      *
-    */
+     */
 
-    Route::middleware('validate.api.req')->group(function () {
+        Route::middleware('validate.api.req')->group(function () {
+            Route::middleware('intApiKey')->group(function () {
 
-        Route::get('/civil-service/all', [CivilServiceController::class, 'all'])                                        ->name('api.civil-service.all');
-    });
+
+                Route::get('/civil-service/all', [CivilServiceController::class, 'all'])->name('api.civil-service.all');
+            });
+
+        });
 
     /**
      * ===============================================================================
@@ -169,6 +176,7 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
 
 });
+
 
 Route::get('/redirect/admin/sis', [JWTRedirectController::class, 'sisAdmin'])                                           ->name('sis.admin.redirect');
 Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])                                          ->name('logistics.admin.redirect');
