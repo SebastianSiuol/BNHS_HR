@@ -2,10 +2,12 @@ import { router } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { useFetchData } from "@/Hooks/useFetchData";
+
 import CustomDatePicker from "@/Components/CustomDatePicker";
 
 export function CivilServiceEligibility() {
-    const [inputFields, setInputFields] = useState([]);
+    const { data: inputFields, setData: setInputFields } = useFetchData("/civil-service/all");
     const [inputEditable, setInputEditable] = useState(false);
 
     const {
@@ -13,20 +15,6 @@ export function CivilServiceEligibility() {
         formState: { errors },
     } = useForm();
 
-    useEffect(() => {
-        async function fetchData() {
-            const response = await fetch("/civil-service/all", {
-                method: "GET",
-                headers: {
-                    "content-type": "application/json",
-                },
-            });
-            const parsedResponse = await response.json();
-            setInputFields(parsedResponse);
-        }
-
-        fetchData();
-    }, []);
 
     function onSave() {
         const payload = {

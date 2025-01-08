@@ -3,33 +3,20 @@ import { useForm, Controller } from "react-hook-form";
 import { usePage, router } from "@inertiajs/react";
 import { z } from "zod";
 
+import { useFetchData } from "@/Hooks/useFetchData";
+
 import CustomDatePicker from "@/Components/CustomDatePicker";
 import { LabelInput } from "@/Components/LabelInput";
 import { InputSelect } from "@/Components/InputSelect";
 
 export function VoluntaryWork() {
-    const [inputFields, setInputFields] = useState([]);
+    const { data: inputFields, setData: setInputFields } = useFetchData("/voluntary-work/all");
     const [inputEditable, setInputEditable] = useState(false);
 
     const {
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    useEffect(() => {
-        async function fetchData() {
-            const response = await fetch("/voluntary-work/all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            const parsedResponse = await response.json();
-            setInputFields(parsedResponse);
-        }
-
-        fetchData();
-    }, []);
 
     function onSave() {
         const payload = { voluntaryWorks: inputFields };

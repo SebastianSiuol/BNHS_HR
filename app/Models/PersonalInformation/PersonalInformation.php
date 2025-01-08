@@ -4,6 +4,10 @@ namespace App\Models\PersonalInformation;
 
 use App\Models\CivilService;
 use App\Models\Faculty;
+use App\Models\LearningAndDevelopment;
+use App\Models\OtherInformation;
+use App\Models\VoluntaryWork;
+use App\Models\WorkExperience;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,6 +49,21 @@ class PersonalInformation extends Model
         return $this->hasMany(CivilService::class);
     }
 
+    public function work_experiences(){
+        return $this->hasMany(WorkExperience::class);
+    }
+
+    public function voluntary_works(){
+        return $this->hasMany(VoluntaryWork::class);
+    }
+
+    public function learning_and_developments(){
+        return $this->hasMany(LearningAndDevelopment::class);
+    }
+
+    public function other_information(){
+        return $this->hasMany(OtherInformation::class);
+    }
 
 //  NOTE: HAS MANY RELATIONSHIPS
     public function reference_members(){

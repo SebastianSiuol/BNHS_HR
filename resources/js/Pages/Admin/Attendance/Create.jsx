@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
 import dayjs from "dayjs";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 import { MdOutlineNoEncryptionGmailerrorred } from "react-icons/md";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";

@@ -4,7 +4,10 @@ use App\Http\Controllers\Auth\FacultySessionController;
 use App\Http\Controllers\CivilServiceController;
 use App\Http\Controllers\Faculty\DashboardController as FacultyDashboardController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\LearningAndDevelopmentController;
+use App\Http\Controllers\OtherInformationController;
 use App\Http\Controllers\RPMSController;
+use App\Http\Controllers\APIController;
 use App\Http\Controllers\Faculty\RPMSController as FacultyRPMSController;
 use App\Http\Controllers\Faculty\AttendanceController as FacultyAttendanceController;
 use App\Http\Controllers\Faculty\PersonalDetailsController;
@@ -24,6 +27,8 @@ use App\Http\Controllers\Admin\Configuration\RoleController;
 
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSConfigurationController;
+use App\Http\Controllers\VoluntaryWorkController;
+use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -157,8 +162,12 @@ Route::middleware('redirUnauthUser')->group(function () {
             Route::middleware('intApiKey')->group(function () {
 
 
-                Route::get('/civil-service/all', [CivilServiceController::class, 'all'])->name('api.civil-service.all');
             });
+                Route::get('/civil-service/all', [CivilServiceController::class, 'all'])                                ->name('api.civil-service.all');
+                Route::get('/work-experience/all', [WorkExperienceController::class, 'all'])                            ->name('api.work-experience.all');
+                Route::get('/voluntary-work/all', [VoluntaryWorkController::class, 'all'])                              ->name('api.voluntary-work.all');
+                Route::get('/learning-and-development/all', [LearningAndDevelopmentController::class, 'all'])           ->name('api.learning-and-development.all');
+                Route::get('/other-information/all', [OtherInformationController::class, 'all'])                        ->name('api.other-information.all');
 
         });
 
@@ -171,12 +180,18 @@ Route::middleware('redirUnauthUser')->group(function () {
      *
     */
 
-
+    Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                           ->name('personal-information.edit.update');
     Route::patch('/civil-service', [CivilServiceController::class, 'update'])                                           ->name('civil-service.update');
-    Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
+    Route::patch('/work-experience', [WorkExperienceController::class, 'update'])                                       ->name('work-experience.update');
+    Route::patch('/voluntary-work', [VoluntaryWorkController::class, 'update'])                                         ->name('voluntary-work.update');
+    Route::patch('/learning-and-development', [LearningAndDevelopmentController::class, 'update'])                      ->name('learning-and-development.update');
+    Route::patch('/other-information', [OtherInformationController::class, 'update'])                                   ->name('other-information.update');
+
+
 
 });
 
 
 Route::get('/redirect/admin/sis', [JWTRedirectController::class, 'sisAdmin'])                                           ->name('sis.admin.redirect');
 Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])                                          ->name('logistics.admin.redirect');
+Route::get('/call', [APIController::class, 'callApi']) ->name('call.api.proxy');

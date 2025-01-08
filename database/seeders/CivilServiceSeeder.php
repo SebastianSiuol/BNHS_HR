@@ -13,14 +13,14 @@ class CivilServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        CivilService::create([
-            "personal_information_id" => 1,
-            "career_service" => "Civil Service Professional",
-            "rating" => "85.50",
-            "date_of_examination" => "2023-06-15",
-            "place_of_examination" => "Manila",
-            "license_number" => "12345",
-            "date_of_validity" => "2028-06-15",
-        ]);
+        // CivilService::create([
+        //     "personal_information_id" => 1,
+        //     "career_service" => "Civil Service Professional",
+        //     "rating" => "85.50",
+        //     "date_of_examination" => "2023-06-15",
+        //     "place_of_examination" => "Manila",
+        //     "license_number" => "12345",
+        //     "date_of_validity" => "2028-06-15",
+        // ]);
     }
 }

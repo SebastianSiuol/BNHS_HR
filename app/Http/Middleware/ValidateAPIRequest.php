@@ -17,10 +17,6 @@ class ValidateAPIRequest
     {
         $contentType = $request->header('content-type');
 
-        if ($contentType === 'application/html') {
-            abort(403);
-        }
-
         if ($contentType !== 'application/json') {
             abort(403);
         }

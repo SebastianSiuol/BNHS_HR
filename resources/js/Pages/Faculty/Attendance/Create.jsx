@@ -1,15 +1,12 @@
-import { usePage, router } from "@inertiajs/react";
 import { useState } from "react";
+import { usePage, router } from "@inertiajs/react";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { MdOutlineNoEncryptionGmailerrorred } from "react-icons/md";
 
-const AUTH_API_KEY = import.meta.env.VITE_AUTH_API_KEY;
-
-const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
-const postUrl = "/api/attendance/action";
+import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 
 export default function Index() {
     return (
@@ -20,42 +17,50 @@ export default function Index() {
 }
 
 function HandlePage() {
-    const { shift, auth } = usePage().props;
+    const { shift, auth, attendance } = usePage().props;
+
+    const currentTime = dayjs().format("YYYY-MM-DDTHH:mm:ss.SSS");
+
 
     async function onTimeIn() {
         try {
-            const response = await fetch(postUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-api-key": AUTH_API_KEY,
-                },
-                body: JSON.stringify(
-                    postFormat({
-                        id: auth.id,
-                        shiftTime: shift.from,
-                        postTime: currentTime,
-                        action: "check_in",
-                    })
-                ),
+                router.post(route("admin.attendances.check-in"), {
+                id: auth.id,
+                shiftTime: shift.from,
+                postTime: currentTime,
+                action: "check_in",
             });
-
-            const parsedResponse = await response.json();
-
-            if (!response.ok) {
-                errorSwal(parsedResponse.error);
-            }
         } catch (e) {
-            errorSwal("Something went wrong!");
+            console.log(e);
+            errorSwal("Something went wrong! Please try again later.");
         }
     }
 
-    function onTimeOut() {}
+    function onTimeOut() {
+        try {
+            router.post(route("admin.attendances.check-out"), {
+                id: auth.id,
+                shiftTime: shift.to,
+                postTime: currentTime,
+                action: "check_out",
+            });
+        } catch (e) {
+            console.log(e);
+            errorSwal("Something went wrong! Please try again later.");
+        }
+    }
 
-    function formatTimeTo12H(hour) {
-        const timeTo12H = dayjs("1/1/1 " + hour).format("hh:mm A");
+
+    function formatHourTo12H(hour) {
+        const timeTo12H = dayjs(hour).format("hh:mm A");
 
         return timeTo12H;
+    }
+
+    function formatDateToTime(date){
+        const dateToTime = dayjs(date).format("hh:mm A")
+
+        return dateToTime;
     }
 
     return (
@@ -113,30 +118,32 @@ function HandlePage() {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="attendanceBody">
+                        <tbody>
                             <tr className="odd:bg-blue-100 even:bg-white border-b">
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                    {`${formatTimeTo12H(
+                                    {`${formatHourTo12H(
                                         shift.from
-                                    )} - ${formatTimeTo12H(shift.to)}`}
+                                    )} - ${formatHourTo12H(shift.to)}`}
                                 </td>
                                 <td
                                     id="timeIn"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.check_in ? formatDateToTime(attendance?.check_in) : '--'}
                                 </td>
                                 <td
                                     id="timeOut"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.check_out ? formatDateToTime(attendance?.check_out) : '--'}
+
                                 </td>
                                 <td
                                     id="status"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 >
-                                    --
+                                    {attendance?.status ? capitalizeFirstLetter(attendance?.status) : '--'}
+
                                 </td>
                             </tr>
                         </tbody>
@@ -147,22 +154,42 @@ function HandlePage() {
     );
 }
 
-function errorSwal(error) {
+function errorSwal( error ) {
     withReactContent(Swal).fire({
         title: <b>ERROR</b>,
-        iconHtml: <MdOutlineNoEncryptionGmailerrorred />,
+        iconHtml: <MdOutlineNoEncryptionGmailerrorred/>,
         text: error,
-        confirmButtonText: "Confirm",
+        confirmButtonText: 'Confirm',
         customClass: {
-            container: "...",
-            popup: "border rounded-3xl",
-            header: "...",
-            title: "text-gray-500",
-            icon: "...",
-            htmlContainer: "...",
-            validationMessage: "...",
-            actions: "...",
-            confirmButton: "bg-blue-800",
-        },
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-500',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-800',
+          }
+    });
+}
+
+function successSwal( message ) {
+    withReactContent(Swal).fire({
+        title: <b>SUCCESS!</b>,
+        icon: 'success',
+        text: message,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-green-500',
+            icon: 'text-green-900',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-800',
+          }
     });
 }
