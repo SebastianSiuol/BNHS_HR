@@ -185,7 +185,8 @@ export function CompanyDetailsForm() {
                             control={control}
                             name={"date_of_joining"}
                             render={({ field }) => (
-                                <CustomDatePicker value={field} error={errors} name={"date_of_joining"}/>
+                                <CustomDatePicker value={field} error={errors} name={"date_of_joining"}
+                                />
                             )}
                         />
                     </div>

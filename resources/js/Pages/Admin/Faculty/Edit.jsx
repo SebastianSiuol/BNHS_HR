@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePage } from "@inertiajs/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, useController } from "react-hook-form";
+import dayjs from 'dayjs';
 
 // Edit Multistep Form Context, Provider, and Hooks
 import { useEditMultiStepForm } from "@/Context/EditMultiStepFormContext";
@@ -88,6 +89,9 @@ function PersonalDetailsForm() {
 
     }
 
+    const eighteenYearsAgo = dayjs().subtract(18, 'year');
+
+
     return (
         <form encType={"multi-part/formdata"}>
             <div className="grid grid-cols-none lg:grid-cols-4 gap-4">
@@ -119,7 +123,9 @@ function PersonalDetailsForm() {
                     <InputLabel labelFor={"date_of_birth"} color={"black"} width={"normal"}>
                         Date of Birth
                     </InputLabel>
-                    <Controller control={control} name={"date_of_birth"} render={({ field }) => <CustomDatePicker value={field} error={errors} name={"date_of_birth"} />} />
+                    <Controller control={control} name={"date_of_birth"} render={({ field }) => <CustomDatePicker value={field} error={errors} name={"date_of_birth"} minimumDate={'1950-01-01'} maximumDate={eighteenYearsAgo.format(
+                                "YYYY-MM-DD"
+                            )}/>} />
                 </div>
                 <LabeledInput id={"sex"} register={register} label={"Sex"} placeholder={"Sex"} color={"black"} width={"normal"} error={errors} />
                 <div className={"my-2"}>
@@ -586,7 +592,8 @@ export function CompanyDetailsForm() {
                             Date of Joining
                         </InputLabel>
 
-                        <Controller control={control} name={"date_of_joining"} render={({ field }) => <CustomDatePicker value={field} error={errors} name={"date_of_joining"} />} />
+                        <Controller control={control} name={"date_of_joining"} render={({ field }) => <CustomDatePicker value={field} error={errors} name={"date_of_joining"} minimumDate={"1950-01-01"}
+                                    />} />
                     </div>
 
                     <div className={"my-2"}>

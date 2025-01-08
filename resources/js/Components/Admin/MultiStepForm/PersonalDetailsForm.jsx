@@ -124,7 +124,9 @@ export function PersonalDetailsForm() {
 
                     <Controller control={control} name={'date_of_birth'}
                         render={({ field }) => (
-                            <CustomDatePicker value={field} error={errors} name={'date_of_birth'} d/>
+                            <CustomDatePicker value={field} error={errors} name={'date_of_birth'} minimumDate={'1950-01-01'} maximumDate={eighteenYearsAgo.format(
+                                "YYYY-MM-DD"
+                            )}/>
                         )}/>
                 </div>
 
