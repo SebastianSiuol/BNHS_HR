@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { Description, DialogTitle } from "@headlessui/react";
 import { useForm, Controller } from "react-hook-form";
-import { pdfjs, Document, Page } from "react-pdf";
 
 import { FaPlus } from "react-icons/fa";
 import { IoSearchSharp, IoDocumentTextOutline } from "react-icons/io5";
@@ -18,6 +17,8 @@ import { Table, TableRow } from "@/Components/Table";
 import { handleStatus, handleUploadPeriod } from "@/Utils/formatTableDataUtils";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 
+
+import { pdfjs, Document, Page } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url
@@ -101,20 +102,6 @@ function SearchHeaders({ onUploadModal }) {
                     />
                 </label>
 
-                {/* <div className="flex">
-                    <select
-                        id="shift"
-                        defaultValue="0"
-                        className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5"
-                        required="">
-                        <option
-                            disabled
-                            value="0">
-                            Year
-                        </option>
-                        <option value="1">2024</option>
-                    </select>
-                </div> */}
             </div>
 
             <div className="flex border-gray-300 mt-1 px-4 border bg-gray-50 rounded-lg items-center justify-center">
