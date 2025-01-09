@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FacultiesExport;
 use App\Services\StoreFacultyService;
 use App\Http\Requests\StoreFacultyRequest;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\Faculty;
+use Maatwebsite\Excel\Facades\Excel;
 use PHPUnit\Framework\Constraint\IsEmpty;
 
 
@@ -253,5 +255,13 @@ class FacultyController extends Controller
                 'roles_id' => $faculty->roles->pluck('id')
             ]
         ]);
+    }
+
+    public function export(){
+        return Excel::download(new FacultiesExport, 'faculties.xlsx');
+    }
+
+    public function pds(){
+        return Excel::download(new FacultiesExport, 'faculties.xlsx');
     }
 }

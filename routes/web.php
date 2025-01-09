@@ -195,3 +195,14 @@ Route::middleware('redirUnauthUser')->group(function () {
 Route::get('/redirect/admin/sis', [JWTRedirectController::class, 'sisAdmin'])                                           ->name('sis.admin.redirect');
 Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])                                          ->name('logistics.admin.redirect');
 Route::get('/call', [APIController::class, 'callApi']) ->name('call.api.proxy');
+
+
+    /*
+    / ===============================================================================
+    /
+    / Public Export Routes
+    /
+    / ===============================================================================
+    */
+Route::get('/export/faculties', [FacultyController::class, 'export'])                                                   ->name('faculty.export.all');
+Route::get('/export/faculty/pds', [FacultyController::class, 'pds'])                                                    ->name('faculty.export.all');
