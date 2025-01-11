@@ -4,15 +4,17 @@ namespace App\Exports;
 
 use App\Models\Faculty;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class FacultiesExport implements FromView, WithEvents
-{
+
+CLASS FacultiesExport implements fromView, withEvents {
     /**
      * Return the view used for export.
      *
@@ -284,6 +286,12 @@ class FacultiesExport implements FromView, WithEvents
                     'vertical' => Alignment::VERTICAL_CENTER,
                 ],
             ],
+            'I17:N31' => [
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    'vertical' => Alignment::VERTICAL_TOP,
+                ],
+            ],
         ];
 
         foreach ($customStyles as $range => $style) {
@@ -304,6 +312,7 @@ class FacultiesExport implements FromView, WithEvents
             ['range' => 'G44:H44', 'color' => 'EAEAEA'],
             ['range' => 'I36:N36', 'color' => 'EAEAEA'],
             ['range' => 'J61:K61', 'color' => 'EAEAEA'],
+            ['range' => 'L11:N11', 'color' => 'EAEAEA'],
             ['range' => 'K7', 'color' => '969696'],
             ['range' => 'A9:N9', 'color' => '969696'],
             ['range' => 'A35:N35', 'color' => '969696'],
@@ -513,3 +522,7 @@ class FacultiesExport implements FromView, WithEvents
        }
    }
 }
+
+/**
+ * Sheet for additional data.
+ */

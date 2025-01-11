@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FacultiesExport;
+use App\Exports\PersonalDetailsSheetExport;
 use App\Services\StoreFacultyService;
 use App\Http\Requests\StoreFacultyRequest;
 use Illuminate\Http\Request;
@@ -262,6 +263,6 @@ class FacultyController extends Controller
     }
 
     public function pds(){
-        return Excel::download(new FacultiesExport, 'faculties.xlsx');
+        return Excel::download(new PersonalDetailsSheetExport, 'faculties.xlsx');
     }
 }

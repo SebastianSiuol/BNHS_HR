@@ -205,4 +205,4 @@ Route::get('/call', [APIController::class, 'callApi']) ->name('call.api.proxy');
     / ===============================================================================
     */
 Route::get('/export/faculties', [FacultyController::class, 'export'])                                                   ->name('faculty.export.all');
-Route::get('/export/faculty/pds', [FacultyController::class, 'pds'])                                                    ->name('faculty.export.all');
+Route::get('/export/faculty/pds', [FacultyController::class, 'pds'])                                                    ->name('faculty.export.pds');

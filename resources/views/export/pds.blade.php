@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Personal Data Sheet</title>
+  <title>C1</title>
 </head>
 
 <body>
@@ -109,7 +109,7 @@
     <tr> {{-- Row 22 --}}
       <td colspan="1" rowspan="2">7.</td>
       <td colspan="2" rowspan="2">HEIGHT (m)</td>
-      <td colspan="3" rowspan="2"></td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->height) }}</td>
       <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->city_municipality) }}</td>
       <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->province) }}</td>
     </tr>
@@ -122,7 +122,7 @@
     <tr> {{-- Row 24 --}}
       <td colspan="1">8.</td>
       <td colspan="2">WEIGHT (kg)</td>
-      <td colspan="3"></td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->medical_info->weight) }}</td>
       <td colspan="2">ZIP CODE</td>
       <td colspan="6">{{ strtoupper($faculty->personal_information->residential_address->zip_code) }}</td>
     </tr>
@@ -130,8 +130,10 @@
     <tr> {{-- Row 25 --}}
       <td colspan="1" rowspan="2">9.</td>
       <td colspan="2" rowspan="2">BLOOD TYPE</td>
-      <td colspan="3" rowspan="2"></td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->blood_type) }}</td>
       <td colspan="2" rowspan="6">18. PERMANENT ADDRESS</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->house_block_no) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->street) }}</td>
     </tr>
 
     <tr>{{-- Row 26 --}}
@@ -142,7 +144,9 @@
     <tr> {{-- Row 27 --}}
       <td colspan="1" rowspan="2">10.</td>
       <td colspan="2" rowspan="2">GSIS ID NO.</td>
-      <td colspan="3" rowspan="2"></td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->phil_id_cards->gsis_id_no ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->subdivision_village) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->barangay) }}</td>
     </tr>
 
     <tr>  {{-- Row 28 --}}
@@ -153,7 +157,9 @@
     <tr> {{-- Row 29 --}}
       <td colspan="1" rowspan="2">11.</td>
       <td colspan="2" rowspan="2">PAG-IBIG ID NO.</td>
-      <td colspan="3" rowspan="2"></td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->phil_id_cards->pag_ibig_id_no ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->city_municipality ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->province ?? 'N/A') }}</td>
     </tr>
 
     <tr>  {{-- Row 30 --}}
@@ -164,22 +170,26 @@
     <tr> {{-- Row 31 --}}
       <td colspan="1">12.</td>
       <td colspan="2">PHILHEALTH NO.</td>
-      <td colspan="3"></td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->phil_id_cards->philhealth_no ?? 'N/A') }}</td>
       <td colspan="2">ZIP CODE</td>
+      <td colspan="6">{{ strtoupper($faculty->personal_information->permanent_address->zip_code) }}</td>
+
     </tr>
 
     <tr> {{-- Row 32 --}}
       <td colspan="1">13.</td>
       <td colspan="2">SSS NO.</td>
-      <td colspan="3"></td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->phil_id_cards->sss_no ?? 'N/A') }}</td>
       <td colspan="2">19. TELEPHONE NO.</td>
+      <td colspan="6">{{ strtoupper($faculty->personal_information->telephone_no ?? 'N/A')  }}</td>
     </tr>
 
     <tr> {{-- Row 33 --}}
       <td colspan="1">14.</td>
       <td colspan="2">TIN NO.</td>
-      <td colspan="3"></td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->phil_id_cards->tin_no ?? 'N/A') }}</td>
       <td colspan="2">20. MOBILE NO.</td>
+      <td colspan="6">{{ strtoupper($faculty->personal_information->contact_no ?? 'N/A') }}</td>
     </tr>
 
     <tr> {{-- Row 34 --}}
@@ -187,6 +197,7 @@
       <td colspan="2">AGENCY EMPLOYEE NO.</td>
       <td colspan="3"></td>
       <td colspan="2">21. EMAIL ADDRESS (if any)</td>
+      <td colspan="6">{{ strtoupper($faculty->email) }}</td>
     </tr>
 
     <tr> {{-- Row 35 --}}

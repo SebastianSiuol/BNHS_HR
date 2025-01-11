@@ -73,10 +73,35 @@ function HandlePage() {
 }
 
 function Header() {
+    async function handlePDSDownload() {
+        try {
+            const response = await fetch(route("faculty.export.pds"));
+            const blob = await response.blob();
+
+            const href = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = href;
+            link.setAttribute("download", 'pds.xlsx');
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (err) {
+            console.error("Error:", err);
+            return Promise.reject({ Error: "Something Went Wrong", err });
+        }
+    }
+
     return (
         <div className="flex justify-between items-center bg-white shadow p-4 rounded-lg">
-            <h1 className="text-xl font-bold text-gray-800">Faculty Information</h1>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Export PDS</button>
+            <h1 className="text-xl font-bold text-gray-800">
+                Faculty Information
+            </h1>
+            <button
+                onClick={handlePDSDownload}
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
+                Export PDS
+            </button>
         </div>
     );
 }
