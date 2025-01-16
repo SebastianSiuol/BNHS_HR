@@ -19,6 +19,14 @@ class VoluntaryWorkController extends Controller
             'voluntaryWorks.*.dateTo' => 'nullable|date|after_or_equal:voluntaryWorks.*.dateFrom',
             'voluntaryWorks.*.hours' => 'required|integer|min:0',
             'voluntaryWorks.*.position' => 'required|string|max:255',
+        ],
+        [
+            'voluntaryWorks.required' => 'The work experiences field is required.',
+            'voluntaryWorks.*.organizationName.required' => 'An organization name is required.',
+            'voluntaryWorks.*.hours.required' => 'The hours worked is required.',
+            'voluntaryWorks.*.position.required' => 'The position is required.',
+            'voluntaryWorks.*.dateFrom.required' => 'An initial date is required.',
+            'voluntaryWorks.*.toDate.after_or_equal' => 'The \'To date\' should not come before \'From date\'.',
         ]);
 
         $user = Auth::user();
@@ -57,7 +65,7 @@ class VoluntaryWorkController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Voluntary work updated successfully.']);
+        return redirect()->back()->with(['success' => 'Voluntary work updated successfully.']);
     }
 
     public function all()

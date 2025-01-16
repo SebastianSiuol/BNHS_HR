@@ -1,13 +1,9 @@
-import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { usePage, router } from "@inertiajs/react";
-import { z } from "zod";
+import { router } from "@inertiajs/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { v7 as uuidv7 } from "uuid";
 
 import { useFetchData } from "@/Hooks/useFetchData";
-
-import CustomDatePicker from "@/Components/CustomDatePicker";
-import { LabelInput } from "@/Components/LabelInput";
-import { InputSelect } from "@/Components/InputSelect";
 
 export function OtherInformation() {
     const { data: inputFields, setData: setInputFields } = useFetchData("/other-information/all");
@@ -20,15 +16,18 @@ export function OtherInformation() {
 
     function onSave() {
         const payload = { otherInformation: inputFields };
-        console.log(payload);
-        router.patch(route("other-information.update"), payload);
+        router.patch(route("other-information.update"), payload, {
+            onSuccess: ()=>{
+                setInputEditable(false);
+            }
+        });
     }
 
     function addRow() {
         setInputFields([
             ...inputFields,
             {
-                id: null,
+                publicId: uuidv7(),
                 specialSkills: "",
                 distinctions: "",
                 memberships: "",
@@ -36,14 +35,14 @@ export function OtherInformation() {
         ]);
     }
 
-    function deleteRow(id) {
-        const updatedFields = inputFields.filter((field) => field.id !== id);
+    function deleteRow(publicId) {
+        const updatedFields = inputFields.filter((field) => field.publicId !== publicId);
         setInputFields(updatedFields);
     }
 
-    function handleInputChange(id, field, value) {
+    function handleInputChange(publicId, field, value) {
         const updatedFields = inputFields.map((fieldItem) =>
-            fieldItem.id === id ? { ...fieldItem, [field]: value } : fieldItem
+            fieldItem.publicId === publicId ? { ...fieldItem, [field]: value } : fieldItem
         );
         setInputFields(updatedFields);
     }
@@ -111,7 +110,7 @@ export function OtherInformation() {
                                             value={field.specialSkills}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "specialSkills",
                                                     e.target.value
                                                 )
@@ -127,7 +126,7 @@ export function OtherInformation() {
                                             value={field.distinctions}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "distinctions",
                                                     e.target.value
                                                 )
@@ -143,7 +142,7 @@ export function OtherInformation() {
                                             value={field.memberships}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "memberships",
                                                     e.target.value
                                                 )
@@ -158,7 +157,7 @@ export function OtherInformation() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    deleteRow(field.id)
+                                                    deleteRow(field.publicId)
                                                 }
                                                 className="text-red-500 hover:text-red-700"
                                             >

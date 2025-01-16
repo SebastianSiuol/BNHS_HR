@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { usePage, router } from "@inertiajs/react";
-import { z } from "zod";
+import { router } from "@inertiajs/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { useFetchData } from "@/Hooks/useFetchData";
+import { getDateToday } from "@/Utils/customDayjsUtils";
 
 import CustomDatePicker from "@/Components/CustomDatePicker";
-import { LabelInput } from "@/Components/LabelInput";
-import { InputSelect } from "@/Components/InputSelect";
 
 export function VoluntaryWork() {
     const { data: inputFields, setData: setInputFields } = useFetchData("/voluntary-work/all");
@@ -20,9 +18,11 @@ export function VoluntaryWork() {
 
     function onSave() {
         const payload = { voluntaryWorks: inputFields };
-        console.log(payload);
-        // Example patch request
-        router.patch(route("voluntary-work.update"), payload);
+        router.patch(route("voluntary-work.update"), payload, {
+            onSuccess: () => {
+                setInputEditable(false);
+            },
+        });
     }
 
     function addRow() {
@@ -141,9 +141,10 @@ export function VoluntaryWork() {
                                                     handleInputChange(field.id, "dateFrom", value),
                                             }}
                                             name={`dateFrom-${index}`}
-                                            minimumDate={"2000-01-01"}
                                             disabled={!inputEditable}
                                             error={errors}
+                                            minimumDate={'1970-01-01'}
+                                            maximumDate={getDateToday()}
                                         />
                                     </td>
                                     <td className="border px-4 py-2">
@@ -157,9 +158,10 @@ export function VoluntaryWork() {
                                                     handleInputChange(field.id, "dateTo", value),
                                             }}
                                             name={`dateTo-${index}`}
-                                            minimumDate={"2000-01-01"}
                                             disabled={!inputEditable}
                                             error={errors}
+                                            minimumDate={'1970-01-01'}
+                                            maximumDate={getDateToday()}
                                         />
                                     </td>
                                     <td className="border px-4 py-2">

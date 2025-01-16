@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { usePage, router } from "@inertiajs/react";
-import { z } from "zod";
+import { router } from "@inertiajs/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { v7 as uuidv7 } from "uuid";
 
 import { useFetchData } from "@/Hooks/useFetchData";
+import { getDateToday } from "@/Utils/customDayjsUtils";
 
 import CustomDatePicker from "@/Components/CustomDatePicker";
-import { LabelInput } from "@/Components/LabelInput";
-import { InputSelect } from "@/Components/InputSelect";
 
 export function LearningAndDevelopment() {
     const { data: inputFields, setData: setInputFields } = useFetchData("/learning-and-development/all");
@@ -17,16 +16,18 @@ export function LearningAndDevelopment() {
 
     function onSave() {
         const payload = { learningAndDevelopment: inputFields };
-        console.log(payload);
-        // Example PATCH request
-        router.patch(route("learning-and-development.update"), payload);
+        router.patch(route("learning-and-development.update"), payload, {
+            onSuccess: () => {
+                setInputEditable(false);
+            },
+        });
     }
 
     function addRow() {
         setInputFields([
             ...inputFields,
             {
-                id: null,
+                publicId: uuidv7(),
                 title: "",
                 dateFrom: "",
                 dateTo: "",
@@ -37,14 +38,14 @@ export function LearningAndDevelopment() {
         ]);
     }
 
-    function deleteRow(id) {
-        const updatedFields = inputFields.filter((field) => field.id !== id);
+    function deleteRow(publicId) {
+        const updatedFields = inputFields.filter((field) => field.publicId !== publicId);
         setInputFields(updatedFields);
     }
 
-    function handleInputChange(id, field, value) {
+    function handleInputChange(publicId, field, value) {
         const updatedFields = inputFields.map((fieldItem) =>
-            fieldItem.id === id ? { ...fieldItem, [field]: value } : fieldItem
+            fieldItem.publicId === publicId ? { ...fieldItem, [field]: value } : fieldItem
         );
         setInputFields(updatedFields);
     }
@@ -120,14 +121,14 @@ export function LearningAndDevelopment() {
                         </thead>
                         <tbody>
                             {inputFields.map((field, index) => (
-                                <tr key={field.id}>
+                                <tr key={field.publicId}>
                                     <td className="border px-4 py-2">
                                         <input
                                             type="text"
                                             value={field.title}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "title",
                                                     e.target.value
                                                 )
@@ -145,12 +146,13 @@ export function LearningAndDevelopment() {
                                                     ? new Date(field.dateFrom)
                                                     : null,
                                                 onChange: (value) =>
-                                                    handleInputChange(field.id, "dateFrom", value),
+                                                    handleInputChange(field.publicId, "dateFrom", value),
                                             }}
                                             name={`dateFrom-${index}`}
-                                            minimumDate={"2000-01-01"}
                                             disabled={!inputEditable}
                                             error={errors}
+                                            minimumDate={"1970-01-01"}
+                                            maximumDate={getDateToday()}
                                         />
                                     </td>
                                     <td className="border px-4 py-2">
@@ -161,12 +163,13 @@ export function LearningAndDevelopment() {
                                                     ? new Date(field.dateTo)
                                                     : null,
                                                 onChange: (value) =>
-                                                    handleInputChange(field.id, "dateTo", value),
+                                                    handleInputChange(field.publicId, "dateTo", value),
                                             }}
                                             name={`dateTo-${index}`}
-                                            minimumDate={"2000-01-01"}
                                             disabled={!inputEditable}
                                             error={errors}
+                                            minimumDate={"1970-01-01"}
+                                            maximumDate={getDateToday()}
                                         />
                                     </td>
                                     <td className="border px-4 py-2">
@@ -175,7 +178,7 @@ export function LearningAndDevelopment() {
                                             value={field.hours}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "hours",
                                                     e.target.value
                                                 )
@@ -191,7 +194,7 @@ export function LearningAndDevelopment() {
                                             value={field.type}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "type",
                                                     e.target.value
                                                 )
@@ -207,7 +210,7 @@ export function LearningAndDevelopment() {
                                             value={field.conductedBy}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "conductedBy",
                                                     e.target.value
                                                 )
@@ -222,7 +225,7 @@ export function LearningAndDevelopment() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    deleteRow(field.id)
+                                                    deleteRow(field.publicId)
                                                 }
                                                 className="text-red-500 hover:text-red-700"
                                             >

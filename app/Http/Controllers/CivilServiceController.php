@@ -21,6 +21,14 @@ class CivilServiceController extends Controller
             'civilServices.*.placeOfExamination' => 'nullable|string|max:255',
             'civilServices.*.licenseNumber' => 'nullable|string|max:255',
             'civilServices.*.dateOfValidity' => 'nullable|date|after_or_equal:dateOfExamination',
+        ],
+        [
+            'required' => 'A required field is missing.',
+            'civilServices.*.careerService.required' => 'A career service field is missing.',
+            'civilServices.*.dateOfExamination.required' => 'A date of examination is required.',
+            'civilServices.*.dateOfExamination.before_or_equal' => 'The date of examination must be today or earlier.',
+            'civilServices.*.dateOfValidity.after_or_equal' => 'The date of validity must be after or equal to the date of examination.',
+            'civilServices.*.*' => 'There is an issue with the civil service field.',
         ]);
 
         $faculty = Auth::user();

@@ -1,8 +1,9 @@
 import { router } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useFetchData } from "@/Hooks/useFetchData";
+import { getDateToday } from "@/Utils/customDayjsUtils";
 
 import CustomDatePicker from "@/Components/CustomDatePicker";
 
@@ -21,7 +22,11 @@ export function CivilServiceEligibility() {
             civilServices: inputFields,
         };
         console.log(payload);
-        router.patch(route("civil-service.update"), payload);
+        router.patch(route("civil-service.update"), payload, {
+            onSuccess: ()=>{
+                setInputEditable(false);
+            }
+        });
     }
 
     function addRow() {
@@ -51,6 +56,8 @@ export function CivilServiceEligibility() {
         setInputFields(newFields);
     }
 
+    console.log(getDateToday());
+
     return (
         <div className="bg-white shadow p-6 rounded-lg">
             <div className="flex justify-between items-center border-b pb-4 mb-4">
@@ -66,7 +73,7 @@ export function CivilServiceEligibility() {
                     </div>
                 <div className={"space-x-4"}>
                     <button
-                        onClick={() => {
+                       onClick={() => {
                             setInputEditable((e) => !e);
                         }}
                         className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600">
@@ -188,7 +195,8 @@ export function CivilServiceEligibility() {
                                             name={`dateOfExamination-${index}`}
                                             disabled={!inputEditable}
                                             error={errors}
-                                            minimumDate={"2000-01-01"}
+                                            minimumDate={"1970-01-01"}
+                                            maximumDate={getDateToday()}
                                         />
                                     </td>
 

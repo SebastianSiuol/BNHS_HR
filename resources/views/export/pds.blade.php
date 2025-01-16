@@ -45,18 +45,18 @@
     <tr>
       <td colspan="1">2.</td>
       <td colspan="2">SURNAME</td>
-      <td colspan="11">{{ strtoupper($faculty->personal_information->last_name) }}</td>
+      <td colspan="11">{{ strtoupper($faculty->personal_information->last_name ?? 'N/A') }}</td>
     </tr>
     <tr>
       <td colspan="1"></td>
       <td colspan="2">FIRST NAME</td>
-      <td colspan="8">{{ strtoupper($faculty->personal_information->first_name) }}</td>
+      <td colspan="8">{{ strtoupper($faculty->personal_information->first_name ?? 'N/A') }}</td>
       <td colspan="3">NAME EXTENSION (JR., SR)</td>
     </tr>
     <tr>
       <td colspan="1"></td>
       <td colspan="2">SURNAME</td>
-      <td colspan="11">{{ strtoupper($faculty->personal_information->middle_name) }}</td>
+      <td colspan="11">{{ strtoupper($faculty->personal_information->middle_name ?? 'N/A') }}</td>
     </tr>
     <tr>
       <td colspan="1">3.</td>
@@ -69,24 +69,24 @@
     <tr>
       <td colspan="1">4.</td>
       <td colspan="2">PLACE OF BIRTH</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->place_of_birth) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->place_of_birth ?? 'N/A') }}</td>
       <td colspan="3">If holder of dual citizenship, </td>
     </tr>
 
     <tr> {{-- Row 16 --}}
       <td colspan="1">5.</td>
       <td colspan="2">SEX</td>
-      <td colspan="3">{{strtoupper( $faculty->personal_information->sex) }}</td>
+      <td colspan="3">{{strtoupper( $faculty->personal_information->sex ?? 'N/A') }}</td>
       <td colspan="3">please indicate the details.</td>
     </tr>
 
     <tr> {{-- Row 17 --}}
       <td colspan="1" rowspan="5">6.</td>
       <td colspan="2" rowspan="5">CIVIL STATUS</td>
-      <td colspan="3" rowspan="5">{{ strtoupper($faculty->personal_information->civil_status->civil_status) }}</td>
+      <td colspan="3" rowspan="5">{{ strtoupper($faculty->personal_information->civil_status->civil_status ?? 'N/A') }}</td>
       <td colspan="2" rowspan="7">17. RESIDENTIAL ADDRESS</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->house_block_no) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->street) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->house_block_no ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->street ?? 'N/A') }}</td>
     </tr>
 
     <tr>{{-- Row 18 --}}
@@ -97,43 +97,43 @@
     <tr></tr> {{-- Row 19 --}}
 
     <tr>{{-- Row 20 --}}
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->subdivision_village) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->barangay) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->subdivision_village ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->barangay ?? 'N/A') }}</td>
     </tr>
 
-    <tr>  {{-- Row 21 --}}
+    <tr> {{-- Row 21 --}}
       <td colspan="3">Subdivision/Village</td>
       <td colspan="3">Barangay</td>
     </tr>
 
     <tr> {{-- Row 22 --}}
       <td colspan="1" rowspan="2">7.</td>
-      <td colspan="2" rowspan="2">HEIGHT (m)</td>
-      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->height) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->city_municipality) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->province) }}</td>
+      <td colspan="2" rowspan="2">HEIGHT (m ?? 'N/A')</td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->height ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->city_municipality ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->residential_address->province ?? 'N/A') }}</td>
     </tr>
 
-    <tr>  {{-- Row 23 --}}
+    <tr> {{-- Row 23 --}}
       <td colspan="3">City/Municipality</td>
       <td colspan="3">Province</td>
     </tr>
 
     <tr> {{-- Row 24 --}}
       <td colspan="1">8.</td>
-      <td colspan="2">WEIGHT (kg)</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->medical_info->weight) }}</td>
+      <td colspan="2">WEIGHT (kg ?? 'N/A')</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->medical_info->weight ?? 'N/A') }}</td>
       <td colspan="2">ZIP CODE</td>
-      <td colspan="6">{{ strtoupper($faculty->personal_information->residential_address->zip_code) }}</td>
+      <td colspan="6">{{ strtoupper($faculty->personal_information->residential_address->zip_code ?? 'N/A') }}</td>
     </tr>
 
     <tr> {{-- Row 25 --}}
       <td colspan="1" rowspan="2">9.</td>
       <td colspan="2" rowspan="2">BLOOD TYPE</td>
-      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->blood_type) }}</td>
+      <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->medical_info->blood_type ?? 'N/A') }}</td>
       <td colspan="2" rowspan="6">18. PERMANENT ADDRESS</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->house_block_no) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->street) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->house_block_no ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->street ?? 'N/A') }}</td>
     </tr>
 
     <tr>{{-- Row 26 --}}
@@ -145,11 +145,11 @@
       <td colspan="1" rowspan="2">10.</td>
       <td colspan="2" rowspan="2">GSIS ID NO.</td>
       <td colspan="3" rowspan="2">{{ strtoupper($faculty->personal_information->phil_id_cards->gsis_id_no ?? 'N/A') }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->subdivision_village) }}</td>
-      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->barangay) }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->subdivision_village ?? 'N/A') }}</td>
+      <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->barangay ?? 'N/A') }}</td>
     </tr>
 
-    <tr>  {{-- Row 28 --}}
+    <tr> {{-- Row 28 --}}
       <td colspan="3">Subdivision/Village</td>
       <td colspan="3">Barangay</td>
     </tr>
@@ -162,7 +162,7 @@
       <td colspan="3">{{ strtoupper($faculty->personal_information->permanent_address->province ?? 'N/A') }}</td>
     </tr>
 
-    <tr>  {{-- Row 30 --}}
+    <tr> {{-- Row 30 --}}
       <td colspan="3">City/Municipality</td>
       <td colspan="3">Province</td>
     </tr>
@@ -172,7 +172,7 @@
       <td colspan="2">PHILHEALTH NO.</td>
       <td colspan="3">{{ strtoupper($faculty->personal_information->phil_id_cards->philhealth_no ?? 'N/A') }}</td>
       <td colspan="2">ZIP CODE</td>
-      <td colspan="6">{{ strtoupper($faculty->personal_information->permanent_address->zip_code) }}</td>
+      <td colspan="6">{{ strtoupper($faculty->personal_information->permanent_address->zip_code ?? 'N/A') }}</td>
 
     </tr>
 

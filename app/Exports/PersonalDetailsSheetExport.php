@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use App\Exports\FacultiesExport;
-use App\Exports\AdditionalDetailsExport;
+use App\Exports\PersonalInformationSheetExport;
+use App\Exports\CivilAndWorkSheetExport;
+use App\Exports\VolWorkAndLearnDevAndOtherInfoSheetExport;
 
 class PersonalDetailsSheetExport implements FromArray, WithMultipleSheets
 {
@@ -19,8 +20,10 @@ class PersonalDetailsSheetExport implements FromArray, WithMultipleSheets
     public function sheets(): array
     {
         $sheets = [
-            new FacultiesExport(),
-            new AdditionalDetailsExport(),
+            new PersonalInformationSheetExport(),
+            new CivilAndWorkSheetExport(),
+            new VolWorkAndLearnDevAndOtherInfoSheetExport(),
+            new SelfDisclosureSheetExport(),
         ];
 
         return $sheets;

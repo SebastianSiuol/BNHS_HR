@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('learning_and_developments', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id');
             $table->foreignId('personal_information_id');
             $table->string('title');
             $table->date('date_from')->nullable();

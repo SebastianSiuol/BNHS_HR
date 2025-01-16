@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('other_information', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id');
             $table->foreignId('personal_information_id');
             $table->string('special_skills')->nullable();
             $table->string('distinctions')->nullable();

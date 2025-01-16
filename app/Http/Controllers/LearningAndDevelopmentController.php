@@ -13,7 +13,7 @@ class LearningAndDevelopmentController extends Controller
         // Validate the incoming request data
         $validated = $request->validate([
             'learningAndDevelopment' => 'required|array|min:1',
-            'learningAndDevelopment.*.id' => 'nullable|integer|exists:learning_and_development,id',
+            'learningAndDevelopment.*.publicId' => 'nullable',
             'learningAndDevelopment.*.title' => 'required|string|max:255',
             'learningAndDevelopment.*.dateFrom' => 'required|date',
             'learningAndDevelopment.*.dateTo' => 'nullable|date|after_or_equal:learningAndDevelopment.*.dateFrom',
@@ -24,6 +24,7 @@ class LearningAndDevelopmentController extends Controller
 
         $user = Auth::user();
 
+
         // Ensure the user has related personal information or other relationships
         if (!$user || !$user->personal_information) {
             return response()->json([
@@ -31,22 +32,24 @@ class LearningAndDevelopmentController extends Controller
             ], 404);
         }
 
+
         // Use a transaction for consistency
         DB::transaction(function () use ($validated, $user) {
             $learningAndDevelopment = collect($validated['learningAndDevelopment']);
-            $existingIds = $learningAndDevelopment->pluck('id')->filter(); // Filter for existing IDs
+            $existingIds = $learningAndDevelopment->pluck('publicId')->filter(); // Filter for existing IDs
 
             $personalInfo = $user->personal_information;
 
             // Delete records that are not in the current input
             $personalInfo->learning_and_developments()
-                ->whereNotIn('id', $existingIds)
+                ->whereNotIn('public_id', $existingIds)
                 ->delete();
 
             // Update or create learning and development records
             foreach ($learningAndDevelopment as $record) {
                 $personalInfo->learning_and_developments()->updateOrCreate(
-                    ['id' => $record['id'] ?? null], // Match by ID if available
+                    ['public_id' => $record['publicId'],],
+
                     [
                         'title' => $record['title'],
                         'date_from' => $record['dateFrom'],
@@ -59,7 +62,7 @@ class LearningAndDevelopmentController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Learning and development records updated successfully.']);
+         return redirect()->back()->with(['success' => 'Learning and development records updated successfully.']);
     }
 
     public function all()
@@ -87,7 +90,7 @@ class LearningAndDevelopmentController extends Controller
         // Map records to an array format
         $mappedRecords = $learningAndDevelopment->map(function ($record) {
             return [
-                'id' => $record->id,
+                'publicId' => $record->public_id,
                 'title' => $record->title,
                 'dateFrom' => $record->date_from,
                 'dateTo' => $record->date_to,

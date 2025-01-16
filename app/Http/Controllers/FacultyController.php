@@ -258,9 +258,6 @@ class FacultyController extends Controller
         ]);
     }
 
-    public function export(){
-        return Excel::download(new FacultiesExport, 'faculties.xlsx');
-    }
 
     public function pds(){
         return Excel::download(new PersonalDetailsSheetExport, 'faculties.xlsx');

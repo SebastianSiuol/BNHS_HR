@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 
-CLASS FacultiesExport implements fromView, withEvents {
+CLASS PersonalInformationSheetExport implements fromView, withEvents {
     /**
      * Return the view used for export.
      *
@@ -522,7 +522,3 @@ CLASS FacultiesExport implements fromView, withEvents {
        }
    }
 }
-
-/**
- * Sheet for additional data.
- */

@@ -180,7 +180,7 @@ Route::middleware('redirUnauthUser')->group(function () {
      *
     */
 
-    Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                           ->name('personal-information.edit.update');
+    Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
     Route::patch('/civil-service', [CivilServiceController::class, 'update'])                                           ->name('civil-service.update');
     Route::patch('/work-experience', [WorkExperienceController::class, 'update'])                                       ->name('work-experience.update');
     Route::patch('/voluntary-work', [VoluntaryWorkController::class, 'update'])                                         ->name('voluntary-work.update');

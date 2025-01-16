@@ -22,7 +22,13 @@ class WorkExperienceController extends Controller
             'workExperiences.*.salaryGrade' => 'nullable|string|max:50',
             'workExperiences.*.statusOfAppointment' => 'required|string|max:255',
             'workExperiences.*.govService' => 'required|in:yes,no',
-        ]);
+        ],[
+            'workExperiences.required' => 'The work experiences field is required.',
+            'workExperiences.array' => 'The work experiences must be an array.',
+            'workExperiences.min' => 'You must provide at least one work experience.',
+            'workExperiences.*.toDate.after_or_equal' => 'The \'To date\' should not come before \'From date\'.',
+        ]
+    );
 
         $user = Auth::user();
 

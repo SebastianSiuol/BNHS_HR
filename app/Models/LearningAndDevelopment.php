@@ -13,6 +13,8 @@ class LearningAndDevelopment extends Model
 
     protected $guarded = [];
 
+    protected $table = 'learning_and_developments';
+
 
     public function personal_information(){
         return $this->belongsTo(PersonalInformation::class);

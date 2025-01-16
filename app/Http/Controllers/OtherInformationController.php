@@ -13,7 +13,7 @@ class OtherInformationController extends Controller
         // Validate the incoming request data
         $validated = $request->validate([
             'otherInformation' => 'required|array|min:1',
-            'otherInformation.*.id' => 'nullable|integer|exists:other_information,id',
+            'otherInformation.*.publicId' => 'nullable',
             'otherInformation.*.specialSkills' => 'required|string|max:255',
             'otherInformation.*.distinctions' => 'nullable|string|max:255',
             'otherInformation.*.memberships' => 'nullable|string|max:255',
@@ -31,19 +31,19 @@ class OtherInformationController extends Controller
         // Use a transaction for consistency
         DB::transaction(function () use ($validated, $user) {
             $otherInformation = collect($validated['otherInformation']);
-            $existingIds = $otherInformation->pluck('id')->filter(); // Filter for existing IDs
+            $existingIds = $otherInformation->pluck('publicId')->filter();
 
             $personalInfo = $user->personal_information;
 
-            // Delete records that are not in the current input
+            // Delete records that are not in the current input (ensure UUIDs are handled)
             $personalInfo->other_information()
-                ->whereNotIn('id', $existingIds)
+                ->whereNotIn('public_id', $existingIds)
                 ->delete();
 
             // Update or create other information records
             foreach ($otherInformation as $info) {
                 $personalInfo->other_information()->updateOrCreate(
-                    ['id' => $info['id'] ?? null], // Match by ID if available
+                    ['public_id' => $info['publicId'],],
                     [
                         'special_skills' => $info['specialSkills'],
                         'distinctions' => $info['distinctions'],
@@ -53,7 +53,7 @@ class OtherInformationController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Other information updated successfully.']);
+        return redirect()->back()->with(['success' => 'Other information updated successfully.']);
     }
 
     public function all()
@@ -81,7 +81,7 @@ class OtherInformationController extends Controller
         // Map records to an array format
         $mappedRecords = $otherInformation->map(function ($info) {
             return [
-                'id' => $info->id,
+                'publicId' => $info->public_id,
                 'specialSkills' => $info->special_skills,
                 'distinctions' => $info->distinctions,
                 'memberships' => $info->memberships,
