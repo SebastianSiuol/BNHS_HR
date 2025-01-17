@@ -247,6 +247,7 @@ function RPMSTable({ data, onViewFile, onDeleteFile, onDownloadFile }) {
 }
 
 function UploadModal({ state, onToggle }) {
+    const { uploadPeriod } = usePage().props;
     const {
         handleSubmit,
         control,
@@ -260,6 +261,16 @@ function UploadModal({ state, onToggle }) {
             }
         });
     };
+
+
+    function handleUploadPeriod(data) {
+        switch (data.toString().toLowerCase()) {
+            case "mid_year":
+                return "Mid Year";
+            case "end_year":
+                return "End Year";
+        }
+    }
 
     return (
         <Modal
@@ -277,7 +288,7 @@ function UploadModal({ state, onToggle }) {
                 <hr />
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mr-5">
                     <div className="items-center justify-center flex mb-5">
-                        <h1 className="text-lg">{`Upload document for {uploadPeriod}`}</h1>
+                        <h1 className="text-lg">{`Upload document for ${handleUploadPeriod(uploadPeriod)}`}</h1>
                     </div>
 
                     <div className="py-5 px-5">

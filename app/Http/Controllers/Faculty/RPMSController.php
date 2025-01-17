@@ -16,12 +16,18 @@ class RPMSController extends Controller
     {
         $rpms = RPMS::paginate(5);
 
+        $currentDate = now();
         $year_now = Carbon::now()->format('Y');
         $rpms_config = RPMSConfiguration::where('year', $year_now)->select('id', 'mid_year_date', 'end_year_date', 'year')->first();
+
+        $uploadPeriod = $currentDate->lessThan($rpms_config->mid_year_date)
+            ? 'mid_year'
+            : 'end_year';
 
         return Inertia::render('Faculty/RPMS/Index', [
             'rpms' => $rpms,
             'rpmsConfig' => $rpms_config,
+            'uploadPeriod' => $uploadPeriod,
         ]);
     }
 
@@ -36,13 +42,20 @@ class RPMSController extends Controller
         $rpms = RPMS::where('filename', 'LIKE', '%' . $query . '%')
             ->paginate(5); // Paginate the results
 
+        $currentDate = now();
+
         $year_now = Carbon::now()->format('Y');
         $rpms_config = RPMSConfiguration::where('year', $year_now)->select('id', 'mid_year_date', 'end_year_date', 'year')->first();
+
+        $uploadPeriod = $currentDate->lessThan($rpms_config->mid_year_date)
+            ? 'mid_year'
+            : 'end_year';
 
         return Inertia::render('Faculty/RPMS/Index', [
             'rpms' => $rpms,
             'rpmsConfig' => $rpms_config,
             'searchQuery' => $query,
+            'uploadPeriod' => $uploadPeriod,
         ]);
     }
 
