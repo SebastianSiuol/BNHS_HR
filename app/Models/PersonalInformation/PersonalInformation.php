@@ -6,6 +6,7 @@ use App\Models\CivilService;
 use App\Models\Faculty;
 use App\Models\LearningAndDevelopment;
 use App\Models\OtherInformation;
+use App\Models\ParentMember;
 use App\Models\VoluntaryWork;
 use App\Models\WorkExperience;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +46,12 @@ class PersonalInformation extends Model
         return $this->hasOne(ContactPerson::class);
     }
 
+    public function spouse_member(){
+        return $this->hasOne(SpouseMember::class);
+    }
+
+
+//  NOTE: HAS MANY RELATIONSHIPS (Foreign Key is in Their Table)
     public function civil_services(){
         return $this->hasMany(CivilService::class);
     }
@@ -65,9 +72,16 @@ class PersonalInformation extends Model
         return $this->hasMany(OtherInformation::class);
     }
 
-//  NOTE: HAS MANY RELATIONSHIPS
     public function reference_members(){
         return $this->hasMany(ReferenceMember::class);
+    }
+
+    public function parent_members(){
+        return $this->hasMany(ParentMember::class);
+    }
+
+    public function children_members(){
+        return $this->hasMany(ChildrenMember::class);
     }
 
 

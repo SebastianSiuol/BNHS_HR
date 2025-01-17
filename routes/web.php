@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Configuration\RoleController;
 
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\RPMSConfigurationController;
+use App\Http\Controllers\SpouseMemberController;
 use App\Http\Controllers\VoluntaryWorkController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
@@ -102,17 +103,17 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/config/departments', [DepartmentController::class, 'index'])                                     ->name('admin.config.department.index');
     Route::post('/admin/config/department', [DepartmentController::class, 'store'])                                     ->name('admin.config.department.store');
     Route::patch('/admin/config/department/{department}', [DepartmentController::class, 'update'])                      ->name('admin.config.department.update');
-    Route::delete('/admin/config/department/{department}/delete', [DepartmentController::class, 'destroy'])             ->name('admin.config.department.destroy');
+    Route::delete('/admin/config/department/{department}', [DepartmentController::class, 'destroy'])                    ->name('admin.config.department.destroy');
 
     Route::get('/admin/config/position', [SchoolPositionController::class, 'index'])                                    ->name('admin.config.position.index');
     Route::post('/admin/config/position', [SchoolPositionController::class, 'store'])                                   ->name('admin.config.position.store');
     Route::patch('/admin/config/position/{school_position}', [SchoolPositionController::class, 'update'])               ->name('admin.config.position.update');
-    Route::delete('/admin/config/position/{school_position}/delete', [SchoolPositionController::class, 'destroy'])      ->name('admin.config.position.destroy');
+    Route::delete('/admin/config/position/{school_position}', [SchoolPositionController::class, 'destroy'])             ->name('admin.config.position.destroy');
 
     Route::get('/admin/config/shift', [ShiftController::class, 'index'])                                                ->name('admin.config.shift.index');
     Route::post('/admin/config/shift', [ShiftController::class, 'store'])                                               ->name('admin.config.shift.store');
     Route::patch('/admin/config/shift/{shift}', [ShiftController::class, 'update'])                                     ->name('admin.config.shift.update');
-    Route::delete('/admin/config/shift/{shift}/delete', [ShiftController::class, 'destroy'])                            ->name('admin.config.shift.destroy');
+    Route::delete('/admin/config/shift/{shift}', [ShiftController::class, 'destroy'])                                   ->name('admin.config.shift.destroy');
 
     Route::get('/admin/config/roles', [RoleController::class, 'index'])                                                 ->name('admin.config.role.index');
 
@@ -138,8 +139,11 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     // RPMS
     Route::get('/faculty/rpms', [FacultyRPMSController::class, 'index'])                                                ->name('faculty.rpms.index');
+    Route::get('/faculty/rpms/search', [FacultyRPMSController::class, 'search'])                                         ->name('faculty.rpms.search');
     Route::post('/faculty/rpms', [FacultyRPMSController::class, 'store'])                                               ->name('faculty.rpms.store');
-    Route::get('/faculty/rpms/{file}', [FacultyRPMSController::class, 'download'])                                      ->name('faculty.rpms.file.download');
+    Route::get('/faculty/rpms/{file}', [FacultyRPMSController::class, 'viewFile'])                                      ->name('faculty.rpms.file.view');
+    Route::get('/faculty/rpms/download/{file}', [FacultyRPMSController::class, 'download'])                             ->name('faculty.rpms.file.download');
+    Route::delete('/faculty/rpms/{file}', [FacultyRPMSController::class, 'destroy'])                                    ->name('faculty.rpms.delete');
 
 
     // Attendances
@@ -186,6 +190,9 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::patch('/voluntary-work', [VoluntaryWorkController::class, 'update'])                                         ->name('voluntary-work.update');
     Route::patch('/learning-and-development', [LearningAndDevelopmentController::class, 'update'])                      ->name('learning-and-development.update');
     Route::patch('/other-information', [OtherInformationController::class, 'update'])                                   ->name('other-information.update');
+
+    Route::patch('/spouse-member', [SpouseMemberController::class, 'update'])                                           ->name('spouse-member.update');
+
 
 
 

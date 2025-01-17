@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voluntary_works', function (Blueprint $table) {
+        Schema::create('children_members', function (Blueprint $table) {
             $table->id();
             $table->uuid('public_id');
             $table->foreignId('personal_information_id');
-            $table->string('organization_name');
-            $table->date('date_from')->nullable();
-            $table->date('date_to')->nullable();
-            $table->integer('hours')->nullable();
-            $table->string('position')->nullable();
+            $table->string('name');
+            $table->string('date_of_birth');
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voluntary_works');
+        Schema::dropIfExists('children_members');
     }
 };

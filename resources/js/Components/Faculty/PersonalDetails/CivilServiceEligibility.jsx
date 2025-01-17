@@ -1,6 +1,7 @@
 import { router } from "@inertiajs/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { v7 as uuidv7 } from "uuid";
 
 import { useFetchData } from "@/Hooks/useFetchData";
 import { getDateToday } from "@/Utils/customDayjsUtils";
@@ -33,7 +34,7 @@ export function CivilServiceEligibility() {
         setInputFields([
             ...inputFields,
             {
-                id: null,
+                publicId: uuidv7(),
                 careerService: "",
                 rating: "",
                 dateOfExamination: "",
@@ -44,14 +45,14 @@ export function CivilServiceEligibility() {
         ]);
     }
 
-    function deleteRow(id) {
-        const newFields = inputFields.filter((field) => field.id !== id);
+    function deleteRow(publicId) {
+        const newFields = inputFields.filter((field) => field.publicId !== publicId);
         setInputFields(newFields);
     }
 
-    function handleInputChange(id, field, value) {
+    function handleInputChange(publicId, field, value) {
         const newFields = inputFields.map((input) =>
-            input.id === id ? { ...input, [field]: value } : input
+            input.publicId === publicId ? { ...input, [field]: value } : input
         );
         setInputFields(newFields);
     }
@@ -139,14 +140,14 @@ export function CivilServiceEligibility() {
                         </thead>
                         <tbody>
                             {inputFields.map((field, index) => (
-                                <tr key={field.id}>
+                                <tr key={field.publicId}>
                                     {/* Career Service */}
                                     <td className="border px-4 py-2">
                                         <input
                                             value={field.careerService}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "careerService",
                                                     e.target.value
                                                 )
@@ -164,7 +165,7 @@ export function CivilServiceEligibility() {
                                             value={field.rating}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "rating",
                                                     e.target.value
                                                 )
@@ -187,7 +188,7 @@ export function CivilServiceEligibility() {
                                                     : null,
                                                 onChange: (value) =>
                                                     handleInputChange(
-                                                        field.id,
+                                                        field.publicId,
                                                         "dateOfExamination",
                                                         value
                                                     ),
@@ -206,7 +207,7 @@ export function CivilServiceEligibility() {
                                             value={field.placeOfExamination}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "placeOfExamination",
                                                     e.target.value
                                                 )
@@ -224,7 +225,7 @@ export function CivilServiceEligibility() {
                                             value={field.licenseNumber}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "licenseNumber",
                                                     e.target.value
                                                 )
@@ -247,7 +248,7 @@ export function CivilServiceEligibility() {
                                                     : null,
                                                 onChange: (value) =>
                                                     handleInputChange(
-                                                        field.id,
+                                                        field.publicId,
                                                         "dateOfValidity",
                                                         value
                                                     ),
@@ -265,7 +266,7 @@ export function CivilServiceEligibility() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    deleteRow(field.id)
+                                                    deleteRow(field.publicId)
                                                 }
                                                 className="text-red-500 hover:text-red-700">
                                                 ✕

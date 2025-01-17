@@ -16,13 +16,7 @@ import { Table, TableRow } from "@/Components/Table";
 
 import { handleStatus, handleUploadPeriod } from "@/Utils/formatTableDataUtils";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
-
-
-import { pdfjs, Document, Page } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url
-).toString();
+import { formatDate } from "@/Utils/customDayjsUtils";
 
 export default function Index() {
     return (
@@ -40,21 +34,81 @@ function HandlePage() {
     const [currentFilePath, setCurrentFilePath] = useState(null);
     const [openUploadModal, setOpenUploadModal] = useState(false);
     const [openViewFileModal, setOpenViewFileModal] = useState(false);
+    const [openDelFileModal, setOpenDelFileModal] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null)
 
     function handleUploadModal() {
         setOpenUploadModal((e) => !e);
     }
 
-    function handleViewDocument(fileId) {
-        const fileDownloadUrl = `/faculty/rpms/${fileId}`;
-        setCurrentFilePath(fileDownloadUrl);
+    function handleViewDocument(id) {
+        setSelectedFile(id);
         setOpenViewFileModal((e) => !e);
     }
+
+    function handleDeleteDocument(id){
+
+        setSelectedFile(id);
+        setOpenDelFileModal((e) => !e);
+    }
+
+    async function handleDownloadDocument(id) {
+        try {
+            // Perform validation
+            if (!id) {
+                throw new Error("Invalid document ID.");
+            }
+
+            // Make the API call to fetch the file
+            const response = await fetch(route("faculty.rpms.file.download", id), {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+            });
+
+            console.log(response);
+
+            // Check if the response is successful
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(
+                    `Failed to download file: ${response.status} ${response.statusText}. ${errorMessage}`
+                );
+            }
+
+            // Handle the file download
+            const blob = await response.blob();
+            const href = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = href;
+
+            // Extract filename from the response headers if available
+            const contentDisposition = response.headers.get("Content-Disposition");
+            const fileName = contentDisposition
+                ? contentDisposition.split("filename=")[1]?.replace(/"/g, "") || "downloaded-file"
+                : "downloaded-file";
+
+            link.setAttribute("download", fileName.trim());
+            document.body.appendChild(link);
+            link.click();
+
+            // Cleanup
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(href);
+        } catch (err) {
+            console.error("Error:", err);
+            // Optionally provide user feedback
+            alert(`Failed to download the document. Error: ${err.message}`);
+            return Promise.reject(err);
+        }
+    }
+
 
     return (
         <>
             <SearchHeaders onUploadModal={handleUploadModal} />
-            <RPMSTable data={rpms?.data} onViewFile={handleViewDocument}/>
+            <RPMSTable data={rpms?.data} onViewFile={handleViewDocument} onDeleteFile={handleDeleteDocument} onDownloadFile={handleDownloadDocument}/>
             <Pagination data={rpms} />
             <UploadModal
                 state={openUploadModal}
@@ -63,56 +117,76 @@ function HandlePage() {
             <ViewDocumentModal
                 state={openViewFileModal}
                 onToggle={handleViewDocument}
-                filePath={currentFilePath}
+                selectedFile={selectedFile}
+            />
+            <DeleteDocumentModal
+                state={openDelFileModal}
+                onToggle={handleDeleteDocument}
+                selectedFile={selectedFile}
             />
         </>
     );
 }
 
 function SearchHeaders({ onUploadModal }) {
-    const { rpmsConfig } = usePage().props;
+    const { rpmsConfig, searchQuery } = usePage().props;
+    const [query, setQuery] = useState(searchQuery);
 
-    if (!rpmsConfig)
+    // Render a message if rpmsConfig is not set
+    if (!rpmsConfig) {
         return (
             <div className="pb-4 sm:flex items-center justify-between">
                 Configuration for Uploading is not yet set, please wait for
                 admin.
             </div>
         );
+    }
 
     const { mid_year_date: midYearDate, end_year_date: endYearDate } =
         rpmsConfig;
 
+    function handleSearchQuery(e){
+        e.preventDefault()
+        const payload = {
+            'query': query,
+        };
+        router.get(route('faculty.rpms.search'), payload)
+    }
+
     return (
-        <div className="pb-4 sm:flex items-center justify-between dark:bg-gray-900">
-            <div className="relative flex mt-1">
-                <label htmlFor="table-search">
+        <div className="pb-4 sm:flex items-center justify-between">
+            {/* Search Input */}
+            <form className="relative flex mt-1">
+                <label
+                    htmlFor="tableSearch"
+                    className="relative">
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <IoSearchSharp
-                            className={
-                                "w-4 h-4 text-gray-500 dark:text-gray-400"
-                            }
-                        />
+                        <IoSearchSharp className={"w-4 h-4 text-gray-500"} />
                     </div>
                     <input
-                        id="table-search"
+                        id="tableSearch"
                         type="text"
                         placeholder="Search"
-                        className="block mr-2 h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value={query}
+                        onChange={(e)=>setQuery(e.target.value)}
+                        className="block mr-2 h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     />
                 </label>
+                <button
+                    type="submit"
+                    onClick={handleSearchQuery}
+                    className="ml-2 px-3 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-300">
+                    Search
+                </button>
+            </form>
 
-            </div>
-
+            {/* Submission Date */}
             <div className="flex border-gray-300 mt-1 px-4 border bg-gray-50 rounded-lg items-center justify-center">
-                <div className="mr-4  block items-center justify-center">
+                <div className="mr-4">
                     <h1 className="text-sm">Submission Date:</h1>
                 </div>
-                <div className="block">
-                    <h1 className="text-sm">
-                        Mid Year <span className="mr-3"></span> |{" "}
-                        <span className="mr-3"></span> Year End
-                    </h1>
+                <div>
+                    <h1 className="text-sm">Mid Year | Year End</h1>
                     <div className="flex">
                         <p className="text-sm mr-2">{midYearDate}</p>
                         <p className="text-sm">{endYearDate}</p>
@@ -120,33 +194,23 @@ function SearchHeaders({ onUploadModal }) {
                 </div>
             </div>
 
-            <div>
-                <button
-                    type="button"
-                    onClick={onUploadModal}
-                    className="text-white mt-3 flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <FaPlus className={"mr-1 w-4 h-4 text-white"} />
-                    Upload File
-                </button>
-            </div>
+            {/* Upload File Button */}
+            <button
+                type="button"
+                onClick={onUploadModal}
+                className="text-white mt-3 flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 me-2 mb-2">
+                <FaPlus className="mr-1 w-4 h-4 text-white" />
+                Upload File
+            </button>
         </div>
     );
 }
 
-function RPMSTable({ data, onViewFile }) {
-
-
-    const headers = [
-        "Date Submitted",
-        "File Name",
-        "File",
-        "Period",
-        "Status",
-        "Action",
-    ];
+function RPMSTable({ data, onViewFile, onDeleteFile, onDownloadFile }) {
+    const headers = ["Date Submitted", "File Name", "File", "Period", "Status", "Action"];
 
     const columns = [
-        () => "2024-01-01",
+        (rpms) => formatDate(rpms.created_at),
         (rpms) => rpms.filename,
         (rpms) => (
             <button onClick={() => onViewFile(rpms.id)}>
@@ -156,9 +220,13 @@ function RPMSTable({ data, onViewFile }) {
         (rpms) => handleUploadPeriod(rpms.upload_period),
         (rpms) => handleStatus(capitalizeFirstLetter(rpms?.status)),
         (rpms) => (
-            <div className={'flex flex-col'}>
-                <button><CustomIcon type="download"/></button>
-                <button><CustomIcon type='delete'/></button>
+            <div className="flex space-x-4">
+                <button onClick={()=>onDownloadFile(rpms.id)}>
+                    <CustomIcon type="download" />
+                </button>
+                <button onClick={() => onDeleteFile(rpms.id)}>
+                    <CustomIcon type="delete" />
+                </button>
             </div>
         ),
     ];
@@ -182,13 +250,15 @@ function UploadModal({ state, onToggle }) {
     const {
         handleSubmit,
         control,
-        reset,
         formState: { errors },
     } = useForm();
 
     const onSubmit = (data) => {
-        console.log("Form Data Submitted: ", data);
-        router.post(route("faculty.rpms.store"), data);
+        router.post(route("faculty.rpms.store"), data, {
+            onSuccess: ()=>{
+                onToggle();
+            }
+        });
     };
 
     return (
@@ -307,67 +377,100 @@ function UploadModal({ state, onToggle }) {
     );
 }
 
-function ViewDocumentModal({ state, onToggle, filePath }) {
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
+function ViewDocumentModal({ state, onToggle, selectedFile }) {
+    const [fileUrl, setFileUrl] = useState(null);
 
-    function onDocumentLoadSuccess({ numPages }) {
-        setNumPages(numPages);
-    }
 
-    // Reset pageNumber to 1 when filePath changes
     useEffect(() => {
-        if (filePath) {
-            setPageNumber(1);
-        }
-    }, [filePath]);
+        async function getUrl() {
+            if (selectedFile) {
+                const response = await fetch(
+                    route("faculty.rpms.file.view", selectedFile)
+                );
+                const parsedResponse = await response.json();
 
-    if (!filePath) {
-        return null; // If no file path is provided, don't render the modal
+                setFileUrl(parsedResponse);
+            }
+        }
+        getUrl();
+    }, [selectedFile]);
+
+
+    return (
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <DialogTitle className="flex font-bold text-2xl text-gray-900 justify-between items-center p-4">
+                <span>View File</span>
+                <button
+                    onClick={onToggle}
+                    className="text-red-800">
+                    &times;
+                </button>
+            </DialogTitle>
+            <Description as="div" className={'w-[80vw]'}>
+                <hr />
+                {/* <p>{fileUrl}</p> */}
+                <iframe
+                    src={fileUrl?.pdfUrl}
+                    width="100%"
+                    height={"600px"}></iframe>
+            </Description>
+        </Modal>
+    );
+}
+
+function DeleteDocumentModal({ state, onToggle, selectedFile }) {
+    function handleDelete() {
+        console.log(selectedFile.id);
+        router.delete(route("faculty.rpms.delete", selectedFile), {
+            onSuccess: () => {
+                onToggle();
+            },
+        });
     }
 
     return (
-        <Modal state={state} onToggle={onToggle}>
-            <DialogTitle className="flex font-bold text-2xl text-gray-900 justify-between items-center p-4">
-                <span>View File</span>
-                <button onClick={onToggle} className="text-red-800">
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <DialogTitle
+                className="flex font-bold text-2xl text-black justify-between items-center p-4"
+                as="div">
+                <span>
+                    Confirm{" "}
+                    <span className={"font-bold text-red-600"}>delete?</span>
+                </span>
+                <button
+                    onClick={onToggle}
+                    className={"text-red-800"}>
                     &times;
                 </button>
             </DialogTitle>
             <Description as="div">
-                <hr />
-                <div>
-                    <Document
-                        className="flex"
-                        file={filePath} // Use the dynamic file path
-                        onLoadSuccess={onDocumentLoadSuccess}
-                    >
-                        <Page
-                            pageNumber={pageNumber}
-                            renderTextLayer={false}
-                            renderAnnotationLayer={false}
-                            customTextRenderer={false}
-                        />
-                    </Document>
-                    <p>
-                        Page {pageNumber} of {numPages}
+                <div className={"px-12 pb-8"}>
+                    <p className={"text-lg"}>
+                        Are you sure you want to delete this file?
                     </p>
-                    <div className="flex gap-4 mt-4">
-                        <button
-                            disabled={pageNumber <= 1}
-                            onClick={() => setPageNumber(pageNumber - 1)}
-                            className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
-                        >
-                            Previous
-                        </button>
-                        <button
-                            disabled={pageNumber >= numPages}
-                            onClick={() => setPageNumber(pageNumber + 1)}
-                            className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
-                        >
-                            Next
-                        </button>
-                    </div>
+                    <p className={"text-lg text-red-600 text-end"}>
+                        *This action is irreversible!
+                    </p>
+                </div>
+                <div className={"flex justify-between px-12 mb-8"}>
+                    <button
+                        onClick={handleDelete}
+                        className={
+                            "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                        }>
+                        Confirm delete
+                    </button>
+                    <button
+                        onClick={onToggle}
+                        className={
+                            "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+                        }>
+                        Cancel
+                    </button>
                 </div>
             </Description>
         </Modal>

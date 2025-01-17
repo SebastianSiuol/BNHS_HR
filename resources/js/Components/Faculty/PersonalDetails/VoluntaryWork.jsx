@@ -1,6 +1,7 @@
 import { router } from "@inertiajs/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { v7 as uuidv7 } from "uuid";
 
 import { useFetchData } from "@/Hooks/useFetchData";
 import { getDateToday } from "@/Utils/customDayjsUtils";
@@ -29,7 +30,7 @@ export function VoluntaryWork() {
         setInputFields([
             ...inputFields,
             {
-                id: null,
+                publicId: uuidv7(),
                 organizationName: "",
                 dateFrom: "",
                 dateTo: "",
@@ -39,14 +40,14 @@ export function VoluntaryWork() {
         ]);
     }
 
-    function deleteRow(id) {
-        const updatedFields = inputFields.filter((field) => field.id !== id);
+    function deleteRow(publicId) {
+        const updatedFields = inputFields.filter((field) => field.publicId !== publicId);
         setInputFields(updatedFields);
     }
 
-    function handleInputChange(id, field, value) {
+    function handleInputChange(publicId, field, value) {
         const newFields = inputFields.map((input) =>
-            input.id === id ? { ...input, [field]: value } : input
+            input.publicId === publicId ? { ...input, [field]: value } : input
         );
         setInputFields(newFields);
     }
@@ -113,14 +114,14 @@ export function VoluntaryWork() {
                         </thead>
                         <tbody>
                             {inputFields.map((field, index) => (
-                                <tr key={field.id}>
+                                <tr key={field.publicId}>
                                     <td className="border px-4 py-2">
                                         <input
                                             type="text"
                                             value={field.organizationName}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "organizationName",
                                                     e.target.value
                                                 )
@@ -138,7 +139,7 @@ export function VoluntaryWork() {
                                                     ? new Date(field.dateFrom)
                                                     : null,
                                                 onChange: (value) =>
-                                                    handleInputChange(field.id, "dateFrom", value),
+                                                    handleInputChange(field.publicId, "dateFrom", value),
                                             }}
                                             name={`dateFrom-${index}`}
                                             disabled={!inputEditable}
@@ -155,7 +156,7 @@ export function VoluntaryWork() {
                                                     ? new Date(field.dateTo)
                                                     : null,
                                                 onChange: (value) =>
-                                                    handleInputChange(field.id, "dateTo", value),
+                                                    handleInputChange(field.publicId, "dateTo", value),
                                             }}
                                             name={`dateTo-${index}`}
                                             disabled={!inputEditable}
@@ -170,7 +171,7 @@ export function VoluntaryWork() {
                                             value={field.hours}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "hours",
                                                     e.target.value
                                                 )
@@ -186,7 +187,7 @@ export function VoluntaryWork() {
                                             value={field.position}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "position",
                                                     e.target.value
                                                 )
@@ -201,7 +202,7 @@ export function VoluntaryWork() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    deleteRow(field.id)
+                                                    deleteRow(field.publicId)
                                                 }
                                                 className="text-red-500 hover:text-red-700"
                                             >

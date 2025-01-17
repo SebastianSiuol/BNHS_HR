@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('civil_services', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id');
             $table->foreignId('personal_information_id');
             $table->string('career_service');
             $table->string('rating');

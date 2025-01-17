@@ -3,10 +3,9 @@
 namespace App\Exports;
 
 use App\Models\Faculty;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -17,7 +16,7 @@ class VolWorkAndLearnDevAndOtherInfoSheetExport implements FromView, WithEvents
 {
     public function view(): View
     {
-        $faculty = Faculty::find(1);
+        $faculty = Auth::user();
 
         return view('export.volwork-learndev-otherinfo', [
             'faculty' => $faculty,

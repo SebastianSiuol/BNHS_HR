@@ -13,7 +13,7 @@ class VoluntaryWorkController extends Controller
         // Validate the incoming request data
         $validated = $request->validate([
             'voluntaryWorks' => 'required|array|min:1',
-            'voluntaryWorks.*.id' => 'nullable|integer|exists:voluntary_works,id',
+            'voluntaryWorks.*.publicId' => 'required|string|max:255',
             'voluntaryWorks.*.organizationName' => 'required|string|max:255',
             'voluntaryWorks.*.dateFrom' => 'required|date',
             'voluntaryWorks.*.dateTo' => 'nullable|date|after_or_equal:voluntaryWorks.*.dateFrom',
@@ -41,19 +41,19 @@ class VoluntaryWorkController extends Controller
         // Use a transaction for consistency
         DB::transaction(function () use ($validated, $user) {
             $voluntaryWorks = collect($validated['voluntaryWorks']);
-            $existingIds = $voluntaryWorks->pluck('id')->filter(); // Filter for existing IDs
+            $existingIds = $voluntaryWorks->pluck('publicId')->filter(); // Filter for existing IDs
 
             $personalInfo = $user->personal_information;
 
             // Delete records that are not in the current input
             $personalInfo->voluntary_works()
-                ->whereNotIn('id', $existingIds)
+                ->whereNotIn('public_id', $existingIds)
                 ->delete();
 
             // Update or create voluntary works
             foreach ($voluntaryWorks as $work) {
                 $personalInfo->voluntary_works()->updateOrCreate(
-                    ['id' => $work['id'] ?? null], // Match by ID if available
+                    ['id' => $work['publicId']], // Match by ID if available
                     [
                         'organization_name' => $work['organizationName'],
                         'date_from' => $work['dateFrom'],
@@ -93,7 +93,7 @@ class VoluntaryWorkController extends Controller
         // Map voluntary works to an array format
         $mappedWorks = $voluntaryWorks->map(function ($work) {
             return [
-                'id' => $work->id,
+                'publicId' => $work->public_id,
                 'organizationName' => $work->organization_name,
                 'dateFrom' => $work->date_from,
                 'dateTo' => $work->date_to,

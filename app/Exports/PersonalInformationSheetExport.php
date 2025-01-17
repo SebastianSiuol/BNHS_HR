@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Faculty;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -22,7 +23,7 @@ CLASS PersonalInformationSheetExport implements fromView, withEvents {
      */
     public function view(): View
     {
-        $faculty = Faculty::find(1);
+        $faculty = Auth::user();
         return view('export.pds', [
             'faculty' => $faculty,
         ]);

@@ -72,6 +72,20 @@ return new class extends Migration
             $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
         });
 
+        Schema::table('parent_members', function(Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+            $table->foreign('name_extension_id')->references('id')->on('name_extensions');
+        });
+
+        Schema::table('spouse_members', function(Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+            $table->foreign('name_extension_id')->references('id')->on('name_extensions');
+        });
+
+        Schema::table('children_members', function(Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
     }
 
     /**

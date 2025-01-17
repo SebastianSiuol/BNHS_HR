@@ -153,11 +153,11 @@ function SideNavbar() {
                                     Manage Service Credits
                                 </SidebarNavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <SidebarNavLink href={route("admin.service-credits.report")} active={route().current("admin.service-credits.report")} type={"sub"}>
                                     Service Credit Records
                                 </SidebarNavLink>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     <div>

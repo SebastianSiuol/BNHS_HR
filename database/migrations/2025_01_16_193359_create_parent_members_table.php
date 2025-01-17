@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voluntary_works', function (Blueprint $table) {
+        Schema::create('parent_members', function (Blueprint $table) {
             $table->id();
             $table->uuid('public_id');
             $table->foreignId('personal_information_id');
-            $table->string('organization_name');
-            $table->date('date_from')->nullable();
-            $table->date('date_to')->nullable();
-            $table->integer('hours')->nullable();
-            $table->string('position')->nullable();
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
+            $table->string('maiden_name')->nullable();
+            $table->foreignId('name_extension_id')->nullable();
+            $table->enum('relationship_type',['father','mother']);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voluntary_works');
+        Schema::dropIfExists('parent_members');
     }
 };

@@ -1,6 +1,7 @@
+import { router } from "@inertiajs/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { router } from "@inertiajs/react";
+import { v7 as uuidv7 } from "uuid";
 
 import { useFetchData } from "@/Hooks/useFetchData";
 import { getDateToday } from "@/Utils/customDayjsUtils";
@@ -33,7 +34,7 @@ export function WorkExperience() {
         setInputFields([
             ...inputFields,
             {
-                id: null,
+                publicId: uuidv7(),
                 fromDate: "",
                 toDate: "",
                 positionTitle: "",
@@ -46,14 +47,14 @@ export function WorkExperience() {
         ]);
     }
 
-    function deleteRow(id) {
-        const newFields = inputFields.filter((field) => field.id !== id);
+    function deleteRow(publicId) {
+        const newFields = inputFields.filter((field) => field.publicId !== publicId);
         setInputFields(newFields);
     }
 
-    function handleInputChange(id, field, value) {
+    function handleInputChange(publicId, field, value) {
         const newFields = inputFields.map((input) =>
-            input.id === id ? { ...input, [field]: value } : input
+            input.publicId === publicId ? { ...input, [field]: value } : input
         );
         setInputFields(newFields);
     }
@@ -141,7 +142,7 @@ export function WorkExperience() {
                         </thead>
                         <tbody>
                             {inputFields.map((field, index) => (
-                                <tr key={field.id || index}>
+                                <tr key={field.publicId || index}>
                                     <td className="border px-4 py-2">
                                         <CustomDatePicker
                                             value={{
@@ -150,7 +151,7 @@ export function WorkExperience() {
                                                     : null,
                                                 onChange: (value) =>
                                                     handleInputChange(
-                                                        field.id,
+                                                        field.publicId,
                                                         "fromDate",
                                                         value
                                                     ),
@@ -170,7 +171,7 @@ export function WorkExperience() {
                                                     : null,
                                                 onChange: (value) =>
                                                     handleInputChange(
-                                                        field.id,
+                                                        field.publicId,
                                                         "toDate",
                                                         value
                                                     ),
@@ -187,7 +188,7 @@ export function WorkExperience() {
                                             value={field.positionTitle}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "positionTitle",
                                                     e.target.value
                                                 )
@@ -202,7 +203,7 @@ export function WorkExperience() {
                                             value={field.department}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "department",
                                                     e.target.value
                                                 )
@@ -217,7 +218,7 @@ export function WorkExperience() {
                                             value={field.monthlySalary}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "monthlySalary",
                                                     e.target.value
                                                 )
@@ -232,7 +233,7 @@ export function WorkExperience() {
                                             value={field.salaryGrade}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "salaryGrade",
                                                     e.target.value
                                                 )
@@ -247,7 +248,7 @@ export function WorkExperience() {
                                             value={field.statusOfAppointment}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "statusOfAppointment",
                                                     e.target.value
                                                 )
@@ -262,7 +263,7 @@ export function WorkExperience() {
                                             value={field.govService}
                                             onChange={(e) =>
                                                 handleInputChange(
-                                                    field.id,
+                                                    field.publicId,
                                                     "govService",
                                                     e.target.value
                                                 )
@@ -283,7 +284,7 @@ export function WorkExperience() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    deleteRow(field.id)
+                                                    deleteRow(field.publicId)
                                                 }
                                                 className="text-red-500 hover:text-red-700">
                                                 ✕

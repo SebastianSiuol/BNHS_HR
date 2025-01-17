@@ -13,7 +13,7 @@ class WorkExperienceController extends Controller
         // Validate the incoming request data
         $validated = $request->validate([
             'workExperiences' => 'required|array|min:1',
-            'workExperiences.*.id' => 'nullable|integer|exists:work_experiences,id',
+            'workExperiences.*.publicId' => 'nullable',
             'workExperiences.*.fromDate' => 'required|date',
             'workExperiences.*.toDate' => 'nullable|date|after_or_equal:workExperiences.*.fromDate',
             'workExperiences.*.positionTitle' => 'required|string|max:255',
@@ -42,19 +42,19 @@ class WorkExperienceController extends Controller
         // Use a transaction for consistency
         DB::transaction(function () use ($validated, $user) {
             $workExperiences = collect($validated['workExperiences']);
-            $existingIds = $workExperiences->pluck('id')->filter(); // Filter for existing IDs
+            $existingIds = $workExperiences->pluck('publicId')->filter(); // Filter for existing IDs
 
             $personalInfo = $user->personal_information;
 
             // Delete records that are not in the current input
             $personalInfo->work_experiences()
-                ->whereNotIn('id', $existingIds)
+                ->whereNotIn('public_id', $existingIds)
                 ->delete();
 
             // Update or create work experiences
             foreach ($workExperiences as $experience) {
                 $personalInfo->work_experiences()->updateOrCreate(
-                    ['id' => $experience['id'] ?? null], // Match by ID if available
+                    ['publicId' => $experience['publicId']], // Match by ID if available
                     [
                         'from_date' => $experience['fromDate'],
                         'to_date' => $experience['toDate'],
@@ -97,7 +97,7 @@ class WorkExperienceController extends Controller
         // Map work experiences to an array format
         $mappedExperiences = $workExperiences->map(function ($experience) {
             return [
-                'id' => $experience->id,
+                'publicId' => $experience->public_id,
                 'fromDate' => $experience->from_date,
                 'toDate' => $experience->to_date,
                 'positionTitle' => $experience->position_title,
