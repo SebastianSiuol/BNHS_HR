@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
-        if (env('APP_ENV') == 'production') {
+        // if (env('APP_ENV') == 'production') {
             $url->forceScheme('https');
             $this->app['request']->server->set('HTTPS','on');
-        }
+        // }
 
         Inertia::share(['errors' => function () {
             return Session::get('errors') ? Session::get('errors')->getBag('default')->getMessages() : (object) []; }]);
