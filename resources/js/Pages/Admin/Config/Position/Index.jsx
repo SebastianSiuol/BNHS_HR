@@ -68,7 +68,7 @@ function HandlePage() {
                 onToggle={handleDeleteModal}
                 selectedPos={selectedPos}
                 />
-            <div className="pb-4 flex items-center justify-between dark:bg-gray-900">
+            <div className="pb-4 flex items-center justify-between">
                 <SearchHeader />
                 <AddPosition onAddClick={handleAddModal} />
             </div>
@@ -88,7 +88,7 @@ function AddPosition({ onAddClick }) {
             <div className="flex items-center justify-end">
                 <button
                     onClick={onAddClick}
-                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     type="button">
                     Add Position
                 </button>

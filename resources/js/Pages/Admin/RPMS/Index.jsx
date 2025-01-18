@@ -60,7 +60,7 @@ function Header({ onToggle }) {
 
     return (
         <>
-            <div className="pb-4 flex items-center justify-between dark:bg-gray-900">
+            <div className="pb-4 flex items-center justify-between ">
                 <label
                     htmlFor="table-search"
                     className="sr-only">
@@ -68,12 +68,12 @@ function Header({ onToggle }) {
                 </label>
                 <div className="relative flex mt-1">
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <IoSearchSharp className={"w-4 h-4 text-gray-500 dark:text-gray-400"} />
+                        <IoSearchSharp className={"w-4 h-4 text-gray-500 0"} />
                     </div>
                     <input
                         type="text"
                         id="table-search"
-                        className="block mr-2 h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="block mr-2 h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for items"
                     />
 
@@ -113,13 +113,13 @@ function Header({ onToggle }) {
                         <button
                             onClick={onToggle}
                             className="hover:scale-110">
-                            <FaCalendar className={"w-6 h-6 text-blue-800 dark:text-white"} />
+                            <FaCalendar className={"w-6 h-6 text-blue-800"} />
                         </button>
                     </div>
 
                     <div className="justify-end flex ml-5 mt-px ">
                         <button className="hover:scale-110">
-                            <IoArchive className={"w-9 h-9 text-blue-800 dark:text-white"} />
+                            <IoArchive className={"w-9 h-9 text-blue-800"} />
                         </button>
                     </div>
                 </div>

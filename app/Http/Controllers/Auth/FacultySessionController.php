@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Faculty;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +80,7 @@ class FacultySessionController extends Controller
 
         return redirect()->route('/');
     }
+
 
     private function handleRedirect($role, $credentials, $redirectUrl)
     {

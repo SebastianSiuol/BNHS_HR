@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Admin\Configuration\RoleController;
 
 use App\Http\Controllers\JWTRedirectController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RPMSConfigurationController;
 use App\Http\Controllers\SpouseMemberController;
 use App\Http\Controllers\VoluntaryWorkController;
@@ -39,6 +40,8 @@ Route::get('/', function () {
 
 
 Route::get('/faculty/login', [FacultySessionController::class, 'create'])                           ->name('login.create');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])                         ->name('auth.forgot-password.create');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'store'])                         ->name('auth.forgot-password.store');
 Route::post('/faculty/login', [FacultySessionController::class, 'store'])                           ->name('login.store');
 
 
@@ -139,7 +142,7 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     // RPMS
     Route::get('/faculty/rpms', [FacultyRPMSController::class, 'index'])                                                ->name('faculty.rpms.index');
-    Route::get('/faculty/rpms/search', [FacultyRPMSController::class, 'search'])                                         ->name('faculty.rpms.search');
+    Route::get('/faculty/rpms/search', [FacultyRPMSController::class, 'search'])                                        ->name('faculty.rpms.search');
     Route::post('/faculty/rpms', [FacultyRPMSController::class, 'store'])                                               ->name('faculty.rpms.store');
     Route::get('/faculty/rpms/{file}', [FacultyRPMSController::class, 'viewFile'])                                      ->name('faculty.rpms.file.view');
     Route::get('/faculty/rpms/download/{file}', [FacultyRPMSController::class, 'download'])                             ->name('faculty.rpms.file.download');

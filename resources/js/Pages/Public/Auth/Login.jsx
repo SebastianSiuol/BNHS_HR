@@ -62,7 +62,7 @@ function LoginForm() {
                     </div>
                 </InputContainer>
 
-                <Link href={route("/")} className={"ml-auto text-white text-sm hover:underline"}>
+                <Link href={route("auth.forgot-password.create")} className={"ml-auto text-white text-sm hover:underline"}>
                     Forgot Password?
                 </Link>
 
