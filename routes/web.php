@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Configuration\RoleController;
 
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RPMSConfigurationController;
 use App\Http\Controllers\SpouseMemberController;
 use App\Http\Controllers\VoluntaryWorkController;
@@ -42,6 +43,8 @@ Route::get('/', function () {
 Route::get('/faculty/login', [FacultySessionController::class, 'create'])                           ->name('login.create');
 Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])                         ->name('auth.forgot-password.create');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])                         ->name('auth.forgot-password.store');
+Route::get('/reset-password', [ResetPasswordController::class, 'create'])                   ->name('auth.reset-password.create');
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])                           ->name('auth.reset-password.store');
 Route::post('/faculty/login', [FacultySessionController::class, 'store'])                           ->name('login.store');
 
 

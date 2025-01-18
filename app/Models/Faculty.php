@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Configuration\SchoolPosition;
 use App\Models\FacultyAccountInformation\Designation;
 use App\Models\FacultyAccountInformation\EmploymentStatus;
 use App\Models\PersonalInformation\PersonalInformation;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 class Faculty extends Authenticatable implements JWTSubject
 {
-//    use HasApiTokens ,HasFactory, Notifiable;
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, CanResetPassword;
 
     protected $fillable = [
         'faculty_code',
