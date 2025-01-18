@@ -41,7 +41,7 @@ Route::get('/', function () {
 
 Route::get('/faculty/login', [FacultySessionController::class, 'create'])                           ->name('login.create');
 Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])                         ->name('auth.forgot-password.create');
-Route::get('/forgot-password', [ForgotPasswordController::class, 'store'])                         ->name('auth.forgot-password.store');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])                         ->name('auth.forgot-password.store');
 Route::post('/faculty/login', [FacultySessionController::class, 'store'])                           ->name('login.store');
 
 

@@ -19,7 +19,7 @@ class ForgotPasswordController extends Controller
     {
         // Validate the email input
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ]);
 
         // Generate a password reset token

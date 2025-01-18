@@ -1,17 +1,38 @@
 import { Link, useForm as useInertiaForm, router, usePage } from "@inertiajs/react";
 import { useForm } from 'react-hook-form'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
-import { CoverPhoto } from "@/Components/Auth/CoverPhoto";
 import { SchoolLogo } from "@/Components/SchoolLogo.jsx";
-import { LabeledInput } from "@/Components/LabeledInput";
-import { InputContainer } from "@/Components/InputContainer.jsx";
-import { InputLabel } from "@/Components/InputLabel.jsx";
+import { FlashMessage } from "@/Components/FlashMessage";
 
 export default function ForgotPassword(){
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState([]);
-    const [status, setStatus] = useState('');
+        const { flash, errors: validationError } = usePage().props;
+        const [ flashMessage, setFlashMessage ] = useState(flash);
+
+        const serverValidationError = validationError || null;
+        const combinedErrors = Object.values(serverValidationError).flat().map((error) => error);
+
+        useEffect(() => {
+            setFlashMessage(flash);
+
+            let flashTimer = setTimeout(() => {
+                setFlashMessage(null);
+            }, 5000);
+
+            return () => {
+                setFlashMessage(null), clearTimeout(flashTimer);
+            };
+        }, [flash]);
+
+        useEffect(() => {
+            if(Object.keys(validationError). length !== 0){
+
+                validationSwal(combinedErrors);
+            }
+        }, [validationError]);
 
     // const handleSubmit = async (e) => {
     //     e.preventDefault();
@@ -49,6 +70,8 @@ export default function ForgotPassword(){
 
             {/* Main Content */}
             <main className="flex flex-col mx-auto my-20 max-w-[1280px]">
+            <div className="fixed">{flashMessage && <FlashMessage flash={flashMessage} />}</div>
+
                 <h2 className="mb-6 font-bold text-2xl text-center text-gray-800">
                     Reset your Password
                 </h2>
@@ -97,3 +120,27 @@ export default function ForgotPassword(){
         </div>
     );
 };
+
+
+function validationSwal( error ) {
+
+    const swalText = error.join(' <br/> ');
+
+    withReactContent(Swal).fire({
+        title: <p>Server Validation</p>,
+        icon: 'error',
+        html: swalText,
+        confirmButtonText: 'Confirm',
+        customClass: {
+            container: '...',
+            popup: 'border rounded-3xl',
+            header: '...',
+            title: 'text-gray-700',
+            icon: '...',
+            htmlContainer: '...',
+            validationMessage: '...',
+            actions: '...',
+            confirmButton: 'bg-blue-600',
+          }
+    });
+}
