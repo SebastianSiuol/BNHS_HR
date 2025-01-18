@@ -139,47 +139,53 @@ class AttendanceController extends Controller
     }
 
     public function handleAttendance(Request $request, $type)
-    {
-        $validated = $this->validateRequest($request);
-        $user_id = $validated['id'];
-        $post_time = Carbon::parse($validated['postTime']);
+{
+    $validated = $this->validateRequest($request);
+    $user_id = $validated['id'];
+    $post_time = Carbon::parse($validated['postTime']);
 
-        $faculty = Faculty::find($user_id);
-        if (!$faculty) {
-            return $this->redirectWithError('User not found.', 404);
-        }
-
-        $attendance = Attendance::where('faculty_id', $user_id)
-            ->whereDate('check_in', $post_time->toDateString())
-            ->first();
-
-        if ($type == 'check_in') {
-            if ($attendance) {
-                return $this->redirectWithError("Already checked in for the day!", 400);
-            }
-
-            $attendance = new Attendance();
-            $attendance->faculty_id = $user_id;
-            $attendance->check_in = $post_time;
-            $attendance->status = 'present';
-            $attendance->save();
-        }
-
-        if ($type == 'check_out') {
-            if (!$attendance) {
-                return $this->redirectWithError("No check-in record found for today!", 400);
-            }
-
-            if ($attendance->check_out) {
-                return $this->redirectWithError("Already checked out for the day!", 400);
-            }
-
-            $attendance->check_out = $post_time;
-            $attendance->save();
-        }
-
-        return $this->redirectWithMessage($type, $attendance, 201);
+    $faculty = Faculty::find($user_id);
+    if (!$faculty) {
+        return $this->redirectWithError('User not found.', 404);
     }
+
+    $shift = $faculty->shift; // Assuming the faculty model has a relationship with the shift.
+    if (!$shift) {
+        return $this->redirectWithError('Shift not found for the user.', 404);
+    }
+
+    $shift_start = Carbon::parse($shift->from);
+    $attendance = Attendance::where('faculty_id', $user_id)
+        ->whereDate('check_in', $post_time->toDateString())
+        ->first();
+
+    if ($type == 'check_in') {
+        if ($attendance) {
+            return $this->redirectWithError("Already checked in for the day!", 400);
+        }
+
+        $attendance = new Attendance();
+        $attendance->faculty_id = $user_id;
+        $attendance->check_in = $post_time;
+        $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
+        $attendance->save();
+    }
+
+    if ($type == 'check_out') {
+        if (!$attendance) {
+            return $this->redirectWithError("No check-in record found for today!", 400);
+        }
+
+        if ($attendance->check_out) {
+            return $this->redirectWithError("Already checked out for the day!", 400);
+        }
+
+        $attendance->check_out = $post_time;
+        $attendance->save();
+    }
+
+    return $this->redirectWithMessage($type, $attendance, 201);
+}
 
     private function validateRequest(Request $request)
     {
@@ -198,11 +204,17 @@ class AttendanceController extends Controller
 
     private function redirectWithMessage($type, $attendance, $status)
     {
-        switch ($type){
+
+        switch (strtolower($type)){
             case 'check_in':
                 $message = 'Check-in successful!';
+                break;
             case 'check_out':
                 $message = 'Check-out successful!';
+                break;
+            default:
+                $message = 'Invalid action!';
+
         }
 
         return redirect()->route('admin.attendances.create')->with(['message' => $message, 'attendance' => $attendance], $status);

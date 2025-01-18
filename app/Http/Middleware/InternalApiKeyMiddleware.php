@@ -16,19 +16,18 @@ class InternalApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $intApiKey = Config::get('app.internal-api-key');
+        // $intApiKey = Config::get('app.internal-api-key');
 
-        $intApiKeyIsValid = (! empty($intApiKey) && $request->header('x-auth-api-key') == $intApiKey);
+        // $intApiKeyIsValid = (! empty($intApiKey) && $request->header('x-auth-api-key') == $intApiKey);
 
-        if(!$intApiKeyIsValid) {
-            if ($request->expectsJson()){
-                return response()->json(["code" => "403",'message'=> "Access Denied!"], Response::HTTP_FORBIDDEN);
 
-            } else {
-                abort(403);
-            }
+        if($request->isJson()) {
+            return $next($request);
+
+        } else {
+            abort(403);
         }
 
-        return $next($request);
+        // return $next($request);
     }
 }

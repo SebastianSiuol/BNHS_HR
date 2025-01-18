@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePage } from '@inertiajs/react';
 import {RiTeamFill} from "react-icons/ri";
 import {HiOutlineClipboardDocumentCheck} from "react-icons/hi2";
 import {FaCircleXmark} from "react-icons/fa6";
@@ -9,6 +10,7 @@ import {PageHeaders} from "@/Components/Admin/PageHeaders.jsx";
 
 
 export default function Dashboard() {
+    const {totalEmployees, totalPresentToday} = usePage().props
 
 
     return (
@@ -21,7 +23,7 @@ export default function Dashboard() {
                         <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
                             <div className="border-4 border-blue-800 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                                 <div className="flex items-center justify-start rtl:justify-end px-4 mb-[22px]">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900"></h2>
+                                    <h2 className="title-font font-semibold text-5xl text-gray-900">{totalEmployees}</h2>
                                     <RiTeamFill className="size-20 ml-auto text-indigo-500" />
                                 </div>
                                 <div className="pl-4 pr-0">
@@ -32,7 +34,7 @@ export default function Dashboard() {
                         <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
                             <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                                 <div className="flex items-center justify-start rtl:justify-end mb-4">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">5</h2>
+                                    <h2 className="title-font font-semibold text-5xl text-gray-900">{totalPresentToday}</h2>
 
                                     <HiOutlineClipboardDocumentCheck className="size-20 ml-auto text-green-500" />
                                 </div>
@@ -42,7 +44,7 @@ export default function Dashboard() {
                         <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
                             <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                                 <div className="flex items-center justify-start rtl:justify-end mb-4">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">3</h2>
+                                    <h2 className="title-font font-semibold text-5xl text-gray-900">0</h2>
 
                                     <FaCircleXmark className="size-20 ml-auto text-red-700" />
                                 </div>
