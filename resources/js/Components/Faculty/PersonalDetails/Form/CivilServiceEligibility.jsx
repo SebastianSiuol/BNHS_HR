@@ -7,10 +7,11 @@ import { useFetchData } from "@/Hooks/useFetchData";
 import { getDateToday } from "@/Utils/customDayjsUtils";
 
 import CustomDatePicker from "@/Components/CustomDatePicker";
+import { EditSectionHeader } from "@/Components/Faculty/PersonalDetails/EditSectionHeader";
 
 export function CivilServiceEligibility() {
     const { data: inputFields, setData: setInputFields } = useFetchData("/civil-service/all");
-    const [inputEditable, setInputEditable] = useState(false);
+    const [isInputEditable, setIsInputEditable] = useState(false);
 
     const {
         handleSubmit,
@@ -25,7 +26,7 @@ export function CivilServiceEligibility() {
         console.log(payload);
         router.patch(route("civil-service.update"), payload, {
             onSuccess: ()=>{
-                setInputEditable(false);
+                setIsInputEditable(false);
             }
         });
     }
@@ -61,34 +62,13 @@ export function CivilServiceEligibility() {
 
     return (
         <div className="bg-white shadow p-6 rounded-lg">
-            <div className="flex justify-between items-center border-b pb-4 mb-4">
-                <div>
-                        {inputEditable && (
-                            <h1 className={"text-yellow-600 font-bold"}>
-                                Now Editing
-                            </h1>
-                        )}
-                        <h2 className="text-lg font-bold text-gray-800">
-                        Civil Service Eligibility
-                        </h2>
-                    </div>
-                <div className={"space-x-4"}>
-                    <button
-                       onClick={() => {
-                            setInputEditable((e) => !e);
-                        }}
-                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600">
-                        Edit
-                    </button>
-                    {inputEditable && (
-                        <button
-                            onClick={addRow}
-                            className="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600">
-                            Add
-                        </button>
-                    )}
-                </div>
-            </div>
+            <EditSectionHeader
+                header={"Civil Service Eligibility"}
+                isInputEditable={isInputEditable}
+                setIsInputEditable={setIsInputEditable}
+                addButton={true}
+                onAdd={addRow}
+            />
             <form onSubmit={handleSubmit(onSave)}>
                 <div className="container overflow-x-auto mx-auto">
                     <table className="min-w-full border-collapse border border-gray-300 text-sm text-left">
@@ -123,7 +103,7 @@ export function CivilServiceEligibility() {
                                     colSpan="2">
                                     LICENSE (if applicable)
                                 </th>
-                                {inputEditable && (
+                                {isInputEditable && (
                                     <th
                                         className="border px-4 py-2"
                                         rowSpan="2">
@@ -155,7 +135,7 @@ export function CivilServiceEligibility() {
                                             type="text"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                                             placeholder="Enter Career Service"
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                         />
                                     </td>
 
@@ -173,7 +153,7 @@ export function CivilServiceEligibility() {
                                             type="text"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                                             placeholder="Enter Rating"
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                         />
                                     </td>
 
@@ -194,7 +174,7 @@ export function CivilServiceEligibility() {
                                                     ),
                                             }}
                                             name={`dateOfExamination-${index}`}
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                             error={errors}
                                             minimumDate={"1970-01-01"}
                                             maximumDate={getDateToday()}
@@ -215,7 +195,7 @@ export function CivilServiceEligibility() {
                                             type="text"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                                             placeholder="Enter Place of Examination"
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                         />
                                     </td>
 
@@ -233,7 +213,7 @@ export function CivilServiceEligibility() {
                                             type="number"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                                             placeholder="Enter License Number"
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                         />
                                     </td>
 
@@ -256,12 +236,12 @@ export function CivilServiceEligibility() {
                                             name={`dateOfValidity-${index}`}
                                             error={errors}
                                             minimumDate={"2000-01-01"}
-                                            disabled={!inputEditable}
+                                            disabled={!isInputEditable}
                                         />
                                     </td>
 
                                     {/* Action */}
-                                    {inputEditable && (
+                                    {isInputEditable && (
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 type="button"
@@ -277,7 +257,7 @@ export function CivilServiceEligibility() {
                             ))}
                         </tbody>
                     </table>
-                    {inputEditable && (<div className="mt-4 flex justify-end">
+                    {isInputEditable && (<div className="mt-4 flex justify-end">
                         <button
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">

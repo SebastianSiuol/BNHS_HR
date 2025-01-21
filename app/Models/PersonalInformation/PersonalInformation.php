@@ -3,6 +3,7 @@
 namespace App\Models\PersonalInformation;
 
 use App\Models\CivilService;
+use App\Models\EducationalBackground;
 use App\Models\Faculty;
 use App\Models\LearningAndDevelopment;
 use App\Models\OtherInformation;
@@ -82,6 +83,10 @@ class PersonalInformation extends Model
 
     public function children_members(){
         return $this->hasMany(ChildrenMember::class);
+    }
+
+    public function educational_backgrounds(){
+        return $this->hasMany(EducationalBackground::class);
     }
 
 

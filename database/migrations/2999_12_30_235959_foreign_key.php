@@ -86,6 +86,10 @@ return new class extends Migration
             $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
         });
 
+        Schema::table('educational_backgrounds', function(Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
     }
 
     /**

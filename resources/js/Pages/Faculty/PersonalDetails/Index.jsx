@@ -11,14 +11,14 @@ import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
 import { Table, TableRow } from "@/Components/Table";
 
-import { PersonalInformation } from "@/Components/Faculty/PersonalDetails/PersonalInformation";
-import { FamilyBackground } from "@/Components/Faculty/PersonalDetails/FamilyBackground";
-import { EducationalBackground } from "@/Components/Faculty/PersonalDetails/EducationalBackground";
-import { CivilServiceEligibility } from "@/Components/Faculty/PersonalDetails/CivilServiceEligibility";
-import { VoluntaryWork } from "@/Components/Faculty/PersonalDetails/VoluntaryWork";
-import { WorkExperience } from "@/Components/Faculty/PersonalDetails/WorkExperience";
-import { LearningAndDevelopment } from "@/Components/Faculty/PersonalDetails/LearningAndDevelopment";
-import { OtherInformation } from "@/Components/Faculty/PersonalDetails/OtherInformation";
+import { PersonalInformation } from "@/Components/Faculty/PersonalDetails/Form/PersonalInformation";
+import { FamilyBackground } from "@/Components/Faculty/PersonalDetails/Form/FamilyBackground";
+import { EducationalBackground } from "@/Components/Faculty/PersonalDetails/Form/EducationalBackground";
+import { CivilServiceEligibility } from "@/Components/Faculty/PersonalDetails/Form/CivilServiceEligibility";
+import { VoluntaryWork } from "@/Components/Faculty/PersonalDetails/Form/VoluntaryWork";
+import { WorkExperience } from "@/Components/Faculty/PersonalDetails/Form/WorkExperience";
+import { LearningAndDevelopment } from "@/Components/Faculty/PersonalDetails/Form/LearningAndDevelopment";
+import { OtherInformation } from "@/Components/Faculty/PersonalDetails/Form/OtherInformation";
 
 export default function Index() {
     return (

@@ -140,10 +140,10 @@ function FacultyTable({ faculties }){
     // Columns Data
     const columns = [
         (faculty) => faculty.faculty_code,
-        (faculty) => `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
+        (faculty) => `${faculty.personal_information?.first_name ?? ""} ${faculty.personal_information?.last_name ?? ""}`,
         (faculty) => faculty.email,
-        (faculty) => faculty.designation.department.name,
-        (faculty) => capitalizeFirstLetter(faculty.shift.name),
+        (faculty) => (faculty.designation?.department.name ?? "N/A"),
+        (faculty) => capitalizeFirstLetter(faculty.shift?.name ?? "N/A"),
         () => "Active",
         (faculty) => (
             <div className="flex items-center justify-end">

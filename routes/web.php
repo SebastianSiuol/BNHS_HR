@@ -24,14 +24,17 @@ use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Admin\Configuration\RoleController;
-
+use App\Http\Controllers\ChildrenMemberController;
+use App\Http\Controllers\EducationalBackgroundController;
 use App\Http\Controllers\JWTRedirectController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ParentMemberController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RPMSConfigurationController;
 use App\Http\Controllers\SpouseMemberController;
 use App\Http\Controllers\VoluntaryWorkController;
 use App\Http\Controllers\WorkExperienceController;
+use App\Models\ParentMember;
 use Illuminate\Support\Facades\Route;
 
 
@@ -179,6 +182,14 @@ Route::middleware('redirUnauthUser')->group(function () {
                 Route::get('/learning-and-development/all', [LearningAndDevelopmentController::class, 'all'])           ->name('api.learning-and-development.all');
                 Route::get('/other-information/all', [OtherInformationController::class, 'all'])                        ->name('api.other-information.all');
 
+
+                Route::get('/spouse-member', [SpouseMemberController::class, 'get'])                                    ->name('spouse-member.get');
+                Route::get('/parent-member', [ParentMemberController::class, 'get'])                                    ->name('parent-member.get');
+                Route::get('/child-member', [ChildrenMemberController::class, 'get'])                                   ->name('child-member.get');
+
+                Route::get('/educational-background', [EducationalBackgroundController::class, 'get'])                  ->name('educ-bg.get');
+
+
         });
 
     /**
@@ -198,6 +209,10 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::patch('/other-information', [OtherInformationController::class, 'update'])                                   ->name('other-information.update');
 
     Route::patch('/spouse-member', [SpouseMemberController::class, 'update'])                                           ->name('spouse-member.update');
+    Route::patch('/parent-member', [ParentMemberController::class, 'update'])                                           ->name('parent-member.update');
+    Route::patch('/child-member', [ChildrenMemberController::class, 'update'])                                          ->name('child-member.update');
+
+    Route::patch('/educational-background', [EducationalBackgroundController::class, 'update'])                         ->name('educ-bg.update');
 
 
 

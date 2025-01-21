@@ -42,11 +42,6 @@ class RoleSeeder extends Seeder
                 'type' => 'hr',
                 'description' => 'Super Admin HR',
             ],
-            // [
-            //     'role_name' => 'hr_manager',
-            //     'type' => 'hr',
-            //     'description' => 'Manager HR',
-            // ],
             [
                 'role_name' => 'hr_faculty', //5
                 'type' => 'hr',
@@ -72,6 +67,11 @@ class RoleSeeder extends Seeder
             //     'type' => 'logi',
             //     'description' => 'Property Custodian Dashboard LS',
             // ]
+            [
+                'role_name' => 'hr_manager',
+                'type' => 'hr',
+                'description' => 'Manager HR',
+            ],
         ];
 
         foreach($roles as $role){
@@ -114,6 +114,9 @@ class RoleSeeder extends Seeder
 
         // 0010
         Faculty::find(10)->roles()->attach([2]); // sis_registrar
+
+        // 0011
+        Faculty::find(11)->roles()->attach([8]); // sis_registrar
 
 
     }
