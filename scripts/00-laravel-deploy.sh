@@ -17,6 +17,9 @@ php artisan route:cache
 echo "Running in-development migrations"
 php artisan migrate --force
 
+echo "Running storage link"
+php artisan storage:link
+
 #echo "Running npm build..."
 #npm run build --prefix /var/www/html
 
