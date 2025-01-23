@@ -51,7 +51,8 @@ class LeaveController extends Controller
 
         $leaveDetails = [
             'publicId' => $leave->public_id,
-            'startDate' => $leave->start_date,
+            // 'startDate' => $leave->start_date,
+            'startDate' => '2024-01-02',
             'endDate' => $leave->end_date,
             'document' => $file_url,
             'status' => $leave->status,
@@ -158,13 +159,22 @@ class LeaveController extends Controller
     public function manage()
     {
 
-        $leaves_requests = Leave::select('id', 'public_id', 'leave_types_id', 'faculty_id', 'start_date', 'end_date', 'document', 'status')
+        $auth_faculty = Auth::user();
+        $auth_department_id = $auth_faculty->designation->department_id;
+        $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
+
+        $leaveQuery = Leave::select('id', 'public_id', 'leave_types_id', 'faculty_id', 'start_date', 'end_date', 'document', 'status')
             ->with([
                 'faculty' => fn($query) => $query->select('id', 'faculty_code', 'service_credit')
                     ->with(['personal_information' => fn($subQuery) => $subQuery->select('id', 'faculty_id', 'first_name', 'last_name')]),
                 'leave_types' => fn($query) => $query->select('id', 'name')
-            ])
-            ->paginate(5);
+            ]);
+
+            if ($auth_faculty_roles->contains('hr_manager')) {
+                $leaveQuery->whereHas('faculty.designation.department', fn($query) => $query->where('id', $auth_department_id));
+            }
+
+            $leaves_requests = $leaveQuery->paginate(5);
 
         return Inertia::render('Admin/Leave/Manage', [
             'leaveRequests' => $leaves_requests,

@@ -19,7 +19,6 @@ const selectedDataKeys = [
   'roles'
 ]
 
-const AUTH_API_KEY = import.meta.env.VITE_AUTH_API_KEY;
 
 export function EditMultiStepFormProvider({ children }) {
     /*
@@ -28,7 +27,6 @@ export function EditMultiStepFormProvider({ children }) {
     const { selected_faculty } = usePage().props;
     const [ step, setStep ] = useState(0);
     const [ selectedFacultyDetails, setSelectedFacultyDetails ] = useState(selected_faculty)
-    const [ formDetails, setFormDetails ] = useState([]);
 
     /*
     * Functions
@@ -66,7 +64,7 @@ export function EditMultiStepFormProvider({ children }) {
     }
 
     return (
-        <EditMultiStepFormContext.Provider value={{ step, selectedFacultyDetails, previousStep, nextStep, onSubmitForm, onFormNavigate, AUTH_API_KEY }}>
+        <EditMultiStepFormContext.Provider value={{ step, selectedFacultyDetails, previousStep, nextStep, onSubmitForm, onFormNavigate }}>
             {children}
         </EditMultiStepFormContext.Provider>
     );

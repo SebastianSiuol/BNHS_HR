@@ -30,31 +30,48 @@ class StoreFacultyService{
         return $psn_info;
     }
 
-    public function storeAddresses (PersonalInformation $personal_information, array $validated_inputs) {
+    public function storeAddresses(PersonalInformation $personal_information, array $validated_inputs)
+{
+    // Check if the residential and permanent addresses are the same
+    $resi_addr = new ResidentialAddress([
+        'house_block_no'        => $validated_inputs['residential_houseNumber'],
+        'street'                => $validated_inputs['residential_street'],
+        'subdivision_village'   => $validated_inputs['residential_subdivision'],
+        'barangay'              => $validated_inputs['residential_barangayName'],
+        'city_municipality'     => $validated_inputs['residential_cityName'],
+        'province'              => $validated_inputs['residential_provinceName'],
+        'zip_code'              => $validated_inputs['residential_zipCode'],
+    ]);
 
-        $resi_addr = new ResidentialAddress([
-            'house_block_no'        => $validated_inputs['residential_house_num'],
+    if ($validated_inputs['sameAddress']) {
+        // Use the residential input values for the permanent address
+        $perma_addr = new PermanentAddress([
+            'house_block_no'        => $validated_inputs['residential_houseNumber'],
             'street'                => $validated_inputs['residential_street'],
             'subdivision_village'   => $validated_inputs['residential_subdivision'],
-            'barangay'              => $validated_inputs['residential_barangay'],
-            'city_municipality'     => $validated_inputs['residential_city'],
-            'province'              => $validated_inputs['residential_province'],
-            'zip_code'              => $validated_inputs['residential_zip_code'],
+            'barangay'              => $validated_inputs['residential_barangayName'],
+            'city_municipality'     => $validated_inputs['residential_cityName'],
+            'province'              => $validated_inputs['residential_provinceName'],
+            'zip_code'              => $validated_inputs['residential_zipCode'],
         ]);
-
+    } else {
+        // Use the permanent input values
         $perma_addr = new PermanentAddress([
-            'house_block_no'        => $validated_inputs['permanent_house_num'],
+            'house_block_no'        => $validated_inputs['permanent_houseNumber'],
             'street'                => $validated_inputs['permanent_street'],
             'subdivision_village'   => $validated_inputs['permanent_subdivision'],
-            'barangay'              => $validated_inputs['permanent_barangay'],
-            'city_municipality'     => $validated_inputs['permanent_city'],
-            'province'              => $validated_inputs['permanent_province'],
-            'zip_code'              => $validated_inputs['permanent_zip_code'],
+            'barangay'              => $validated_inputs['permanent_barangayName'],
+            'city_municipality'     => $validated_inputs['permanent_cityName'],
+            'province'              => $validated_inputs['permanent_provinceName'],
+            'zip_code'              => $validated_inputs['permanent_zipCode'],
         ]);
-
-        $personal_information->residential_address()->save($resi_addr);
-        $personal_information->permanent_address()->save($perma_addr);
     }
+
+    // Save the addresses
+    $personal_information->residential_address()->save($resi_addr);
+    $personal_information->permanent_address()->save($perma_addr);
+}
+
 
     public function storeContactPerson (PersonalInformation $personal_information, array $validated_inputs) {
 

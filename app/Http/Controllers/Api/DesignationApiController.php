@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 
 class DesignationApiController extends Controller
 {
-    public function getDesignations(Request $request)
+    public function get(Request $request)
     {
+        if (is_null($request->department)) {
+            return response()->json([]);
+        }
 
         $designations = Designation::with('department')
-            ->where('department_id', 'LIKE', $request->department)->get();
+            ->where('department_id', 'LIKE', $request->department)
+            ->get();
 
         return response()->json($designations);
-
     }
 }

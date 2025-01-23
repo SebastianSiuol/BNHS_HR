@@ -179,7 +179,7 @@ function ViewModal({ state, onToggle, selectedData }) {
         async function fetchData() {
             if (selectedData) {
                 const response = await fetch(
-                    route("faculty.leaves.show", selectedData?.public_id)
+                    route("leaves.show", selectedData?.public_id)
                 );
                 const parsedResponse = await response.json();
 

@@ -129,57 +129,69 @@ class FacultyApiController extends Controller
     }
 
     public function showFaculty(Request $request){
-        $faculty = Faculty::where('id', $request->get('id'))->get()->first();
+        $faculty = Faculty::where('id', $request->get('id'))->first();
+
+        $department_head = null;
+
+
+        // Check if the department_head_id is not null
+        if ($faculty && $faculty->department_head_id) {
+            $department_head = Faculty::select('id')
+                ->where('id', $faculty->department_head_id) // Add where clause
+                ->with([
+                    'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name')
+                ])
+                ->first(); // Fetch the first result
+        }
 
         return response()->json([
-            'id' => $faculty->id,
-            'faculty_code' => $faculty->faculty_code,
-            'email' => $faculty->email,
-            'date_of_joining' => $faculty->date_of_joining,
+            'id' => $faculty->id ?? "N/A",
+            'faculty_code' => $faculty->faculty_code ?? "N/A",
+            'email' => $faculty->email ?? "N/A",
+            'date_of_joining' => $faculty->date_of_joining ?? "N/A",
+            'department_head' => $department_head,
             'designation' =>
                 [
-                    'id' => $faculty->designation_id,
-                    'name' => $faculty->designation->name,
-                    'department' => $faculty->designation->department->name
+                    'id' => $faculty->designation_id ?? "N/A",
+                    'name' => $faculty->designation->name ?? "N/A",
+                    'department' => $faculty->designation->department->name ?? "N/A"
                 ],
-            'shift' => $faculty->shift->name,
-            'personal_information' => [
-                'id' => $faculty->personal_information->id,
-                'first_name' => $faculty->personal_information->first_name,
-                'middle_name' => $faculty->personal_information->middle_name,
-                'last_name' => $faculty->personal_information->last_name,
-                'name_extension' => $faculty->personal_information->name_extension->title,
-                'place_of_birth' => $faculty->personal_information->place_of_birth,
-                'date_of_birth' => $faculty->personal_information->date_of_birth,
-                'sex' => $faculty->personal_information->sex,
-                'civil_status' => $faculty->personal_information->civil_status->civil_status,
-                'contact_number' => $faculty->personal_information->contact_no,
-                'telephone_number' => $faculty->personal_information->telephone_no,
-                'contact_person_name' => $faculty->personal_information->contact_person->name,
-                'contact_person_number' => $faculty->personal_information->contact_person->contact_no,
+            'shift' => $faculty->shift->name ?? "N/A",
+            'personal_information' =>  [
+                'id' => $faculty->personal_information->id ?? "N/A",
+                'first_name' => $faculty->personal_information->first_name ?? "N/A",
+                'middle_name' => $faculty->personal_information->middle_name ?? "N/A",
+                'last_name' => $faculty->personal_information->last_name ?? "N/A",
+                'name_extension' => $faculty->personal_information->name_extension->title ?? "N/A",
+                'place_of_birth' => $faculty->personal_information->place_of_birth ?? "N/A",
+                'date_of_birth' => $faculty->personal_information->date_of_birth ?? "N/A",
+                'sex' => $faculty->personal_information->sex ?? "N/A",
+                'civil_status' => $faculty->personal_information->civil_status->civil_status ?? "N/A",
+                'contact_number' => $faculty->personal_information->contact_no ?? "N/A",
+                'telephone_number' => $faculty->personal_information->telephone_no ?? "N/A",
+                'contact_person_name' => $faculty->personal_information->contact_person->name ?? "N/A",
+                'contact_person_number' => $faculty->personal_information->contact_person->contact_no ?? "N/A",
             ],
-            'addresses' => [
-                'residential_id' => $faculty->personal_information->residential_address->id,
-                'residential_house_num' => $faculty->personal_information->residential_address->house_block_no,
-                'residential_street' => $faculty->personal_information->residential_address->street,
-                'residential_subdivision' => $faculty->personal_information->residential_address->subdivision_village,
-                'residential_barangay' => $faculty->personal_information->residential_address->barangay,
-                'residential_city' => $faculty->personal_information->residential_address->city_municipality,
-                'residential_province' => $faculty->personal_information->residential_address->province,
-                'residential_zip_code' => $faculty->personal_information->residential_address->zip_code,
-                'permanent_id' => $faculty->personal_information->permanent_address->id,
-                'permanent_house_num' => $faculty->personal_information->permanent_address->house_block_no,
-                'permanent_street' => $faculty->personal_information->permanent_address->street,
-                'permanent_subdivision' => $faculty->personal_information->permanent_address->subdivision_village,
-                'permanent_barangay' => $faculty->personal_information->permanent_address->barangay,
-                'permanent_city' => $faculty->personal_information->permanent_address->city_municipality,
-                'permanent_province' => $faculty->personal_information->permanent_address->province,
-                'permanent_zip_code' => $faculty->personal_information->permanent_address->zip_code,
+            'addresses' =>  [
+                'residential_id' => $faculty->personal_information->residential_address->id ?? "N/A",
+                'residential_houseNumber' => $faculty->personal_information->residential_address->house_block_no ?? "N/A",
+                'residential_street' => $faculty->personal_information->residential_address->street ?? "N/A",
+                'residential_subdivision' => $faculty->personal_information->residential_address->subdivision_village ?? "N/A",
+                'residential_barangay' => $faculty->personal_information->residential_address->barangay ?? "N/A",
+                'residential_city' => $faculty->personal_information->residential_address->city_municipality ?? "N/A",
+                'residential_province' => $faculty->personal_information->residential_address->province ?? "N/A",
+                'residential_zipCode' => $faculty->personal_information->residential_address->zip_code ?? "N/A",
+                'permanent_id' => $faculty->personal_information->permanent_address->id ?? "N/A",
+                'permanent_houseNumber' => $faculty->personal_information->permanent_address->house_block_no ?? "N/A",
+                'permanent_street' => $faculty->personal_information->permanent_address->street ?? "N/A",
+                'permanent_subdivision' => $faculty->personal_information->permanent_address->subdivision_village ?? "N/A",
+                'permanent_barangay' => $faculty->personal_information->permanent_address->barangay ?? "N/A",
+                'permanent_city' => $faculty->personal_information->permanent_address->city_municipality ?? "N/A",
+                'permanent_province' => $faculty->personal_information->permanent_address->province ?? "N/A",
+                'permanent_zipCode' => $faculty->personal_information->permanent_address->zip_code ?? "N/A",
             ]
         ]);
     }
-
-
 
 
     public function autocomplete(Request $request)
@@ -214,6 +226,45 @@ class FacultyApiController extends Controller
             'faculties' => $formattedFaculties,
         ]);
     }
+
+
+    public function getHead(Request $request, $department){
+
+        // $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id')
+        // ->with([
+        //     'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+        //     'designation' => fn($query) => $query->select('id', 'department_id')
+        //     ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+        // ])->whereHas('designation.department', fn($query) => $query->where('id', $department))
+        // ->where('role', 'hr_manager')
+        // ->get();
+
+        $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id')
+        ->with([
+            'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+            'roles' => fn($query) => $query->select('roles.id', 'role_name'),
+            'designation' => fn($query) => $query->select('id', 'department_id')
+            ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+        ])->whereHas('designation.department', fn($query) => $query->where('id', $department))
+        ->whereHas('roles', fn($query) => $query->where('role_name', 'hr_manager'))
+        ->get();
+
+        if ($facultiesQuery->isEmpty()) {
+            return response()->json(['message'=>'No department head found!'], 404);
+        }
+
+        $transformedFaculties = $facultiesQuery->map(function ($faculty) {
+            return [
+                'id' => $faculty->id,
+                'first_name' => $faculty->personal_information->first_name ?? null,
+                'last_name' => $faculty->personal_information->last_name ?? null,
+            ];
+        });
+
+        return response()->json($transformedFaculties);
+
+    }
+
     // PrivateAPI
 
 }

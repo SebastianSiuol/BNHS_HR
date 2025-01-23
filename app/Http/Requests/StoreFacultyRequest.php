@@ -41,26 +41,31 @@ class StoreFacultyRequest extends FormRequest
             'contact_number'                => ['required'],
             'telephone_number'              => ['nullable'],
             'civil_status_id'               => ['required'],
+            'department_head'               => ['nullable'],
 
     //          CONTACT PERSON
             'contact_person_name'           => ['required'],
             'contact_person_number'         => ['nullable'],
 
     //          ADDRESSES
-            'residential_house_num'         => ['required'],
-            'residential_street'            => ['required'],
-            'residential_subdivision'       => ['required'],
-            'residential_barangay'          => ['required'],
-            'residential_city'              => ['required'],
-            'residential_province'          => ['required'],
-            'residential_zip_code'          => ['required'],
-            'permanent_house_num'           => ['required'],
-            'permanent_street'              => ['required'],
-            'permanent_subdivision'         => ['required'],
-            'permanent_barangay'            => ['required'],
-            'permanent_city'                => ['required'],
-            'permanent_province'            => ['required'],
-            'permanent_zip_code'            => ['required'],
+            'residential_houseNumber'           => ['required'],
+            'residential_street'                => ['required'],
+            'residential_subdivision'           => ['required'],
+            'residential_barangayName'          => ['required'],
+            'residential_cityName'              => ['required'],
+            'residential_provinceName'          => ['required'],
+            'residential_zipCode'               => ['required'],
+
+            // CONDITIONAL PERMANENT ADDRESS
+            'permanent_houseNumber'             => ['required_unless:sameAddress,true'],
+            'permanent_street'                   => ['required_unless:sameAddress,true'],
+            'permanent_subdivision'             => ['required_unless:sameAddress,true'],
+            'permanent_barangayName'            => ['required_unless:sameAddress,true'],
+            'permanent_cityName'                => ['required_unless:sameAddress,true'],
+            'permanent_provinceName'            => ['required_unless:sameAddress,true'],
+            'permanent_zipCode'            => ['required_unless:sameAddress,true'],
+
+            'sameAddress'                   => ['nullable', 'boolean'],
         ];
     }
 

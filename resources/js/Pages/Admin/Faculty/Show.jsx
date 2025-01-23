@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
 import { LabeledInput, InputShow, Label } from "@/Components/LabeledInput";
+import { getFullName } from '@/Utils/formatTableDataUtils';
 
 import { useFacultiesIndex } from "@/Context/FacultiesIndexContext";
 
@@ -30,18 +31,18 @@ function PersonalDetails() {
 
     // Grouped fields for personal information
     const personalFields = [
-        { id: "first_name", label: "First Name", value: personal_information.first_name },
-        { id: "middle_name", label: "Middle Name", value: personal_information.middle_name },
-        { id: "last_name", label: "Last Name", value: personal_information.last_name },
-        { id: "name_extension", label: "Name Extension", value: personal_information.name_extension },
-        { id: "place_of_birth", label: "Place of Birth", value: personal_information.place_of_birth },
-        { id: "date_of_birth", label: "Date of Birth", value: personal_information.date_of_birth },
-        { id: "sex", label: "Sex", value: personal_information.sex },
-        { id: "civil_status", label: "Civil Status", value: personal_information.civil_status },
-        { id: "contact_number", label: "Contact Number", value: personal_information.contact_number },
-        { id: "telephone_number", label: "Telephone Number", value: personal_information.telephone_number },
-        { id: "contact_person_name", label: "Contact Person Name", value: personal_information.contact_person_name },
-        { id: "contact_person_number", label: "Contact Person Number", value: personal_information.contact_person_number },
+        { id: "first_name", label: "First Name", value: personal_information.first_name ?? 'N/A' },
+        { id: "middle_name", label: "Middle Name", value: personal_information.middle_name ?? 'N/A' },
+        { id: "last_name", label: "Last Name", value: personal_information.last_name ?? 'N/A' },
+        { id: "name_extension", label: "Name Extension", value: personal_information.name_extension ?? 'N/A' },
+        { id: "place_of_birth", label: "Place of Birth", value: personal_information.place_of_birth ?? 'N/A' },
+        { id: "date_of_birth", label: "Date of Birth", value: personal_information.date_of_birth ?? 'N/A' },
+        { id: "sex", label: "Sex", value: personal_information.sex ?? 'N/A' },
+        { id: "civil_status", label: "Civil Status", value: personal_information.civil_status ?? 'N/A' },
+        { id: "contact_number", label: "Contact Number", value: personal_information.contact_number ?? 'N/A' },
+        { id: "telephone_number", label: "Telephone Number", value: personal_information.telephone_number ?? 'N/A' },
+        { id: "contact_person_name", label: "Contact Person Name", value: personal_information.contact_person_name ?? 'N/A' },
+        { id: "contact_person_number", label: "Contact Person Number", value: personal_information.contact_person_number ?? 'N/A' },
     ];
 
     // Grouped fields for addresses
@@ -49,25 +50,25 @@ function PersonalDetails() {
         {
             title: "Residential Address",
             fields: [
-                { id: "residential_house_num", label: "House/Block/Lot No.", value: addresses.residential_house_num },
-                { id: "residential_street", label: "Street", value: addresses.residential_street },
-                { id: "residential_subdivision", label: "Subdivision/Village", value: addresses.residential_subdivision },
-                { id: "residential_barangay", label: "Barangay", value: addresses.residential_barangay },
-                { id: "residential_city", label: "City/Municipality", value: addresses.residential_city },
-                { id: "residential_province", label: "Province", value: addresses.residential_province },
-                { id: "residential_zip_code", label: "Zip Code", value: addresses.residential_zip_code },
+                { id: "residential_houseNumber", label: "House/Block/Lot No.", value: addresses.residential_houseNumber ?? 'N/A' },
+                { id: "residential_street", label: "Street", value: addresses.residential_street ?? 'N/A' },
+                { id: "residential_subdivision", label: "Subdivision/Village", value: addresses.residential_subdivision ?? 'N/A' },
+                { id: "residential_barangay", label: "Barangay", value: addresses.residential_barangay ?? 'N/A' },
+                { id: "residential_city", label: "City/Municipality", value: addresses.residential_city ?? 'N/A' },
+                { id: "residential_province", label: "Province", value: addresses.residential_province ?? 'N/A' },
+                { id: "residential_zip_code", label: "Zip Code", value: addresses.residential_zipCode ?? 'N/A' },
             ],
         },
         {
             title: "Permanent Address",
             fields: [
-                { id: "permanent_house_num", label: "House/Block/Lot No.", value: addresses.permanent_house_num },
-                { id: "permanent_street", label: "Street", value: addresses.permanent_street },
-                { id: "permanent_subdivision", label: "Subdivision/Village", value: addresses.permanent_subdivision },
-                { id: "permanent_barangay", label: "Barangay", value: addresses.permanent_barangay },
-                { id: "permanent_city", label: "City/Municipality", value: addresses.permanent_city },
-                { id: "permanent_province", label: "Province", value: addresses.permanent_province },
-                { id: "permanent_zip_code", label: "Zip Code", value: addresses.permanent_zip_code },
+                { id: "permanent_house_num", label: "House/Block/Lot No.", value: addresses.permanent_houseNumber ?? 'N/A' },
+                { id: "permanent_street", label: "Street", value: addresses.permanent_street ?? 'N/A' },
+                { id: "permanent_subdivision", label: "Subdivision/Village", value: addresses.permanent_subdivision ?? 'N/A' },
+                { id: "permanent_barangay", label: "Barangay", value: addresses.permanent_barangay ?? 'N/A' },
+                { id: "permanent_city", label: "City/Municipality", value: addresses.permanent_city ?? 'N/A' },
+                { id: "permanent_province", label: "Province", value: addresses.permanent_province ?? 'N/A' },
+                { id: "permanent_zip_code", label: "Zip Code", value: addresses.permanent_zipCode ?? 'N/A' },
             ],
         },
     ];
@@ -115,8 +116,10 @@ function AccountDetails() {
 
 function CompanyDetails() {
     const { selectedFacultyDetails } = useFacultiesIndex();
-    const { faculty_code, designation, shift, date_of_joining } = selectedFacultyDetails;
+    const { faculty_code, designation, shift, date_of_joining, department_head } = selectedFacultyDetails;
     const { department } = designation;
+
+    console.log(department_head);
 
     return (
         <>
@@ -141,7 +144,7 @@ function CompanyDetails() {
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Manager/Department Head"} color={"black"} width={"normal"} />
-                        <InputShow id={"depart_head"} value={"Blank"} />
+                        <InputShow id={"depart_head"} value={getFullName(department_head?.personal_information)} />
                     </TwoColumnContainer>
                     <TwoColumnContainer>
                         <Label label={"Shift"} color={"black"} width={"normal"} />

@@ -19,7 +19,7 @@ const initialStates = {
     formData: []
 }
 
-const AUTH_API_KEY = 'eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC';
+const AUTH_API_KEY = '';
 
 function reducer(state, action) {
     switch (action.type) {
@@ -56,6 +56,7 @@ export function MultiStepFormProvider({ children }) {
 
     // Initially gets Data for Form Persistance
     function getSavedData(dataKey) {
+
         let retrievedData = localStorage.getItem(dataKey);
         if (retrievedData) {
             try {
@@ -66,6 +67,7 @@ export function MultiStepFormProvider({ children }) {
             return retrievedData;
         }
         return;
+
     }
 
     // Retrieve all Data in the Local Storage
@@ -102,7 +104,7 @@ export function MultiStepFormProvider({ children }) {
 
                 errorSwal(errorMessages);
             },
-            onSuccess: (success) => {
+            onSuccess: () => {
                 localStorage.clear();
             },
         });

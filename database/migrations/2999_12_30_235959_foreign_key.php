@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreign('shift_id')->references('id')->on('shifts')->onDelete('restrict');;
             $table->foreign('employment_status_id')->references('id')->on('employment_statuses')->onDelete('restrict');
             $table->foreign('school_position_id')->references('id')->on('school_positions')->onDelete('restrict');
+            $table->foreign('department_head_id')->references('id')->on('faculties')->onDelete('restrict');
+
         });
 
         Schema::table('designations', function (Blueprint $table) {

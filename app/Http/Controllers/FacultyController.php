@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+
 
 
 
@@ -58,12 +60,15 @@ class FacultyController extends Controller
     {
 
         $validated_inputs = $request->validated();
-        // dd($validated_inputs);
+        $validatedDeptHead = $validated_inputs['department_head'] == 'blank' ? null : $validated_inputs['department_head'];
+        $faculty_code = Faculty::generateFacultyCode();
+        $random_password = str()->random();
 
         /* Stores Faculty */
         $faculty = new Faculty;
+        $faculty->faculty_code      = $faculty_code;
         $faculty->email             = $validated_inputs['email'];
-        // $faculty->password          = $validated_inputs['password'];
+        $faculty->password          = $random_password;
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
         // $faculty->photo             = $photo;
@@ -71,6 +76,7 @@ class FacultyController extends Controller
         $faculty->shift_id          = $validated_inputs['shift_id'];
         $faculty->employment_status_id = 1;
         $faculty->school_position_id = $validated_inputs['position_id'];
+        $faculty->department_head_id = $validatedDeptHead;
         $faculty->save();
 
         foreach ($validated_inputs['roles_id'] as $role) {
@@ -81,6 +87,18 @@ class FacultyController extends Controller
         $personal_information = $this->store_faculty->storePersonalInformation($faculty, $validated_inputs);
         $this->store_faculty->storeAddresses($personal_information, $validated_inputs);
         $this->store_faculty->storeContactPerson($personal_information, $validated_inputs);
+
+
+        // API request payload
+        $payload = [
+            "to" => $faculty->email,
+            "subject" => "Account creation!",
+            "text" => "Hello,\n\nPlease use the following account to log-in to the system! \n\n \"Faculty Code\": $faculty_code\n \"Password\": $random_password",
+        ];
+
+        // Send the email using the provided API
+        Http::post('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/send-email', $payload);
+
         return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
 
@@ -105,11 +123,42 @@ class FacultyController extends Controller
         $accountLoginDetails = $request->get('accountLoginDetails');
         $new_roles = $request->get('roles');
 
-        // Start Updating
-        $faculty->update([
-            'email' => $accountLoginDetails['email'],
-            'designation_id' => $companyDetails['designation_id'],
+        $validatedDeptHead = $companyDetails['department_head'] == 'blank' ? null : $companyDetails['department_head'];
+
+
+        $request->validate([
+
+            // ADDRESSES
+            'addresses.residential_houseNumber'           => ['required'],
+            'addresses.residential_street'                => ['required'],
+            'addresses.residential_subdivision'           => ['required'],
+            'addresses.residential_barangayName'          => ['required'],
+            'addresses.residential_cityName'              => ['required'],
+            'addresses.residential_provinceName'          => ['required'],
+            'addresses.residential_zipCode'               => ['required'],
+
+            // CONDITIONAL PERMANENT ADDRESS
+            'addresses.permanent_houseNumber'             => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_street'                  => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_subdivision'             => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_barangayName'            => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_cityName'                => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_provinceName'            => ['required_unless:addresses.sameAddress,true'],
+            'addresses.permanent_zipCode'                 => ['required_unless:addresses.sameAddress,true'],
+
+            'addresses.sameAddress'                                  => ['nullable', 'boolean'],
         ]);
+
+        // dd($companyDetails);
+
+        // Start Updating
+        $faculty->email = $accountLoginDetails['email'];
+        $faculty->designation_id = $companyDetails['designation_id'];
+        $faculty->school_position_id = $companyDetails['position_id'];
+        $faculty->shift_id = $companyDetails['shift_id'];
+        $faculty->department_head_id = $validatedDeptHead;
+        $faculty->save();
+
 
         // PERSONAL INFORMATION
         $psn_info = $faculty->personal_information;
@@ -134,23 +183,33 @@ class FacultyController extends Controller
 
         //      RESIDENTIAL ADDRESS
         $res_addr = $psn_info->residential_address;
-        $res_addr->house_block_no           = $addresses['residential_house_num'];
+        $res_addr->house_block_no           = $addresses['residential_houseNumber'];
         $res_addr->street                   = $addresses['residential_street'];
         $res_addr->subdivision_village      = $addresses['residential_subdivision'];
-        $res_addr->barangay                 = $addresses['residential_barangay'];
-        $res_addr->city_municipality        = $addresses['residential_city'];
-        $res_addr->province                 = $addresses['residential_province'];
-        $res_addr->zip_code                 = $addresses['residential_zip_code'];
+        $res_addr->barangay                 = $addresses['residential_barangayName'];
+        $res_addr->city_municipality        = $addresses['residential_cityName'];
+        $res_addr->province                 = $addresses['residential_provinceName'];
+        $res_addr->zip_code                 = $addresses['residential_zipCode'];
 
-        //      PERMANENT ADDRESS
-        $perm_addr = $psn_info->permanent_address;
-        $perm_addr->house_block_no          = $addresses['permanent_house_num'];
-        $perm_addr->street                  = $addresses['permanent_street'];
-        $perm_addr->subdivision_village     = $addresses['permanent_subdivision'];
-        $perm_addr->barangay                = $addresses['permanent_barangay'];
-        $perm_addr->city_municipality       = $addresses['permanent_city'];
-        $perm_addr->province                = $addresses['permanent_province'];
-        $perm_addr->zip_code                = $addresses['permanent_zip_code'];
+        if ($addresses['sameAddress']) {
+            $perm_addr = $psn_info->permanent_address;
+            $perm_addr->house_block_no          = $addresses['residential_houseNumber'];
+            $perm_addr->street                  = $addresses['residential_street'];
+            $perm_addr->subdivision_village     = $addresses['residential_subdivision'];
+            $perm_addr->barangay                = $addresses['residential_barangayName'];
+            $perm_addr->city_municipality       = $addresses['residential_cityName'];
+            $perm_addr->province                = $addresses['residential_provinceName'];
+            $perm_addr->zip_code                = $addresses['residential_zipCode'];
+        } else {
+            $perm_addr = $psn_info->permanent_address;
+            $perm_addr->house_block_no          = $addresses['permanent_houseNumber'];
+            $perm_addr->street                  = $addresses['permanent_street'];
+            $perm_addr->subdivision_village     = $addresses['permanent_subdivision'];
+            $perm_addr->barangay                = $addresses['permanent_barangayName'];
+            $perm_addr->city_municipality       = $addresses['permanent_cityName'];
+            $perm_addr->province                = $addresses['permanent_provinceName'];
+            $perm_addr->zip_code                = $addresses['permanent_zipCode'];
+        }
 
         $old_roles = $faculty->roles->pluck('id');
         $user_id = $faculty->id;
@@ -165,7 +224,7 @@ class FacultyController extends Controller
         $perm_addr->save();
 
         DB::table('sessions')
-            ->whereUserId($user_id)
+        ->whereUserId($user_id)
             ->delete();
 
         return redirect()
@@ -221,47 +280,47 @@ class FacultyController extends Controller
     public function formatFacultyForEdit($faculty)
     {
         return ([
-            'id'                                        => $faculty->id,
+            'id'                                        => $faculty->id ?? 'N/A',
             'personalDetails' => [
-                'id'                                    => $faculty->personal_information->id,
-                'first_name'                            => $faculty->personal_information->first_name,
-                'middle_name'                           => $faculty->personal_information->middle_name,
-                'last_name'                             => $faculty->personal_information->last_name,
-                'name_extension_id'                     => $faculty->personal_information->name_extension->id,
-                'place_of_birth'                        => $faculty->personal_information->place_of_birth,
-                'date_of_birth'                         => $faculty->personal_information->date_of_birth,
-                'sex'                                   => $faculty->personal_information->sex,
-                'civil_status_id'                       => $faculty->personal_information->civil_status->id,
-                'contact_number'                        => $faculty->personal_information->contact_no,
-                'telephone_number'                      => $faculty->personal_information->telephone_no,
-                'contact_person_name'                   => $faculty->personal_information->contact_person->name,
-                'contact_person_number'                 => $faculty->personal_information->contact_person->contact_no,
+                'id'                                    => $faculty->personal_information->id ?? 'N/A',
+                'first_name'                            => $faculty->personal_information->first_name ?? 'N/A',
+                'middle_name'                           => $faculty->personal_information->middle_name ?? 'N/A',
+                'last_name'                             => $faculty->personal_information->last_name ?? 'N/A',
+                'name_extension_id'                     => $faculty->personal_information->name_extension->id ?? 'N/A',
+                'place_of_birth'                        => $faculty->personal_information->place_of_birth ?? 'N/A',
+                'date_of_birth'                         => $faculty->personal_information->date_of_birth ?? 'N/A',
+                'sex'                                   => $faculty->personal_information->sex ?? 'N/A',
+                'civil_status_id'                       => $faculty->personal_information->civil_status->id ?? 'N/A',
+                'contact_number'                        => $faculty->personal_information->contact_no ?? 'N/A',
+                'telephone_number'                      => $faculty->personal_information->telephone_no ?? 'N/A',
+                'contact_person_name'                   => $faculty->personal_information->contact_person->name ?? 'N/A',
+                'contact_person_number'                 => $faculty->personal_information->contact_person->contact_no ?? 'N/A',
             ],
             'addresses' => [
-                'residential_id'                        => $faculty->personal_information->residential_address->id,
-                'residential_house_num'                 => $faculty->personal_information->residential_address->house_block_no,
-                'residential_street'                    => $faculty->personal_information->residential_address->street,
-                'residential_subdivision'               => $faculty->personal_information->residential_address->subdivision_village,
-                'residential_barangay'                  => $faculty->personal_information->residential_address->barangay,
-                'residential_city'                      => $faculty->personal_information->residential_address->city_municipality,
-                'residential_province'                  => $faculty->personal_information->residential_address->province,
-                'residential_zip_code'                  => $faculty->personal_information->residential_address->zip_code,
-                'permanent_id'                          => $faculty->personal_information->permanent_address->id,
-                'permanent_house_num'                   => $faculty->personal_information->permanent_address->house_block_no,
-                'permanent_street'                      => $faculty->personal_information->permanent_address->street,
-                'permanent_subdivision'                 => $faculty->personal_information->permanent_address->subdivision_village,
-                'permanent_barangay'                    => $faculty->personal_information->permanent_address->barangay,
-                'permanent_city'                        => $faculty->personal_information->permanent_address->city_municipality,
-                'permanent_province'                    => $faculty->personal_information->permanent_address->province,
-                'permanent_zip_code'                    => $faculty->personal_information->permanent_address->zip_code,
+                'residential_id'                        => $faculty->personal_information->residential_address->id ?? 'N/A',
+                'residential_houseNumber'                 => $faculty->personal_information->residential_address->house_block_no ?? 'N/A',
+                'residential_street'                    => $faculty->personal_information->residential_address->street ?? 'N/A',
+                'residential_subdivision'               => $faculty->personal_information->residential_address->subdivision_village ?? 'N/A',
+                // 'residential_barangay'                  => $faculty->personal_information->residential_address->barangay ?? 'N/A',
+                // 'residential_city'                      => $faculty->personal_information->residential_address->city_municipality ?? 'N/A',
+                // 'residential_province'                  => $faculty->personal_information->residential_address->province ?? 'N/A',
+                'residential_zipCode'                  => $faculty->personal_information->residential_address->zip_code ?? 'N/A',
+                'permanent_id'                          => $faculty->personal_information->permanent_address->id ?? 'N/A',
+                'permanent_houseNumber'                   => $faculty->personal_information->permanent_address->house_block_no ?? 'N/A',
+                'permanent_street'                      => $faculty->personal_information->permanent_address->street ?? 'N/A',
+                'permanent_subdivision'                 => $faculty->personal_information->permanent_address->subdivision_village ?? 'N/A',
+                // 'permanent_barangay'                    => $faculty->personal_information->permanent_address->barangay ?? 'N/A',
+                // 'permanent_city'                        => $faculty->personal_information->permanent_address->city_municipality ?? 'N/A',
+                // 'permanent_province'                    => $faculty->personal_information->permanent_address->province ?? 'N/A',
+                'permanent_zipCode'                    => $faculty->personal_information->permanent_address->zip_code ?? 'N/A',
             ],
             'companyDetails' => [
-                'faculty_code'                          => $faculty->faculty_code,
-                'date_of_joining'                       => $faculty->date_of_joining,
-                'designation_id'                        => $faculty->designation_id,
-                'department_id'                         => $faculty->designation->department->id,
-                'position_id'                           => $faculty->school_position->id,
-                'shift_id'                              => $faculty->shift->id,
+                'faculty_code'                          => $faculty->faculty_code ?? 'N/A',
+                'date_of_joining'                       => $faculty->date_of_joining ?? 'N/A',
+                'designation_id'                        => $faculty->designation_id ?? 'N/A',
+                'department_id'                         => $faculty->designation->department->id ?? 'N/A',
+                'position_id'                           => $faculty->school_position->id ?? 'N/A',
+                'shift_id'                              => $faculty->shift->id ?? 'N/A',
             ],
             'accountLoginDetails' => [
                 'email' => $faculty->email,

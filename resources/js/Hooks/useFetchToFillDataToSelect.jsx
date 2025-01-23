@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useFetchToFillDataToSelect({ setState, apiKey, link }) {
+export function useFetchToFillDataToSelect({ setState, apiKey, link, dependency=null}) {
     useEffect(function () {
         async function getFetch() {
             try {
@@ -22,5 +22,5 @@ export function useFetchToFillDataToSelect({ setState, apiKey, link }) {
             }
         }
         getFetch();
-    }, []);
+    }, [dependency]);
 }

@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import dayjs from "dayjs";
+
+const eighteenYearsAgo = dayjs().subtract(18, "year");
 
 
 export const personalDataSchema = z.object({
@@ -8,7 +11,7 @@ export const personalDataSchema = z.object({
   name_extension_id: z.any().optional(),
 
   place_of_birth: z.string().min(1, { message: "Required" }),
-  date_of_birth: z.string().min(1, { message: "Required" }),
+  date_of_birth: z.coerce.date(),
   sex: z.string().min(1, { message: "Required" }),
   civil_status_id: z.any().optional(),
 
@@ -19,22 +22,29 @@ export const personalDataSchema = z.object({
 });
 
 
-
 export const addressDataSchema = z.object({
-  residential_house_num: z.string().min(1, { message: "Required" }),
-  residential_street: z.string().min(1, { message: "Required" }),
-  residential_subdivision: z.string().min(1, { message: "Required" }),
-  residential_barangay: z.string().min(1, { message: "Required" }),
-  residential_city: z.string().min(1, { message: "Required" }),
-  residential_province: z.string().min(1, { message: "Required" }),
-  residential_zip_code: z.string().min(1, { message: "Required" }),
-  permanent_house_num: z.string().min(1, { message: "Required" }),
-  permanent_street: z.string().min(1, { message: "Required" }),
-  permanent_subdivision: z.string().min(1, { message: "Required" }),
-  permanent_barangay: z.string().min(1, { message: "Required" }),
-  permanent_city: z.string().min(1, { message: "Required" }),
-  permanent_province: z.string().min(1, { message: "Required" }),
-  permanent_zip_code: z.string().min(1, { message: "Required" }),
+    residential_houseNumber: z.string().min(1, { message: "House/Block/Lot No. is required!" }),
+    residential_street: z.string().min(1, { message: "Street is required!" }),
+    residential_subdivision: z.string().min(1, { message: "Subdivision is required!" }),
+    residential_provinceCode: z
+        .string()
+        .optional()
+        .refine((value) => value !== "default", {
+            message: "Please select a province.",
+        }),
+    residential_cityCode: z
+        .string()
+        .optional()
+        .refine((value) => value !== "default", {
+            message: "Please select a City.",
+        }),
+    residential_barangayCode: z
+        .string()
+        .optional()
+        .refine((value) => value !== "default", {
+            message: "Please select a Barangay.",
+        }),
+    residential_zipCode: z.string().min(1, { message: "Zip Code is required!" }),
 });
 
 export const emailDataSchema = z.object({
@@ -46,11 +56,31 @@ export const emailDataSchema = z.object({
 
 
 export const companyDetailsDataSchema = z.object({
+    department_id: z
+        .any()
+        .optional()
+        .refine((value) => value !== "0", {
+            message: "Please select a department.",
+        }),
+    designation_id: z
+        .any()
+        .optional()
+        .refine((value) => value !== "0", {
+            message: "Please select a designation.",
+        }),
+    department_head: z.any().optional(),
+    shift_id: z
+        .any()
+        .optional()
+        .refine((value) => value !== "0", {
+            message: "Please select a shift.",
+        }),
+    date_of_joining: z.coerce.date(),
 
-  department_id: z.any().optional(),
-  designation_id: z.any().optional(),
-  depart_head: z.string(),
-  shift_id: z.any().optional(),
-  date_of_joining: z.string(),
-  position_id: z.any().optional(),
+    position_id: z
+        .any()
+        .optional()
+        .refine((value) => value !== "0", {
+            message: "Please select a position.",
+        }),
 });

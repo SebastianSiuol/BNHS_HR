@@ -27,6 +27,7 @@ class Faculty extends Authenticatable implements JWTSubject
         'date_of_leaving',
         'department_id',
         'designation_id',
+        'designation_head_id',
         'shift_id',
     ];
 
@@ -58,8 +59,9 @@ class Faculty extends Authenticatable implements JWTSubject
                 $model->public_id = (string) Str::uuid();
             }
 
-            // Set a default password for all faculty (for testing purposes)
-            $model->password = "Password123";
+            if (empty($model->password)) {
+                $model->password = "Password123";
+            }
         });
     }
 

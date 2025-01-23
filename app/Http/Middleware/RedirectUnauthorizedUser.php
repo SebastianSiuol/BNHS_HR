@@ -25,7 +25,7 @@ class RedirectUnauthorizedUser
                 return redirect()->route('admin.dashboard');
             }
 
-            if ($url_request === 'admin' && !$userRoles->contains('hr_admin') && !$userRoles->contains('hr_manager')) {
+            if ($url_request === 'admin' && (!$userRoles->contains('hr_admin') && !$userRoles->contains('hr_manager'))) {
                 return redirect()->route('faculty.dashboard');
             }
         } else {
