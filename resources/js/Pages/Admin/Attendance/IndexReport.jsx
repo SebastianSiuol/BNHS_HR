@@ -15,11 +15,12 @@ export default function IndexReport() {
 }
 
 function HandlePage() {
-    const { faculties } = usePage().props;
+    const { faculties, role: userRoles } = usePage().props;
+
 
     return (
         <>
-            <Header />
+            {userRoles.includes('hr_admin') && (<HeaderForm />)}
             <ContentContainer type={"noOutline"}>
                 <Table data={faculties.data} />
                 <Pagination data={faculties} />
@@ -28,7 +29,7 @@ function HandlePage() {
     );
 }
 
-function Header() {
+function HeaderForm() {
     const { departments, shifts } = usePage().props;
 
     return (

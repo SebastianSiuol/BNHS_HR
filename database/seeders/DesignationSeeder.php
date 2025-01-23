@@ -117,5 +117,9 @@ class DesignationSeeder extends Seeder
         $faculty->designation_id = 9;
         $faculty->save();
 
+        $faculty = Faculty::find(11);
+        $faculty->designation_id = 4;
+        $faculty->save();
+
     }
 }

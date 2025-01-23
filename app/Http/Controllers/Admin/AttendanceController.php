@@ -21,32 +21,41 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        $auth_faculty = Auth::user();
+        $auth_department_id = $auth_faculty->designation->department_id;
+        $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
 
-
-        $faculties = Faculty::select('id','faculty_code', 'shift_id')
+        $facultiesQuery = Faculty::select('id','faculty_code', 'shift_id', 'designation_id')
         ->with([
             'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
             'shift' => fn($query) => $query->select('id', 'name'),
-            'current_attendance'
-        ])
-        ->paginate(5);
+            'current_attendance',
+            'designation' => fn($query) => $query->select('id', 'department_id')
+                ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+        ]);
 
-
-        if ($request->has('department') || $request->has('shift') || $request->has('attendance_date')) {
-
-            if (request('department') || request('shift')) {
-
-                $faculties = Faculty::with('department', 'shift')
-                    ->whereHas('department', function ($query) use ($request) {
-                        $query->where('department_id', $request->get('department'));
-                    })
-                    ->orWhereHas('shift', function ($query) use ($request) {
-                        $query->where('shift_id', $request->get('shift'));
-                    })
-                    ->paginate(5);
-            }
-
+        if ($auth_faculty_roles->contains('hr_manager')) {
+            $facultiesQuery->whereHas('designation.department', fn($query) => $query->where('id', $auth_department_id));
         }
+
+        $faculties = $facultiesQuery->paginate(5);
+
+
+        // if ($request->has('department') || $request->has('shift') || $request->has('attendance_date')) {
+
+        //     if (request('department') || request('shift')) {
+
+        //         $faculties = Faculty::with('department', 'shift')
+        //             ->whereHas('department', function ($query) use ($request) {
+        //                 $query->where('department_id', $request->get('department'));
+        //             })
+        //             ->orWhereHas('shift', function ($query) use ($request) {
+        //                 $query->where('shift_id', $request->get('shift'));
+        //             })
+        //             ->paginate(5);
+        //     }
+
+        // }
 
         $departments = Department::all()->select('id', 'name');
         $shift = Shift::all()->select('id', 'name');
@@ -88,15 +97,24 @@ class AttendanceController extends Controller
     public function report()
     {
 
-        // Fetch paginated faculties with related data
-        $faculties = Faculty::select('id', 'faculty_code', 'shift_id')
+        $auth_faculty = Auth::user();
+        $auth_department_id = $auth_faculty->designation->department_id;
+        $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
+
+        $facultiesQuery = Faculty::select('id', 'faculty_code', 'shift_id', 'designation_id')
             ->with([
                 'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
                 'attendances' => fn($query) => $query->select('id', 'faculty_id', 'check_in'),
-            ])
-            ->paginate(5); // Use pagination here
+                'designation' => fn($query) => $query->select('id', 'department_id')
+                ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+        ]);
 
-        // Transform the paginated data
+        if ($auth_faculty_roles->contains('hr_manager')) {
+            $facultiesQuery->whereHas('designation.department', fn($query) => $query->where('id', $auth_department_id));
+        }
+
+        $faculties = $facultiesQuery->paginate(5);
+
         $transformedFaculties = $faculties->getCollection()->map(function ($faculty) {
             return [
                 'faculty_code' => $faculty->faculty_code,

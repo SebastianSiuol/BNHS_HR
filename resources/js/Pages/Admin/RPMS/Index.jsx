@@ -144,7 +144,7 @@ function FacultyTable() {
     const columns = [
         (faculty) =>
             `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
-        (faculty) => faculty.designation.department.name,
+        (faculty) => faculty.designation?.department?.name,
         () => "2024-10-10",
         () => "Pending",
         (faculty) => (

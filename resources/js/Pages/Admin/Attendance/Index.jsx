@@ -1,7 +1,6 @@
 import { usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
 
-
 import { ContentContainer } from "@/Components/ContentContainer";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
@@ -9,27 +8,58 @@ import { Table, TableRow } from "@/Components/Table";
 import Pagination from "@/Components/Pagination";
 
 export default function Index() {
-    const { faculties } = usePage().props;
-
     return (
         <>
             <PageHeaders>Daily Attendance</PageHeaders>
             <HandlePage />
+        </>
+    );
+}
+
+function HandlePage() {
+    const { faculties, role: userRoles } = usePage().props;
+
+
+    return (
+        <>
+            {userRoles.includes('hr_admin') && (<HeaderForm />)}
             <ContentContainer type="noOutline">
-                <FacultyTable data={faculties.data}/>
+                <FacultyTable data={faculties.data} />
                 <Pagination data={faculties} />
             </ContentContainer>
         </>
     );
 }
 
-function HandlePage() {
+function FacultyTable({ data }) {
+    function formatDateToTime(date) {
+        const dateToTime = dayjs(date).format("hh:mm A");
+
+        return dateToTime;
+    }
+
+    // Headers
+    const headers = ["Faculty Code", "Faculty Name", "Shift", "Time In", "Time Out", "Status"];
+
+    // Columns Data
+    const columns = [
+        (faculty) => faculty.faculty_code,
+        (faculty) => `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
+        (faculty) => capitalizeFirstLetter(faculty.shift.name),
+        (faculty) => (faculty.current_attendance?.check_in ? formatDateToTime(faculty.current_attendance.check_in) : "--"),
+        (faculty) => (faculty.current_attendance?.check_out ? formatDateToTime(faculty.current_attendance.check_out) : "--"),
+        (faculty) => (faculty.current_attendance ? capitalizeFirstLetter(faculty.current_attendance?.status) : "--"),
+    ];
+
+    return <Table data={data} headers={headers} renderRow={(faculty) => <TableRow key={faculty.id} data={faculty} columns={columns} />} />;
+}
+
+function HeaderForm() {
     const { departments, shifts } = usePage().props;
 
     return (
         <>
-            {/* TODO: Separate this into a Header Component */}
-            <form id="myForm">
+            <form>
                 <div className="bg-white mb-5 border w-full border-blue-900 rounded-md shadow sm:p-8 p-6">
                     <h1 className="text-xl mb-8 font-medium leading-tight tracking-tight border-b-[3px] pb-4 border-blue-900 text-blue-900 md:text-2xl">Daily Attendance</h1>
                     <div className="grid gap-4 mb-4 sm:grid-cols-4">
@@ -38,9 +68,7 @@ function HandlePage() {
                                 Department
                             </label>
                             <select id="department" name="department" defaultValue={0} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                <option value={"0"}>
-                                    All Departments
-                                </option>
+                                <option value={"0"}>All Departments</option>
                                 {departments.map((department) => (
                                     <option key={department.id} value={department.id}>
                                         {" "}
@@ -54,9 +82,7 @@ function HandlePage() {
                                 Shift{" "}
                             </label>
                             <select id="shift" name="shift" defaultValue={0} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required="">
-                                <option value={"0"}>
-                                    All Shifts
-                                </option>
+                                <option value={"0"}>All Shifts</option>
                                 {shifts.map((shift) => (
                                     <option key={shift.id} value={shift.id}>
                                         {" "}
@@ -93,46 +119,5 @@ function HandlePage() {
                 </div>
             </form>
         </>
-    );
-}
-
-function FacultyTable({ data }) {
-
-    console.log(data);
-
-    function formatDateToTime(date){
-        const dateToTime = dayjs(date).format("hh:mm A")
-
-        return dateToTime;
-    }
-
-    // Headers
-    const headers = [
-        "Faculty Code",
-        "Faculty Name",
-        "Shift",
-        "Time In",
-        "Time Out",
-        "Status",
-    ];
-
-
-    // Columns Data
-    const columns = [
-        (faculty) => faculty.faculty_code,
-        (faculty) =>
-            `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
-        (faculty) => capitalizeFirstLetter(faculty.shift.name),
-        (faculty) => ( faculty.current_attendance?.check_in ? formatDateToTime(faculty.current_attendance.check_in) : '--'),
-        (faculty) => ( faculty.current_attendance?.check_out ? formatDateToTime(faculty.current_attendance.check_out) : '--'),
-        (faculty) => ( faculty.current_attendance ? capitalizeFirstLetter(faculty.current_attendance?.status) : '--'),
-    ];
-
-    return (
-        <Table
-            data={data}
-            headers={headers}
-            renderRow={(faculty) => (<TableRow key={faculty.id} data={faculty} columns={columns} />)}
-        />
     );
 }

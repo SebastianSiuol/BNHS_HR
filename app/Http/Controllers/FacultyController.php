@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\FacultiesExport;
 use App\Exports\PersonalDetailsSheetExport;
 use App\Services\StoreFacultyService;
 use App\Http\Requests\StoreFacultyRequest;
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 // Models
 use App\Models\Faculty;
 use Maatwebsite\Excel\Facades\Excel;
-use PHPUnit\Framework\Constraint\IsEmpty;
 
 
 class FacultyController extends Controller
@@ -26,21 +24,38 @@ class FacultyController extends Controller
     ) {}
 
 
-    public function index(){
+    public function index()
+    {
+        $auth_faculty = Auth::user();
+        $auth_department_id = $auth_faculty->designation->department_id;
+        $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
 
-        $faculties = Faculty::with('personal_information:faculty_id,first_name,last_name', 'designation.department:id,name', 'shift:id,name')
-        ->paginate(5);
+        $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id', 'shift_id',)
+        ->with([
+            'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+            'shift' => fn($query) => $query->select('id', 'name'),
+            'designation' => fn($query) => $query->select('id', 'department_id')
+            ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+        ]);
+
+        if ($auth_faculty_roles->contains('hr_manager')) {
+            $facultiesQuery->whereHas('designation.department', fn($query) => $query->where('id', $auth_department_id));
+        }
+
+        $faculties = $facultiesQuery->paginate(5);
 
 
         return Inertia::render('Admin/Faculty/Index', [
             'faculties' => $faculties,
         ]);
     }
-    public function create(){
+    public function create()
+    {
         return Inertia::render('Admin/Faculty/Create');
     }
 
-    public function store(StoreFacultyRequest $request){
+    public function store(StoreFacultyRequest $request)
+    {
 
         $validated_inputs = $request->validated();
         // dd($validated_inputs);
@@ -60,7 +75,6 @@ class FacultyController extends Controller
 
         foreach ($validated_inputs['roles_id'] as $role) {
             $faculty->roles()->attach($role);
-
         }
 
         /* Stores Faculty Details */
@@ -71,7 +85,8 @@ class FacultyController extends Controller
     }
 
 
-    public function edit(int $faculty){
+    public function edit(int $faculty)
+    {
         $retrieved_faculty = Faculty::find($faculty);
 
         $formatted_faculty = $this->formatFacultyForEdit($retrieved_faculty);
@@ -82,7 +97,8 @@ class FacultyController extends Controller
         ]);
     }
 
-    public function update(Request $request, Faculty $faculty){
+    public function update(Request $request, Faculty $faculty)
+    {
         $personalDetails = $request->get('personalDetails');
         $companyDetails = $request->get('companyDetails');
         $addresses = $request->get('addresses');
@@ -149,17 +165,18 @@ class FacultyController extends Controller
         $perm_addr->save();
 
         DB::table('sessions')
-        ->whereUserId($user_id)
-        ->delete();
+            ->whereUserId($user_id)
+            ->delete();
 
         return redirect()
-        ->route('admin.faculty.index')
-        ->with('success', 'Employee updated successfully!');
+            ->route('admin.faculty.index')
+            ->with('success', 'Employee updated successfully!');
     }
 
-    public function destroy(Request $request, Faculty $faculty){
+    public function destroy(Request $request, Faculty $faculty)
+    {
 
-        if (Auth::user()->id == $faculty->id){
+        if (Auth::user()->id == $faculty->id) {
             return redirect()
                 ->route('admin.faculty.index')
                 ->with('error', 'Cannot delete logged-in employee!');
@@ -173,36 +190,33 @@ class FacultyController extends Controller
     }
 
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
 
         $query = request('query');
 
         $faculties = Faculty::with(['personal_information', 'designation.department', 'shift'])
-            ->where('faculty_code',  'LIKE' , '%' . $query . '%')
-            ->orWhere('email',  'LIKE' , '%' . $query . '%')
-            ->orWhereHas('personal_information', function($subQuery) use($query){
-                $subQuery->where('first_name', 'LIKE' , '%' . $query . '%')
-                ->orWhere('last_name', 'LIKE' , '%' . $query . '%');
+            ->where('faculty_code',  'LIKE', '%' . $query . '%')
+            ->orWhere('email',  'LIKE', '%' . $query . '%')
+            ->orWhereHas('personal_information', function ($subQuery) use ($query) {
+                $subQuery->where('first_name', 'LIKE', '%' . $query . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $query . '%');
             })
 
-            ->orWhereHas('designation', function($subQuery) use($query){
-                $subQuery->whereHas('department', function($nestedQuery) use($query){
-                  $nestedQuery->where('name', 'LIKE' , '%' . $query . '%');
+            ->orWhereHas('designation', function ($subQuery) use ($query) {
+                $subQuery->whereHas('department', function ($nestedQuery) use ($query) {
+                    $nestedQuery->where('name', 'LIKE', '%' . $query . '%');
                 });
             })
 
-            ->orWhereHas('shift', function($subQuery) use($query){
-                $subQuery->where('name', 'LIKE' , '%' . request('query') . '%');
+            ->orWhereHas('shift', function ($subQuery) use ($query) {
+                $subQuery->where('name', 'LIKE', '%' . request('query') . '%');
             })
             ->paginate(5);
 
         return Inertia::render('Admin/Faculty/Index', [
             'faculties' => $faculties,
         ]);
-
-
-
-
     }
     public function formatFacultyForEdit($faculty)
     {
@@ -252,14 +266,16 @@ class FacultyController extends Controller
             'accountLoginDetails' => [
                 'email' => $faculty->email,
 
-            ], 'roles' => [
+            ],
+            'roles' => [
                 'roles_id' => $faculty->roles->pluck('id')
             ]
         ]);
     }
 
 
-    public function pds(){
+    public function pds()
+    {
         return Excel::download(new PersonalDetailsSheetExport, 'faculties.xlsx');
     }
 }
