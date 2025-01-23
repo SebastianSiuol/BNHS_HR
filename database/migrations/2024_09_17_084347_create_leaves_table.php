@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id');
             $table->foreignId('leave_types_id')->nullable();
             $table->foreignId('faculty_id')->nullable();
             $table->string('start_date');
             $table->string('end_date');
             $table->string('document');
-            $table->string('reason');
             $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'cancelled'])->default('pending');
             $table->timestamps();
         });

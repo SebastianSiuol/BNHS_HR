@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 class Leave extends Model
@@ -16,6 +17,16 @@ class Leave extends Model
 
     protected $with = ['leave_types', 'faculty.personal_information'];
 
+    protected static function boot() : void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->public_id)) {
+                $model->public_id = (string) Str::uuid();
+            }
+        });
+    }
 
     public function totalLeaveDays()
     {
@@ -43,7 +54,7 @@ class Leave extends Model
     {
         $user = Auth::user();
 
-        $leave = $user->leaves()->latest('end_date')->first();
+        $leave = $user->leaves()->latest()->first();
 
         if (!$leave) {
             return false;

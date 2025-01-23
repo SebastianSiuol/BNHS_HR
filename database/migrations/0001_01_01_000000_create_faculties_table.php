@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('faculties', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id');
             $table->string('faculty_code')->unique(); // For the formatted ID
             $table->string('email')->unique();
             $table->string('password');

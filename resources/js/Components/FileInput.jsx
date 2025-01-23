@@ -1,7 +1,7 @@
 export function FileInput({ file, onFileChange, label = "Browse...", placeholder = "No File Selected" }) {
 
     const labelClass = 'flex items-center font-bold text-white text-sm bg-gray-800 hover:bg-gray-700 border border-gray-200 cursor-pointer rounded-md';
-    const inputClass = 'flex-grow py-1 px-2 text-black font-normal bg-gray-50 border border-l-gray-600 rounded-r-md';
+    const inputClass = 'flex-grow py-2 px-2 text-black font-normal bg-gray-50 border border-l-gray-600 rounded-r-md';
 
 
       return (

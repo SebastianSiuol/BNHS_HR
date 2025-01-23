@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePage, router } from "@inertiajs/react";
-
+import dayjs from "dayjs";
 import {  FaEye } from 'react-icons/fa';
 
+// Components
+import Modal from "@/Components/Modal";
+import { Description, DialogTitle } from "@headlessui/react";
 
 import { PageHeaders } from "@/Components/Admin/PageHeaders";
 import { ContentContainer } from "@/Components/ContentContainer";
@@ -29,21 +32,27 @@ export default function Approve() {
 }
 
 function HandlePage() {
-
     const { leaveRequests } = usePage().props;
+    const [selectedLeave, setSelectedLeave] = useState(null);
+    const [viewModal, setViewModal] = useState(false);
 
+
+    const handleViewModal = (id) => {
+        setSelectedLeave(leaveRequests?.data.find((leave) => leave.public_id === id));
+        setViewModal((e) => !e);
+    };
 
     return (
         <>
-                <LeavesTable data={leaveRequests.data}/>
-                <Pagination data={leaveRequests} />
-
+            <LeavesTable data={leaveRequests.data} onView={handleViewModal}/>
+            <Pagination data={leaveRequests} />
+            <ViewModal state={viewModal} onToggle={handleViewModal} selectedData={selectedLeave} />
         </>
     );
 }
 
 
-function LeavesTable({ data }) {
+function LeavesTable({ data, onView }) {
 
     // Headers
     const headers = [
@@ -57,15 +66,17 @@ function LeavesTable({ data }) {
         "Actions",
     ];
 
+    function handleView(publicId){
+        onView(publicId);
+    }
+
 
 
     function renderActions( status, leaveRequestId) {
         function handleApprove(id){
-            console.log(id);
             router.patch(route('admin.leaves.manage.action', id), {action: 'approve'})
         }
         function handleReject(id){
-            console.log(id);
             router.patch(route('admin.leaves.manage.action', id), {action: 'reject'})
         }
 
@@ -132,7 +143,9 @@ function LeavesTable({ data }) {
         (leaveRequest) => leaveRequest.faculty.service_credit,
         (leaveRequest) => (
             <div>
-                <button className={'text-white flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1 py-1 me-2'}>
+                <button
+                    onClick={()=>{handleView(leaveRequest.public_id)}}
+                    className={'text-white flex items-center justify-between bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1 py-1 me-2'}>
                     <FaEye className={'w-[20px] h-[20px] text-white'}/>
                     View Document
                 </button>
@@ -157,27 +170,55 @@ function LeavesTable({ data }) {
 }
 
 
-function DocumentModal(){
+function ViewModal({ state, onToggle, selectedData }) {
+
+    const [leaveData, setLeaveData] = useState(null);
+
+
+    useEffect(() => {
+        async function fetchData() {
+            if (selectedData) {
+                const response = await fetch(
+                    route("faculty.leaves.show", selectedData?.public_id)
+                );
+                const parsedResponse = await response.json();
+
+                setLeaveData(parsedResponse);
+            }
+
+        }
+        fetchData();
+    }, [selectedData]);
+
+    const formatDate = (date) => {
+        return dayjs(date).format('MMMM D, YYYY')
+    }
+
     return (
-        <div class="relative p-4 w-fit max-h-full">
-            <div class="relative bg-gray-100 items-center justify-center rounded-lg shadow ">
-                <div class="flex mb items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                    <h3 class="text-lg font-semibold text-gray-900 ">
-                        Documents
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-toggle="view-documents">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <DialogTitle className="flex font-bold text-2xl text-gray-900 justify-between items-center p-4">
+                <span>
+                    View Leave
+                </span>
+                <button
+                    onClick={onToggle}
+                    className={"text-red-800"}>
+                    &times;
+                </button>
+            </DialogTitle>
+            <Description as={"div"} className={'w-[80vw]'}>
+                <hr />
+                <div className={"mx-24 my-6 "}>
+                    <p ><span className={'font-bold'}>Start date: </span>{formatDate(leaveData?.startDate)}</p>
+                    <p ><span className={'font-bold'}>End date: </span>{formatDate(leaveData?.endDate)}</p>
                 </div>
-
-                <div class="p-5">
-                    <h1>SAMPLE DOCUMENTS HERE</h1>
-                </div>
-
-            </div>
-        </div>
+                <iframe
+                    src={leaveData?.document}
+                    width={'100%'}
+                    height={"600px"}></iframe>
+            </Description>
+        </Modal>
     );
 }

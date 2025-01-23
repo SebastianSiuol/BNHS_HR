@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 // Models
 use App\Models\Leave;
@@ -17,7 +18,7 @@ class LeaveController extends Controller
     {
 
         $user_leaves = Leave::where('faculty_id', Auth::user()->id)
-            ->select('id', 'start_date', 'end_date', 'reason', 'status', 'leave_types_id')
+            ->select('public_id','start_date', 'end_date', 'status', 'document', 'leave_types_id')
             ->with(['leave_types' => fn($query) => $query->select('id', 'name', 'days')])
             ->paginate(5);
 
@@ -33,16 +34,37 @@ class LeaveController extends Controller
         ]);
     }
 
+    public function show($leave_id){
+        $leave = Leave::where('public_id', $leave_id)->get()->first();
+
+        if (!$leave) {
+            return response()->json(['error' => 'Leave not found'], 404);
+        }
+
+        if (!Storage::disk('public')->exists($leave->document)) {
+            abort(404, 'File not found.');
+        }
+
+
+        $file_url = Storage::disk('public')->url($leave->document);
+
+
+        $leaveDetails = [
+            'publicId' => $leave->public_id,
+            'startDate' => $leave->start_date,
+            'endDate' => $leave->end_date,
+            'document' => $file_url,
+            'status' => $leave->status,
+        ];
+
+        return response()->json($leaveDetails);
+    }
+
     public function create(Request $request)
     {
         if (Leave::isThereLeaveActive()) {
 
-            $render_url = $this->getRenderUrl($request, [
-                'admin' => 'admin.leaves.index',
-                'faculty' => 'faculty.leaves.index',
-            ], true);
-
-            return redirect($render_url)->with('error', 'You currently have an active request!');
+            return redirect()->back()->with('error', 'You currently have an active request!');
         }
 
 
@@ -65,45 +87,43 @@ class LeaveController extends Controller
     public function store(Request $request)
     {
 
-        /* Validates Leave Type before Proceeding. */
+
         $request->validate(['leave_type' => 'required']);
 
-        /* Finds the Requested Leave to Retrieve its Days */
         $leave_type = LeaveType::findOrFail($request->leave_type);
 
-        /* Validates Normal Requests */
         $validate_request = [
             'leave_type' => ['required'],
             'start_date' => ['required', 'date', 'after_or_equal:today'],
-            'reason' => ['required'],
+            'leave_document' => ['required']
         ];
 
-        /* If no days are found, validate the no_of_days input */
         if (!$leave_type->days) {
-            $validate_request['no_of_days'] = ['required'];
+            $validate_request['no_of_days'] = ['required', 'gt:0'];
         }
 
         $validated_input = $request->validate($validate_request, [
             'start_date.after_or_equal' => 'The From* date cannot be an earlier day than today!',
         ]);
 
-        // Calculates Leave End Date
         $end_date = LeaveType::calculateLeaveEndDate(
             $validated_input['start_date'],
             $leave_type->days ?? $validated_input['no_of_days']
         );
 
-        // Creates new Instance of Leave Model
-        $leave = new Leave([
+        $public_user_id = Auth::user()->public_id;
+        $leave_document = $request->file('leave_document');
+        $leave_document_path = $leave_document->store(('/leave_documents/'. $public_user_id . '/'), 'public');
+
+        Leave::create([
+            'faculty_id' => Auth::id(),
             'leave_types_id' => $validated_input['leave_type'],
             'start_date' => $validated_input['start_date'],
             'end_date' => $end_date,
-            'document' => "Document",
-            'reason' => $validated_input['reason'],
+            'document' => $leave_document_path,
         ]);
 
-        // Assigns the instance of Leave to the Authenticated User and Save it.
-        Auth::user()->leaves()->save($leave);
+        // Auth::user()->leaves->save($leave);
 
         $render_url = $this->getRenderUrl($request, [
             'admin' => 'admin.leaves.index',
@@ -114,35 +134,34 @@ class LeaveController extends Controller
         return redirect($render_url)->with('success', 'Leave request addded successfully!');
     }
 
-    public function cancel(Request $request, Leave $leave)
-{
-    $request->validate([
-        'action' => 'required|in:cancel',
-    ]);
+    public function cancel(Request $request, $leave_id)
+    {
+        $request->validate([
+            'action' => 'required|in:cancel',
+        ]);
 
-    // Check if the leave status is 'pending'
-    if ($leave->status !== 'pending') {
-        return redirect()->back()->with('error', 'Cannot cancel leave. Only pending requests can be cancelled.');
+        $leave = Leave::where('public_id', $leave_id)->get()->first();
+
+
+        // Check if the leave status is 'pending'
+        if ($leave->status !== 'pending') {
+            return redirect()->back()->with('error', 'Cannot cancel leave. Only pending requests can be cancelled.');
+        }
+
+        // Proceed with cancellation
+        $leave->status = 'cancelled';
+        $leave->save();
+
+        return redirect()->back()->with('success', 'Leave request cancelled successfully!');
     }
 
-    // Proceed with cancellation
-    $leave->status = 'cancelled';
-    $leave->save();
+    public function manage()
+    {
 
-    $render_url = $this->getRenderUrl($request, [
-        'admin' => 'admin.leaves.index',
-        'faculty' => 'faculty.leaves.index',
-    ], true);
-
-    return redirect($render_url)->with('success', 'Leave request cancelled successfully!');
-}
-
-    public function manage(){
-
-        $leaves_requests = Leave::select('id', 'leave_types_id', 'faculty_id','start_date', 'end_date','document', 'reason', 'status')
+        $leaves_requests = Leave::select('id', 'public_id', 'leave_types_id', 'faculty_id', 'start_date', 'end_date', 'document', 'status')
             ->with([
                 'faculty' => fn($query) => $query->select('id', 'faculty_code', 'service_credit')
-                    ->with(['personal_information' => fn($subQuery) => $subQuery->select('id','faculty_id','first_name', 'last_name')]),
+                    ->with(['personal_information' => fn($subQuery) => $subQuery->select('id', 'faculty_id', 'first_name', 'last_name')]),
                 'leave_types' => fn($query) => $query->select('id', 'name')
             ])
             ->paginate(5);
@@ -154,46 +173,41 @@ class LeaveController extends Controller
 
 
     public function leaveAction(Request $request, Leave $leave)
-{
-    // Validate the request action
-    $request->validate([
-        'action' => 'required|in:approve,reject,cancel',
-    ]);
+    {
+        // Validate the request action
+        $request->validate([
+            'action' => 'required|in:approve,reject,cancel',
+        ]);
 
-    // Perform the requested action
-    if ($request->action === 'approve') {
-        if ($leave->status === 'approved') {
-            return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'This leave request is already approved.']);
+        // Perform the requested action
+        if ($request->action === 'approve') {
+            if ($leave->status === 'approved') {
+                return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'This leave request is already approved.']);
+            }
+            $leave->status = 'approved';
+            $message = 'Leave approved successfully!';
+        } elseif ($request->action === 'reject') {
+            if ($leave->status === 'rejected') {
+                return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'This leave request is already rejected.']);
+            }
+            $leave->status = 'rejected';
+            $message = 'Leave rejected successfully!';
+        } elseif ($request->action === 'cancel') {
+            if ($leave->status === 'cancelled') {
+                return redirect()->route('admin.leaves.index')->withErrors(['error' => 'This leave request is already cancelled.']);
+            }
+            $leave->status = 'cancelled';
+            $message = 'Leave cancelled successfully!';
+        } else {
+            return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'Invalid action specified.']);
         }
-        $leave->status = 'approved';
-        $message = 'Leave approved successfully!';
-    } elseif ($request->action === 'reject') {
-        if ($leave->status === 'rejected') {
-            return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'This leave request is already rejected.']);
-        }
-        $leave->status = 'rejected';
-        $message = 'Leave rejected successfully!';
-    }elseif($request->action === 'cancel') {
-        if ($leave->status === 'cancelled') {
-            return redirect()->route('admin.leaves.index')->withErrors(['error' => 'This leave request is already cancelled.']);
-        }
-        $leave->status = 'cancelled';
-        $message = 'Leave cancelled successfully!';
-    } else {
-        return redirect()->route('admin.leaves.manage')->withErrors(['error' => 'Invalid action specified.']);
+
+        // Save the leave status
+        $leave->save();
+
+        // Redirect with success message
+        return redirect()->route('admin.leaves.manage')->with(['success' => $message]);
     }
-
-    // Save the leave status
-    $leave->save();
-
-    // Redirect with success message
-    return redirect()->route('admin.leaves.manage')->with(['success' => $message]);
-}
-
-
-
-
-
 
 
     private function getRenderUrl(Request $request, array $url_map, bool $use_route_format = false)
@@ -204,5 +218,4 @@ class LeaveController extends Controller
         }
         abort(404);
     }
-
 }

@@ -138,11 +138,11 @@ function SideNavbar() {
                         <DropdownButton icon={LuClipboardList} label={"Leave"} state={"leave"} />
 
                         <ul className={`${!openTabs.leave && "hidden"} ml-8 space-y-2`}>
-                            <li>
+                            {/* <li>
                                 <SidebarNavLink href={route("admin.leaves.index")} active={route().current("admin.leaves.create") || route().current("admin.leaves.index")} type={"sub"}>
                                     Request Leave
                                 </SidebarNavLink>
-                            </li>
+                            </li> */}
                             <li>
                                 <SidebarNavLink href={route("admin.leaves.manage")} active={route().current("admin.leaves.manage")} type={"sub"}>
                                     Manage Leave

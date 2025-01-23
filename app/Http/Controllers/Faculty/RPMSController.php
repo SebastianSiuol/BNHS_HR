@@ -100,7 +100,7 @@ class RPMSController extends Controller
 
         // Store the main file
         $mainFile = $request->file('mainFile');
-        $mainFilePath = $mainFile->store('uploads', 'public'); // Save the file in the "uploads" directory
+        $mainFilePath = $mainFile->store('uploads', 'public');
         RPMS::create([
             'filename' => $mainFile->getClientOriginalName(),
             'file_path' => $mainFilePath,

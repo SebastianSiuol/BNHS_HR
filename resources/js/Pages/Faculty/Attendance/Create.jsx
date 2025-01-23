@@ -24,7 +24,7 @@ function HandlePage() {
 
     async function onTimeIn() {
         try {
-                router.post(route("admin.attendances.check-in"), {
+                router.post(route('faculty.attendances.check-in'), {
                 id: auth.id,
                 shiftTime: shift.from,
                 postTime: currentTime,
@@ -38,7 +38,7 @@ function HandlePage() {
 
     function onTimeOut() {
         try {
-            router.post(route("admin.attendances.check-out"), {
+            router.post(route("faculty.attendances.check-out"), {
                 id: auth.id,
                 shiftTime: shift.to,
                 postTime: currentTime,

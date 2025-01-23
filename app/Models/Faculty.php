@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Str;
 
 
 class Faculty extends Authenticatable implements JWTSubject
@@ -47,14 +48,18 @@ class Faculty extends Authenticatable implements JWTSubject
     {
         parent::boot();
 
-        static::creating(function ($faculty) {
+        static::creating(function ($model) {
             // Conditionally generate a faculty code only if it's not provided
-            if (empty($faculty->faculty_code)) {
-                $faculty->faculty_code = Faculty::generateFacultyCode();
+            if (empty($model->faculty_code)) {
+                $model->faculty_code = Faculty::generateFacultyCode();
+            }
+
+            if (empty($model->public_id)) {
+                $model->public_id = (string) Str::uuid();
             }
 
             // Set a default password for all faculty (for testing purposes)
-            $faculty->password = "Password123";
+            $model->password = "Password123";
         });
     }
 

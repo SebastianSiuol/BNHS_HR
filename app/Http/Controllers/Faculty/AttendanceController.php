@@ -3,48 +3,129 @@
 namespace App\Http\Controllers\Faculty;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Faculty;
 use App\Models\Shift;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Carbon\Carbon;
+use App\Models\Attendance;
 
 class AttendanceController extends Controller
 {
-    public function index(Request $request)
+
+    public function create()
     {
-        $faculties = Faculty::with('personal_information')->paginate(5);
+        $faculty_id = Auth::user()->id;
+        $shift_id = Auth::user()->shift_id;
 
-        if ($request->has('department') || $request->has('shift') || $request->has('attendance_date')) {
+        $today = Carbon::now()->timezone('GMT+8');
 
-            if (request('department') || request('shift')) {
-
-                $faculties = Faculty::with('department', 'shift')
-                    ->whereHas('department', function ($query) use ($request) {
-                        $query->where('department_id', $request->get('department'));
-                    })
-                    ->orWhereHas('shift', function ($query) use ($request) {
-                        $query->where('shift_id', $request->get('shift'));
-                    })
-                    ->paginate(5);
-            }
-
-        }
-
-        return Inertia::render('Faculty/Attendance/Index');
-    }
+        $attendance = Attendance::where('faculty_id', $faculty_id)
+            ->whereDate('check_in', $today)
+            ->first();
 
 
-    public function create(Request $request)
-    {
-        $shift_id = Auth::user()->select('id', 'shift_id')->get()->first();
+        $shift = Shift::where('id', $shift_id)
+            ->select('name', 'from', 'to')
+            ->first();
 
 
-        $shift = Shift::where('id', $shift_id->shift_id)->select('name', 'from', 'to')->get()->first();
         return Inertia::render('Faculty/Attendance/Create', [
             'shift' => $shift,
-        ]);
+            'attendance' => $attendance,
 
+        ]);
+    }
+
+    public function checkIn(Request $request)
+    {
+        return $this->handleAttendance($request, 'check_in');
+    }
+
+    public function checkOut(Request $request)
+    {
+        return $this->handleAttendance($request, 'check_out');
+    }
+
+    public function handleAttendance(Request $request, $type)
+    {
+        $validated = $this->validateRequest($request);
+        $user_id = $validated['id'];
+        $post_time = Carbon::parse($validated['postTime']);
+
+        $faculty = Faculty::find($user_id);
+        if (!$faculty) {
+            return $this->redirectWithError('User not found.', 404);
+        }
+
+        $shift = $faculty->shift; // Assuming the faculty model has a relationship with the shift.
+        if (!$shift) {
+            return $this->redirectWithError('Shift not found for the user.', 404);
+        }
+
+        $shift_start = Carbon::parse($shift->from);
+        $attendance = Attendance::where('faculty_id', $user_id)
+            ->whereDate('check_in', $post_time->toDateString())
+            ->first();
+
+        if ($type == 'check_in') {
+            if ($attendance) {
+                return $this->redirectWithError("Already checked in for the day!", 400);
+            }
+
+            $attendance = new Attendance();
+            $attendance->faculty_id = $user_id;
+            $attendance->check_in = $post_time;
+            $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
+            $attendance->save();
+        }
+
+        if ($type == 'check_out') {
+            if (!$attendance) {
+                return $this->redirectWithError("No check-in record found for today!", 400);
+            }
+
+            if ($attendance->check_out) {
+                return $this->redirectWithError("Already checked out for the day!", 400);
+            }
+
+            $attendance->check_out = $post_time;
+            $attendance->save();
+        }
+
+        return $this->redirectWithMessage($type, $attendance, 201);
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
+            'id' => ['required'],
+            'shiftTime' => ['required'],
+            'postTime' => ['required'],
+            'action' => ['required'],
+        ]);
+    }
+
+    private function redirectWithError($message, $status)
+    {
+        return redirect()->back()->with(['error' => $message], $status);
+    }
+
+    private function redirectWithMessage($type, $attendance, $status)
+    {
+
+        switch (strtolower($type)) {
+            case 'check_in':
+                $message = 'Check-in successful!';
+                break;
+            case 'check_out':
+                $message = 'Check-out successful!';
+                break;
+            default:
+                $message = 'Invalid action!';
+        }
+
+        return redirect()->back()->with(['message' => $message, 'attendance' => $attendance], $status);
     }
 }

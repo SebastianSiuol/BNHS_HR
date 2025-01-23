@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
+import dayjs from "dayjs";
 
 // Components
 import Modal from "@/Components/Modal";
 import CustomIcon from "@/Components/CustomIcon";
 import Pagination from "@/Components/Pagination";
 import { ContentContainer } from "@/Components/ContentContainer";
+import { ContentHeader } from "@/Components/ContentHeader";
 import { Table, TableRow } from "@/Components/Table";
 import { Description, DialogTitle } from "@headlessui/react";
 
@@ -17,7 +19,8 @@ import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 export default function Index() {
     return (
         <>
-            <ContentContainer type={"noOutline"}>
+            <ContentContainer>
+            <ContentHeader> Request Leave</ContentHeader>
                 <HandlePage />
             </ContentContainer>
         </>
@@ -27,12 +30,19 @@ export default function Index() {
 function HandlePage() {
     const { leaves } = usePage().props;
     const [selectedLeave, setSelectedLeave] = useState(null);
-    const [openCancelModal, setOpenCancelModal] = useState(false);
+    const [cancelModal, setCancelModal] = useState(false);
+    const [viewModal, setViewModal] = useState(false);
+
+    const handleViewModal = (id) => {
+        setSelectedLeave(leaves?.data.find((leave) => leave.public_id === id));
+        setViewModal((e) => !e);
+    };
 
     const handleCancelModal = (id) => {
-        setSelectedLeave(leaves?.data.find((leave) => leave.id === id));
-        setOpenCancelModal((e) => !e);
+        setSelectedLeave(leaves?.data.find((leave) => leave.public_id === id));
+        setCancelModal((e) => !e);
     };
+
 
     return (
         <>
@@ -43,46 +53,42 @@ function HandlePage() {
                     Request for a Leave
                 </Link>
             </div>
-            <LeaveTable data={leaves?.data} handleCancelClick={handleCancelModal} />
+            <LeaveTable data={leaves?.data} onCancel={handleCancelModal} onView={handleViewModal} />
             <Pagination data={leaves}/>
-            <CancelModal state={openCancelModal} onToggle={handleCancelModal} selectedData={selectedLeave} />
+            <ViewModal state={viewModal} onToggle={handleViewModal} selectedData={selectedLeave} />
+            <CancelModal state={cancelModal} onToggle={handleCancelModal} selectedData={selectedLeave} />
         </>
     );
 }
 
 
 
-function LeaveTable({ data, handleCancelClick }) {
+function LeaveTable({ data, onCancel, onView }) {
 
-    function handleView(data) {
-        console.log(`view ${data}`);
-    }
+    function handleView(leaveId) {
+        onView(leaveId);
 
-    function handleEdit(data) {
-        console.log(`edit ${data}`);
     }
 
     function handleCancel(leaveId) {
-        handleCancelClick(leaveId);
+        console.log(leaveId)
+        onCancel(leaveId);
     }
 
-    const headers = ["Leave Type", "Duration", "Start Date", "Status", "Reason", "Action"];
+
+    const headers = ["Leave Type", "Duration", "Start Date", "Status", "Action"];
 
     const columns = [
         (leave) => leave.leave_types?.name,
         (leave) => leave.leave_types?.days,
         (leave) => leave.start_date,
         (leave) => handleStatus(capitalizeFirstLetter(leave.status)),
-        (leave) => leave.reason,
         (leave) => (
             <div className="flex items-center justify-evenly">
-                <button onClick={() => handleView(leave.id)}>
+                <button onClick={() => handleView(leave.public_id)}>
                     <CustomIcon type="view" />
                 </button>
-                <button onClick={() => handleEdit(leave.id)}>
-                    <CustomIcon type="edit" />
-                </button>
-                <button onClick={() => handleCancel(leave.id)}>
+                <button onClick={() => handleCancel(leave.public_id)}>
                     <CustomIcon type="cancel" />
                 </button>
             </div>
@@ -95,7 +101,7 @@ function LeaveTable({ data, handleCancelClick }) {
             headers={headers}
             renderRow={(leave) => (
                 <TableRow
-                    key={leave.id}
+                    key={leave.public_id}
                     data={leave}
                     columns={columns}
                 />
@@ -104,12 +110,66 @@ function LeaveTable({ data, handleCancelClick }) {
     );
 }
 
+function ViewModal({ state, onToggle, selectedData }) {
+
+    const [leaveData, setLeaveData] = useState(null);
+
+
+    useEffect(() => {
+        async function fetchData() {
+            if (selectedData) {
+                const response = await fetch(
+                    route("faculty.leaves.show", selectedData?.public_id)
+                );
+                const parsedResponse = await response.json();
+
+                setLeaveData(parsedResponse);
+                console.log(parsedResponse)
+            }
+
+        }
+        fetchData();
+    }, [selectedData]);
+
+    const formatDate = (date) => {
+        return dayjs(date).format('MMMM D, YYYY')
+    }
+
+    return (
+        <Modal
+            state={state}
+            onToggle={onToggle}>
+            <DialogTitle className="flex font-bold text-2xl text-gray-900 justify-between items-center p-4">
+                <span>
+                    View Leave
+                </span>
+                <button
+                    onClick={onToggle}
+                    className={"text-red-800"}>
+                    &times;
+                </button>
+            </DialogTitle>
+            <Description as={"div"} className={'w-[80vw]'}>
+                <hr />
+                <div className={"mx-24 my-6 "}>
+                    <p ><span className={'font-bold'}>Start date: </span>{formatDate(leaveData?.startDate)}</p>
+                    <p ><span className={'font-bold'}>End date: </span>{formatDate(leaveData?.endDate)}</p>
+                </div>
+                <iframe
+                    src={leaveData?.document}
+                    width={'100%'}
+                    height={"600px"}></iframe>
+            </Description>
+        </Modal>
+    );
+}
+
 function CancelModal({ state, onToggle, selectedData }) {
     function handleAttendanceCancellation() {
         const payload = {
             action: 'cancel',
         }
-        router.patch(route("admin.leaves.patch.cancel", selectedData?.id), payload, {
+        router.patch(route("leaves.patch.cancel", selectedData?.public_id), payload, {
                 onSuccess: () => {
                     onToggle();
                 },

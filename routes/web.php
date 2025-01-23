@@ -89,7 +89,6 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/admin/leaves', [LeaveController::class, 'index'])                                                      ->name('admin.leaves.index');
     Route::get('/admin/leaves/manage', [LeaveController::class, 'manage'])                                              ->name('admin.leaves.manage');
     Route::post('/admin/leave/store', [LeaveController::class, 'store'])                                                ->name('admin.leaves.store');
-    Route::patch('/admin/leave/{leave}/cancel', [LeaveController::class, 'cancel'])                                     ->name('admin.leaves.patch.cancel');
     Route::patch('/admin/leave/manage/{leave}/action', [LeaveController::class, 'leaveAction'])                         ->name('admin.leaves.manage.action');
 
     // Service Credits
@@ -142,8 +141,9 @@ Route::middleware('redirUnauthUser')->group(function () {
     Route::get('/faculty/dashboard', [FacultyDashboardController::class, 'index'])                                      ->name('faculty.dashboard');
 
     // Faculty
-    Route::get('/faculty/leaves', [LeaveController::class, 'index'])                                                    ->name('faculty.leaves.index');
+    Route::get('/faculty/leaves/{leave_id}', [LeaveController::class, 'show'])                                         ->name('faculty.leaves.show');
     Route::get('/faculty/leave/create', [LeaveController::class, 'create'])                                             ->name('faculty.leaves.create');
+    Route::get('/faculty/leaves', [LeaveController::class, 'index'])                                                    ->name('faculty.leaves.index');
     Route::post('/faculty/leave/store', [LeaveController::class, 'store'])                                              ->name('faculty.leaves.store');
 
     // RPMS
@@ -157,6 +157,8 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     // Attendances
     Route::get('/faculty/attendances/create', [FacultyAttendanceController::class, 'create'])                           ->name('faculty.attendance.create');
+    Route::post('/faculty/attendance/check-in', [FacultyAttendanceController::class, 'checkIn'])                        ->name('faculty.attendances.check-in');
+    Route::post('/faculty/attendance/check-out', [FacultyAttendanceController::class, 'checkOut'])                      ->name('faculty.attendances.check-out');
 
     //Personal Details
     Route::get('/faculty/personal-details', [PersonalDetailsController::class, 'index'])                                ->name('faculty.personal-details.index');
@@ -214,9 +216,7 @@ Route::middleware('redirUnauthUser')->group(function () {
 
     Route::patch('/educational-background', [EducationalBackgroundController::class, 'update'])                         ->name('educ-bg.update');
 
-
-
-
+    Route::patch('/leave/{leave_id}/cancel', [LeaveController::class, 'cancel'])                                        ->name('leaves.patch.cancel');
 });
 
 
