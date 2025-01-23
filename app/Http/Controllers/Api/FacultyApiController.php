@@ -76,17 +76,17 @@ class FacultyApiController extends Controller
 
     public function jsonFormat($faculty){
         return [
-            'id'                => $faculty->id,
-            'faculty_code'      => $faculty->faculty_code,
-            'email'             => $faculty->email,
-            'first_name'        => $faculty->personal_information->first_name,
-            'middle_name'       => $faculty->personal_information->middle_name,
-            'last_name'         => $faculty->personal_information->last_name,
-            'sex'               => $faculty->personal_information->sex,
-            'contact_number'    => $faculty->personal_information->contact_no,
-            'employmentStatus'  => $faculty->employment_status->name,
-            "teacherLevel"      => $faculty->school_position->title,
-            'department'        => $faculty->designation->department->name,
+            'id'                => $faculty->id ?? "N/A",
+            'faculty_code'      => $faculty->faculty_code ?? "N/A",
+            'email'             => $faculty->email ?? "N/A",
+            'first_name'        => $faculty->personal_information->first_name ?? "N/A",
+            'middle_name'       => $faculty->personal_information->middle_name ?? "N/A",
+            'last_name'         => $faculty->personal_information->last_name ?? "N/A",
+            'sex'               => $faculty->personal_information->sex ?? "N/A",
+            'contact_number'    => $faculty->personal_information->contact_no ?? "N/A",
+            'employmentStatus'  => $faculty->employment_status->name ?? "N/A",
+            "teacherLevel"      => $faculty->school_position->title ?? "N/A",
+            'department'        => $faculty->designation->department->name ?? "N/A",
             'roles'             => $faculty->roles->pluck('role_name'),
             ];
     }
