@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id');
-            $table->string('check_in');
+            $table->string('check_in')->nullable();
             $table->string('check_out')->nullable();
             $table->enum('status', ['present', 'late', 'absent', 'not_timed_out']);
             $table->timestamps();

@@ -23,6 +23,9 @@ php artisan migrate:fresh --force
 echo "Running storage link"
 php artisan storage:link
 
+echo "Running scheduler to work"
+php artisan schedule:work
+
 #echo "Running npm build..."
 #npm run build --prefix /var/www/html
 

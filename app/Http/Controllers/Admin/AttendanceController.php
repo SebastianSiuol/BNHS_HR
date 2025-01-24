@@ -76,16 +76,17 @@ class AttendanceController extends Controller
         $faculty_id = Auth::user()->id;
         $shift_id = Auth::user()->shift_id;
 
-        $today = Carbon::now()->timezone('GMT+8');
+        $today = Carbon::now()->timezone('Asia/Manila');
 
         $attendance = Attendance::where('faculty_id', $faculty_id)
-            ->whereDate('check_in', $today)
+            ->whereDate('created_at', $today)
             ->first();
 
 
         $shift = Shift::where('id', $shift_id)
             ->select('name', 'from', 'to')
             ->first();
+
 
         return Inertia::render('Admin/Attendance/Create', [
             'shift' => $shift,
@@ -173,20 +174,34 @@ class AttendanceController extends Controller
         }
 
         $shift_start = Carbon::parse($shift->from);
+        $shift_end = Carbon::parse($shift->to);
+
         $attendance = Attendance::where('faculty_id', $user_id)
-            ->whereDate('check_in', $post_time->toDateString())
+            ->whereDate('created_at', $post_time->toDateString())
             ->first();
 
         if ($type == 'check_in') {
             if ($attendance) {
+                // If marked absent, update it for the current check-in
+                if ($attendance->status === 'absent') {
+                    $attendance->check_in = $post_time;
+                    $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
+                    $attendance->save();
+
+                    return $this->redirectWithMessage("Absence overridden with check-in.", $attendance, 200);
+                }
+
                 return $this->redirectWithError("Already checked in for the day!", 400);
             }
 
+            // If no attendance exists, create a new record
             $attendance = new Attendance();
             $attendance->faculty_id = $user_id;
             $attendance->check_in = $post_time;
             $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
             $attendance->save();
+
+            return $this->redirectWithMessage($type, $attendance, 201);
         }
 
         if ($type == 'check_out') {
@@ -199,10 +214,18 @@ class AttendanceController extends Controller
             }
 
             $attendance->check_out = $post_time;
+
+            // Ensure the attendance status is updated properly if the shift has ended
+            if ($attendance->status === 'absent') {
+                $attendance->status = 'not_timed_out'; // Status to reflect a partial record
+            }
+
             $attendance->save();
+
+            return $this->redirectWithMessage($type, $attendance, 201);
         }
 
-        return $this->redirectWithMessage($type, $attendance, 201);
+        return $this->redirectWithError("Invalid operation type.", 400);
     }
 
     private function validateRequest(Request $request)

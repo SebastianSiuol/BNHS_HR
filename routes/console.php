@@ -12,3 +12,5 @@ Artisan::command('inspire', function () {
 Schedule::call(function(){
     Faculty::query()->increment('service_credit', 8);
 })->monthly();
+
+Schedule::command('app:mark-absent-faculty')->dailyAt('23:59');

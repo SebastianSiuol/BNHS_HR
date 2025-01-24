@@ -1,0 +1,102 @@
+{
+    "message": "Faculty subject loads retrieved successfully",
+    "facultySubjects": {
+        "facultyId": "BHNHS-2024-0002",
+        "subjects": [
+            {
+                "assignmentDate": "2024-10-11",
+                "subjectId": "fcc68d64-92a7-43fd-a5d8-c2bcb39f89d6",
+                "subjectName": "Filipino",
+                "abbreviation": "Fil",
+                "gradeLevel": 7,
+                "sectionName": "Mars",
+                "Subject_Schedules": [
+                    {
+                        "scheduleId": "50b8bed1-7f6e-4cf5-b75f-963b89ea21d2",
+                        "startTime": "02:45 PM",
+                        "endTime": "03:45 PM",
+                        "dayOfWeek": "Wednesday"
+                    },
+                    {
+                        "scheduleId": "5461f0a3-68d9-46d5-83e0-e3440a6a53b2",
+                        "startTime": "02:00 PM",
+                        "endTime": "03:00 PM",
+                        "dayOfWeek": "Tuesday"
+                    },
+                    {
+                        "scheduleId": "f8295d68-0df0-4086-8301-b07aff743c95",
+                        "startTime": "02:00 PM",
+                        "endTime": "03:00 PM",
+                        "dayOfWeek": "Thursday"
+                    },
+                    {
+                        "scheduleId": "f8d21974-ebe3-4746-9e3a-c8b152f5c5ee",
+                        "startTime": "01:30 PM",
+                        "endTime": "02:30 PM",
+                        "dayOfWeek": "Friday"
+                    }
+                ]
+            },
+            {
+                "assignmentDate": "2024-10-14",
+                "subjectId": "1b69d848-7fde-4ffd-9cd7-50e6b9d200e0",
+                "subjectName": "Araling Panlipunan",
+                "abbreviation": "AP",
+                "gradeLevel": 7,
+                "sectionName": "Earth",
+                "Subject_Schedules": [
+                    {
+                        "scheduleId": "cfc9de5c-a4f6-467f-b9d3-05973710a615",
+                        "startTime": "02:30 PM",
+                        "endTime": "03:30 PM",
+                        "dayOfWeek": "Monday"
+                    }
+                ]
+            },
+            {
+                "assignmentDate": "2023-10-11",
+                "subjectId": "1b69d848-7fde-4ffd-9cd7-50e6b9d200e0",
+                "subjectName": "Araling Panlipunan",
+                "abbreviation": "AP",
+                "gradeLevel": 7,
+                "sectionName": "Mars",
+                "Subject_Schedules": [
+                    {
+                        "scheduleId": "5cb5dafc-4496-4a7c-ac10-5076c002c93d",
+                        "startTime": "04:00 PM",
+                        "endTime": "05:00 PM",
+                        "dayOfWeek": "Wednesday"
+                    },
+                    {
+                        "scheduleId": "8dae3c03-9e12-4aac-8ce5-b528c9cc77fe",
+                        "startTime": "03:00 PM",
+                        "endTime": "04:00 PM",
+                        "dayOfWeek": "Monday"
+                    }
+                ]
+            },
+            {
+                "assignmentDate": "2024-10-14",
+                "subjectId": "4208fff6-9bc9-423f-bc9d-3ae1d7b5e64c",
+                "subjectName": "Science",
+                "abbreviation": "Sci",
+                "gradeLevel": 7,
+                "sectionName": "Earth",
+                "Subject_Schedules": [
+                    {
+                        "scheduleId": "a9610ddc-6f9f-4a0e-990e-489ea4a14fd7",
+                        "startTime": "08:30 AM",
+                        "endTime": "09:30 AM",
+                        "dayOfWeek": "Monday"
+                    },
+                    {
+                        "scheduleId": "bf093f3e-3931-4ca7-9ea7-ef2fb1d53821",
+                        "startTime": "08:30 AM",
+                        "endTime": "09:30 AM",
+                        "dayOfWeek": "Tuesday"
+                    }
+                ]
+            }
+        ]
+    }
+}
