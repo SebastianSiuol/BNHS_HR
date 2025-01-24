@@ -139,8 +139,8 @@ function DailySchedule (){
     const [fetchError, setFetchError] = useState(null);
 
     const yearToday = dayjs().format('YYYY');
-    const yearLastYear = dayjs().subtract(1, 'year').format('YYYY');
-    const yearLoad = (`${yearLastYear}-${yearToday}`)
+    const yearNextYear = dayjs().add(1, 'year').format('YYYY');
+    const yearLoad = (`${yearToday}-${yearNextYear}`)
 
     const sisUrl = (`https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/faculty/${facultyCode}/subject-loads/schoolYear/${yearLoad}`)
 
