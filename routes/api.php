@@ -19,7 +19,7 @@ Route::middleware(['intApiKey'])->group(function (){
     // Route::get('/get-positions', [PositionApiController::class, 'get'])                                                 ->name('api.get.positions');
     // Route::get('/get-shifts', [ShiftApiController::class, 'get'])                                                       ->name('api.get.shifts');
     Route::get('/roles', [RoleApiController::class, 'get'])                                                             ->name('api.roles.get');
-    Route::get('/get-designations', [DesignationApiController::class, 'getDesignations'])                               ->name('api.get.designations');
+    // Route::get('/get-designations', [DesignationApiController::class, 'getDesignations'])                               ->name('api.get.designations');
 
     Route::post('/attendance/action', [AttendanceApiController::class, 'attendanceAction'])                             ->name('api.attendance.action');
 
