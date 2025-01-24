@@ -32,4 +32,5 @@ export function useFetchforCompanyDetails({setState, setLoading, setError, link}
             fetchDataForCompanyDetails();
         }
     }, []);
+    // Renamed
 }
