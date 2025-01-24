@@ -13,7 +13,7 @@ import { InputSelect } from "@/Components/InputSelect";
 // Hooks and Contexts
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
-import { useFetchforCompanyDetails } from "@/Hooks/useFetchforCompanyDetails";
+import { useFetchCompanyDetails } from "@/Hooks/useFetchCompanyDetails";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 import { getFullName } from '@/Utils/formatTableDataUtils';
 import { companyDetailsDataSchema } from '@/Schemas/MultistepFormSchema';
@@ -79,21 +79,21 @@ export function CompanyDetailsForm() {
         }));
     }
 
-    useFetchforCompanyDetails({
+    useFetchCompanyDetails({
         setState: setDepartments,
         setLoading: (value) => handleSetLoading("departments", value),
         setError: (error) => handleSetError("departments", error),
         link: route("api.get.departments"),
     });
 
-    useFetchforCompanyDetails({
+    useFetchCompanyDetails({
         setState: setPositions,
         setLoading: (value) => handleSetLoading("positions", value),
         setError: (error) => handleSetError("positions", error),
         link: route("api.get.positions"),
     });
 
-    useFetchforCompanyDetails({
+    useFetchCompanyDetails({
         setState: setShifts,
         setLoading: (value) => handleSetLoading("shifts", value),
         setError: (error) => handleSetError("shifts", error),

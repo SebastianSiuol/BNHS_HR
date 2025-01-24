@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useFetchforCompanyDetails({setState, setLoading, setError, link}) {
+export function useFetchCompanyDetails({setState, setLoading, setError, link}) {
     useEffect(() => {
         if (link) {
             async function fetchDataForCompanyDetails() {
