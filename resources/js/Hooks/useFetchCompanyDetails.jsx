@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useFetchCompanyDetails({setState, setLoading, setError, link}) {
+export function useFetchCompanyDetails({setState, setLoading, setError, link, dependency=null}) {
     useEffect(() => {
         if (link) {
             async function fetchDataForCompanyDetails() {
@@ -31,6 +31,6 @@ export function useFetchCompanyDetails({setState, setLoading, setError, link}) {
             }
             fetchDataForCompanyDetails();
         }
-    }, []);
+    }, [dependency]);
     // Renamed
 }

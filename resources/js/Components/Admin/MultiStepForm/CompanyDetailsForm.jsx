@@ -219,18 +219,18 @@ export function CompanyDetailsForm() {
             console.log(errors);
 
             // Set "N/A" for fields that encountered errors
-            if (allFetchErrors["departments"]) {
-                setValue("department_id", "N/A");
-            }
-            if (allFetchErrors["positions"]) {
-                setValue("position_id", "N/A");
-            }
-            if (allFetchErrors["shifts"]) {
-                setValue("shift_id", "N/A");
-            }
-            if (allFetchErrors["designations"]) {
-                setValue("designation_id", "N/A");
-            }
+            // if (allFetchErrors["departments"]) {
+            //     setValue("department_id", "N/A");
+            // }
+            // if (allFetchErrors["positions"]) {
+            //     setValue("position_id", "N/A");
+            // }
+            // if (allFetchErrors["shifts"]) {
+            //     setValue("shift_id", "N/A");
+            // }
+            // if (allFetchErrors["designations"]) {
+            //     setValue("designation_id", "N/A");
+            // }
             if (allFetchErrors["department_head"]) {
                 setError("department_head", {type: "custom", message: "No Department Head found in Department!"});
             }
