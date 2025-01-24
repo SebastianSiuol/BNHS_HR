@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export function useFetchforCompanyDetails({setState, setLoading, setError, link}) {
     useEffect(() => {
@@ -22,7 +22,7 @@ export function useFetchforCompanyDetails({setState, setLoading, setError, link}
                     }
 
                     const parsedData = await fetchResponse.json();
-                    setState(parsedData);
+                    setState(parsedData);L
                 } catch (error) {
                     setError(error.message || "An error occurred.");
                 } finally {
