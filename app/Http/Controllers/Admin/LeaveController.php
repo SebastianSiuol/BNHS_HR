@@ -51,8 +51,8 @@ class LeaveController extends Controller
 
         $leaveDetails = [
             'publicId' => $leave->public_id,
-            // 'startDate' => $leave->start_date,
-            'startDate' => '2024-01-02',
+            'startDate' => $leave->start_date,
+            // 'startDate' => '2024-01-02',
             'endDate' => $leave->end_date,
             'document' => $file_url,
             'status' => $leave->status,

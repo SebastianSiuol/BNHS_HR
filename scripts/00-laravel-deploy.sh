@@ -20,8 +20,8 @@ php artisan migrate --force
 # echo "Running in-development migrations"
 # php artisan migrate:fresh --force
 
-# echo "Running storage link"
-# php artisan storage:link
+echo "Running storage link"
+php artisan storage:link
 
 # echo "Running scheduler to work"
 # php artisan schedule:work
