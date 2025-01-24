@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, useController } from "react-hook-form";
+import { usePage } from "@inertiajs/react";
 
 // Compoenents
 import CustomDatePicker from "@/Components/CustomDatePicker";
@@ -13,21 +13,11 @@ import { InputSelect } from "@/Components/InputSelect";
 // Hooks and Contexts
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
-import { useFetchCompanyDetails } from "@/Hooks/useFetchCompanyDetails";
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 import { getFullName } from '@/Utils/formatTableDataUtils';
 import { companyDetailsDataSchema } from '@/Schemas/MultistepFormSchema';
 
 const FORM_DATA_KEY = "fourth_form_local_data";
-
-// const companyDetailsDataSchema = z.object({
-//     department_id: z.any().optional(),
-//     designation_id: z.any().optional(),
-//     department_head: z.any().optional(),
-//     shift_id: z.any().optional(),
-//     date_of_joining: z.coerce.date(),
-//     position_id: z.any().optional(),
-// });
 
 export function CompanyDetailsForm() {
     const {
@@ -36,16 +26,12 @@ export function CompanyDetailsForm() {
         nextStep,
     } = useMultiStepForm();
 
-    const [departments, setDepartments] = useState([]);
-    const [positions, setPositions] = useState([]);
-    const [shifts, setShifts] = useState([]);
+    const { departments, positions, shifts } = usePage().props;
+    const [designations, setDesignations] = useState([]);
     const [departmentHeads, setDepartmentHeads] = useState([]);
 
     const [allFetchErrors, setAllFetchErrors] = useState([]);
     const [allFetchLoading, setAllFetchLoading] = useState([]);
-
-    const [designations, setDesignations] = useState([]);
-
     const savedDataFromLocal = getSavedData(FORM_DATA_KEY);
 
     const {
@@ -59,95 +45,37 @@ export function CompanyDetailsForm() {
         clearErrors,
     } = useForm({
         resolver: zodResolver(companyDetailsDataSchema),
-        defaultValues: getSavedData(FORM_DATA_KEY),
+        defaultValues: savedDataFromLocal,
     });
 
     // Persistantly Uploads Form Data
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    function handleSetError(key, error) {
-        setAllFetchErrors((prevErrors) => ({
-            ...prevErrors,
-            [key]: error,
-        }));
-    }
+    const selectedDept = parseInt(watch("department_id"));
 
-    function handleSetLoading(key, value) {
-        setAllFetchLoading((allLoadings) => ({
-            ...allLoadings,
-            [key]: value,
-        }));
-    }
+    useEffect(() => {
+        if (selectedDept) {
+            const chosenDept = departments.find(
+                (dept) => dept.id === selectedDept
+            );
+            setDesignations(chosenDept?.designations || []);
+        } else {
+            setDesignations([]);
+        }
+    }, [selectedDept]);
 
-    useFetchCompanyDetails({
-        setState: setDepartments,
-        setLoading: (value) => handleSetLoading("departments", value),
-        setError: (error) => handleSetError("departments", error),
-        link: route("api.get.departments"),
-    });
+    useEffect(() => {
+        const savedDesignationId = savedDataFromLocal?.designation_id;
+        if (savedDesignationId && designations.length > 0) {
+            const isValidDesignation = designations.some(
+                (desig) => desig.id === parseInt(savedDesignationId)
+            );
 
-    useFetchCompanyDetails({
-        setState: setPositions,
-        setLoading: (value) => handleSetLoading("positions", value),
-        setError: (error) => handleSetError("positions", error),
-        link: route("api.get.positions"),
-    });
-
-    useFetchCompanyDetails({
-        setState: setShifts,
-        setLoading: (value) => handleSetLoading("shifts", value),
-        setError: (error) => handleSetError("shifts", error),
-        link: route("api.get.shifts"),
-    });
-
-    useEffect(
-        function () {
-            async function getDesignations() {
-                setAllFetchLoading((allLoadings) => ({
-                    ...allLoadings,
-                    designations: true,
-                }));
-
-                try {
-                    const response = await fetch(
-                        route("api.get.designations", watch("department_id")),
-                        {
-                            method: "GET",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                        }
-                    );
-
-                    if (!response.ok) {
-                        setAllFetchErrors((prevErrors) => ({
-                            ...prevErrors,
-                            designations: "Something happened!",
-                        }));
-                    }
-
-                    const data = await response.json();
-
-                    if (data) {
-                        setDesignations(data);
-                        setAllFetchErrors((prevErrors) => ({
-                            ...prevErrors,
-                            designations: null,
-                        }))
-                    }
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setAllFetchLoading((allLoadings) => ({
-                        ...allLoadings,
-                        designations: false,
-                    }));
-                }
+            if (isValidDesignation) {
+                setValue("designation_id", savedDesignationId);
             }
-            getDesignations();
-        },
-        [watch("department_id")]
-    );
+        }
+    }, [designations]);
 
 
     useEffect(
@@ -160,7 +88,7 @@ export function CompanyDetailsForm() {
 
                 try {
                     const response = await fetch(
-                        route("api.get.head", watch("department_id")),
+                        route("api.get.head", selectedDept),
                         {
                             method: "GET",
                             headers: {
@@ -199,43 +127,23 @@ export function CompanyDetailsForm() {
             }
             getDepartmentHeads();
         },
-        [watch("department_id")]
+        [selectedDept]
     )
 
-    useEffect(() => {
-        const allFetchesCompleted = Object.values(allFetchLoading).every(
-            (loading) => !loading
-        );
+     useEffect(() => {
+         const allFetchesCompleted = Object.values(allFetchLoading).every(
+             (loading) => !loading
+         );
 
-        if (allFetchesCompleted) {
-            setValue("department_id", savedDataFromLocal?.department_id ?? "0");
-            setValue("position_id", savedDataFromLocal?.position_id ?? "0");
-            setValue("shift_id", savedDataFromLocal?.shift_id ?? "0");
-            setValue(
-                "designation_id",
-                savedDataFromLocal?.designation_id ?? "0"
-            );
-
-            console.log(errors);
-
-            // Set "N/A" for fields that encountered errors
-            // if (allFetchErrors["departments"]) {
-            //     setValue("department_id", "N/A");
-            // }
-            // if (allFetchErrors["positions"]) {
-            //     setValue("position_id", "N/A");
-            // }
-            // if (allFetchErrors["shifts"]) {
-            //     setValue("shift_id", "N/A");
-            // }
-            // if (allFetchErrors["designations"]) {
-            //     setValue("designation_id", "N/A");
-            // }
-            if (allFetchErrors["department_head"]) {
-                setError("department_head", {type: "custom", message: "No Department Head found in Department!"});
-            }
-        }
-    }, [allFetchLoading, setValue]);
+         if (allFetchesCompleted) {
+             if (allFetchErrors["department_head"]) {
+                 setError("department_head", {
+                     type: "custom",
+                     message: "No Department Head found in Department!",
+                 });
+             }
+         }
+     }, [allFetchLoading, setValue]);
 
     function onFourthFormSubmit(e) {
         e.preventDefault;

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Exports\PersonalDetailsSheetExport;
 use App\Services\StoreFacultyService;
 use App\Http\Requests\StoreFacultyRequest;
+use App\Models\Configuration\Position;
+use App\Models\Configuration\SchoolPosition;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +18,9 @@ use Illuminate\Support\Facades\Http;
 
 // Models
 use App\Models\Faculty;
+use App\Models\FacultyAccountInformation\Department;
+use App\Models\FacultyAccountInformation\Designation;
+use App\Models\Shift;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -53,7 +58,17 @@ class FacultyController extends Controller
     }
     public function create()
     {
-        return Inertia::render('Admin/Faculty/Create');
+        $departments = Department::select('id', 'name')
+            ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
+            ->get();
+        $positions = SchoolPosition::select('id','title')->get();
+        $shifts = Shift::select('id','name')->get();
+
+        return Inertia::render('Admin/Faculty/Create', [
+            'departments' => $departments,
+            'positions' => $positions,
+            'shifts' => $shifts,
+        ]);
     }
 
     public function store(StoreFacultyRequest $request)
@@ -108,10 +123,17 @@ class FacultyController extends Controller
         $retrieved_faculty = Faculty::find($faculty);
 
         $formatted_faculty = $this->formatFacultyForEdit($retrieved_faculty);
-        // dd($formattedFaculty);
+        $departments = Department::select('id', 'name')
+            ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
+            ->get();
+        $positions = SchoolPosition::select('id', 'title')->get();
+        $shifts = Shift::select('id', 'name')->get();
 
         return Inertia::render('Admin/Faculty/Edit', [
             'selected_faculty' => $formatted_faculty,
+            'departments' => $departments,
+            'positions' => $positions,
+            'shifts' => $shifts,
         ]);
     }
 

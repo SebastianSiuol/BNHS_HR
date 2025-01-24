@@ -25,7 +25,7 @@ export function EditMultiStepFormProvider({ children }) {
     * States
     */
     const { selected_faculty } = usePage().props;
-    const [ step, setStep ] = useState(0);
+    const [ step, setStep ] = useState(3);
     const [ selectedFacultyDetails, setSelectedFacultyDetails ] = useState(selected_faculty)
 
     /*

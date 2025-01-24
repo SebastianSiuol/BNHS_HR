@@ -355,12 +355,17 @@ export function CompanyDetailsForm() {
         nextStep,
     } = useEditMultiStepForm();
     const { companyDetails } = selectedFacultyDetails;
+    const { departments, positions, shifts } = usePage().props;
+    const [designations, setDesignations] = useState([]);
+    const [departmentHeads, setDepartmentHeads] = useState([]);
+
+    const [allFetchErrors, setAllFetchErrors] = useState([]);
+    const [allFetchLoading, setAllFetchLoading] = useState([]);
 
     const {
             register,
             handleSubmit,
             watch,
-            control,
             setValue,
             formState: { errors },
             setError,
@@ -370,103 +375,31 @@ export function CompanyDetailsForm() {
             defaultValues: companyDetails,
         });
 
-    const [ existingCompanyDetails, setExistingCompanyDetails ] = useState(companyDetails);
+    const selectedDept = parseInt(watch("department_id"));
 
-    console.log(existingCompanyDetails);
+    useEffect(() => {
+        if (selectedDept) {
+            const chosenDept = departments.find(
+                (dept) => dept.id === selectedDept
+            );
+            setDesignations(chosenDept?.designations || []);
+        } else {
+            setDesignations([]);
+        }
+    }, [selectedDept]);
 
-    const [departments, setDepartments] = useState([]);
-    const [positions, setPositions] = useState([]);
-    const [shifts, setShifts] = useState([]);
-    const [departmentHeads, setDepartmentHeads] = useState([]);
+    useEffect(() => {
+        const savedDesignationId = companyDetails?.designation_id;
+        if (savedDesignationId && designations.length > 0) {
+            const isValidDesignation = designations.some(
+                (desig) => desig.id === parseInt(savedDesignationId)
+            );
 
-    const [allFetchErrors, setAllFetchErrors] = useState([]);
-    const [allFetchLoading, setAllFetchLoading] = useState([]);
-
-    const [designations, setDesignations] = useState([]);
-
-    function handleSetError(key, error) {
-        setAllFetchErrors((prevErrors) => ({
-            ...prevErrors,
-            [key]: error,
-        }));
-    }
-
-    function handleSetLoading(key, value) {
-        setAllFetchLoading((allLoadings) => ({
-            ...allLoadings,
-            [key]: value,
-        }));
-    }
-
-    useFetchCompanyDetails({
-        setState: setDepartments,
-        setLoading: (value) => handleSetLoading("departments", value),
-        setError: (error) => handleSetError("departments", error),
-        link: route("api.get.departments"),
-    });
-
-    useFetchCompanyDetails({
-        setState: setPositions,
-        setLoading: (value) => handleSetLoading("positions", value),
-        setError: (error) => handleSetError("positions", error),
-        link: route("api.get.positions"),
-    });
-
-    useFetchCompanyDetails({
-        setState: setShifts,
-        setLoading: (value) => handleSetLoading("shifts", value),
-        setError: (error) => handleSetError("shifts", error),
-        link: route("api.get.shifts"),
-    });
-
-    useEffect(
-        function () {
-            async function getDesignations() {
-                setAllFetchLoading((allLoadings) => ({
-                    ...allLoadings,
-                    designations: true,
-                }));
-
-                try {
-                    const response = await fetch(
-                        route("api.get.designations", watch("department_id")),
-                        {
-                            method: "GET",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                        }
-                    );
-
-                    if (!response.ok) {
-                        setAllFetchErrors((prevErrors) => ({
-                            ...prevErrors,
-                            designations: "Something happened!",
-                        }));
-                    }
-
-                    const data = await response.json();
-
-                    if (data) {
-                        setDesignations(data);
-                        setAllFetchErrors((prevErrors) => ({
-                            ...prevErrors,
-                            designations: null,
-                        }))
-                    }
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setAllFetchLoading((allLoadings) => ({
-                        ...allLoadings,
-                        designations: false,
-                    }));
-                }
+            if (isValidDesignation) {
+                setValue("designation_id", savedDesignationId);
             }
-            getDesignations();
-        },
-        [watch("department_id")]
-    );
+        }
+    }, [designations]);
 
 
     useEffect(
@@ -479,7 +412,7 @@ export function CompanyDetailsForm() {
 
                 try {
                     const response = await fetch(
-                        route("api.get.head", watch("department_id")),
+                        route("api.get.head", selectedDept),
                         {
                             method: "GET",
                             headers: {
@@ -518,51 +451,23 @@ export function CompanyDetailsForm() {
             }
             getDepartmentHeads();
         },
-        [watch("department_id")]
+        [selectedDept]
     )
 
-    useEffect(() => {
-        const subscription = watch((values) => {
-            setExistingCompanyDetails(values);
-        });
-        return () => subscription.unsubscribe();
-    }, [watch]);
+     useEffect(() => {
+         const allFetchesCompleted = Object.values(allFetchLoading).every(
+             (loading) => !loading
+         );
 
-
-    // Used for applying existing values
-    useEffect(() => {
-
-        const allFetchesCompleted = Object.values(allFetchLoading).every(
-            (loading) => !loading
-        );
-
-        if (allFetchesCompleted) {
-            setValue("department_id", existingCompanyDetails?.department_id ?? "0");
-            setValue("position_id", existingCompanyDetails?.position_id ?? "0");
-            setValue("shift_id", existingCompanyDetails?.shift_id ?? "0");
-            setValue(
-                "designation_id",
-                existingCompanyDetails?.designation_id ?? "0"
-            );
-
-            // Set "N/A" for fields that encountered errors
-            // if (allFetchErrors["departments"]) {
-            //     setValue("department_id", "N/A");
-            // }
-            // if (allFetchErrors["positions"]) {
-            //     setValue("position_id", "N/A");
-            // }
-            // if (allFetchErrors["shifts"]) {
-            //     setValue("shift_id", "N/A");
-            // }
-            // if (allFetchErrors["designations"]) {
-            //     setValue("designation_id", "N/A");
-            // }
-            if (allFetchErrors["department_head"]) {
-                setError("department_head", {type: "custom", message: "No Department Head found in Department!"});
-            }
-        }
-    }, [allFetchLoading, setValue]);
+         if (allFetchesCompleted) {
+             if (allFetchErrors["department_head"]) {
+                 setError("department_head", {
+                     type: "custom",
+                     message: "No Department Head found in Department!",
+                 });
+             }
+         }
+     }, [allFetchLoading, setValue]);
 
     function onFormSubmit() {
         onFormNavigate({ formData: watch(), formKey: "companyDetails" });
@@ -621,7 +526,7 @@ export function CompanyDetailsForm() {
                     </label>
                 </div>
                 <div>
-                    <div className={"flex flex-col lg:my-2"}>
+                    {/* <div className={"flex flex-col lg:my-2"}>
                         <InputLabel
                             labelFor={"date_of_joining"}
                             color={"black"}
@@ -641,7 +546,7 @@ export function CompanyDetailsForm() {
                                 />
                             )}
                         />
-                    </div>
+                    </div> */}
 
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Position</span>
