@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\PersonalInformation\NameExtension;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Eloquent\Model;
@@ -27,5 +28,9 @@ class ParentMember extends Model
 
     public function personal_information(){
         return $this->belongsTo(PersonalInformation::class);
+    }
+
+    public function name_extension() {
+        return $this->belongsTo(NameExtension::class);
     }
 }

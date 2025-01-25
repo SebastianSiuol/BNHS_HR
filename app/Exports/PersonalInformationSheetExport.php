@@ -24,8 +24,116 @@ CLASS PersonalInformationSheetExport implements fromView, withEvents {
     public function view(): View
     {
         $faculty = Auth::user();
+        $personalInformation = $faculty->personal_information;
+
+        $children = $personalInformation->children_members;
+
+        $parentMembers = $personalInformation->parent_members()
+            ->whereIn('relationship_type', ['father', 'mother'])
+            ->get();
+
+        // Structure the response
+        $parent = [
+            'father' => $parentMembers->firstWhere('relationship_type', 'father')
+                ? [
+                    'publicId' => $parentMembers->firstWhere('relationship_type', 'father')->public_id,
+                    'firstName' => $parentMembers->firstWhere('relationship_type', 'father')->first_name,
+                    'middleName' => $parentMembers->firstWhere('relationship_type', 'father')->middle_name,
+                    'lastName' => $parentMembers->firstWhere('relationship_type', 'father')->last_name,
+                    'nameExtension' => $parentMembers->firstWhere('relationship_type', 'father')->name_extension->title
+                ] : null,
+            'mother' => $parentMembers->firstWhere('relationship_type', 'mother')
+                ? [
+                    'publicId' => $parentMembers->firstWhere('relationship_type', 'mother')->public_id,
+                    'firstName' => $parentMembers->firstWhere('relationship_type', 'mother')->first_name,
+                    'middleName' => $parentMembers->firstWhere('relationship_type', 'mother')->middle_name,
+                    'lastName' => $parentMembers->firstWhere('relationship_type', 'mother')->last_name,
+                    'maidenName' => $parentMembers->firstWhere('relationship_type', 'mother')->maiden_name,
+                ] : null,
+        ];
+
+        $educBackground = [
+            'elementary' => $personalInformation->educational_backgrounds()
+                ->where('education_level', 'elementary')
+                ->first()
+                ?->only([
+                    'public_id',
+                    'name_of_school',
+                    'basic_education_degree_course',
+                    'from_date',
+                    'to_date',
+                    'highest_level_earned',
+                    'year_graduated',
+                    'scholarships_academic_honors',
+                ]),
+            'secondary' => $personalInformation->educational_backgrounds()
+                ->where('education_level', 'secondary')
+                ->first()
+                ?->only([
+                    'public_id',
+                    'name_of_school',
+                    'basic_education_degree_course',
+                    'from_date',
+                    'to_date',
+                    'highest_level_earned',
+                    'year_graduated',
+                    'scholarships_academic_honors',
+                ]),
+            'vocational' => $personalInformation->educational_backgrounds()
+                ->where('education_level', 'vocational')
+                ->first()
+                ?->only([
+                    'public_id',
+                    'name_of_school',
+                    'basic_education_degree_course',
+                    'from_date',
+                    'to_date',
+                    'highest_level_earned',
+                    'year_graduated',
+                    'scholarships_academic_honors',
+                ]),
+            'college' => $personalInformation->educational_backgrounds()
+                ->where('education_level', 'college')
+                ->first()
+                ?->only([
+                    'public_id',
+                    'name_of_school',
+                    'basic_education_degree_course',
+                    'from_date',
+                    'to_date',
+                    'highest_level_earned',
+                    'year_graduated',
+                    'scholarships_academic_honors',
+                ]),
+            'graduate' => $personalInformation->educational_backgrounds()
+                ->where('education_level', 'graduate')
+                ->first()
+                ?->only([
+                    'public_id',
+                    'name_of_school',
+                    'basic_education_degree_course',
+                    'from_date',
+                    'to_date',
+                    'highest_level_earned',
+                    'year_graduated',
+                    'scholarships_academic_honors',
+                ]),
+        ];
+
+
+        $mappedChildren = $children->map(function ($child) {
+            return [
+                'nameOfChild' => $child->name,
+                'dateOfBirth' => $child->date_of_birth,
+            ];
+        });
+
+
         return view('export.pds', [
             'faculty' => $faculty,
+            'parent' => $parent,
+            'chidren' => $mappedChildren,
+            'educBackground' => $educBackground,
         ]);
     }
 
@@ -170,6 +278,7 @@ CLASS PersonalInformationSheetExport implements fromView, withEvents {
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
                 'vertical' => Alignment::VERTICAL_TOP,
+                'wrapText' => true,
             ],
         ];
 

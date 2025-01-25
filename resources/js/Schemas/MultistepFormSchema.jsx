@@ -1,9 +1,6 @@
 import { z } from 'zod';
 import dayjs from "dayjs";
 
-const eighteenYearsAgo = dayjs().subtract(18, "year");
-
-
 export const personalDataSchema = z.object({
   first_name: z.string().min(1, { message: "Required" }),
   middle_name: z.any().optional(),
@@ -15,10 +12,10 @@ export const personalDataSchema = z.object({
   sex: z.string().min(1, { message: "Required" }),
   civil_status_id: z.any().optional(),
 
-  contact_number: z.string().min(1, { message: "Required" }),
+  contact_number: z.string().min(1, { message: "Required" }).regex(/^09\d{9}$/, { message: "Invalid contact number format." }),
   telephone_number: z.any().optional(),
   contact_person_name: z.string().min(1, { message: "Required" }),
-  contact_person_number: z.string().min(1, { message: "Required" }),
+  contact_person_number: z.string().min(1, { message: "Required" }).regex(/^09\d{9}$/, { message: "Invalid contact number format." }),
 });
 
 

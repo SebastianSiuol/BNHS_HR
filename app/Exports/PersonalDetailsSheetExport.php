@@ -23,7 +23,7 @@ class PersonalDetailsSheetExport implements FromArray, WithMultipleSheets
             new PersonalInformationSheetExport(),
             new CivilAndWorkSheetExport(),
             new VolWorkAndLearnDevAndOtherInfoSheetExport(),
-            new SelfDisclosureSheetExport(),
+            // new SelfDisclosureSheetExport(),
         ];
 
         return $sheets;

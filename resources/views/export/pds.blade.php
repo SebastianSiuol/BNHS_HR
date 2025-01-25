@@ -207,7 +207,7 @@
     <tr> {{-- Row 36 --}}
       <td colspan="1">22. </td>
       <td colspan="2">SPOUSE'S SURNAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->last_name ?? 'N/A'}}</td>
       <td colspan="4">23. NAME OF CHILDREN (Write full name and list all)</td>
       <td colspan="2">DATE OF BIRTH (mm/dd/yyyy)</td>
     </tr>
@@ -215,8 +215,8 @@
     <tr> {{-- Row 37 --}}
       <td colspan="1"></td>
       <td colspan="2">FIRST NAME</td>
-      <td colspan="3"></td>
-      <td colspan="2">NAME EXTENSION (JR, SR)</td>
+      <td colspan="3">{{$faculty->personal_information->spouse_member->first_name ?? 'N/A'}}</td>
+      <td colspan="2">NAME EXTENSION: {{$faculty->personal_information->spouse_member->name_extension->title ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -224,7 +224,7 @@
     <tr> {{-- Row 38 --}}
       <td colspan="1"></td>
       <td colspan="2">MIDDLE NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->middle_name ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -232,7 +232,7 @@
     <tr> {{-- Row 39 --}}
       <td colspan="1"></td>
       <td colspan="2">OCCUPATION</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->occupation ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -240,7 +240,7 @@
     <tr> {{-- Row 40 --}}
       <td colspan="1"></td>
       <td colspan="2">EMPLOYER/BUSINESS NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->employer_business_name ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -248,7 +248,7 @@
     <tr> {{-- Row 41 --}}
       <td colspan="1"></td>
       <td colspan="2">BUSINESS ADDRESS</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->business_address ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -256,7 +256,7 @@
     <tr> {{-- Row 42 --}}
       <td colspan="1"></td>
       <td colspan="2">TELEPHONE NO.</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$faculty->personal_information->spouse_member->telephone_number ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -264,7 +264,7 @@
     <tr> {{-- Row 43 --}}
       <td colspan="1">24.</td>
       <td colspan="2">FATHER'S SURNAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['father']['lastName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -272,8 +272,8 @@
     <tr> {{-- Row 44 --}}
       <td colspan="1"></td>
       <td colspan="2">FIRST NAME</td>
-      <td colspan="3"></td>
-      <td colspan="2">NAME EXTENSION (JR, SR)</td>
+      <td colspan="3">{{$parent['father']['firstName'] ?? 'N/A'}}</td>
+      <td colspan="2">NAME EXTENSION: {{$parent['father']['Extension'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -281,7 +281,7 @@
     <tr> {{-- Row 45 --}}
       <td colspan="1"></td>
       <td colspan="2">MIDDLE NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['father']['middleName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -289,7 +289,7 @@
     <tr> {{-- Row 46 --}}
       <td colspan="1">25. </td>
       <td colspan="2">MOTHER'S MAIDEN NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['mother']['maidenName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -297,7 +297,7 @@
     <tr> {{-- Row 47 --}}
       <td colspan="1"></td>
       <td colspan="2">SURNAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['mother']['lastName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -305,7 +305,7 @@
     <tr> {{-- Row 48 --}}
       <td colspan="1"></td>
       <td colspan="2">FIRST NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['mother']['firstName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
@@ -313,10 +313,12 @@
     <tr> {{-- Row 49 --}}
       <td colspan="1"></td>
       <td colspan="2">MIDDLE NAME</td>
-      <td colspan="5"></td>
+      <td colspan="5">{{$parent['mother']['middleName'] ?? 'N/A'}}</td>
       <td colspan="4"></td>
       <td colspan="2"></td>
     </tr>
+
+
 
     <tr> {{-- Row 50 --}}
       <td colspan="14">III. EDUCATIONAL BACKGROUND</td>
@@ -344,56 +346,65 @@
     <tr> {{-- Row 54 --}}
       <td colspan="1"></td>
       <td colspan="2">ELEMENTARY</td>
-      <td colspan="3"></td>
-      <td colspan="3"></td>
-      <td colspan="2"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
+      <td colspan="3">{{$educBackground['elementary']['name_of_school'] ?? ""}}</td>
+      <td colspan="3">{{$educBackground['elementary']['basic_education_degree_course'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['elementary']['from_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['elementary']['to_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['elementary']['highest_level_earned'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['elementary']['year_graduated'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['elementary']['scholarships_academic_honors'] ?? ""}}</td>
     </tr>
 
     <tr> {{-- Row 55 --}}
       <td colspan="1"></td>
       <td colspan="2">SECONDARY</td>
-      <td colspan="3"></td>
-      <td colspan="3"></td>
-      <td colspan="2"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
+      <td colspan="3">{{$educBackground['secondary']['name_of_school'] ?? ""}}</td>
+      <td colspan="3">{{$educBackground['secondary']['basic_education_degree_course'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['secondary']['from_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['secondary']['to_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['secondary']['highest_level_earned'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['secondary']['year_graduated'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['secondary']['scholarships_academic_honors'] ?? ""}}</td>
+
     </tr>
 
     <tr> {{-- Row 56 --}}
       <td colspan="1"></td>
       <td colspan="2">VOCATIONAL / TRADE COURSE</td>
-      <td colspan="3"></td>
-      <td colspan="3"></td>
-      <td colspan="2"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
+      <td colspan="3">{{$educBackground['vocational']['name_of_school'] ?? ""}}</td>
+      <td colspan="3">{{$educBackground['vocational']['basic_education_degree_course'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['vocational']['from_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['vocational']['to_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['vocational']['highest_level_earned'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['vocational']['year_graduated'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['vocational']['scholarships_academic_honors'] ?? ""}}</td>
+
     </tr>
 
     <tr> {{-- Row 57 --}}
       <td colspan="1"></td>
       <td colspan="2">COLLEGE</td>
-      <td colspan="3"></td>
-      <td colspan="3"></td>
-      <td colspan="2"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
+      <td colspan="3">{{$educBackground['college']['name_of_school'] ?? ""}}</td>
+      <td colspan="3">{{$educBackground['college']['basic_education_degree_course'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['college']['from_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['college']['to_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['college']['highest_level_earned'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['college']['year_graduated'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['college']['scholarships_academic_honors'] ?? ""}}</td>
+
     </tr>
 
     <tr> {{-- Row 58 --}}
       <td colspan="1"></td>
       <td colspan="2">GRADUATE STUDIES</td>
-      <td colspan="3"></td>
-      <td colspan="3"></td>
-      <td colspan="2"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
-      <td colspan="1"></td>
+      <td colspan="3">{{$educBackground['graduate']['name_of_school'] ?? ""}}</td>
+      <td colspan="3">{{$educBackground['graduate']['basic_education_degree_course'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['graduate']['from_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['graduate']['to_date'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['graduate']['highest_level_earned'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['graduate']['year_graduated'] ?? ""}}</td>
+      <td colspan="1">{{$educBackground['graduate']['scholarships_academic_honors'] ?? ""}}</td>
+
     </tr>
 
     <tr> {{-- Row 59 --}}

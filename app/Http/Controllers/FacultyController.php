@@ -99,7 +99,6 @@ class FacultyController extends Controller
         $faculty->password          = $random_password;
         $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
         $faculty->date_of_leaving   = null;
-        // $faculty->photo             = $photo;
         $faculty->designation_id    = $validated_inputs['designation_id'];
         $faculty->shift_id          = $validated_inputs['shift_id'];
         $faculty->employment_status_id = 1;

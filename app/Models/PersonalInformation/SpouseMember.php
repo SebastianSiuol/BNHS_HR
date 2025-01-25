@@ -29,4 +29,8 @@ class SpouseMember extends Model
     public function personal_information(){
         return $this->belongsTo(PersonalInformation::class);
     }
+
+    public function name_extension() {
+        return $this->belongsTo(NameExtension::class);
+    }
 }

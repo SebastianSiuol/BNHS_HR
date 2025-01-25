@@ -58,7 +58,7 @@ export function PersonalDetailsForm() {
                     <LabelInput
                         id={"middle_name"}
                         register={register}
-                        label={"Middle Name"}
+                        label={"Middle Name (Optional)"}
                         error={errors}
                     />
                     <LabelInput
@@ -132,6 +132,7 @@ export function PersonalDetailsForm() {
 
                     <LabelInput
                         id={"contact_number"}
+                        placeholder={'09xxxxxxxxx'}
                         register={register}
                         label={"Contact Number"}
                         error={errors}
@@ -140,10 +141,9 @@ export function PersonalDetailsForm() {
                     <LabelInput
                         id={"telephone_number"}
                         register={register}
-                        label={"Telephone Number"}
+                        label={"Telephone Number (Optional)"}
                         error={errors}
                     />
-
 
                     <LabelInput
                         id={"contact_person_name"}
@@ -154,6 +154,7 @@ export function PersonalDetailsForm() {
 
                     <LabelInput
                         id={"contact_person_number"}
+                        placeholder={'09xxxxxxxxx'}
                         register={register}
                         label={"Contact Person Number"}
                         error={errors}
