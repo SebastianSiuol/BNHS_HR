@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller, useController } from "react-hook-form";
+import { usePage, router } from "@inertiajs/react";
 
 // Compoenents
 import { NavButton } from "@/Components/MultiStepForm/NavButton";
@@ -12,13 +13,10 @@ import { useFetchToFillDataToSelect } from "@/Hooks/useFetchToFillDataToSelect";
 
 const FORM_DATA_KEY = "fifth_form_local_data";
 
-// const rolesFormSchema = z.object({
-//     role_id : z.array()
-// });
-
 export function RolesForm() {
+    const { retrievedRoles: roles } = usePage().props
     const { dispatch, isLoading, getSavedData, prevStep, nextStep, AUTH_API_KEY } = useMultiStepForm();
-    const [roles, setRoles] = useState([]);
+    // const [roles, setRoles] = useState([]);
     const [roleError, setRoleError] = useState('');
     const {
         register,
@@ -32,7 +30,7 @@ export function RolesForm() {
 
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    useFetchToFillDataToSelect({ setState: setRoles, apiKey: AUTH_API_KEY, link: "/api/roles" });
+    // useFetchToFillDataToSelect({ setState: setRoles, apiKey: AUTH_API_KEY, link: "/api/roles" });
 
     function rolesFormSubmit(data) {
 

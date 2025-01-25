@@ -13,7 +13,12 @@ class RoleController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Admin/Config/Role/Index');
+
+        $data = Role::all(['id', 'type', 'description']);
+
+        return Inertia::render('Admin/Config/Role/Index', [
+            'retrievedRoles' => $data,
+        ]);
     }
 
     public function update(Request $request, Faculty $faculty)

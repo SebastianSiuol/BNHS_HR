@@ -77,8 +77,8 @@ function HandlePage() {
                 onToggle={handleDeleteModal}
                 selectedShift={selectedShift}
                 />
-            <div className="pb-4 flex items-center justify-between">
-                <SearchHeader />
+            <div className="pb-4 flex items-center justify-end">
+                {/* <SearchHeader /> */}
                 <AddButton onAddClick={handleAddModal} />
             </div>
             <ShiftsTable shifts={shifts.data} onEditClick={handleEditModal} onDeleteClick={handleDeleteModal}/>

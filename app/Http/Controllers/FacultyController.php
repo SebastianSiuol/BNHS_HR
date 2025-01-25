@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\Department;
 use App\Models\FacultyAccountInformation\Designation;
+use App\Models\Role;
 use App\Models\Shift;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -63,11 +64,13 @@ class FacultyController extends Controller
             ->get();
         $positions = SchoolPosition::select('id','title')->get();
         $shifts = Shift::select('id','name')->get();
+        $data = Role::all(['id', 'type', 'description']);
 
         return Inertia::render('Admin/Faculty/Create', [
             'departments' => $departments,
             'positions' => $positions,
             'shifts' => $shifts,
+            'retrievedRoles' => $data,
         ]);
     }
 
@@ -78,6 +81,16 @@ class FacultyController extends Controller
         $validatedDeptHead = $validated_inputs['department_head'] == 'blank' ? null : $validated_inputs['department_head'];
         $faculty_code = Faculty::generateFacultyCode();
         $random_password = str()->random();
+
+        /* Roles Validation */
+        $roles = $request->roles_id;
+        $roles_list = Role::whereIn('id', $roles)->pluck('role_name')->map(fn($role) => strtolower($role));
+        if ($roles_list->contains('hr_admin') && $roles_list->contains('hr_manager')) {
+            return redirect()
+                ->back()
+                ->withErrors(['roles_id' => 'Faculty cannot be an Admin and a Manager at the same time.'])
+                ->withInput();
+        }
 
         /* Stores Faculty */
         $faculty = new Faculty;
@@ -128,12 +141,15 @@ class FacultyController extends Controller
             ->get();
         $positions = SchoolPosition::select('id', 'title')->get();
         $shifts = Shift::select('id', 'name')->get();
+        $data = Role::all(['id', 'type', 'description']);
 
         return Inertia::render('Admin/Faculty/Edit', [
             'selected_faculty' => $formatted_faculty,
             'departments' => $departments,
             'positions' => $positions,
             'shifts' => $shifts,
+            'retrievedRoles' => $data,
+
         ]);
     }
 
@@ -144,6 +160,16 @@ class FacultyController extends Controller
         $addresses = $request->get('addresses');
         $accountLoginDetails = $request->get('accountLoginDetails');
         $new_roles = $request->get('roles');
+
+        /* Roles Validation */
+        $roles = $new_roles['roles_id'];
+        $roles_list = Role::whereIn('id', $roles)->pluck('role_name')->map(fn($role) => strtolower($role));
+        if ($roles_list->contains('hr_admin') && $roles_list->contains('hr_manager')) {
+            return redirect()
+                ->back()
+                ->withErrors(['roles_id' => 'Faculty cannot be an Admin and a Manager at the same time.'])
+                ->withInput();
+        }
 
         $validatedDeptHead = $companyDetails['department_head'] == 'blank' ? null : $companyDetails['department_head'];
 

@@ -64,8 +64,8 @@ function HandlePage() {
                 state={openDeleteModal}
                 onToggle={handleDeleteModal}
                 selectedDept={selectedDept} />
-            <div className="pb-4 flex items-center justify-between">
-                <SearchHeader />
+            <div className="pb-4 flex items-center justify-end">
+                {/* <SearchHeader /> */}
                 <AddDepartment onAddClick={handleAddModal} />
             </div>
             <DepartmentTable

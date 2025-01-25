@@ -36,7 +36,7 @@ export default function Index() {
 }
 
 function HandlePage() {
-    const [roles, setRoles] = useState([]);
+    const { retrievedRoles: roles } = usePage().props
     const [selectedFaculty, setSelectedFaculty] = useState({});
 
     const {
@@ -45,8 +45,6 @@ function HandlePage() {
         setValue,
         formState: { errors },
     } = useForm();
-
-    useFetchToFillDataToSelect({ setState: setRoles, apiKey: import.meta.env.VITE_AUTH_API_KEY, link: "/api/roles" });
 
     useEffect(() => {
         setValue('roles_id', selectedFaculty?.roles?.map((role)=>role.id.toString()));

@@ -574,6 +574,7 @@ export function CompanyDetailsForm() {
 }
 
 function RolesForm() {
+    const { retrievedRoles: rolesDetails } = usePage().props
     const {
         previousStep,
         selectedFacultyDetails,
@@ -594,14 +595,14 @@ function RolesForm() {
         defaultValues: { roles_id: [] },
     });
 
-    const [rolesDetails, setRolesDetails] = useState([]);
+    // const [rolesDetails, setRolesDetails] = useState([]);
     const [roleError, setRoleError] = useState("");
 
-    useFetchToFillDataToSelect({
-        setState: setRolesDetails,
-        apiKey: AUTH_API_KEY,
-        link: "/api/roles",
-    });
+    // useFetchToFillDataToSelect({
+    //     setState: setRolesDetails,
+    //     apiKey: AUTH_API_KEY,
+    //     link: "/api/roles",
+    // });
 
     useEffect(
         function () {

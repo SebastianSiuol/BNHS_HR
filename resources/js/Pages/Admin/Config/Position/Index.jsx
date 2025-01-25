@@ -68,8 +68,8 @@ function HandlePage() {
                 onToggle={handleDeleteModal}
                 selectedPos={selectedPos}
                 />
-            <div className="pb-4 flex items-center justify-between">
-                <SearchHeader />
+            <div className="pb-4 flex items-center justify-end">
+                {/* <SearchHeader /> */}
                 <AddPosition onAddClick={handleAddModal} />
             </div>
             <PositionTable
