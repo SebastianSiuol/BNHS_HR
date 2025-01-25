@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Configuration\RPMSConfiguration;
 use App\Models\Faculty;
+use App\Models\RPMS;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RPMSController extends Controller
 {
@@ -23,6 +25,7 @@ class RPMSController extends Controller
         $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id')
         ->with([
             'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+            'rpms' => fn($query) => $query->select('id', 'faculty_id',  'filename', 'file_path', 'upload_period'),
             'designation' => fn($query) => $query->select('id', 'department_id')
             ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
         ]);
@@ -33,6 +36,15 @@ class RPMSController extends Controller
         }
 
         $faculties = $facultiesQuery->paginate(5);
+
+        // Map the rpms file_path to include the full URL
+        $faculties->getCollection()->transform(function ($faculty) {
+            $faculty->rpms->transform(function ($rpm) {
+                $rpm->file_path = Storage::disk('public')->url($rpm->file_path);
+                return $rpm;
+            });
+            return $faculty;
+        });
 
         $year_now = Carbon::now()->format('Y');
 
@@ -65,9 +77,10 @@ class RPMSController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $rpmsFile = RPMS::find($id);
+        return Storage::disk('public')->url($rpmsFile->file_path);
     }
 
     /**

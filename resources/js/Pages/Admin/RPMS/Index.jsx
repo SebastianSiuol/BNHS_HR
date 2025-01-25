@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 
 import { FaCalendar } from "react-icons/fa6";
-import { IoArchive } from "react-icons/io5";
 import { IoSearchSharp } from "react-icons/io5";
 
 import { setSubmissionDateSchema } from '@/Schemas/RPMSSchema';
@@ -19,6 +18,8 @@ import { Table, TableRow } from "@/Components/Table";
 import Pagination from "@/Components/Pagination";
 import CustomIcon from "@/Components/CustomIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { getFullName } from '@/Utils/formatTableDataUtils';
 
 export default function Index() {
     const { faculties } = usePage().props;
@@ -37,16 +38,25 @@ export default function Index() {
 
 function HandlePage() {
     const [dateModal, setDateModal] = useState(false);
+    const { data } = usePage().props.faculties;
+    const [selectedFaculty, setSelectedFaculty] = useState(null);
+    const [viewRPMS, setViewRPMS] = useState(false);
 
     const toggleDateModal = () => {
         setDateModal((el) => !el);
     };
 
+    function handleView (id){
+        setSelectedFaculty(data.find((faculty)=>faculty.id === id));
+        setViewRPMS((e)=>!e);
+    }
+
     return (
         <>
             <Header onToggle={toggleDateModal} />
-            <FacultyTable />
+            <FacultyTable onView={handleView}/>
             <SetDateModal state={dateModal} onToggle={toggleDateModal} />
+            <ViewRPMS state={viewRPMS} onToggle={()=>setViewRPMS((e)=>!e)} data={selectedFaculty}/>
         </>
     );
 }
@@ -77,20 +87,20 @@ function Header({ onToggle }) {
                         placeholder="Search for items"
                     />
 
-                    <div className="flex">
+                    {/* <div className="flex">
                         <select
                             id="shift"
                             defaultValue="0"
                             className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5"
                             required="">
                             <option
-                                disabled
-                                value="0">
+                                disabled>
                                 Year
                             </option>
-                            <option value="1">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex border-gray-300 mt-1 px-4 border bg-gray-50 rounded-lg items-center justify-center">
@@ -117,38 +127,38 @@ function Header({ onToggle }) {
                         </button>
                     </div>
 
-                    <div className="justify-end flex ml-5 mt-px ">
+                    {/* <div className="justify-end flex ml-5 mt-px ">
                         <button className="hover:scale-110">
                             <IoArchive className={"w-9 h-9 text-blue-800"} />
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
     );
 }
 
-function FacultyTable() {
+function FacultyTable({ onView }) {
     const { data } = usePage().props.faculties;
 
     // Headers
     const headers = [
         "Teacher Name",
         "Department",
-        "Date Submitted",
-        "Status",
+        // "Date Submitted",
+        // "Status",
         "View Details",
     ];
 
     // Columns Data
     const columns = [
         (faculty) =>
-            `${faculty.personal_information.first_name} ${faculty.personal_information.last_name}`,
-        (faculty) => faculty.designation?.department?.name,
-        () => "2024-10-10",
-        () => "Pending",
+            `${faculty?.personal_information?.first_name} ${faculty?.personal_information?.last_name}`,
+        (faculty) => faculty?.designation?.department?.name,
+        // () => "2024-10-10",
+        // () => "Pending",
         (faculty) => (
-            <button onClick={() => {}}>
+            <button onClick={()=>onView(faculty?.id)}>
                 <CustomIcon type="view" />
             </button>
         ),
@@ -185,7 +195,7 @@ function SetDateModal({ state, onToggle }) {
     return (
         <>
             <Modal state={state} onToggle={onToggle}>
-                <DialogTitle className="flex font-bold text-2xl text-blue-900 justify-between items-center p-7" as={'div'}>
+                <DialogTitle className="flex font-bold text-2xl text-blue-900 justify-between items-center p-7 " as={'div'}>
                     <span>Set Submission Date</span>
                     <button
                         onClick={onToggle}
@@ -196,7 +206,7 @@ function SetDateModal({ state, onToggle }) {
                         &times;
                     </button>
                 </DialogTitle>
-                <Description as={'div'}>
+                <Description as={'div'} className={''}>
                     <span>
                         <form
                             id={"set_submission_date"}
@@ -254,6 +264,92 @@ function SetDateModal({ state, onToggle }) {
                         >
                             Submit date
                         </button>
+                    </div>
+                </Description>
+            </Modal>
+        </>
+    );
+}
+
+function ViewRPMS({ state, onToggle, data }) {
+    const [midYearFiles, setMidYearFiles] = useState([]);
+    const [endYearFiles, setEndYearFiles] = useState([]);
+
+    useEffect(() => {
+        if (data?.rpms?.length > 0) {
+            const midYearRPMSFiles = data?.rpms?.filter((file) => file?.upload_period === "mid_year");
+            setMidYearFiles(midYearRPMSFiles);
+
+            const endYearRPMSFiles = data?.rpms?.filter((file) => file?.upload_period === "end_year");
+            setEndYearFiles(endYearRPMSFiles);
+        }
+
+        return () => {
+            setMidYearFiles([]);
+            setEndYearFiles([]);
+        };
+    }, [data?.rpms]);
+
+    function handleFileClick(fileUrl, fileName) {
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.download = fileName; // Optionally, set a default file name
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    return (
+        <>
+            <Modal state={state} onToggle={onToggle}>
+                <DialogTitle
+                    className="flex font-bold text-2xl justify-between items-center p-7 w-[40vw]"
+                    as={"div"}
+                >
+                    <span>
+                        Viewing {getFullName(data?.personal_information)}'s files
+                    </span>
+                    <button
+                        onClick={onToggle}
+                        className={
+                            "text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"
+                        }
+                    >
+                        &times;
+                    </button>
+                </DialogTitle>
+                <Description as={"div"} className={"p-6 w-[40vw] space-y-6"}>
+                    <div>
+                        <span className={"text-xl font-bold"}>Mid Year</span>
+                        {midYearFiles?.length > 0 ? (
+                            midYearFiles.map((file) => (
+                                <button
+                                    key={file?.id}
+                                    onClick={() => handleFileClick(file?.file_path, file?.filename)}
+                                    className="block text-blue-500 hover:underline hover:text-blue-700 transition text-left"
+                                >
+                                    {file?.filename}
+                                </button>
+                            ))
+                        ) : (
+                            <div>No files uploaded yet</div>
+                        )}
+                    </div>
+                    <div>
+                        <span className={"text-xl font-bold"}>Year End</span>
+                        {endYearFiles?.length > 0 ? (
+                            endYearFiles.map((file) => (
+                                <button
+                                    key={file?.id}
+                                    onClick={() => handleFileClick(file?.file_pat, file?.filename)}
+                                    className="block text-blue-500 hover:underline hover:text-blue-700 transition text-left"
+                                >
+                                    {file?.filename}
+                                </button>
+                            ))
+                        ) : (
+                            <div>No files uploaded yet</div>
+                        )}
                     </div>
                 </Description>
             </Modal>

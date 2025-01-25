@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 
 import { FaPlus } from "react-icons/fa";
 import { IoSearchSharp, IoDocumentTextOutline } from "react-icons/io5";
+import FileUploadProgressModal from "@/Components/FileUploadProgressModal";
 
 import Pagination from "@/Components/Pagination";
 import Modal from "@/Components/Modal";
@@ -37,6 +38,9 @@ function HandlePage() {
     const [openDelFileModal, setOpenDelFileModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null)
 
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploadProgressModal, setIsUploadProgressModal] = useState(false);
+
     function handleUploadModal() {
         setOpenUploadModal((e) => !e);
     }
@@ -52,7 +56,7 @@ function HandlePage() {
         setOpenDelFileModal((e) => !e);
     }
 
-    async function handleDownloadDocument(id) {
+    async function handleDownloadDocument(id, fileName) {
         try {
             // Perform validation
             if (!id) {
@@ -83,19 +87,12 @@ function HandlePage() {
             const link = document.createElement("a");
             link.href = href;
 
-            // Extract filename from the response headers if available
-            const contentDisposition = response.headers.get("Content-Disposition");
-            const fileName = contentDisposition
-                ? contentDisposition.split("filename=")[1]?.replace(/"/g, "") || "downloaded-file"
-                : "downloaded-file";
-
-            link.setAttribute("download", fileName.trim());
+            link.download = fileName; // Optionally, set a default file name
             document.body.appendChild(link);
             link.click();
-
-            // Cleanup
             document.body.removeChild(link);
-            window.URL.revokeObjectURL(href);
+
+
         } catch (err) {
             console.error("Error:", err);
             // Optionally provide user feedback
@@ -113,6 +110,8 @@ function HandlePage() {
             <UploadModal
                 state={openUploadModal}
                 onToggle={handleUploadModal}
+                setUploadProgress={setUploadProgress}
+                setUploadProgressModal={setIsUploadProgressModal}
             />
             <ViewDocumentModal
                 state={openViewFileModal}
@@ -123,6 +122,10 @@ function HandlePage() {
                 state={openDelFileModal}
                 onToggle={handleDeleteDocument}
                 selectedFile={selectedFile}
+            />
+            <FileUploadProgressModal
+                isOpen={isUploadProgressModal}
+                progress={uploadProgress}
             />
         </>
     );
@@ -221,7 +224,7 @@ function RPMSTable({ data, onViewFile, onDeleteFile, onDownloadFile }) {
         (rpms) => handleStatus(capitalizeFirstLetter(rpms?.status)),
         (rpms) => (
             <div className="flex space-x-4">
-                <button onClick={()=>onDownloadFile(rpms.id)}>
+                <button onClick={()=>onDownloadFile(rpms.id, rpms.filename)}>
                     <CustomIcon type="download" />
                 </button>
                 <button onClick={() => onDeleteFile(rpms.id)}>
@@ -246,19 +249,32 @@ function RPMSTable({ data, onViewFile, onDeleteFile, onDownloadFile }) {
     );
 }
 
-function UploadModal({ state, onToggle }) {
+function UploadModal({ state, onToggle, setUploadProgress, setUploadProgressModal }) {
     const { uploadPeriod } = usePage().props;
     const {
         handleSubmit,
         control,
+        reset,
         formState: { errors },
     } = useForm();
 
     const onSubmit = (data) => {
+        setUploadProgressModal(true);
         router.post(route("faculty.rpms.store"), data, {
+            onProgress: (progress) => {
+                const percentage = Math.round((progress.loaded / progress.total) * 100);
+                setUploadProgress(percentage);
+            },
             onSuccess: ()=>{
+                setUploadProgressModal(false);
                 onToggle();
-            }
+                reset();
+            },
+            onError: () => {
+                setUploadProgressModal(false);
+                onToggle();
+                reset();
+            },
         });
     };
 

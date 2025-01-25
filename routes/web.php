@@ -107,6 +107,7 @@ Route::middleware('auth')->group(function () {
 
         // RPMS
         Route::get('/admin/rpms', [RPMSController::class, 'index'])                                                     ->name('admin.rpms.index');
+        Route::get('/admin/rpms/{id}/show', [RPMSController::class, 'show'])                                            ->name('admin.rpms.show');
         Route::post('/admin/rpms/config/set-date', [RPMSConfigurationController::class, 'store'])                       ->name('admin.rpms.config.store');
 
         // Configurations
