@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
-
+import { Description, DialogTitle } from "@headlessui/react";
 import dayjs from 'dayjs';
 
 import { HiOutlineClipboardList, HiOutlineSpeakerphone } from "react-icons/hi";
+import Modal from "@/Components/Modal.jsx";
+
 
 export default function Dashboard() {
     return (
@@ -14,9 +16,18 @@ export default function Dashboard() {
 }
 
 function HandlePage() {
-    const { full_name: fullName } = usePage().props;
+    const { full_name: fullName, announcements } = usePage().props;
 
+    const [isAnnouncementView, setIsAnnouncementView] =
+    useState(false);
 
+    const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+
+    function handleAnnouncementView(id){
+        const selectAnnc = announcements.find((ann)=>ann.id === id);
+        setSelectedAnnouncement(selectAnnc);
+        setIsAnnouncementView((e)=>!e);
+    }
     return (
         <>
             <section className="bg-white shadow-md rounded-lg mr-5 p-6 min-w-96">
@@ -85,49 +96,32 @@ function HandlePage() {
                     <div className="p-5 bg-gray-200 border-t-2 border-t-gray-300">
                         {/* Announcements! */}
                         <ul className="mt-4 space-y-2">
-                            <li>
-                                <button className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
-                                    <strong className="font-semibold text-gray-900">
-                                        Announcement A
-                                    </strong>
+                        {announcements.map((announcement) => (
+                                <li key={announcement.id}>
+                                    <button onClick={()=>{
+                                        handleAnnouncementView(announcement.id);
 
-                                    <p className="mt-1 text-xs font-medium text-gray-800">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Maxime consequuntur
-                                        deleniti, unde ab ut in!
-                                    </p>
-                                </button>
-                            </li>
-                            <li>
-                                <button className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
-                                    <strong className="font-semibold text-gray-900">
-                                        Announcement B
-                                    </strong>
+                                    }}
+                                        className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
+                                        <strong className="font-semibold text-gray-900">
+                                            {announcement.title}
+                                        </strong>
 
-                                    <p className="mt-1 text-xs font-medium text-gray-800">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Maxime consequuntur
-                                        deleniti, unde ab ut in!
-                                    </p>
-                                </button>
-                            </li>
-                            <li>
-                                <button className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
-                                    <strong className="font-semibold text-gray-900">
-                                        Announcement C
-                                    </strong>
-
-                                    <p className="mt-1 text-xs font-medium text-gray-800">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Maxime consequuntur
-                                        deleniti, unde ab ut in!
-                                    </p>
-                                </button>
-                            </li>
+                                        <p className="mt-1 text-xs font-medium text-gray-800">
+                                            {announcement.description}
+                                        </p>
+                                    </button>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </section>
             </div>
+            <ViewAnnouncement
+                modal={isAnnouncementView}
+                toggleModal={()=> setIsAnnouncementView((e)=>!e)}
+                data={selectedAnnouncement}
+            />
         </>
     );
 }
@@ -218,4 +212,45 @@ function DailySchedule (){
         </section>
     );
 
+}
+
+function ViewAnnouncement({ modal, toggleModal, data }) {
+
+    return (
+        <Modal state={modal} onToggle={toggleModal}>
+            <DialogTitle
+                as={"div"}
+                className="flex p-6 font-bold text-xl justify-between items-center w-[40vw]"
+            >
+                <h3>Announcement</h3>
+                <button onClick={toggleModal} className={"text-red-500"}>
+                    &times;
+                </button>
+            </DialogTitle>
+            <Description as={"div"} className="p-6 space-y-5 w-[40vw]">
+                <div>
+                    <h3 className={'font-bold text-lg'}>Title:</h3>
+                    <p>{data?.title}</p>
+                </div>
+
+                <div>
+                    <h3 className={'font-bold text-lg'}>Description:</h3>
+                    <p>{data?.description}</p>
+                </div>
+
+                <div>
+
+                <h3 className={'font-bold text-lg'}>File:</h3>
+
+                {data?.fileUrl ? (
+                    <iframe
+                    src={data?.fileUrl}
+                    width={'100%'}
+                    height={"600px"} />
+                ) : (<div> No File Attached</div>)}
+                </div>
+
+            </Description>
+        </Modal>
+    );
 }

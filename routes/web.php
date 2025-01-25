@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Admin\Configuration\RoleController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\DesignationApiController;
 use App\Http\Controllers\Api\FacultyApiController;
@@ -202,6 +203,8 @@ Route::middleware('auth')->group(function () {
      * ===============================================================================
      *
      */
+
+    Route::post('/announcement', [AnnouncementController::class, 'store'])                                              ->name('announcement.store');
 
     Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
     Route::patch('/civil-service', [CivilServiceController::class, 'update'])                                           ->name('civil-service.update');
