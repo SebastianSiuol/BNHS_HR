@@ -2,6 +2,7 @@ import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import { Description, DialogTitle } from "@headlessui/react";
+import { formatDate } from "@/Utils/customDayjsUtils";
 
 // Icons
 import { RiTeamFill } from "react-icons/ri";
@@ -54,7 +55,7 @@ export default function Dashboard() {
             />
             <ViewAnnouncement
                 modal={isAnnouncementView}
-                toggleModal={()=> setIsAnnouncementView((e)=>!e)}
+                toggleModal={() => setIsAnnouncementView((e) => !e)}
                 data={selectedAnnouncement}
             />
             <FileUploadProgressModal
@@ -145,23 +146,38 @@ export default function Dashboard() {
                         </div>
 
                         <ul className="mt-4 space-y-2">
-                            {announcements.map((announcement) => (
-                                <li key={announcement.id}>
-                                    <button onClick={()=>{
-                                        handleAnnouncementView(announcement.id);
+                            {announcements.length > 0 ? (
+                                announcements.map((announcement) => (
+                                    <li key={announcement.id}>
+                                        <button
+                                            onClick={() => {
+                                                handleAnnouncementView(
+                                                    announcement.id
+                                                );
+                                            }}
+                                            className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105"
+                                        >
+                                            <strong className="font-semibold text-gray-900">
+                                                {announcement.title}
+                                            </strong>
 
-                                    }}
-                                        className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
-                                        <strong className="font-semibold text-gray-900">
-                                            {announcement.title}
-                                        </strong>
+                                            <p className="mt-1 text-xs font-medium text-gray-800">
+                                                {announcement.description}
+                                            </p>
 
-                                        <p className="mt-1 text-xs font-medium text-gray-800">
-                                            {announcement.description}
-                                        </p>
-                                    </button>
-                                </li>
-                            ))}
+                                            <p className="mt-1 text-xs font-medium text-gray-800">
+                                                {formatDate(announcement.createdAt, 'MM-DD-YYYY hh:mm A')}
+                                            </p>
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <div className="block text-center w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
+                                    <strong className="font-semibold text-gray-900">
+                                        No Announcements
+                                    </strong>
+                                </div>
+                            )}
                         </ul>
                     </div>
                 </div>
@@ -180,7 +196,6 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
     } = useForm();
 
     function publishAnnouncement(data ,e){
-        console.log(data);
         e.preventDefault();
         setUploadProgressModal(true);
         router.post(route("announcement.store"), data, {
@@ -267,13 +282,28 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
 }
 
 function ViewAnnouncement({ modal, toggleModal, data }) {
+
+    function handleDeleteAnnouncement(id){
+        router.delete(route('announcement.destroy', id), {
+            onSuccess: ()=>{
+                toggleModal();
+            },
+            onError: ()=>{
+                toggleModal();
+            }
+        })
+    }
     return (
         <Modal state={modal} onToggle={toggleModal}>
             <DialogTitle
                 as={"div"}
                 className="flex p-6 font-bold text-xl justify-between items-center w-[40vw]"
             >
+                <div>
+
                 <h3>Announcement</h3>
+                <div className={'text-sm font-normal'}>{formatDate(data?.createdAt, 'MM-DD-YYYY hh:mm A')}</div>
+                </div>
                 <button onClick={toggleModal} className={"text-red-500"}>
                     &times;
                 </button>
@@ -302,6 +332,17 @@ function ViewAnnouncement({ modal, toggleModal, data }) {
                         <div> No File Attached</div>
                     )}
                 </div>
+                <div className={"flex p-2 justify-end items-center"}>
+                        <button
+                            type="button"
+                            onClick={()=>{handleDeleteAnnouncement(data?.id)}}
+                            className={
+                                "text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            }
+                        >
+                            Delete
+                        </button>
+                    </div>
             </Description>
         </Modal>
     );

@@ -30,4 +30,13 @@ class AnnouncementController extends Controller
         return redirect()->back()->with(['success' => 'Announcement published successfully!']);
     }
 
+
+    public function destroy(Request $request, $id){
+
+        $announcement = Announcement::find($id);
+        $announcement->delete();
+
+        return redirect()->back()->with(['error' => 'Announcement deleted successfully!']);
+    }
+
 }

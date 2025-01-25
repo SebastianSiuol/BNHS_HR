@@ -23,7 +23,8 @@ class DashboardController extends Controller
                 'id' => $annc->id,
                 'title' => $annc->title,
                 'description' => $annc->description,
-                'fileUrl' => $annc->announcement_file ? Storage::disk('public')->url($annc->announcement_file) : null
+                'fileUrl' => $annc->announcement_file ? Storage::disk('public')->url($annc->announcement_file) : null,
+                'createdAt' => $annc->created_at,
             ];
         });
 

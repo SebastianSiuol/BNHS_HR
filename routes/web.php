@@ -205,6 +205,7 @@ Route::middleware('auth')->group(function () {
      */
 
     Route::post('/announcement', [AnnouncementController::class, 'store'])                                              ->name('announcement.store');
+    Route::delete('/announcement/{id}', [AnnouncementController::class, 'destroy'])                           ->name('announcement.destroy');
 
     Route::patch('/personal-information/edit', [PersonalDetailsController::class, 'update'])                            ->name('personal-information.edit.update');
     Route::patch('/civil-service', [CivilServiceController::class, 'update'])                                           ->name('civil-service.update');

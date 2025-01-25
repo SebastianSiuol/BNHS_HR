@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 
 import { HiOutlineClipboardList, HiOutlineSpeakerphone } from "react-icons/hi";
 import Modal from "@/Components/Modal.jsx";
+import { formatDate } from "@/Utils/customDayjsUtils";
+
 
 
 export default function Dashboard() {
@@ -87,7 +89,9 @@ function HandlePage() {
 
                 <section className="bg-white shadow-md rounded-lg p-6 py-8">
                     <div className="flex pt-1 pl-1 mb-6">
-                    <HiOutlineSpeakerphone className={'w-10 h-10 text-blue-700 mr-2"'}/>
+                        <HiOutlineSpeakerphone
+                            className={'w-10 h-10 text-blue-700 mr-2"'}
+                        />
                         <h2 className="text-xl font-semibold mt-2">
                             Announcements and Updates
                         </h2>
@@ -96,30 +100,48 @@ function HandlePage() {
                     <div className="p-5 bg-gray-200 border-t-2 border-t-gray-300">
                         {/* Announcements! */}
                         <ul className="mt-4 space-y-2">
-                        {announcements.map((announcement) => (
-                                <li key={announcement.id}>
-                                    <button onClick={()=>{
-                                        handleAnnouncementView(announcement.id);
+                            {announcements.length > 0 ? (
+                                announcements.map((announcement) => (
+                                    <li key={announcement.id}>
+                                        <button
+                                            onClick={() => {
+                                                handleAnnouncementView(
+                                                    announcement.id
+                                                );
+                                            }}
+                                            className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105"
+                                        >
+                                            <strong className="font-semibold text-gray-900">
+                                                {announcement.title}
+                                            </strong>
 
-                                    }}
-                                        className="block text-left w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
-                                        <strong className="font-semibold text-gray-900">
-                                            {announcement.title}
-                                        </strong>
+                                            <p className="mt-1 text-xs font-medium text-gray-800">
+                                                {announcement.description}
+                                            </p>
 
-                                        <p className="mt-1 text-xs font-medium text-gray-800">
-                                            {announcement.description}
-                                        </p>
-                                    </button>
-                                </li>
-                            ))}
+                                            <p className="mt-1 text-xs font-medium text-gray-800">
+                                                {formatDate(
+                                                    announcement.createdAt,
+                                                    "MM-DD-YYYY hh:mm A"
+                                                )}
+                                            </p>
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <div className="block text-center w-full h-full bg-white border border-gray-200 rounded-lg shadow p-4 transform transition duration-500 hover:scale-105">
+                                    <strong className="font-semibold text-gray-900">
+                                        No Announcements
+                                    </strong>
+                                </div>
+                            )}
                         </ul>
                     </div>
                 </section>
             </div>
             <ViewAnnouncement
                 modal={isAnnouncementView}
-                toggleModal={()=> setIsAnnouncementView((e)=>!e)}
+                toggleModal={() => setIsAnnouncementView((e) => !e)}
                 data={selectedAnnouncement}
             />
         </>
@@ -216,38 +238,45 @@ function DailySchedule (){
 
 function ViewAnnouncement({ modal, toggleModal, data }) {
 
+
     return (
         <Modal state={modal} onToggle={toggleModal}>
             <DialogTitle
                 as={"div"}
                 className="flex p-6 font-bold text-xl justify-between items-center w-[40vw]"
             >
+                <div>
+
                 <h3>Announcement</h3>
+                <div className={'text-sm font-normal'}>{formatDate(data?.createdAt, 'MM-DD-YYYY hh:mm A')}</div>
+                </div>
                 <button onClick={toggleModal} className={"text-red-500"}>
                     &times;
                 </button>
             </DialogTitle>
             <Description as={"div"} className="p-6 space-y-5 w-[40vw]">
                 <div>
-                    <h3 className={'font-bold text-lg'}>Title:</h3>
+                    <h3 className={"font-bold text-lg"}>Title:</h3>
                     <p>{data?.title}</p>
                 </div>
 
                 <div>
-                    <h3 className={'font-bold text-lg'}>Description:</h3>
+                    <h3 className={"font-bold text-lg"}>Description:</h3>
                     <p>{data?.description}</p>
                 </div>
 
                 <div>
+                    <h3 className={"font-bold text-lg"}>File:</h3>
 
-                <h3 className={'font-bold text-lg'}>File:</h3>
-
-                {data?.fileUrl ? (
-                    <iframe
-                    src={data?.fileUrl}
-                    width={'100%'}
-                    height={"600px"} />
-                ) : (<div> No File Attached</div>)}
+                    {data?.fileUrl ? (
+                        <iframe
+                            src={data?.fileUrl}
+                            width={"100%"}
+                            height={"600px"}
+                        />
+                    ) : (
+                        <div> No File Attached</div>
+                    )}
                 </div>
 
             </Description>
