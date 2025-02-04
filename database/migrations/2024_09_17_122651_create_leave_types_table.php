@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('days')->nullable()->default(null);
+            $table->enum('for', ['male', 'female', 'both']);
             $table->timestamps();
         });
     }
