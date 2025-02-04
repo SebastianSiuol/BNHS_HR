@@ -2,7 +2,7 @@ import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import { Description, DialogTitle } from "@headlessui/react";
-import ReactApexCharts from 'react-apexcharts'
+import ReactApexCharts from "react-apexcharts";
 import { formatDate } from "@/Utils/customDayjsUtils";
 
 // Icons
@@ -19,7 +19,6 @@ import { FileInput } from "@/Components/FileInput";
 import Modal from "@/Components/Modal.jsx";
 import FileUploadProgressModal from "@/Components/FileUploadProgressModal";
 
-
 export default function Dashboard() {
     const { totalEmployees, totalPresentToday, announcements } =
         usePage().props;
@@ -27,8 +26,7 @@ export default function Dashboard() {
     const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] =
         useState(false);
 
-    const [isAnnouncementView, setIsAnnouncementView] =
-    useState(false);
+    const [isAnnouncementView, setIsAnnouncementView] = useState(false);
 
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
 
@@ -39,10 +37,10 @@ export default function Dashboard() {
         setIsAnnouncementModalOpen((e) => !e);
     }
 
-    function handleAnnouncementView(id){
-        const selectAnnc = announcements.find((ann)=>ann.id === id);
+    function handleAnnouncementView(id) {
+        const selectAnnc = announcements.find((ann) => ann.id === id);
         setSelectedAnnouncement(selectAnnc);
-        setIsAnnouncementView((e)=>!e);
+        setIsAnnouncementView((e) => !e);
     }
 
     return (
@@ -128,15 +126,28 @@ export default function Dashboard() {
                 </div>
             </section>
 
-            <section>
-                <div className={'w-[36vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow'}>
-
-                    <ReactApexChart />
-                    <div className={'text-center'}>
+            <section className={'grid grid-cols-2'}>
+                <div
+                    className={
+                        "w-[36vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
+                    }
+                >
+                    <DepartmentCountPieChart />
+                    <div className={"text-center"}>
                         <h2>Faculty Count per Department</h2>
                     </div>
                 </div>
 
+                <div
+                    className={
+                        "w-[24vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
+                    }
+                >
+                    <AttendancePieChart />
+                    <div className={"text-center"}>
+                        <h2>Attendance Today</h2>
+                    </div>
+                </div>
             </section>
 
             <section>
@@ -178,7 +189,10 @@ export default function Dashboard() {
                                             </p>
 
                                             <p className="mt-1 text-xs font-medium text-gray-800">
-                                                {formatDate(announcement.createdAt, 'MM-DD-YYYY hh:mm A')}
+                                                {formatDate(
+                                                    announcement.createdAt,
+                                                    "MM-DD-YYYY hh:mm A"
+                                                )}
                                             </p>
                                         </button>
                                     </li>
@@ -198,8 +212,12 @@ export default function Dashboard() {
     );
 }
 
-function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadProgressModal }) {
-
+function AnnouncementModal({
+    modal,
+    toggleModal,
+    setUploadProgress,
+    setUploadProgressModal,
+}) {
     const {
         register,
         handleSubmit,
@@ -207,12 +225,14 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
         formState: { errors },
     } = useForm();
 
-    function publishAnnouncement(data ,e){
+    function publishAnnouncement(data, e) {
         e.preventDefault();
         setUploadProgressModal(true);
         router.post(route("announcement.store"), data, {
             onProgress: (progress) => {
-                const percentage = Math.round((progress.loaded / progress.total) * 100);
+                const percentage = Math.round(
+                    (progress.loaded / progress.total) * 100
+                );
                 setUploadProgress(percentage);
             },
             onSuccess: () => {
@@ -224,7 +244,6 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
                 toggleModal();
             },
         });
-
     }
 
     return (
@@ -261,8 +280,7 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
                                 rules={{
                                     validate: (file) =>
                                         !file ||
-                                        file?.size <=
-                                            5 * 1024 * 1024 ||
+                                        file?.size <= 5 * 1024 * 1024 ||
                                         "File size exceeds 5MB",
                                 }}
                                 render={({ field }) => (
@@ -294,16 +312,15 @@ function AnnouncementModal({ modal, toggleModal, setUploadProgress, setUploadPro
 }
 
 function ViewAnnouncement({ modal, toggleModal, data }) {
-
-    function handleDeleteAnnouncement(id){
-        router.delete(route('announcement.destroy', id), {
-            onSuccess: ()=>{
+    function handleDeleteAnnouncement(id) {
+        router.delete(route("announcement.destroy", id), {
+            onSuccess: () => {
                 toggleModal();
             },
-            onError: ()=>{
+            onError: () => {
                 toggleModal();
-            }
-        })
+            },
+        });
     }
     return (
         <Modal state={modal} onToggle={toggleModal}>
@@ -312,9 +329,10 @@ function ViewAnnouncement({ modal, toggleModal, data }) {
                 className="flex p-6 font-bold text-xl justify-between items-center w-[40vw]"
             >
                 <div>
-
-                <h3>Announcement</h3>
-                <div className={'text-sm font-normal'}>{formatDate(data?.createdAt, 'MM-DD-YYYY hh:mm A')}</div>
+                    <h3>Announcement</h3>
+                    <div className={"text-sm font-normal"}>
+                        {formatDate(data?.createdAt, "MM-DD-YYYY hh:mm A")}
+                    </div>
                 </div>
                 <button onClick={toggleModal} className={"text-red-500"}>
                     &times;
@@ -345,28 +363,67 @@ function ViewAnnouncement({ modal, toggleModal, data }) {
                     )}
                 </div>
                 <div className={"flex p-2 justify-end items-center"}>
-                        <button
-                            type="button"
-                            onClick={()=>{handleDeleteAnnouncement(data?.id)}}
-                            className={
-                                "text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            }
-                        >
-                            Delete
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            handleDeleteAnnouncement(data?.id);
+                        }}
+                        className={
+                            "text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                        }
+                    >
+                        Delete
+                    </button>
+                </div>
             </Description>
         </Modal>
     );
 }
 
-function ReactApexChart() {
-    const {departmentCount} = usePage().props;
+function DepartmentCountPieChart() {
+    const { departmentCount } = usePage().props;
 
     console.log(departmentCount);
 
     const departments = Object.keys(departmentCount);
     const facultyCount = Object.values(departmentCount);
+
+    const [state, setState] = useState({
+        series: facultyCount,
+        options: {
+            chart: {
+                type: "pie",
+            },
+            labels: departments,
+            dataLabels: {
+                formatter: function (val, opts) {
+                    return opts.w.config.series[opts.seriesIndex];
+                },
+            },
+            legends: {
+                showForZeroSeries: true,
+                showForNullSeries: true,
+            },
+        },
+    });
+
+    return (
+        <ReactApexCharts
+            options={state.options}
+            series={state.series}
+            type="pie"
+        />
+    );
+}
+
+function AttendancePieChart() {
+    const {attendanceCount} = usePage().props;
+
+
+    console.log(attendanceCount);
+
+    const departments = Object.keys(attendanceCount);
+    const facultyCount = Object.values(attendanceCount);
 
     const [state, setState] = useState({
         series: facultyCount,

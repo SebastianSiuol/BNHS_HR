@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Faculty;
 
 use App\Http\Controllers\Controller;
-use App\Models\Announcement;
 use Illuminate\Http\Request;
+use App\Models\Announcement;
+use App\Models\Attendance;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -13,6 +15,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $faculty_id = Auth::user()->id;
+        $today = Carbon::now()->timezone('Asia/Manila');
 
         $full_name = Auth::user()->personal_information->generateFullName();
         $faculty_code = Auth::user()->faculty_code;
@@ -28,10 +32,16 @@ class DashboardController extends Controller
             ];
         });
 
+        $attendance = Attendance::where('faculty_id', $faculty_id)
+            ->whereDate('created_at', $today)
+            ->select('status')
+            ->first();
+
         return Inertia::render('Faculty/Dashboard', [
-            'full_name' => $full_name,
-            'faculty_code' => $faculty_code,
-            'announcements' => $mappedAnnouncements
+            'fullName' => $full_name,
+            'facultyCode' => $faculty_code,
+            'announcements' => $mappedAnnouncements,
+            'attendance' => $attendance,
         ]);
     }
 }

@@ -18,7 +18,7 @@ export default function Dashboard() {
 }
 
 function HandlePage() {
-    const { full_name: fullName, announcements } = usePage().props;
+    const { fullName, announcements, attendance } = usePage().props;
 
     const [isAnnouncementView, setIsAnnouncementView] =
     useState(false);
@@ -30,6 +30,22 @@ function HandlePage() {
         setSelectedAnnouncement(selectAnnc);
         setIsAnnouncementView((e)=>!e);
     }
+
+    const handleAttendanceStatus = (status) => {
+        switch (status.toString().toLowerCase()) {
+            case "present":
+                return <p className={"text-green-600 font-semibold"}>Present</p>;
+            case "absent":
+                return <p className={"text-red-700 font-semibold"}>Absent</p>;
+            case "late":
+                return <p className={"text-orange-700 font-semibold"}>Late</p>;
+            case "not_time_out":
+                return <p className={"text-orange-700 font-semibold"}>Not Timed Out</p>;
+            default:
+                return <p className={"text-yellow-600 font-semibold"}>Not checked in</p>;
+        }
+    }
+
     return (
         <>
             <section className="bg-white shadow-md rounded-lg mr-5 p-6 min-w-96">
@@ -46,26 +62,9 @@ function HandlePage() {
 
                 <section className=" p-6">
                     <h2 className="text-lg font-medium">Attendance Status</h2>
-                    <p className="mt-4 text-green-600">Present</p>
+                    <p className="mt-4 text-green-600">{handleAttendanceStatus(attendance?.status ?? '')}</p>
                 </section>
 
-                <section className=" p-6">
-                    {/* <h2 className="text-lg font-medium">Recent Requests</h2>
-                    <ul className="mt-4 space-y-2">
-                        <li className="text-gray-600">
-                            Leave Request -{" "}
-                            <span className="text-yellow-400">Pending</span>
-                        </li>
-                        <li className="text-gray-600">
-                            Attendance Correction -{" "}
-                            <span className="text-green-400">Approved</span>
-                        </li>
-                        <li className="text-gray-600">
-                            Others -{" "}
-                            <span className="text-red-600">Rejected</span>
-                        </li>
-                    </ul> */}
-                </section>
             </section>
 
             <div className="w-full">
@@ -149,7 +148,7 @@ function HandlePage() {
 }
 
 function DailySchedule (){
-    const { faculty_code: facultyCode } = usePage().props;
+    const { facultyCode } = usePage().props;
     const [scheduleData, setScheduleData] = useState([]);
     const [isLoading, setISLoading] = useState(false);
     const [fetchError, setFetchError] = useState(null);

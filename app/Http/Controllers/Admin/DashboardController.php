@@ -28,6 +28,11 @@ class DashboardController extends Controller
             return [$department->name => $facultyCount];
         });
 
+        $attendance_count = Attendance::whereDate('created_at', today())
+            ->get()
+            ->groupBy('status')
+            ->mapWithKeys(fn($items, $status) => [$status => $items->count()]);
+
         $mappedAnnouncements = $announcements->map(function ($annc){
             return [
                 'id' => $annc->id,
@@ -42,7 +47,8 @@ class DashboardController extends Controller
             'totalEmployees' => $total_employees,
             'totalPresentToday' => $total_present_today,
             'announcements' => $mappedAnnouncements,
-            'departmentCount' => $department_count
+            'departmentCount' => $department_count,
+            'attendanceCount' => $attendance_count,
         ]);
     }
 

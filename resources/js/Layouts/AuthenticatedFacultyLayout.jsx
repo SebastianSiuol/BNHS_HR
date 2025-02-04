@@ -87,7 +87,7 @@ function NavBar({ children }) {
                     <NavBarLink href={route("faculty.dashboard")} active={route().current("faculty.dashboard")}>Home</NavBarLink>
                     <NavBarLink href={route("faculty.leaves.index")} active={route().current("faculty.leaves.create") || route().current("faculty.leaves.index")}>Leave Request</NavBarLink>
                     <NavBarLink href={route('faculty.rpms.index')} active={route().current("faculty.rpms.index")}>RPMS</NavBarLink>
-                    <NavBarLink href={route('faculty.attendance.create')} active={route().current("faculty.attendance.create")}>Attendance</NavBarLink>
+                    <NavBarLink href={route('faculty.attendance.index')} active={route().current("faculty.attendance.index")}>Attendance</NavBarLink>
                     <NavBarLink href={route('faculty.personal-details.index')} active={route().current("faculty.personal-details.index")}>Personal Detail</NavBarLink>
                 </nav>
             </div>

@@ -14,7 +14,7 @@ use App\Models\Attendance;
 class AttendanceController extends Controller
 {
 
-    public function create()
+    public function index()
     {
         $faculty_id = Auth::user()->id;
         $shift_id = Auth::user()->shift_id;
@@ -31,7 +31,7 @@ class AttendanceController extends Controller
             ->first();
 
 
-        return Inertia::render('Faculty/Attendance/Create', [
+        return Inertia::render('Faculty/Attendance/Index', [
             'shift' => $shift,
             'attendance' => $attendance,
 
@@ -40,38 +40,39 @@ class AttendanceController extends Controller
 
     public function checkIn(Request $request)
     {
-        return $this->handleAttendance($request, 'check_in');
+        return $this->handleAttendance($request, 'checkIn');
     }
 
     public function checkOut(Request $request)
     {
-        return $this->handleAttendance($request, 'check_out');
+        return $this->handleAttendance($request, 'checkOut');
     }
 
     public function handleAttendance(Request $request, $type)
     {
-        $validated = $this->validateRequest($request);
-        $user_id = $validated['id'];
-        $post_time = Carbon::parse($validated['postTime']);
+        $this->validateRequest($request);
 
-        $faculty = Faculty::find($user_id);
-        if (!$faculty) {
-            return $this->redirectWithError('User not found.', 404);
-        }
+        $faculty_id = $request->id;
+        $post_time = Carbon::parse($request->postTime);
 
-        $shift = $faculty->shift; // Assuming the faculty model has a relationship with the shift.
+        $today = Carbon::today();
+
+        $faculty = Faculty::find($faculty_id);
+
+        $shift = $faculty->shift;
         if (!$shift) {
-            return $this->redirectWithError('Shift not found for the user.', 404);
+            return redirect()->back()->with(['error' => 'Shift not found for the user.'], 404);
         }
 
-        $shift_start = Carbon::parse($shift->from);
-        $shift_end = Carbon::parse($shift->to);
+        $shift_start = Carbon::parse($shift->from)->setDate($today->year, $today->month, $today->day);
+        $shift_end = Carbon::parse($shift->to)->setDate($today->year, $today->month, $today->day);
 
-        $attendance = Attendance::where('faculty_id', $user_id)
+
+        $attendance = Attendance::where('faculty_id', $faculty_id)
             ->whereDate('created_at', $post_time->toDateString())
             ->first();
 
-        if ($type == 'check_in') {
+        if ($type == 'checkIn') {
             if ($attendance) {
                 // If marked absent, update it for the current check-in
                 if ($attendance->status === 'absent') {
@@ -79,7 +80,7 @@ class AttendanceController extends Controller
                     $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
                     $attendance->save();
 
-                    return $this->redirectWithMessage("Absence overridden with check-in.", $attendance, 200);
+                    return redirect()->back()->with(['message' => 'Absence overridden with check-in.'], 200);
                 }
 
                 return $this->redirectWithError("Already checked in for the day!", 400);
@@ -87,17 +88,17 @@ class AttendanceController extends Controller
 
             // If no attendance exists, create a new record
             $attendance = new Attendance();
-            $attendance->faculty_id = $user_id;
+            $attendance->faculty_id = $faculty_id;
             $attendance->check_in = $post_time;
             $attendance->status = $post_time->greaterThan($shift_start) ? 'late' : 'present';
             $attendance->save();
 
-            return $this->redirectWithMessage($type, $attendance, 201);
+            return $this->redirectWithMessage($type, 201);
         }
 
-        if ($type == 'check_out') {
-            if (!$attendance) {
-                return $this->redirectWithError("No check-in record found for today!", 400);
+        if ($type == 'checkOut') {
+            if ((!$attendance) || (!$attendance->check_in && $attendance->status === 'absent')) {
+                return $this->redirectWithError("You have not checked-in yet!", 400);
             }
 
             if ($attendance->check_out) {
@@ -105,20 +106,35 @@ class AttendanceController extends Controller
             }
 
             $attendance->check_out = $post_time;
-
-            // Ensure the attendance status is updated properly if the shift has ended
-            if ($attendance->status === 'absent') {
-                $attendance->status = 'not_timed_out'; // Status to reflect a partial record
-            }
-
             $attendance->save();
 
-            return $this->redirectWithMessage($type, $attendance, 201);
+            return $this->redirectWithMessage($type, 201);
         }
 
         return $this->redirectWithError("Invalid operation type.", 400);
     }
 
+    private function redirectWithError($message, $status)
+    {
+        return redirect()->back()->with(['error' => $message], $status);
+    }
+
+    private function redirectWithMessage($type, $status)
+    {
+
+        switch (strtolower($type)) {
+            case 'checkin':
+                $message = 'Check-in successful!';
+                break;
+            case 'checkout':
+                $message = 'Check-out successful!';
+                break;
+            default:
+                $message = 'Invalid action!';
+        }
+
+        return redirect()->back()->with(['message' => $message], $status);
+    }
 
     private function validateRequest(Request $request)
     {
@@ -128,27 +144,5 @@ class AttendanceController extends Controller
             'postTime' => ['required'],
             'action' => ['required'],
         ]);
-    }
-
-    private function redirectWithError($message, $status)
-    {
-        return redirect()->back()->with(['error' => $message], $status);
-    }
-
-    private function redirectWithMessage($type, $attendance, $status)
-    {
-
-        switch (strtolower($type)) {
-            case 'check_in':
-                $message = 'Check-in successful!';
-                break;
-            case 'check_out':
-                $message = 'Check-out successful!';
-                break;
-            default:
-                $message = 'Invalid action!';
-        }
-
-        return redirect()->back()->with(['message' => $message, 'attendance' => $attendance], $status);
     }
 }

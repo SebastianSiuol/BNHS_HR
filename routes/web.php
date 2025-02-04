@@ -161,7 +161,7 @@ Route::middleware('auth')->group(function () {
 
 
         // Attendances
-        Route::get('/faculty/attendances/create', [FacultyAttendanceController::class, 'create'])                       ->name('faculty.attendance.create');
+        Route::get('/faculty/attendances', [FacultyAttendanceController::class, 'index'])                               ->name('faculty.attendance.index');
         Route::post('/faculty/attendance/check-in', [FacultyAttendanceController::class, 'checkIn'])                    ->name('faculty.attendances.check-in');
         Route::post('/faculty/attendance/check-out', [FacultyAttendanceController::class, 'checkOut'])                  ->name('faculty.attendances.check-out');
 
