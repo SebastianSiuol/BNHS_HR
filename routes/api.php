@@ -42,5 +42,7 @@ Route::middleware('apiKey')->group(function () {
 
     Route::get('/all/departments', [DepartmentApiController::class, 'get'])->name('api.all.get.departments');
 
+    Route::post('/check-attendance/{time_of_day}', [AttendanceApiController::class, 'checkDailyFacultyAttendance']);
+
 
 });

@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(UrlGenerator $url): void
     {
         // if (config('app.env') == 'production') {
-            $url->forceScheme('https');
-            $this->app['request']->server->set('HTTPS','on');
+            // $url->forceScheme('https');
+            // $this->app['request']->server->set('HTTPS','on');
         // }
 
         Vite::prefetch(event: 'vite:prefetch');
