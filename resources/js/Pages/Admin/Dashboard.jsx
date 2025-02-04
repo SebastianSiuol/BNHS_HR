@@ -2,6 +2,7 @@ import { useState } from "react";
 import { usePage, router } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import { Description, DialogTitle } from "@headlessui/react";
+import ReactApexCharts from 'react-apexcharts'
 import { formatDate } from "@/Utils/customDayjsUtils";
 
 // Icons
@@ -125,6 +126,17 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section>
+                <div className={'w-[36vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow'}>
+
+                    <ReactApexChart />
+                    <div className={'text-center'}>
+                        <h2>Faculty Count per Department</h2>
+                    </div>
+                </div>
+
             </section>
 
             <section>
@@ -347,3 +359,36 @@ function ViewAnnouncement({ modal, toggleModal, data }) {
         </Modal>
     );
 }
+
+function ReactApexChart() {
+    const {departmentCount} = usePage().props;
+
+    console.log(departmentCount);
+
+    const departments = Object.keys(departmentCount);
+    const facultyCount = Object.values(departmentCount);
+
+    const [state, setState] = useState({
+        series: facultyCount,
+        options: {
+            chart: {
+                type: "pie",
+            },
+            labels: departments,
+            dataLabels: {
+                formatter: function (val, opts) {
+                    return opts.w.config.series[opts.seriesIndex]
+                },
+            },
+            legends: {
+                showForZeroSeries: true,
+                showForNullSeries: true,
+            }
+        },
+
+    });
+
+    return (
+              <ReactApexCharts options={state.options} series={state.series} type="pie" />
+      );
+    }

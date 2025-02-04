@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Vite;
 use Inertia\Inertia;
 
 
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
             $this->app['request']->server->set('HTTPS','on');
         // }
+
+        Vite::prefetch(event: 'vite:prefetch');
 
         Inertia::share(['errors' => function () {
             return Session::get('errors') ? Session::get('errors')->getBag('default')->getMessages() : (object) []; }]);

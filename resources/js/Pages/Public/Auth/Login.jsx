@@ -41,6 +41,8 @@ function LoginForm() {
         });
     }
 
+    console.log(import.meta.env.VITE_AUTH_API_KEY);
+
     return (
         <>
             <div className={"relative mb-6 font-bold text-2xl text-center text-white"}>Log-In to your Account</div>
