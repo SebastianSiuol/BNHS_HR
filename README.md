@@ -27,7 +27,7 @@ The following technologies are used to build this project:
 - **[PHP](https://www.php.net/)** - General-purpose scripting language for server-side development.
 - **[Laravel](https://laravel.com/)** - Back-end framework providing elegant syntax and structure.
 - **[TailwindCSS](https://tailwindcss.com/)** - Utility-first CSS framework for in-client design.
-- **[AlpineJS](https://alpinejs.dev/)** - Minimal JavaScript framework.
+- **[ReactJS](https://react.dev/)** - React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.
 
 
 
