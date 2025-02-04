@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('faculty_id')->nullable();
             $table->string('start_date');
             $table->string('end_date');
-            $table->string('document');
+            $table->string('document')->nullable();
+            $table->string('approved_by')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'cancelled'])->default('pending');
             $table->timestamps();
         });
