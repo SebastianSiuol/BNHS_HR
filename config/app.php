@@ -134,4 +134,14 @@ return [
 
     'internal-api-key' => env('AUTH_API_KEY'),
     'external-api-key' => env('API_KEY'),
+
+
+    /*
+   |--------------------------------------------------------------------------
+   | Config variable to enable HTTPS
+   |--------------------------------------------------------------------------
+   |
+   */
+    'force_https' => env('APP_FORCE_HTTPS', false),
+
 ];
