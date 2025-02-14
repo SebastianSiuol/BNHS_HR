@@ -6,3 +6,9 @@ export function capitalizeFirstLetter(text) {
 
   return word;
 }
+
+export function lowerCaseWord(text){
+  const word = text?.toString().toLowerCase();
+
+  return word
+}
