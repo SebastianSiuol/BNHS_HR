@@ -20,8 +20,7 @@ import Modal from "@/Components/Modal.jsx";
 import FileUploadProgressModal from "@/Components/FileUploadProgressModal";
 
 export default function Dashboard() {
-    const { totalEmployees, totalPresentToday, announcements } =
-        usePage().props;
+    const { announcements } = usePage().props;
 
     const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] =
         useState(false);
@@ -62,93 +61,9 @@ export default function Dashboard() {
                 progress={uploadProgress}
             />
 
-            <section className="text-gray-700 body-font mb-5">
-                <div className="container px-5 mx-auto">
-                    <div className="flex flex-wrap -m-4">
-                        <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                            <div className="border-4 border-blue-800 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                <div className="flex items-center justify-start rtl:justify-end px-4 mb-[22px]">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">
-                                        {totalEmployees}
-                                    </h2>
-                                    <RiTeamFill className="size-20 ml-auto text-indigo-500" />
-                                </div>
-                                <div className="pl-4 pr-0">
-                                    <p className="leading-relaxed text-xl">
-                                        Total Employees
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                            <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                <div className="flex items-center justify-start rtl:justify-end mb-4">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">
-                                        {totalPresentToday}
-                                    </h2>
+            <BasicMetrics />
 
-                                    <HiOutlineClipboardDocumentCheck className="size-20 ml-auto text-green-500" />
-                                </div>
-                                <p className="leading-relaxed text-2xl">
-                                    Present Today
-                                </p>
-                            </div>
-                        </div>
-                        <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                            <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                <div className="flex items-center justify-start rtl:justify-end mb-4">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">
-                                        0
-                                    </h2>
-
-                                    <FaCircleXmark className="size-20 ml-auto text-red-700" />
-                                </div>
-                                <p className="leading-relaxed text-2xl">
-                                    Total Absent
-                                </p>
-                            </div>
-                        </div>
-                        <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                            <div className="border-4 border-blue-800 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                <div className="flex items-center justify-start rtl:justify-end px-4 mb-[22px]">
-                                    <h2 className="title-font font-semibold text-5xl text-gray-900">
-                                        1
-                                    </h2>
-
-                                    <GrLogout className="size-20 ml-auto text-indigo-500" />
-                                </div>
-                                <p className="leading-relaxed text-xl pl-4 mt-5">
-                                    On Leave Today
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className={'grid grid-cols-2'}>
-                <div
-                    className={
-                        "w-[36vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
-                    }
-                >
-                    <DepartmentCountPieChart />
-                    <div className={"text-center"}>
-                        <h2>Faculty Count per Department</h2>
-                    </div>
-                </div>
-
-                <div
-                    className={
-                        "w-[24vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
-                    }
-                >
-                    <AttendancePieChart />
-                    <div className={"text-center"}>
-                        <h2>Attendance Today</h2>
-                    </div>
-                </div>
-            </section>
+            <InDepthAnalytics />
 
             <section>
                 <div className="mx-5 bg-white border border-gray-200 rounded-lg shadow p-4">
@@ -209,6 +124,110 @@ export default function Dashboard() {
                 </div>
             </section>
         </>
+    );
+}
+
+function BasicMetrics(){
+    const { totalEmployees, totalPresentToday, totalAbsentToday, totalLeaveToday} = usePage().props;
+
+    return (
+        <section className="px-5 mx-auto mb-5 text-gray-700 body-font ">
+            <div className="flex flex-wrap -m-4">
+                <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
+                    <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                        <div className="flex items-center justify-start rtl:justify-end mb-4">
+                            <h2 className="title-font font-semibold text-5xl text-gray-900">
+                                {totalEmployees}
+                            </h2>
+                            <RiTeamFill
+                                className="ml-auto text-indigo-500"
+                                size={"70px"}
+                            />
+                        </div>
+                        <div className="pl-4 pr-0">
+                            <p className="leading-relaxed text-xl">
+                                Total Employees
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
+                    <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                        <div className="flex items-center justify-start rtl:justify-end mb-4">
+                            <h2 className="title-font font-semibold text-5xl text-gray-900">
+                                {totalPresentToday}
+                            </h2>
+
+                            <HiOutlineClipboardDocumentCheck
+                                className="ml-auto text-green-500"
+                                size={"70px"}
+                            />
+                        </div>
+                        <p className="leading-relaxed text-xl">Present Today</p>
+                    </div>
+                </div>
+                <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
+                    <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                        <div className="flex items-center justify-start rtl:justify-end mb-4">
+                            <h2 className="title-font font-semibold text-5xl text-gray-900">
+                                {totalAbsentToday}
+                            </h2>
+
+                            <FaCircleXmark
+                                className="ml-auto text-red-700"
+                                size={"70px"}
+                            />
+                        </div>
+                        <p className="leading-relaxed text-xl">Total Absent</p>
+                    </div>
+                </div>
+                <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
+                    <div className="border-4 border-blue-800 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                        <div className="flex items-center justify-start rtl:justify-end mb-4">
+                            <h2 className="title-font font-semibold text-5xl text-gray-900">
+                                {totalLeaveToday}
+                            </h2>
+
+                            <GrLogout
+                                className="ml-auto text-indigo-500"
+                                size={"70px"}
+                            />
+                        </div>
+                        <p className="leading-relaxed text-xl">
+                            On Leave Today
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function InDepthAnalytics(){
+    return (
+        <section className={'grid grid-cols-2'}>
+                <div
+                    className={
+                        "w-[36vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
+                    }
+                >
+                    <DepartmentCountPieChart />
+                    <div className={"text-center"}>
+                        <h2>Faculty Count per Department</h2>
+                    </div>
+                </div>
+
+                <div
+                    className={
+                        "w-[24vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
+                    }
+                >
+                    <AttendancePieChart />
+                    <div className={"text-center"}>
+                        <h2>Attendance Today</h2>
+                    </div>
+                </div>
+            </section>
     );
 }
 
@@ -383,8 +402,6 @@ function ViewAnnouncement({ modal, toggleModal, data }) {
 function DepartmentCountPieChart() {
     const { departmentCount } = usePage().props;
 
-    console.log(departmentCount);
-
     const departments = Object.keys(departmentCount);
     const facultyCount = Object.values(departmentCount);
 
@@ -419,7 +436,6 @@ function DepartmentCountPieChart() {
 function AttendancePieChart() {
     const {attendanceCount} = usePage().props;
 
-
     console.log(attendanceCount);
 
     const departments = Object.keys(attendanceCount);
@@ -446,6 +462,16 @@ function AttendancePieChart() {
     });
 
     return (
-              <ReactApexCharts options={state.options} series={state.series} type="pie" />
-      );
+        <>
+            {attendanceCount === null ? (
+                <ReactApexCharts
+                    options={state.options}
+                    series={state.series}
+                    type="pie"
+                />
+            ) : (
+                <h1 className={'text-center'}>No Attendance Found Today</h1>
+            )}
+        </>
+    );
     }
