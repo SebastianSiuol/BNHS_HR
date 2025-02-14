@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\PersonalInformation\PersonalInformation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class WorkExperience extends Model
 {
@@ -13,8 +14,19 @@ class WorkExperience extends Model
 
     protected $guarded = [];
 
+    protected static function boot(): void
+    {
+        parent::boot();
 
-    public function personal_information(){
+        static::creating(function ($model) {
+            if (empty($model->public_id)) {
+                $model->public_id = (string) Str::uuid();
+            }
+        });
+    }
+
+    public function personal_information()
+    {
         return $this->belongsTo(PersonalInformation::class);
     }
 }
