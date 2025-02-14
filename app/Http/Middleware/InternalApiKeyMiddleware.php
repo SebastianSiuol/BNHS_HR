@@ -16,18 +16,11 @@ class InternalApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // $intApiKey = Config::get('app.internal-api-key');
 
-        // $intApiKeyIsValid = (! empty($intApiKey) && $request->header('x-auth-api-key') == $intApiKey);
-
-
-        if($request->isJson()) {
+        if ($request->isJson()) {
             return $next($request);
-
         } else {
             abort(403);
         }
-
-        // return $next($request);
     }
 }
