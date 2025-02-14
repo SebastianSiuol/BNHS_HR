@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 
-const AUTH_API_KEY = "eVS3zvZPUTh4dGr1ok6wuSUlEdxVSj8LDhizEKSvQUG8SbMev6TXNCmKRnOMBOhC";
-
 export function FacultyAutoComplete({ selected, setSelected }) {
     const [query, setQuery] = useState("");
     const [facultyList, setFacultyList] = useState([]);
