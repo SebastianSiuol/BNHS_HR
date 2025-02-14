@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/attendances/check', [AttendanceController::class, 'create'])                                 ->name('admin.attendances.create');
         Route::get('/admin/attendances', [AttendanceController::class, 'index'])                                        ->name('admin.attendances.index');
         Route::get('/admin/attendances/report', [AttendanceController::class, 'report'])                                ->name('admin.attendances.report');
+        Route::get('/admin/attendances/report/filter', [AttendanceController::class, 'reportFilter'])                   ->name('admin.attendances.report.filter');
         Route::post('/admin/attendance/check-in', [AttendanceController::class, 'checkIn'])                             ->name('admin.attendances.check-in');
         Route::post('/admin/attendance/check-out', [AttendanceController::class, 'checkOut'])                           ->name('admin.attendances.check-out');
 
