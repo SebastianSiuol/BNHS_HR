@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Faculty;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -68,8 +69,10 @@ class LeaveController extends Controller
             return redirect()->back()->with('error', 'You currently have an active request!');
         }
 
+        $auth_sex = Auth::user()->personal_information->sex;
 
-        $leave_types = LeaveType::all()->select('id', 'name', 'days');
+
+        $leave_types = LeaveType::all()->select('public_id', 'name', 'days', 'for');
         $service_credit = Auth::user()->service_credit;
 
 
@@ -79,6 +82,7 @@ class LeaveController extends Controller
         ]);
 
         return Inertia::render($render_url, [
+            'authSex' => $auth_sex,
             'leaveTypes' => $leave_types,
             'serviceCredit' => $service_credit,
         ]);
@@ -87,6 +91,7 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
 
 
         $request->validate(['leave_type' => 'required']);

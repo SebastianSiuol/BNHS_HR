@@ -1,32 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import {
-    router,
-    usePage,
-    useForm as useInertiaForm,
-    Link,
-} from "@inertiajs/react";
+import { router, usePage, Link } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 
 import { FileInput } from "@/Components/FileInput";
 import FileUploadProgressModal from "@/Components/FileUploadProgressModal";
 import CustomDatePicker from "@/Components/CustomDatePicker";
 
+import { lowerCaseWord } from "@/Utils/stringUtils";
+
 import { leaveRequestSchema } from "@/Schemas/LeaveSchema";
 
 export default function Create() {
-    return (
-        <>
-            <HandlePage />
-        </>
-    );
-}
-
-function HandlePage() {
-    const { leaveTypes, serviceCredit } = usePage().props;
+    const { authSex, leaveTypes, serviceCredit } = usePage().props;
     const [serviceCreditValue, setServiceCreditValue] = useState(serviceCredit);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isServiceCredit, setIsServiceCredit] = useState(false);
 
     const {
         register,
@@ -40,14 +30,21 @@ function HandlePage() {
     });
 
     const numberOfDays = watch("no_of_days", 0);
-    const leaveType = watch("leave_type");
+    const selectedLeaveType = watch("leave_type");
 
     useEffect(() => {
-        if (leaveType !== "3") {
+
+        const filteredLeaveType = leaveTypes.find((leaveType)=>(leaveType.public_id === selectedLeaveType));
+
+        if (lowerCaseWord(filteredLeaveType?.name) != 'service credit') {
             setValue("no_of_days", 0);
             setServiceCreditValue(serviceCredit);
+            setIsServiceCredit(false);
+        } else {
+            setIsServiceCredit(true);
         }
-    }, [leaveType, setValue, serviceCredit]);
+
+    }, [selectedLeaveType, setValue, serviceCredit, isServiceCredit]);
 
     function updateDays(steps) {
         const newDays = numberOfDays + steps;
@@ -64,7 +61,9 @@ function HandlePage() {
 
         router.post(route("faculty.leaves.store"), data, {
             onProgress: (progress) => {
-                const percentage = Math.round((progress.loaded / progress.total) * 100);
+                const percentage = Math.round(
+                    (progress.loaded / progress.total) * 100
+                );
                 setUploadProgress(percentage);
             },
             onSuccess: () => {
@@ -89,8 +88,7 @@ function HandlePage() {
                                 href={route("faculty.leaves.index")}
                                 className={
                                     "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
-                                }
-                            >
+                                }>
                                 Back
                             </Link>
                         </div>
@@ -102,8 +100,7 @@ function HandlePage() {
                                         Service Credit Balance:{" "}
                                         <span
                                             id="credit-balance"
-                                            className="font-bold text-green-600"
-                                        >
+                                            className="font-bold text-green-600">
                                             {serviceCreditValue}
                                         </span>
                                     </p>
@@ -114,16 +111,20 @@ function HandlePage() {
                                 </label>
                                 <select
                                     {...register("leave_type")}
-                                    className="p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                >
-                                    {leaveTypes.map((leaveType) => (
-                                        <option
-                                            key={leaveType.id}
-                                            value={leaveType.id}
-                                        >
-                                            {leaveType.name}
-                                        </option>
-                                    ))}
+                                    className="p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    {leaveTypes
+                                        .filter(
+                                            (leaveType) =>
+                                                lowerCaseWord(leaveType?.for) === lowerCaseWord(authSex) ||
+                                                lowerCaseWord( leaveType?.for) === "both"
+                                        )
+                                        .map((leaveType) => (
+                                            <option
+                                                key={leaveType?.public_id}
+                                                value={leaveType?.public_id}>
+                                                {leaveType?.name}
+                                            </option>
+                                        ))}
                                 </select>
 
                                 <div>
@@ -144,7 +145,7 @@ function HandlePage() {
                                         </label>
                                     </div>
                                 </div>
-                                {leaveType === "3" && (
+                                {isServiceCredit && (
                                     <label className="block mb-2 text-sm font-medium text-gray-900">
                                         Number of Days:
                                         <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
@@ -153,8 +154,7 @@ function HandlePage() {
                                                     e.preventDefault();
                                                     updateDays(-1);
                                                 }}
-                                                className="bg-gray-100 hover:bg-gray-200 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
-                                            >
+                                                className="bg-gray-100 hover:bg-gray-200 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
                                                 -
                                             </button>
 
@@ -169,8 +169,7 @@ function HandlePage() {
                                                     e.preventDefault();
                                                     updateDays(1);
                                                 }}
-                                                className="bg-gray-100 hover:bg-gray-200 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
-                                            >
+                                                className="bg-gray-100 hover:bg-gray-200 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
                                                 +
                                             </button>
                                         </div>
@@ -207,8 +206,7 @@ function HandlePage() {
                             <div className="mt-8 flex items-center justify-center">
                                 <button
                                     onClick={handleSubmit(submitLeaveRequest)}
-                                    className="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                >
+                                    className="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                     Save
                                 </button>
                             </div>

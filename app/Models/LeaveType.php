@@ -5,12 +5,27 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class LeaveType extends Model
 {
     use HasFactory;
 
-    public static function calculateLeaveEndDate($startDate, $leaveDays) {
+    protected $guarded = [];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->public_id)) {
+                $model->public_id = (string) Str::uuid();
+            }
+        });
+    }
+
+    public static function calculateLeaveEndDate($startDate, $leaveDays)
+    {
 
         // Parse the start date using Carbon
         $currentDate = Carbon::createFromFormat('Y-m-d', $startDate);
@@ -31,7 +46,8 @@ class LeaveType extends Model
         return $currentDate->toDateString();  // e.g., "2024-10-09"
     }
 
-    public function leaves(){
+    public function leaves()
+    {
         return $this->hasMany(Leave::class);
     }
 }

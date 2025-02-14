@@ -13,20 +13,26 @@ class LeaveTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $leave_types = new LeaveType();
-        $leave_types->name = 'Paternal Leave';
-        $leave_types->days = '7';
-        $leave_types->save();
+        $leave_types = [
+            ['name' => 'Maternity Leave', 'days' => 105, 'for' => 'female'],
+            ['name' => 'Maternity Leave (Miscarriage/Emergency Termination)', 'days' => 60, 'for' => 'female'],
+            ['name' => 'Maternity Leave (Optional Extension)', 'days' => 30, 'for' => 'female'],
+            ['name' => 'Magna Carta Special Leave for Women', 'days' => 60, 'for' => 'female'],
+            ['name' => 'Battered Wife Leave', 'days' => 10, 'for' => 'female'],
+            ['name' => 'Parental Leave (Adoptive Mothers)', 'days' => 28, 'for' => 'female'],
+            ['name' => 'Paternity Leave', 'days' => 7, 'for' => 'male'],
+            ['name' => 'Parental Leave for Adoptive Fathers', 'days' => 28, 'for' => 'male'],
+            ['name' => 'Solo Parent Leave', 'days' => 7, 'for' => 'both'],
+            ['name' => 'Special Leave Privileges', 'days' => 3, 'for' => 'both'],
+            ['name' => 'VAWC Leave (If Victim)', 'days' => 10, 'for' => 'both'],
+            ['name' => 'Rehabilitation Leave', 'days' => null, 'for' => 'both'],
+            ['name' => 'Study Leave', 'days' => 365, 'for' => 'both'],
+            ['name'=> 'Service Credit', 'days'=>null, 'for'=>'both']
+        ];
 
-        $leave_types = new LeaveType();
-        $leave_types->name = 'Maternal Leave';
-        $leave_types->days = '120';
-        $leave_types->save();
-
-        $leave_types = new LeaveType();
-        $leave_types->name = 'Service Credit';
-        $leave_types->days = null;
-        $leave_types->save();
+        foreach ($leave_types as $leave) {
+            LeaveType::create($leave);
+        }
 
     }
 }
