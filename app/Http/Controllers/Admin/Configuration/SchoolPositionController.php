@@ -17,7 +17,7 @@ class SchoolPositionController extends Controller
      */
     public function index()
     {
-        $school_positions = SchoolPosition::select('id','title','level')
+        $school_positions = SchoolPosition::select('public_id','title','level', 'num_of_faculties')
             ->withCount('faculties')
             ->paginate(5);
 
