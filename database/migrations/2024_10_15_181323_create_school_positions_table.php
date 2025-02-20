@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->enum('level', ['leadership', 'entry', 'mid', 'senior', 'support', 'it'])->default('entry');
+            $table->integer('num_of_faculties');
             $table->timestamps();
         });
     }
