@@ -5,12 +5,24 @@ namespace App\Models\Configuration;
 use App\Models\Faculty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class SchoolPosition extends Model
 {
     use HasFactory;
 
     protected $table = 'school_positions';
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->public_id)) {
+                $model->public_id = (string) Str::uuid();
+            }
+        });
+    }
 
     public function positionLevel (){
         switch($this->level){
