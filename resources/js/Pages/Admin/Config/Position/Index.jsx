@@ -37,46 +37,38 @@ export default function Index() {
 
 function HandlePage() {
     const { school_positions: schoolPositions } = usePage().props;
-    const [openAddModal, setOpenAddModal] = useState(false);
-    const [openEditModal, setOpenEditModal] = useState(false);
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [selectedPos, setSelectedPos] = useState(null);
+    const [modalState, setModalState] = useState({
+        type: null, selected: null
+    });
 
-    const handleAddModal = () => {
-        setOpenAddModal((e) => !e);
+    const openModal = (type, id=null) => {
+        setModalState({ type, selected: schoolPositions?.data.find((pos) => pos.id === id) || null});
     };
 
-    const handleEditModal = (id) => {
-        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
-        setOpenEditModal((e) => !e);
-    };
-
-    const handleDeleteModal = (id) => {
-        setSelectedPos(schoolPositions?.data.find((pos) => pos.id === id));
-        setOpenDeleteModal((e) => !e);
+    const closeModal = () => {
+        setModalState({type:null, selected:null})
     };
 
     return (
         <>
-            <AddModal state={openAddModal} onToggle={handleAddModal} />
+            <AddModal state={modalState.type === "add"} onToggle={closeModal} />
             <EditModal
-                state={openEditModal}
-                onToggle={handleEditModal}
-                selectedPos={selectedPos}
+                state={modalState.type === "edit"}
+                onToggle={closeModal}
+                selectedPos={modalState.selected}
             />
             <DeleteModal
-                state={openDeleteModal}
-                onToggle={handleDeleteModal}
-                selectedPos={selectedPos}
+                state={modalState.type === "delete"}
+                onToggle={closeModal}
+                selectedPos={modalState.selected}
                 />
             <div className="pb-4 flex items-center justify-end">
                 {/* <SearchHeader /> */}
-                <AddPosition onAddClick={handleAddModal} />
+                <AddPosition onAddClick={openModal} />
             </div>
             <PositionTable
                 positions={schoolPositions?.data}
-                onEditClick={handleEditModal}
-                onDeleteClick={handleDeleteModal}
+                onModalClick={openModal}
             />
             <Pagination data={schoolPositions} />
         </>
@@ -88,7 +80,7 @@ function AddPosition({ onAddClick }) {
         <div className="mt-2 sm:flex">
             <div className="flex items-center justify-end">
                 <button
-                    onClick={onAddClick}
+                    onClick={() => {onAddClick("add", null)}}
                     className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     type="button">
                     Add Position
@@ -135,7 +127,7 @@ function SearchHeader() {
     );
 }
 
-function PositionTable({ positions, onEditClick, onDeleteClick }) {
+function PositionTable({ positions, onModalClick }) {
     // Headers
     const headers = [
         "Position Title",
@@ -171,14 +163,14 @@ function PositionTable({ positions, onEditClick, onDeleteClick }) {
             <div className="flex items-center gap-x-4 justify-center">
                 <button
                     onClick={() => {
-                        onEditClick(position.id);
+                        onModalClick('edit', position.id);
                     }}>
                     <CustomIcon type="edit" />
                 </button>
 
                 <button
                     onClick={() => {
-                        onDeleteClick(position.id);
+                        onModalClick('delete', position.id);
                     }}>
                     <CustomIcon type="delete" />
                 </button>
@@ -277,8 +269,6 @@ function AddModal({ state, onToggle }) {
 
 
 function EditModal({ state, onToggle, selectedPos }) {
-
-
 
     const {
         register,
