@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { router, Link, usePage, useForm as useInertiaForm } from "@inertiajs/react";
+import { router, Link, usePage, useForm as useInertiaForm, Head } from "@inertiajs/react";
 import { Description, DialogTitle} from '@headlessui/react';
 
 // Icons
@@ -23,11 +23,12 @@ import { TableRow } from '@/Components/Table';
 export default function Index() {
     return (
         <>
+            <Head title={'Manage Faculties'}/>
             <PageHeaders>Manage Faculties</PageHeaders>
 
-                <FacultiesIndexProvider>
-                    <HandlePage />
-                </FacultiesIndexProvider>
+            <FacultiesIndexProvider>
+                <HandlePage />
+            </FacultiesIndexProvider>
         </>
     );
 }

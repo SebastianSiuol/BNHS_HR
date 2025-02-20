@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { usePage, router } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import { usePage, router, Head } from "@inertiajs/react";
 import dayjs from "dayjs";
 import {  FaEye } from 'react-icons/fa';
 
@@ -11,15 +11,15 @@ import { PageHeaders } from "@/Components/Admin/PageHeaders";
 import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
 import { Table, TableRow } from "@/Components/Table";
-import CustomIcon from "@/Components/CustomIcon";
 import Pagination from "@/Components/Pagination";
 
 import { capitalizeFirstLetter } from '@/Utils/stringUtils';
 import { getFullName, handleStatus } from '@/Utils/formatTableDataUtils';
 
-export default function Approve() {
+export default function Manage() {
     return (
         <>
+            <Head title="Manage Leave"/>
             <PageHeaders>Manage Leave</PageHeaders>
             <ContentContainer>
                 <ContentHeader>

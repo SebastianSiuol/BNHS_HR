@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 
 // Components
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
@@ -19,10 +19,11 @@ import { RolesForm } from "@/Components/Admin/MultiStepForm/RolesForm";
 export default function Create() {
     return (
         <>
-                <PageHeaders>Create a Faculty Account</PageHeaders>
-                <MultiStepFormProvider>
-                    <FormHandling />
-                </MultiStepFormProvider>
+            <Head title={"Add Faculty"}/>
+            <PageHeaders>Create a Faculty Account</PageHeaders>
+            <MultiStepFormProvider>
+                <FormHandling />
+            </MultiStepFormProvider>
         </>
     );
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 
@@ -26,6 +26,7 @@ export default function Index() {
 
     return (
         <>
+            <Head title="RPMS Management"/>
             <PageHeaders>RPMS Management</PageHeaders>
             <ContentContainer>
                 <ContentHeader>Performance Management</ContentHeader>

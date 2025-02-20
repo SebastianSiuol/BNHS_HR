@@ -1,4 +1,4 @@
-import { Link, useForm as useInertiaForm, router, usePage } from "@inertiajs/react";
+import { Link, useForm as useInertiaForm, router, usePage, Head } from "@inertiajs/react";
 import { useForm } from 'react-hook-form'
 import { useState } from 'react';
 
@@ -13,6 +13,7 @@ import styles from "./Login.module.css";
 export default function Login() {
     return (
         <>
+            <Head title={'BHNHS Log-In'}/>
             <CoverPhoto />
             <LoginFormContainer>
                 <SchoolLogo type={"welcome"} />
@@ -41,7 +42,6 @@ function LoginForm() {
         });
     }
 
-    console.log(import.meta.env.VITE_AUTH_API_KEY);
 
     return (
         <>

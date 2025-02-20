@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -13,6 +12,7 @@ import { capitalizeFirstLetter } from "@/Utils/stringUtils";
 export default function Create() {
     return (
         <>
+            <Head title={'Attendance Push'}/>
             <PageHeaders>Attendance</PageHeaders>
             <HandlePage />
         </>

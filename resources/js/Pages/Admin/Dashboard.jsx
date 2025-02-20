@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 import { useForm, Controller } from "react-hook-form";
 import { Description, DialogTitle } from "@headlessui/react";
 import ReactApexCharts from "react-apexcharts";
@@ -44,6 +44,7 @@ export default function Dashboard() {
 
     return (
         <>
+            <Head title={'Dashboard'}/>
             <PageHeaders> Dashboard </PageHeaders>
             <AnnouncementModal
                 modal={isAnnouncementModalOpen}

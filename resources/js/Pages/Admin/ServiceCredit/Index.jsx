@@ -1,9 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState} from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useForm as useInertiaForm } from "@inertiajs/react";
-import { usePage, router } from "@inertiajs/react";
+import { router, Head } from "@inertiajs/react";
 import dayjs from "dayjs";
-import { Description, DialogTitle } from "@headlessui/react";
 
 import CustomDatePicker from "@/Components/CustomDatePicker";
 import { FaPlusCircle, FaTimesCircle } from "react-icons/fa";
@@ -14,6 +12,7 @@ import { FacultyAutoComplete } from '@/Components/FacultyAutoComplete';
 export default function Index() {
     return (
         <>
+            <Head title="Manage Service Credits" />
             <PageHeaders>Manage Service Credits</PageHeaders>
             <HandlePage />
         </>

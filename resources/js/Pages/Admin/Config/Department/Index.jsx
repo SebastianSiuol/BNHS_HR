@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { useForm as useInertiaForm } from "@inertiajs/react";
+import { useForm } from "react-hook-form";
+import { useForm as useInertiaForm, Head } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
 import { Description, DialogTitle } from "@headlessui/react";
 
@@ -23,6 +23,7 @@ import { TableRow } from "@/Components/Table";
 export default function Index() {
     return (
         <>
+            <Head title={'Department Configuration'}/>
             <PageHeaders>Department</PageHeaders>
             <ContentContainer type="noOutline">
                 <HandlePage />

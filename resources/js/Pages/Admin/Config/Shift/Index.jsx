@@ -1,10 +1,10 @@
 /*
  * Dependencies and Libraries
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useForm as useInertiaForm } from "@inertiajs/react";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
 import { Description, DialogTitle } from "@headlessui/react";
@@ -32,6 +32,7 @@ import { capitalizeFirstLetter } from "@/Utils/stringUtils.js";
 export default function Index() {
     return (
         <>
+            <Head title={'Shift Configuration'} />
             <PageHeaders>Shift</PageHeaders>
             <ContentContainer type="noOutline">
                 <HandlePage />

@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { usePage, Head } from "@inertiajs/react";
 import dayjs from "dayjs";
 
 import { ContentContainer } from "@/Components/ContentContainer";
@@ -10,6 +10,7 @@ import Pagination from "@/Components/Pagination";
 export default function Index() {
     return (
         <>
+            <Head title={'Daily Attendance'} />
             <PageHeaders>Daily Attendance</PageHeaders>
             <HandlePage />
         </>

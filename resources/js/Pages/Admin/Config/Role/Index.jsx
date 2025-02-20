@@ -3,7 +3,7 @@
  */
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 
 /*
  Components
@@ -27,6 +27,7 @@ const roleTypes = [
 export default function Index() {
     return (
         <>
+            <Head title={'Roles Configuration'}/>
             <PageHeaders>Roles</PageHeaders>
             <ContentContainer>
                 <HandlePage />

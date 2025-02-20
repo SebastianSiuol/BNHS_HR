@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 
 // Components
 import { LabelInput } from "@/Components/LabelInput";
@@ -12,6 +12,7 @@ import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 export default function Index() {
     return (
         <>
+            <Head title={'Company Details'}/>
             <PageHeaders>Company Details</PageHeaders>
             <ContentContainer type="noOutline">
                 <ContentHeader>Company Details</ContentHeader>

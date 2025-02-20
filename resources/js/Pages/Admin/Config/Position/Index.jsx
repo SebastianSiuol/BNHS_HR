@@ -1,9 +1,9 @@
 /*
  * Dependencies and Libraries
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useForm as useInertiaForm } from "@inertiajs/react";
+import { useForm as useInertiaForm, Head } from "@inertiajs/react";
 import { usePage, router } from "@inertiajs/react";
 import { Description, DialogTitle } from "@headlessui/react";
 
@@ -26,6 +26,7 @@ import { TableRow } from "@/Components/Table";
 export default function Index() {
     return (
         <>
+            <Head title={'Position Configuration'}/>
             <PageHeaders>Position</PageHeaders>
             <ContentContainer type="noOutline">
                 <HandlePage />
