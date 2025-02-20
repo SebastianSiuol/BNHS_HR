@@ -39,23 +39,6 @@ class AttendanceController extends Controller
 
         $faculties = $facultiesQuery->paginate(5);
 
-
-        // if ($request->has('department') || $request->has('shift') || $request->has('attendance_date')) {
-
-        //     if (request('department') || request('shift')) {
-
-        //         $faculties = Faculty::with('department', 'shift')
-        //             ->whereHas('department', function ($query) use ($request) {
-        //                 $query->where('department_id', $request->get('department'));
-        //             })
-        //             ->orWhereHas('shift', function ($query) use ($request) {
-        //                 $query->where('shift_id', $request->get('shift'));
-        //             })
-        //             ->paginate(5);
-        //     }
-
-        // }
-
         $departments = Department::all()->select('id', 'name');
         $shift = Shift::all()->select('id', 'name');
 
