@@ -42,7 +42,7 @@ function HandlePage() {
     });
 
     const openModal = (type, id=null) => {
-        setModalState({ type, selected: schoolPositions?.data.find((pos) => pos.id === id) || null});
+        setModalState({ type, selected: schoolPositions?.data.find((pos) => pos.public_id === id) || null});
     };
 
     const closeModal = () => {
@@ -133,6 +133,7 @@ function PositionTable({ positions, onModalClick }) {
         "Position Title",
         "Position Level",
         "Total Faculties",
+        "Position Allotment",
         "Action",
     ];
 
@@ -159,18 +160,19 @@ function PositionTable({ positions, onModalClick }) {
         (position) => position.title,
         (position) => formatLevel(position.level),
         (position) => position.faculties_count,
+        (position) => position.allotment,
         (position) => (
             <div className="flex items-center gap-x-4 justify-center">
                 <button
                     onClick={() => {
-                        onModalClick('edit', position.id);
+                        onModalClick('edit', position.public_id);
                     }}>
                     <CustomIcon type="edit" />
                 </button>
 
                 <button
                     onClick={() => {
-                        onModalClick('delete', position.id);
+                        onModalClick('delete', position.public_id);
                     }}>
                     <CustomIcon type="delete" />
                 </button>
@@ -184,7 +186,7 @@ function PositionTable({ positions, onModalClick }) {
             headers={headers}
             renderRow={(position) => (
                 <TableRow
-                    key={position.id}
+                    key={position.public_id}
                     data={position}
                     columns={columns}
                 />
@@ -223,7 +225,9 @@ function AddModal({ state, onToggle }) {
                     <span>Add New Position</span>
                     <button
                         onClick={onToggle}
-                        className={"text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"}>
+                        className={
+                            "text-red-500 hover:text-red-900 hover:scale-125 transition-all duration-200"
+                        }>
                         &times;
                     </button>
                 </DialogTitle>
@@ -236,20 +240,44 @@ function AddModal({ state, onToggle }) {
                                 register={register}
                                 error={errors}
                             />
-                            <label className={"my-2 text-sm space-y-2 text-black font-normal"}>
+                            <label
+                                className={
+                                    "my-2 text-sm space-y-2 text-black font-normal"
+                                }>
                                 Position Level
                                 <select
                                     {...register("position_level")}
                                     className={
-                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                        "my-2 after:bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     }>
-                                    <option value="leadership">Leadership</option>
+                                    <option value="leadership">
+                                        Leadership
+                                    </option>
                                     <option value="entry">Entry-Level</option>
                                     <option value="mid">Mid-Level</option>
                                     <option value="senior">Senior-Level</option>
-                                    <option value="support">Support Staff</option>
+                                    <option value="support">
+                                        Support Staff
+                                    </option>
                                     <option value="it">IT Staff</option>
                                 </select>
+                            </label>
+                            <label
+                                className={
+                                    "my-2 text-sm space-y-2 text-black font-normal"
+                                }>
+                                Position Allotment
+                                <input
+                                    {...register("position_allotment")}
+                                    defaultValue={1}
+                                    type="number"
+                                    className={
+                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    }
+                                    min={1}
+                                    max={500}
+
+                                />
                             </label>
                         </form>
 
@@ -282,13 +310,14 @@ function EditModal({ state, onToggle, selectedPos }) {
         if (selectedPos) {
             setValue("position_title", selectedPos.title);
             setValue("position_level", selectedPos.level);
+            setValue("position_allotment", selectedPos.allotment);
         }
 
     }, [selectedPos]);
 
     function handlePositionUpdate(data, e) {
         e.preventDefault();
-        router.patch(route("admin.config.position.update", selectedPos.id), data, {
+        router.patch(route("admin.config.position.update", selectedPos.public_id), data, {
             onSuccess: () => {
                 reset();
                 onToggle();
@@ -335,6 +364,22 @@ function EditModal({ state, onToggle, selectedPos }) {
                                     <option value="it">IT Staff</option>
                                 </select>
                             </label>
+                            <label
+                                className={
+                                    "my-2 text-sm space-y-2 text-black font-normal"
+                                }>
+                                Position Allotment
+                                <input
+                                    {...register("position_allotment")}
+                                    type="number"
+                                    className={
+                                        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    }
+                                    min={1}
+                                    max={500}
+
+                                />
+                            </label>
                         </form>
 
                         <div>
@@ -354,7 +399,7 @@ function EditModal({ state, onToggle, selectedPos }) {
 function DeleteModal({ state, onToggle, selectedPos }) {
 
   function handleDelete(){
-      router.delete(route('admin.config.position.destroy', selectedPos.id), {
+      router.delete(route('admin.config.position.destroy', selectedPos.public_id), {
           onSuccess: ()=>{
               onToggle();
           }
