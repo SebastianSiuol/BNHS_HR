@@ -17,7 +17,7 @@ class SchoolPositionController extends Controller
      */
     public function index()
     {
-        $school_positions = SchoolPosition::select('public_id','title','level', 'num_of_faculties')
+        $school_positions = SchoolPosition::select('public_id','title','level', 'allotment')
             ->withCount('faculties')
             ->paginate(5);
 
@@ -36,13 +36,17 @@ class SchoolPositionController extends Controller
         $validated_inputs = $request->validate([
             'position_title' => ['required', 'string', 'max:255', 'unique:school_positions,title'],
             'position_level' => ['required'],
+            'position_allotment' => ['required', 'int', 'min:1', 'max:500']
         ],[
-            'position_title.required' => 'Position title is required!',
+            'position_title.required' => 'A title is required!',
+            'position_allotment.min' => 'The allotment must be atleast 1!',
+            'position_allotment.max' => 'The allotment must not be above 500!',
         ]);
 
         $store_position = new SchoolPosition();
         $store_position->title = $validated_inputs['position_title'];
         $store_position->level = $validated_inputs['position_level'];
+        $store_position->allotment = $validated_inputs['position_allotment'];
         $store_position->save();
 
         return back()->with('success', 'Position added successfully!');
@@ -51,29 +55,55 @@ class SchoolPositionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SchoolPosition $school_position)
+    public function update(Request $request, String $public_id)
     {
-        $validated_inputs = $request->validate([
-            'position_title' => ['required', 'string', 'max:255', Rule::unique('school_positions', 'title')->ignore($school_position->id),],
-            'position_level' => ['required'],
-        ],
-            ['position_title.unique' => 'Position title cannot change to an existing position.']);
+        // Get schoolPosition
+        $update_position = SchoolPosition::where('public_id', $public_id)->withCount('faculties')->get()->first();
 
-        $update_position = $school_position;
-        $update_position->title = $validated_inputs['position_title'];
-        $update_position->level = $validated_inputs['position_level'];
+        // Validate requests
+        $validated_inputs = $request->validate(
+            [
+                'position_title' => ['required', 'string', 'max:255', Rule::unique('school_positions', 'title')->ignore($update_position->id),],
+                'position_level' => ['required'],
+                'position_allotment' => ['required', 'int', 'min:1', 'max:500']
+            ],
+            [
+                'position_title.unique' => 'Position title cannot change to an existing position.',
+                'position_title.required' => 'A title is required!',
+                'position_allotment.min' => 'The allotment must be atleast 1!',
+                'position_allotment.max' => 'The allotment must not be above 500!',
+            ]
+        );
+
+        // Assign inputs to variables
+        $updated_title = $validated_inputs['position_title'];
+        $updated_level = $validated_inputs['position_level'];
+        $updated_allotment = $validated_inputs['position_allotment'];
+
+        // Check if allotment will be below than the current assigned faculties
+        $count_of_faculty = $update_position->faculties_count;
+        if ($updated_allotment < $count_of_faculty) {
+            return redirect()->back()->with('error', 'Allotment cannot be below than the assigned faculties!');
+        }
+
+        // Assign Input to Existing Table
+        $update_position->title = $updated_title;
+        $update_position->level = $updated_level;
+        $update_position->allotment = $updated_allotment;
         $update_position->save();
 
-        return back()->with('success', 'Position edited successfully!');
+        // Redirect success message if finished.
+        return redirect()->back()->with('success', 'Position edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SchoolPosition $school_position)
+    public function destroy(String $public_id)
     {
         try {
-            $school_position->delete();
+            $selected_position = SchoolPosition::where('public_id', $public_id)->get()->first();
+            $selected_position->delete();
             return back()->with('success', 'Position deleted successfully!');
         } catch (QueryException $e) {
 
