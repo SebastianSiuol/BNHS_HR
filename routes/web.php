@@ -79,12 +79,12 @@ Route::middleware('auth')->group(function () {
         // Faculties
         Route::get('/admin/faculties', [FacultyController::class, 'index'])                                             ->name('admin.faculty.index');
         Route::get('/admin/faculty/create', [FacultyController::class, 'create'])                                       ->name('admin.faculty.create');
-        Route::get('/admin/faculty/{faculty}/edit', [FacultyController::class, 'edit'])                                 ->name('admin.faculty.edit');
+        // Route::get('/admin/faculty/{faculty}/edit', [FacultyController::class, 'edit'])                                 ->name('admin.faculty.edit');
         Route::get('/admin/faculty/{faculty}/edit/personal-info', [FacultyController::class, 'editPsnDeets'])           ->name('admin.faculty.edit.psn-deets');
         Route::get('/admin/faculty/{faculty}/edit/address', [FacultyController::class, 'editAddress'])                  ->name('admin.faculty.edit.address');
         Route::get('/admin/faculty/{faculty}/edit/company-details', [FacultyController::class, 'editCompDeets'])        ->name('admin.faculty.edit.comp-deets');
         Route::get('/admin/faculty/{faculty}/edit/roles', [FacultyController::class, 'editRoles'])                      ->name('admin.faculty.edit.roles');
-        Route::put('/admin/faculty/{faculty}', [FacultyController::class, 'update'])                                    ->name('admin.faculty.update');
+        // Route::put('/admin/faculty/{faculty}', [FacultyController::class, 'update'])                                    ->name('admin.faculty.update');
         Route::put('/admin/faculty/{public_id}/personal-info', [FacultyController::class, 'updatePsnDeets'])            ->name('admin.faculty.update.psn-deets');
         Route::put('/admin/faculty/{public_id}/address', [FacultyController::class, 'updateAddresses'])                 ->name('admin.faculty.update.address');
         Route::put('/admin/faculty/{public_id}/company-details', [FacultyController::class, 'updateCompDeets'])         ->name('admin.faculty.update.comp-deets');
