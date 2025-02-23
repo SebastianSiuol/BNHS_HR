@@ -80,6 +80,12 @@ function Header({ children }) {
 }
 
 function NavBar({ children }) {
+    const { role : userRoles } = usePage().props;
+    const [sisMenu, setSISMenu] = useState(false);
+
+    const sisRoles = ["sis_admin", "sis_registrar", "sis_faculty"]; // Roles that can see the dropdown
+
+
     return (
         <>
             <div className={"flex py-4 justify-center bg-[#d6e4f0]"}>
@@ -89,6 +95,42 @@ function NavBar({ children }) {
                     <NavBarLink href={route('faculty.rpms.index')} active={route().current("faculty.rpms.index")}>RPMS</NavBarLink>
                     <NavBarLink href={route('faculty.attendance.index')} active={route().current("faculty.attendance.index")}>Attendance</NavBarLink>
                     <NavBarLink href={route('faculty.personal-details.index')} active={route().current("faculty.personal-details.index")}>Personal Detail</NavBarLink>
+                    {userRoles.some((role) => sisRoles.includes(role)) && (
+                    <DropdownMenu.Root
+                        open={sisMenu}
+                        onOpenChange={() => {
+                            setSISMenu((value) => !value);
+                        }}>
+                            <DropdownMenu.Trigger className="transition-all duration-200 hover:font-bold hover:border-b-gray-900 hover:border-b-4">
+                                <div className={'flex'}>
+                                    <span>SIS</span>
+                                    {sisMenu
+                                        ? <IoIosArrowUp className={"text-2xl"} />
+                                        : <IoIosArrowDown className={"text-2xl"} />
+                                    }
+                                </div>
+                            </DropdownMenu.Trigger>
+
+                            <DropdownMenu.Content className="z-50 w-min-[30vh] w-max-[50vh] text-base bg-white divide-gray-100 rounded shadow">
+                                <DropdownMenu.Item>
+                                    {userRoles.includes("sis_admin") && (<Link
+                                    className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                                    href={route('sis.admin.redirect')}>SIS Admin</Link>)}
+                                </DropdownMenu.Item>
+                                <DropdownMenu.Item>
+                                    {userRoles.includes("sis_registrar") && (<Link
+                                    className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                                    href={route('sis.admin.redirect')}>SIS Registrar</Link>)}
+                                </DropdownMenu.Item>
+                                <DropdownMenu.Item>
+
+                                    {userRoles.includes("sis_faculty") && (<Link
+                                    className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                                    href={route('sis.faculty.redirect')}>SIS Faculty</Link>)}
+                                </DropdownMenu.Item>
+                            </DropdownMenu.Content>
+                    </DropdownMenu.Root>)}
+                    {userRoles.includes("logi_admin") && (<NavBarLink href={route('logistics.admin.redirect')}>Logistics</NavBarLink>)}
                 </nav>
             </div>
 

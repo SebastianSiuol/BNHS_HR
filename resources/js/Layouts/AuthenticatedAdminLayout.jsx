@@ -72,28 +72,47 @@ function SideNavbar() {
     }
 
     const hrRoles = ['hr_admin', 'hr_manager', 'hr_faculty']
+    const sisRoles = ["sis_admin", "sis_registrar", "sis_faculty"]; // Roles that can see the dropdown
 
     return (
-        <aside className={"fixed h-full flex flex-col bg-sidebar text-white top-0 left-0 z-40 w-80 transition-transform -translate-x-full sm:translate-x-0"}>
+        <aside
+            className={
+                "fixed h-full flex flex-col bg-sidebar text-white top-0 left-0 z-40 w-80 transition-transform -translate-x-full sm:translate-x-0"
+            }>
             <div className="flex space-x-1 items-center ml-4 mt-11">
                 <SchoolLogo type={"sidebar"} />
-                <span className="font-bold text-lg hidden md:block text-white">Batasan Hills National High School</span>
+                <span className="font-bold text-lg hidden md:block text-white">
+                    Batasan Hills National High School
+                </span>
             </div>
 
             <div className="pt-5 mb-9">
                 <hr className="mx-5" />
             </div>
 
-            <div className={`${styles.sidenav} h-full px-3 py-4 overflow-y-auto`}>
+            <div
+                className={`${styles.sidenav} h-full px-3 py-4 overflow-y-auto`}>
                 <div className=" space-y-2 font-medium">
                     <div className="ml-3">
                         <p className="text-sm">Main</p>
                     </div>
 
                     <div>
-                        <SidebarNavLink href={route("admin.dashboard")} active={route().current("admin.dashboard")} type={"top"}>
-                            <HiMiniSquares2X2 className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>Dashboard</span>
+                        <SidebarNavLink
+                            href={route("admin.dashboard")}
+                            active={route().current("admin.dashboard")}
+                            type={"top"}>
+                            <HiMiniSquares2X2
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }>
+                                Dashboard
+                            </span>
                         </SidebarNavLink>
                     </div>
 
@@ -102,16 +121,33 @@ function SideNavbar() {
                     </div>
 
                     <div>
-                        <DropdownButton icon={RiTeamFill} label={"Faculties"} state={"faculty"} />
+                        <DropdownButton
+                            icon={RiTeamFill}
+                            label={"Faculties"}
+                            state={"faculty"}
+                        />
 
-                        <ul className={`${!openTabs.faculty && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.faculty && "hidden"
+                            } ml-8 space-y-2`}>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.create")} active={route().current("admin.faculty.create")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.faculty.create")}
+                                    active={route().current(
+                                        "admin.faculty.create"
+                                    )}
+                                    type={"sub"}>
                                     Add Faculties
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.faculty.index")} active={route().current("admin.faculty.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.faculty.index")}
+                                    active={route().current(
+                                        "admin.faculty.index"
+                                    )}
+                                    type={"sub"}>
                                     Manage Faculties
                                 </SidebarNavLink>
                             </li>
@@ -119,42 +155,81 @@ function SideNavbar() {
                     </div>
                     {/* One Tab */}
                     <div>
-                        <DropdownButton icon={BiCalendar} label={"Attendance"} state={"attendance"} />
+                        <DropdownButton
+                            icon={BiCalendar}
+                            label={"Attendance"}
+                            state={"attendance"}
+                        />
 
-                        <ul className={`${!openTabs.attendance && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.attendance && "hidden"
+                            } ml-8 space-y-2`}>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.create")} active={route().current("admin.attendances.create")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.create")}
+                                    active={route().current(
+                                        "admin.attendances.create"
+                                    )}
+                                    type={"sub"}>
                                     Attendance
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.index")} active={route().current("admin.attendances.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.index")}
+                                    active={route().current(
+                                        "admin.attendances.index"
+                                    )}
+                                    type={"sub"}>
                                     Daily Attendance
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.attendances.report")} active={route().current("admin.attendances.report")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.attendances.report")}
+                                    active={route().current(
+                                        "admin.attendances.report"
+                                    )}
+                                    type={"sub"}>
                                     Attendance Report
                                 </SidebarNavLink>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <DropdownButton icon={LuClipboardList} label={"Leave"} state={"leave"} />
+                        <DropdownButton
+                            icon={LuClipboardList}
+                            label={"Leave"}
+                            state={"leave"}
+                        />
 
-                        <ul className={`${!openTabs.leave && "hidden"} ml-8 space-y-2`}>
+                        <ul
+                            className={`${
+                                !openTabs.leave && "hidden"
+                            } ml-8 space-y-2`}>
                             {/* <li>
                                 <SidebarNavLink href={route("admin.leaves.index")} active={route().current("admin.leaves.create") || route().current("admin.leaves.index")} type={"sub"}>
                                     Request Leave
                                 </SidebarNavLink>
                             </li> */}
                             <li>
-                                <SidebarNavLink href={route("admin.leaves.manage")} active={route().current("admin.leaves.manage")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.leaves.manage")}
+                                    active={route().current(
+                                        "admin.leaves.manage"
+                                    )}
+                                    type={"sub"}>
                                     Manage Leave
                                 </SidebarNavLink>
                             </li>
                             <li>
-                                <SidebarNavLink href={route("admin.service-credits.index")} active={route().current("admin.service-credits.index")} type={"sub"}>
+                                <SidebarNavLink
+                                    href={route("admin.service-credits.index")}
+                                    active={route().current(
+                                        "admin.service-credits.index"
+                                    )}
+                                    type={"sub"}>
                                     Manage Service Credits
                                 </SidebarNavLink>
                             </li>
@@ -166,9 +241,21 @@ function SideNavbar() {
                         </ul>
                     </div>
                     <div>
-                        <SidebarNavLink href={route("admin.rpms.index")} active={route().current("admin.rpms.index")} type={"top"}>
-                            <FaMedal className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>RPMS</span>
+                        <SidebarNavLink
+                            href={route("admin.rpms.index")}
+                            active={route().current("admin.rpms.index")}
+                            type={"top"}>
+                            <FaMedal
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }>
+                                RPMS
+                            </span>
                         </SidebarNavLink>
                     </div>
 
@@ -178,31 +265,73 @@ function SideNavbar() {
                                 <p className="text-sm">Settings</p>
                             </div>
                             <div>
-                                <DropdownButton icon={RiListSettingsFill} label={"Configurations"} state={"config"} />
+                                <DropdownButton
+                                    icon={RiListSettingsFill}
+                                    label={"Configurations"}
+                                    state={"config"}
+                                />
 
-                                <ul className={`${!openTabs.config && "hidden"} ml-8 space-y-2`}>
+                                <ul
+                                    className={`${
+                                        !openTabs.config && "hidden"
+                                    } ml-8 space-y-2`}>
                                     <li>
-                                        <SidebarNavLink href={route("admin.config.company-details.index")} active={route().current("admin.config.company-details.index")} type={"sub"}>
+                                        <SidebarNavLink
+                                            href={route(
+                                                "admin.config.company-details.index"
+                                            )}
+                                            active={route().current(
+                                                "admin.config.company-details.index"
+                                            )}
+                                            type={"sub"}>
                                             Company Details
                                         </SidebarNavLink>
                                     </li>
                                     <li>
-                                        <SidebarNavLink href={route("admin.config.department.index")} active={route().current("admin.config.department.index")} type={"sub"}>
+                                        <SidebarNavLink
+                                            href={route(
+                                                "admin.config.department.index"
+                                            )}
+                                            active={route().current(
+                                                "admin.config.department.index"
+                                            )}
+                                            type={"sub"}>
                                             Department
                                         </SidebarNavLink>
                                     </li>
                                     <li>
-                                        <SidebarNavLink href={route("admin.config.position.index")} active={route().current("admin.config.position.index")} type={"sub"}>
+                                        <SidebarNavLink
+                                            href={route(
+                                                "admin.config.position.index"
+                                            )}
+                                            active={route().current(
+                                                "admin.config.position.index"
+                                            )}
+                                            type={"sub"}>
                                             Position
                                         </SidebarNavLink>
                                     </li>
                                     <li>
-                                        <SidebarNavLink href={route("admin.config.shift.index")} active={route().current("admin.config.shift.index")} type={"sub"}>
+                                        <SidebarNavLink
+                                            href={route(
+                                                "admin.config.shift.index"
+                                            )}
+                                            active={route().current(
+                                                "admin.config.shift.index"
+                                            )}
+                                            type={"sub"}>
                                             Shift
                                         </SidebarNavLink>
                                     </li>
                                     <li>
-                                        <SidebarNavLink href={route("admin.config.role.index")} active={route().current("admin.config.role.index")} type={"sub"}>
+                                        <SidebarNavLink
+                                            href={route(
+                                                "admin.config.role.index"
+                                            )}
+                                            active={route().current(
+                                                "admin.config.role.index"
+                                            )}
+                                            type={"sub"}>
                                             Roles
                                         </SidebarNavLink>
                                     </li>
@@ -217,17 +346,64 @@ function SideNavbar() {
                         </div>
                     )}
 
-                    {userRoles.includes("sis_admin") && (
-                        <SidebarNavLink href={route("sis.admin.redirect")} type={"top"}>
-                            <MdOutlineAccountBox className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>SIS</span>
-                        </SidebarNavLink>
+                    {userRoles.some((role) => sisRoles.includes(role)) && (
+                        <div>
+                            <DropdownButton
+                                icon={MdOutlineAccountBox}
+                                label={"SIS"}
+                                state={"sis"}
+                            />
+
+                            <ul
+                                className={`${
+                                    !openTabs.sis && "hidden"
+                                } ml-8 space-y-2`}>
+                                {userRoles.includes("sis_admin") && (
+                                    <li>
+                                        <SidebarNavLink
+                                            href={route("sis.admin.redirect")}
+                                            type={"sub"}>
+                                            Admin
+                                        </SidebarNavLink>
+                                    </li>
+                                )}
+                                {userRoles.includes("sis_registrar") && (
+                                    <li>
+                                        <SidebarNavLink
+                                            href={route("sis.admin.redirect")}
+                                            type={"sub"}>
+                                            Registrar
+                                        </SidebarNavLink>
+                                    </li>
+                                )}
+                                {userRoles.includes("sis_faculty") && (
+                                    <li>
+                                        <SidebarNavLink
+                                            href={route("sis.faculty.redirect")}
+                                            type={"sub"}>
+                                            Faculty
+                                        </SidebarNavLink>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
                     )}
 
                     {userRoles.includes("logi_admin") && (
-                        <SidebarNavLink href={route("logistics.admin.redirect")} type={"top"}>
-                            <MdConveyorBelt className={"ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"} />
-                            <span className={"flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"}>Logistics</span>
+                        <SidebarNavLink
+                            href={route("logistics.admin.redirect")}
+                            type={"top"}>
+                            <MdConveyorBelt
+                                className={
+                                    "ml-5 flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900"
+                                }
+                            />
+                            <span
+                                className={
+                                    "flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-gray-900"
+                                }>
+                                Logistics
+                            </span>
                         </SidebarNavLink>
                     )}
                 </div>
