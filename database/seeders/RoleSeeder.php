@@ -72,11 +72,7 @@ class RoleSeeder extends Seeder
                 'type' => 'hr',
                 'description' => 'Manager HR',
             ],
-            [
-                'role_name' => 'general_faculty',
-                'type' => 'general',
-                'description' => 'Faculty',
-            ],
+
         ];
 
         foreach($roles as $role){
