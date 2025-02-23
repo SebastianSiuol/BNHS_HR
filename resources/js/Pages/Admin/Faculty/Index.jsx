@@ -110,9 +110,6 @@ function FacultyTable({ faculties }){
                 <button onClick={() => handleShowFaculty(faculty.id)}>
                     <CustomIcon type="view" />
                 </button>
-                {/* <Link href={route("admin.faculty.edit", { faculty: faculty.id })}>
-                    <CustomIcon type="edit" />
-                </Link> */}
                 <EditButtonContext selectedFaculty={faculty?.id}/>
                 <button onClick={() => handleFacultyDeletion(faculty.id)}>
                     <CustomIcon type="delete" />
