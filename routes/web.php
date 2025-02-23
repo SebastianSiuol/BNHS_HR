@@ -80,6 +80,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/faculties', [FacultyController::class, 'index'])                                             ->name('admin.faculty.index');
         Route::get('/admin/faculty/create', [FacultyController::class, 'create'])                                       ->name('admin.faculty.create');
         Route::get('/admin/faculty/{faculty}/edit', [FacultyController::class, 'edit'])                                 ->name('admin.faculty.edit');
+        Route::get('/admin/faculty/{faculty}/edit/personal-info', [FacultyController::class, 'editPsnDeets'])                   ->name('admin.faculty.edit.psn-deets');
+        Route::get('/admin/faculty/{faculty}/edit/address', [FacultyController::class, 'edit'])                         ->name('admin.faculty.edit.address');
+        Route::get('/admin/faculty/{faculty}/edit/company-details', [FacultyController::class, 'edit'])                 ->name('admin.faculty.edit.comp-deets');
+        Route::get('/admin/faculty/{faculty}/edit/roles', [FacultyController::class, 'edit'])                           ->name('admin.faculty.edit.roles');
         Route::put('/admin/faculty/{faculty}', [FacultyController::class, 'update'])                                    ->name('admin.faculty.update');
         Route::delete('/admin/faculty/{faculty}', [FacultyController::class, 'destroy'])                                ->name('admin.faculty.destroy');
         Route::post('/admin/faculty/store', [FacultyController::class, 'store'])                                        ->name('admin.faculty.store');
