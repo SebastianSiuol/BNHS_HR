@@ -91,9 +91,6 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
-
-
         $request->validate(['leave_type' => 'required']);
 
         $leave_type = LeaveType::findOrFail($request->leave_type);
