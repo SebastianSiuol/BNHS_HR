@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Password;
 use App\Models\Faculty;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacultyResetPasswordLink;
 
 class ForgotPasswordController extends Controller
 {
@@ -35,18 +36,13 @@ class ForgotPasswordController extends Controller
             $token = Password::createToken($faculty);
 
             if ($token) {
-                // Password reset link (adjust your frontend link accordingly)
                 $resetLink = url("/reset-password/?token=$token&email=" . urlencode($faculty->email));
 
-                // API request payload
                 $payload = [
-                    "to" => $faculty->email,
-                    "subject" => "Reset Password Notification",
-                    "text" => "Hello,\n\nPlease use the following link to reset your password:\n\n$resetLink\n\nIf you did not request a password reset, please ignore this email.",
+                    "reset_url" => $resetLink,
                 ];
 
-                // Send the email using the provided API
-                Http::post('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/send-email', $payload);
+                Mail::to($faculty->email)->send(new FacultyResetPasswordLink($payload));
             }
         }
 

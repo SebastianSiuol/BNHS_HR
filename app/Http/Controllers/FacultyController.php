@@ -11,6 +11,9 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacultyAccountCreated;
+
 
 
 
@@ -132,13 +135,13 @@ class FacultyController extends Controller
 
         // API request payload
         $payload = [
-            "to" => $faculty->email,
-            "subject" => "Account creation!",
-            "text" => "Hello,\n\nPlease use the following account to log-in to the system! \n\n \"Faculty Code\": $faculty_code\n \"Password\": $random_password",
+            'name' => $validated_inputs['first_name'] . " " . $validated_inputs['last_name'],
+            'faculty_code' => $faculty_code,
+            'password' => $random_password
         ];
 
         // Send the email using the provided API
-        Http::post('https://bhnhs-sis-api-v1.onrender.com/api/v1/sis/send-email', $payload);
+        Mail::to($faculty->email)->send(new FacultyAccountCreated($payload));
 
         return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
