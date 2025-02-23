@@ -205,6 +205,8 @@ function BasicMetrics(){
 }
 
 function InDepthAnalytics(){
+    const { attendanceCount } = usePage().props;
+
     return (
         <section className={'grid grid-cols-2'}>
                 <div
@@ -223,9 +225,9 @@ function InDepthAnalytics(){
                         "w-[24vw] p-4 m-5 bg-white border border-gray-200 rounded-lg shadow"
                     }
                 >
-                    <AttendancePieChart />
+                    <AttendancePieChart attendanceCount={attendanceCount}/>
                     <div className={"text-center"}>
-                        <h2>Attendance Today</h2>
+                        {attendanceCount.length === 0 ? "" : "Attendance Today"}
                     </div>
                 </div>
             </section>
@@ -434,10 +436,7 @@ function DepartmentCountPieChart() {
     );
 }
 
-function AttendancePieChart() {
-    const {attendanceCount} = usePage().props;
-
-    console.log(attendanceCount);
+function AttendancePieChart({attendanceCount}) {
 
     const departments = Object.keys(attendanceCount);
     const facultyCount = Object.values(attendanceCount);
@@ -464,7 +463,7 @@ function AttendancePieChart() {
 
     return (
         <>
-            {attendanceCount === null ? (
+            {attendanceCount.length !== 0 ? (
                 <ReactApexCharts
                     options={state.options}
                     series={state.series}
