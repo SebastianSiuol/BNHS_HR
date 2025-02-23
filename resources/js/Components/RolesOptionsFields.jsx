@@ -2,6 +2,7 @@ const roleTypes = [
     { type: "sis", label: "Student Information System" },
     { type: "hr", label: "Human Resources Management System" },
     { type: "logi", label: "Logistics System" },
+    { type: "general", label: "General" },
 ];
 
 export default function RolesOptionsFields({
