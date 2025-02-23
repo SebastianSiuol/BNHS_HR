@@ -153,20 +153,47 @@ function EditButtonContext({ selectedFaculty }) {
                 <CustomIcon type="edit" />
             </DropdownMenu.Trigger>
 
-            <DropdownMenu.Content className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow" align="start">
+            <DropdownMenu.Content
+                className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow"
+                align="start">
                 <DropdownMenu.Item className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
-                    Personal Information
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
-                    Address
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
-                    Company Details
+                    <Link
+                        className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                        href={route(
+                            "admin.faculty.edit.psn-deets",
+                            selectedFaculty
+                        )}>
+                        Person. Info.
+                    </Link>
                 </DropdownMenu.Item>
                 <DropdownMenu.Item>
-                    <Link className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
-                        href={route('admin.faculty.edit.roles', selectedFaculty)}>
-                            Roles
+                    <Link
+                        className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                        href={route(
+                            "admin.faculty.edit.address",
+                            selectedFaculty
+                        )}>
+                        Addresses
+                    </Link>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                    <Link
+                        className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                        href={route(
+                            "admin.faculty.edit.comp-deets",
+                            selectedFaculty
+                        )}>
+                        Company Details
+                    </Link>
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>
+                    <Link
+                        className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
+                        href={route(
+                            "admin.faculty.edit.roles",
+                            selectedFaculty
+                        )}>
+                        Roles
                     </Link>
                 </DropdownMenu.Item>
             </DropdownMenu.Content>
