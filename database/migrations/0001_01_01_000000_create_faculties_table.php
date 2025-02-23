@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('date_of_leaving')->nullable();
             $table->string('service_credit')->nullable()->default(0);
             $table->string('photo')->nullable()->default('example/emp_photo.png');
+            $table->boolean('first_login_password_change')->default(true);
             $table->foreignId('designation_id')->nullable();
             $table->foreignId('shift_id')->nullable();
             $table->foreignId('employment_status_id')->nullable();
