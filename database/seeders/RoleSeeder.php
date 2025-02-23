@@ -32,11 +32,7 @@ class RoleSeeder extends Seeder
                 'type' => 'sis',
                 'description' => 'Faculty SIS',
             ],
-            // [
-            //     'role_name' => 'sis_admin_dashboard',
-            //     'type' => 'sis',
-            //     'description' => 'Admin Dashboard SIS',
-            // ],
+
             [
                 'role_name' => 'hr_admin', // 4
                 'type' => 'hr',
@@ -47,11 +43,7 @@ class RoleSeeder extends Seeder
                 'type' => 'hr',
                 'description' => 'Faculty HR',
             ],
-            // [
-            //     'role_name' => 'hr_admin_dashboard',
-            //     'type' => 'hr',
-            //     'description' => 'Super Admin Dashboard HR',
-            // ],
+
             [
                 'role_name' => 'logi_admin', // 6
                 'type' => 'logi',
@@ -62,13 +54,9 @@ class RoleSeeder extends Seeder
                 'type' => 'logi',
                 'description' => 'Faculty LS',
             ],
-            // [
-            //     'role_name' => 'logi_admin_dashboard',
-            //     'type' => 'logi',
-            //     'description' => 'Property Custodian Dashboard LS',
-            // ]
+
             [
-                'role_name' => 'hr_manager',
+                'role_name' => 'hr_manager', // 8
                 'type' => 'hr',
                 'description' => 'Manager HR',
             ],
@@ -81,14 +69,18 @@ class RoleSeeder extends Seeder
 
         // 0001
         Faculty::find(1)->roles()->attach([4]); // hr_admin
-        Faculty::find(1)->roles()->attach([5]); // hr_admin
+        Faculty::find(1)->roles()->attach([3]); // sis_faculty
+        Faculty::find(1)->roles()->attach([5]); // hr_faculty
+        Faculty::find(1)->roles()->attach([7]); // sis_faculty
 
         // 002
+        Faculty::find(2)->roles()->attach([3]); // sis_faculty
         Faculty::find(2)->roles()->attach([5]); // hr_faculty
+        Faculty::find(2)->roles()->attach([7]); // sis_faculty
 
         // 0003
+        Faculty::find(3)->roles()->attach([1]); // sis_admin
         Faculty::find(3)->roles()->attach([4]); // hr_admin
-        Faculty::find(3)->roles()->attach([1]); // sis_faculty
 
         // 0004
         Faculty::find(4)->roles()->attach([1]); // sis_admin
@@ -107,18 +99,20 @@ class RoleSeeder extends Seeder
 
         // 0008
         Faculty::find(8)->roles()->attach([3]); // sis_faculty
+        Faculty::find(8)->roles()->attach([5]); // hr_faculty
+        Faculty::find(8)->roles()->attach([7]); // logi_faculty
 
         // 0009
         Faculty::find(9)->roles()->attach([1]); // sis_admin
         Faculty::find(9)->roles()->attach([2]); // sis_registrar
         Faculty::find(9)->roles()->attach([3]); // sis_faculty
+        Faculty::find(9)->roles()->attach([5]); // hr_faculty
+        Faculty::find(9)->roles()->attach([7]); // sis_faculty
 
         // 0010
         Faculty::find(10)->roles()->attach([2]); // sis_registrar
 
         // 0011
         Faculty::find(11)->roles()->attach([8]); // sis_registrar
-
-
     }
 }
