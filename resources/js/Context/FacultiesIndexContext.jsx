@@ -1,9 +1,7 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import { router } from "@inertiajs/react";
 
 const FacultiesIndexContext = createContext();
-
-const AUTH_API_KEY = import.meta.env.VITE_AUTH_API_KEY;
 
 const initialState = {
     isLoading: false,
@@ -33,7 +31,7 @@ function reducer(state, action) {
 }
 
 export function FacultiesIndexProvider({ children }) {
-    const [{ selectedFacultyDetails, isLoading, selectedFacultyToDelete }, dispatch] = useReducer(reducer, initialState);
+    const [{ selectedFacultyDetails, isLoading }, dispatch] = useReducer(reducer, initialState);
 
     const [deleteModal, setDeleteModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -74,7 +72,6 @@ export function FacultiesIndexProvider({ children }) {
             const response = await fetch(`/api/admin/faculty/show?id=${facultyId}`, {
                 method: "GET",
                 headers: {
-                    "x-auth-api-key": AUTH_API_KEY,
                     "content-type": "application/json",
                 },
             });
