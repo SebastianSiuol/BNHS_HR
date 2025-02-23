@@ -4,19 +4,17 @@ import { usePage, router } from "@inertiajs/react";
 
 // Compoenents
 import { NavButton } from "@/Components/MultiStepForm/NavButton";
-
+import RolesOptionsFields from "@/Components/RolesOptionsFields";
 
 // Hooks and Contexts
 import { useMultiStepForm } from "@/Context/MultiStepFormContext";
 import { usePersistsData } from "@/Hooks/usePersistsData";
-import { useFetchToFillDataToSelect } from "@/Hooks/useFetchToFillDataToSelect";
 
 const FORM_DATA_KEY = "fifth_form_local_data";
 
 export function RolesForm() {
-    const { retrievedRoles: roles } = usePage().props
-    const { dispatch, isLoading, getSavedData, prevStep, nextStep, AUTH_API_KEY } = useMultiStepForm();
-    // const [roles, setRoles] = useState([]);
+    const { rolesOptions } = usePage().props
+    const { getSavedData, prevStep, nextStep, } = useMultiStepForm();
     const [roleError, setRoleError] = useState('');
     const {
         register,
@@ -24,17 +22,14 @@ export function RolesForm() {
         watch,
         getValues,
     } = useForm({
-        // resolver: zodResolver(rolesFormSchema),
-        defaultValues: getSavedData(FORM_DATA_KEY),
+        defaultValues: getSavedData(FORM_DATA_KEY) ?? [],
     });
 
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    // useFetchToFillDataToSelect({ setState: setRoles, apiKey: AUTH_API_KEY, link: "/api/roles" });
-
     function rolesFormSubmit(data) {
 
-        if(getValues('roles_id').length === 0){
+        if(getValues("roles_id") === undefined || getValues("roles_id").length === 0){
             setRoleError((roleError) => "Please select a role!");
             return;
         } else {
@@ -46,52 +41,12 @@ export function RolesForm() {
 
     return (
         <>
-            <div className="mb-6 relative">
-                <h3 className="text-lg font-medium text-gray-700 mb-4">Select User Roles:</h3>
+            <RolesOptionsFields
+                register={register}
+                rolesOptions={rolesOptions}
+                roleError={roleError}
+            />
 
-                {roleError && <p className="text-red-600 italic font-bold absolute top-0 right-0">{roleError}</p>}
-
-                <div className="ml-5">
-                    <div className="mb-4">
-                        <p className="font-semibold">Student Information System</p>
-                        <div className="ml-4 flex flex-col">
-                            {roles
-                                .filter((role) => role.type === "sis")
-                                .map((role) => (
-                                    <label>
-                                        <input type="checkbox" value={role.id} {...register("roles_id")} /> {`${role.description}`}
-                                    </label>
-                                ))}
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <p className="font-semibold">Human Resources Management System</p>
-                        <div className="ml-4 flex flex-col">
-                            {roles
-                                .filter((role) => role.type === "hr")
-                                .map((role) => (
-                                    <label>
-                                        <input type="checkbox" value={role.id} {...register("roles_id")} /> {`${role.description}`}
-                                    </label>
-                                ))}
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <p className="font-semibold">Logistics System</p>
-                        <div className="ml-4 flex flex-col">
-                            {roles
-                                .filter((role) => role.type === "logi")
-                                .map((role) => (
-                                    <label>
-                                        <input type="checkbox" value={role.id} {...register("roles_id")} /> {`${role.description}`}
-                                    </label>
-                                ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div className={"flex justify-between mt-16"}>
                 <NavButton type={"prev"} onClick={prevStep}>
                     Back

@@ -12,12 +12,7 @@ import { Buttons } from "@/Components/Buttons";
 import { ContentContainer } from "@/Components/ContentContainer";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { FacultyAutoComplete } from "@/Components/FacultyAutoComplete";
-
-const roleTypes = [
-    { type: "sis", label: "Student Information System" },
-    { type: "hr", label: "Human Resources Management System" },
-    { type: "logi", label: "Logistics System" },
-];
+import RolesOptionsFields from "@/Components/RolesOptionsFields";
 
 export default function Index() {
     return (
@@ -32,26 +27,34 @@ export default function Index() {
 }
 
 function HandlePage() {
-    const { retrievedRoles: roles } = usePage().props
+    const { rolesOptions } = usePage().props;
     const [selectedFaculty, setSelectedFaculty] = useState({});
+    const [roleError, setRoleError] = useState("");
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, setValue, watch, getValues } = useForm({
+        defaultValues: { roles_id: [] },
+    });
 
     useEffect(() => {
-        setValue('roles_id', selectedFaculty?.roles?.map((role)=>role.id.toString()));
-
-    }, [selectedFaculty])
-
+        setValue(
+            "roles_id",
+            selectedFaculty?.roles?.map((role) => role.id.toString())
+        );
+    }, [selectedFaculty]);
 
     function rolesUpdate(data, e) {
         e.preventDefault();
-        if (Object.keys(selectedFaculty || {}).length !== 0) {
-            router.patch(route('admin.config.role.update', selectedFaculty?.id), data)
+        if (getValues("roles_id") === undefined || getValues("roles_id").length === 0) {
+            setRoleError("Please select a role!");
+            return;
+        } else {
+            setRoleError("");
+            if (Object.keys(selectedFaculty || {}).length !== 0) {
+                router.patch(
+                    route("admin.config.role.update", selectedFaculty?.id),
+                    data
+                );
+            }
         }
     }
 
@@ -59,7 +62,10 @@ function HandlePage() {
         <>
             <>
                 <form className="relative ">
-                    <label className={"flex flex-col my-2 text-sm space-y-2 text-black font-normal"}>
+                    <label
+                        className={
+                            "flex flex-col my-2 text-sm space-y-2 text-black font-normal"
+                        }>
                         <span>Search Faculty</span>
                         <FacultyAutoComplete
                             selected={selectedFaculty}
@@ -72,23 +78,18 @@ function HandlePage() {
                     <div>
                         <span>
                             Selected Faculty:{" "}
-                            {(Object.keys(selectedFaculty || {}).length !== 0)
+                            {Object.keys(selectedFaculty || {}).length !== 0
                                 ? `[${selectedFaculty?.faculty_code}] ${selectedFaculty?.personal_information?.first_name} ${selectedFaculty?.personal_information?.last_name}`
                                 : "N/A"}
                         </span>
                     </div>
 
-                    <div className="my-3 ml-5">
-                        {roleTypes.map(({ type, label }) => (
-                            <RoleCheckboxGroup
-                                key={type}
-                                roles={roles}
-                                type={type}
-                                label={label}
-                                register={register}
-                            />
-                        ))}
-                    </div>
+                    <RolesOptionsFields
+                        register={register}
+                        rolesOptions={rolesOptions}
+                        roleError={roleError}
+                    />
+
                     <div className={"flex justify-between mt-16"}>
                         <Buttons
                             type={"submit"}
@@ -101,21 +102,3 @@ function HandlePage() {
         </>
     );
 }
-
-
-
-function RoleCheckboxGroup({ roles, type, label, register }) {
-    return (
-      <div className="mb-4">
-        <p className="font-semibold">{label}</p>
-        <div className="ml-4 flex flex-col">
-          {roles.filter((role) => role.type === type).map((role) => (
-            <label key={role.id}>
-              <input type="checkbox" value={role.id} {...register("roles_id")} />
-              {" "}{role.description}
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  }
