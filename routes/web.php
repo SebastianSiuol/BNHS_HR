@@ -38,6 +38,7 @@ use App\Http\Controllers\ParentMemberController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RPMSConfigurationController;
 use App\Http\Controllers\SpouseMemberController;
+use App\Http\Controllers\SystemOptionsController;
 use App\Http\Controllers\VoluntaryWorkController;
 use App\Http\Controllers\WorkExperienceController;
 use App\Models\ParentMember;
@@ -151,6 +152,8 @@ Route::middleware('auth')->group(function () {
          *
          */
 
+        Route::get('/faculty/systems/options', [SystemOptionsController::class, 'index'])                               ->name('faculty.systems.options');
+
         Route::get('/faculty/dashboard', [FacultyDashboardController::class, 'index'])                                  ->name('faculty.dashboard');
 
         // Faculty
@@ -241,6 +244,9 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/redirect/admin/sis', [JWTRedirectController::class, 'sisAdmin'])                                           ->name('sis.admin.redirect');
+Route::get('/redirect/registrar/sis', [JWTRedirectController::class, 'sisRegistrar'])                                   ->name('sis.registrar.redirect');
+Route::get('/redirect/faculty/sis', [JWTRedirectController::class, 'sisFaculty'])                                       ->name('sis.faculty.redirect');
+
 Route::get('/redirect/logistics', [JWTRedirectController::class, 'logiAdmin'])                                          ->name('logistics.admin.redirect');
 Route::get('/call', [APIController::class, 'callApi']) ->name('call.api.proxy');
 
