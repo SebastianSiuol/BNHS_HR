@@ -256,6 +256,7 @@ class FacultyApiController extends Controller
         $transformedFaculties = $facultiesQuery->map(function ($faculty) {
             return [
                 'id' => $faculty->id,
+                'faculty_code' => $faculty->faculty_code,
                 'first_name' => $faculty->personal_information->first_name ?? null,
                 'last_name' => $faculty->personal_information->last_name ?? null,
             ];
