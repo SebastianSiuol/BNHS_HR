@@ -36,7 +36,7 @@ class FacultyController extends Controller
         $auth_department_id = $auth_faculty->designation->department_id;
         $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
 
-        $facultiesQuery = Faculty::select('id','public_id', 'faculty_code', 'designation_id', 'shift_id',)
+        $facultiesQuery = Faculty::select('id','public_id', 'faculty_code', 'designation_id', 'shift_id', 'email',)
         ->with([
             'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
             'shift' => fn($query) => $query->select('id', 'name'),
@@ -202,13 +202,23 @@ class FacultyController extends Controller
         $departments = Department::select('id', 'name')
         ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
         ->get();
-        $positions = SchoolPosition::select('id', 'title')->get();
+
+        $positions = SchoolPosition::select('id', 'title', 'allotment')->withCount('faculties')->get();
         $shifts = Shift::select('id', 'name')->get();
+
+        $mappedPositions = $positions->map(
+            fn($pos) => [
+                'id' => $pos->id,
+                'title' => $pos->title,
+                'allotmentLeft' => $pos->allotment - $pos->faculties_count,
+                'isFull' => $pos->faculties_count >= $pos->allotment,
+            ]
+        );
 
         return Inertia::render('Admin/Faculty/Edit/CompDeets', [
             'selectedFaculty' => $formatted_faculty,
             'departments' => $departments,
-            'positions' => $positions,
+            'positions' => $mappedPositions,
             'shifts' => $shifts,
         ]);
     }
