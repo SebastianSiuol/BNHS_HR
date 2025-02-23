@@ -36,7 +36,7 @@ class FacultyController extends Controller
         $auth_department_id = $auth_faculty->designation->department_id;
         $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
 
-        $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id', 'shift_id',)
+        $facultiesQuery = Faculty::select('id','public_id', 'faculty_code', 'designation_id', 'shift_id',)
         ->with([
             'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
             'shift' => fn($query) => $query->select('id', 'name'),
@@ -49,7 +49,6 @@ class FacultyController extends Controller
         }
 
         $faculties = $facultiesQuery->paginate(5);
-
 
         return Inertia::render('Admin/Faculty/Index', [
             'faculties' => $faculties,
@@ -127,27 +126,137 @@ class FacultyController extends Controller
         return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
 
-
-    public function edit(int $faculty)
+    public function editPsnDeets(int $faculty)
     {
-        $retrieved_faculty = Faculty::find($faculty);
+        $fac = Faculty::find($faculty);
 
-        $formatted_faculty = $this->formatFacultyForEdit($retrieved_faculty);
+        $formatted_faculty = [
+                    'faculty_id'                                => $fac->id ?? 'N/A',
+                    'id'                                    => $fac->personal_information->id ?? 'N/A',
+                    'first_name'                            => $fac->personal_information->first_name ?? 'N/A',
+                    'middle_name'                           => $fac->personal_information->middle_name ?? 'N/A',
+                    'last_name'                             => $fac->personal_information->last_name ?? 'N/A',
+                    'name_extension_id'                     => $fac->personal_information->name_extension->id ?? 'N/A',
+                    'place_of_birth'                        => $fac->personal_information->place_of_birth ?? 'N/A',
+                    'date_of_birth'                         => $fac->personal_information->date_of_birth ?? 'N/A',
+                    'sex'                                   => $fac->personal_information->sex ?? 'N/A',
+                    'civil_status_id'                       => $fac->personal_information->civil_status->id ?? 'N/A',
+                    'contact_number'                        => $fac->personal_information->contact_no ?? 'N/A',
+                    'telephone_number'                      => $fac->personal_information->telephone_no ?? 'N/A',
+                    'contact_person_name'                   => $fac->personal_information->contact_person->name ?? 'N/A',
+                    'contact_person_number'                 => $fac->personal_information->contact_person->contact_no ?? 'N/A',
+            ];
+        return Inertia::render('Admin/Faculty/Edit/PsnDeets', [
+            'selectedFaculty' => $formatted_faculty,
+        ]);
+    }
+
+    public function editAddress(int $faculty)
+    {
+        $fac = Faculty::find($faculty);
+
+        $formatted_faculty = [
+            'faculty_id'                                => $fac->id ?? 'N/A',
+            'residential_id'                            => $fac->personal_information->residential_address->id ?? 'N/A',
+            'residential_houseNumber'                   => $fac->personal_information->residential_address->house_block_no ?? 'N/A',
+            'residential_street'                        => $fac->personal_information->residential_address->street ?? 'N/A',
+            'residential_subdivision'                   => $fac->personal_information->residential_address->subdivision_village ?? 'N/A',
+            'residential_zipCode'                       => $fac->personal_information->residential_address->zip_code ?? 'N/A',
+            'permanent_id'                              => $fac->personal_information->permanent_address->id ?? 'N/A',
+            'permanent_houseNumber'                     => $fac->personal_information->permanent_address->house_block_no ?? 'N/A',
+            'permanent_street'                          => $fac->personal_information->permanent_address->street ?? 'N/A',
+            'permanent_subdivision'                     => $fac->personal_information->permanent_address->subdivision_village ?? 'N/A',
+            'permanent_zipCode'                         => $fac->personal_information->permanent_address->zip_code ?? 'N/A',
+        ];
+
+        return Inertia::render('Admin/Faculty/Edit/Addresses', [
+            'selectedFaculty' => $formatted_faculty,
+
+        ]);
+    }
+
+    public function editCompDeets(int $faculty)
+    {
+        $fac = Faculty::find($faculty);
+
+        $formatted_faculty = [
+            'faculty_id'                            => $fac->id ?? 'N/A',
+            'faculty_code'                          => $fac->faculty_code ?? 'N/A',
+            'date_of_joining'                       => $fac->date_of_joining ?? 'N/A',
+            'designation_id'                        => $fac->designation_id ?? 'N/A',
+            'department_id'                         => $fac->designation->department->id ?? 'N/A',
+            'position_id'                           => $fac->school_position->id ?? 'N/A',
+            'shift_id'                              => $fac->shift->id ?? 'N/A',
+        ];
+
         $departments = Department::select('id', 'name')
-            ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
-            ->get();
+        ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
+        ->get();
         $positions = SchoolPosition::select('id', 'title')->get();
         $shifts = Shift::select('id', 'name')->get();
-        $data = Role::all(['id', 'type', 'description']);
 
-        return Inertia::render('Admin/Faculty/Edit', [
-            'selected_faculty' => $formatted_faculty,
+        return Inertia::render('Admin/Faculty/Edit/CompDeets', [
+            'selectedFaculty' => $formatted_faculty,
             'departments' => $departments,
             'positions' => $positions,
             'shifts' => $shifts,
-            'retrievedRoles' => $data,
-
         ]);
+    }
+
+    public function editRoles(int $faculty)
+    {
+        $fac = Faculty::find($faculty);
+
+        $formatted_faculty = [
+            'public_id' => $fac->public_id,
+            'roles' => [
+                'roles_id' => $fac->roles->pluck('id')
+            ]
+        ];
+
+        $data = Role::all(['id', 'type', 'description']);
+
+        return Inertia::render('Admin/Faculty/Edit/Roles', [
+            'selectedFaculty' => $formatted_faculty,
+            'rolesOption' => $data,
+        ]);
+    }
+
+    public function updateRoles(Request $request, string $public_id)
+    {
+
+        $faculty = Faculty::where('public_id', $public_id)->first();
+
+        $request->validate([
+            'roles_id' => 'required|array',
+        ], [
+            'roles_id.required' => 'Atleast one role is required!',
+        ]);
+
+        $roles = $request->roles_id;
+        $roles_list = Role::whereIn('id', $roles)->pluck('role_name')->map(fn($role) => strtolower($role));
+
+        if ($roles_list->contains('hr_admin') && $roles_list->contains('hr_manager')) {
+            return redirect()
+                ->back()
+                ->withErrors(['roles_id' => 'Faculty cannot be an Admin and a Manager at the same time.'])
+                ->withInput();
+        }
+
+        $old_roles = $faculty->roles->pluck('id');
+        $fac_id = $faculty->id;
+
+        $faculty->roles()->detach($old_roles);
+        $faculty->roles()->attach($request->roles_id);
+        $faculty->save();
+
+        DB::table('sessions')
+            ->whereUserId($fac_id)
+            ->delete();
+
+        return redirect()
+            ->route('admin.faculty.index')
+            ->with('success', 'Employee role updated successfully!');
     }
 
     public function update(Request $request, Faculty $faculty)
@@ -322,61 +431,6 @@ class FacultyController extends Controller
             'faculties' => $faculties,
         ]);
     }
-    public function formatFacultyForEdit($faculty)
-    {
-        return ([
-            'id'                                        => $faculty->id ?? 'N/A',
-            'personalDetails' => [
-                'id'                                    => $faculty->personal_information->id ?? 'N/A',
-                'first_name'                            => $faculty->personal_information->first_name ?? 'N/A',
-                'middle_name'                           => $faculty->personal_information->middle_name ?? 'N/A',
-                'last_name'                             => $faculty->personal_information->last_name ?? 'N/A',
-                'name_extension_id'                     => $faculty->personal_information->name_extension->id ?? 'N/A',
-                'place_of_birth'                        => $faculty->personal_information->place_of_birth ?? 'N/A',
-                'date_of_birth'                         => $faculty->personal_information->date_of_birth ?? 'N/A',
-                'sex'                                   => $faculty->personal_information->sex ?? 'N/A',
-                'civil_status_id'                       => $faculty->personal_information->civil_status->id ?? 'N/A',
-                'contact_number'                        => $faculty->personal_information->contact_no ?? 'N/A',
-                'telephone_number'                      => $faculty->personal_information->telephone_no ?? 'N/A',
-                'contact_person_name'                   => $faculty->personal_information->contact_person->name ?? 'N/A',
-                'contact_person_number'                 => $faculty->personal_information->contact_person->contact_no ?? 'N/A',
-            ],
-            'addresses' => [
-                'residential_id'                        => $faculty->personal_information->residential_address->id ?? 'N/A',
-                'residential_houseNumber'                 => $faculty->personal_information->residential_address->house_block_no ?? 'N/A',
-                'residential_street'                    => $faculty->personal_information->residential_address->street ?? 'N/A',
-                'residential_subdivision'               => $faculty->personal_information->residential_address->subdivision_village ?? 'N/A',
-                // 'residential_barangay'                  => $faculty->personal_information->residential_address->barangay ?? 'N/A',
-                // 'residential_city'                      => $faculty->personal_information->residential_address->city_municipality ?? 'N/A',
-                // 'residential_province'                  => $faculty->personal_information->residential_address->province ?? 'N/A',
-                'residential_zipCode'                  => $faculty->personal_information->residential_address->zip_code ?? 'N/A',
-                'permanent_id'                          => $faculty->personal_information->permanent_address->id ?? 'N/A',
-                'permanent_houseNumber'                   => $faculty->personal_information->permanent_address->house_block_no ?? 'N/A',
-                'permanent_street'                      => $faculty->personal_information->permanent_address->street ?? 'N/A',
-                'permanent_subdivision'                 => $faculty->personal_information->permanent_address->subdivision_village ?? 'N/A',
-                // 'permanent_barangay'                    => $faculty->personal_information->permanent_address->barangay ?? 'N/A',
-                // 'permanent_city'                        => $faculty->personal_information->permanent_address->city_municipality ?? 'N/A',
-                // 'permanent_province'                    => $faculty->personal_information->permanent_address->province ?? 'N/A',
-                'permanent_zipCode'                    => $faculty->personal_information->permanent_address->zip_code ?? 'N/A',
-            ],
-            'companyDetails' => [
-                'faculty_code'                          => $faculty->faculty_code ?? 'N/A',
-                'date_of_joining'                       => $faculty->date_of_joining ?? 'N/A',
-                'designation_id'                        => $faculty->designation_id ?? 'N/A',
-                'department_id'                         => $faculty->designation->department->id ?? 'N/A',
-                'position_id'                           => $faculty->school_position->id ?? 'N/A',
-                'shift_id'                              => $faculty->shift->id ?? 'N/A',
-            ],
-            'accountLoginDetails' => [
-                'email' => $faculty->email,
-
-            ],
-            'roles' => [
-                'roles_id' => $faculty->roles->pluck('id')
-            ]
-        ]);
-    }
-
 
     public function pds()
     {
