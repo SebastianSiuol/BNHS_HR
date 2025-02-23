@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\PersonalDetailsSheetExport;
 use App\Services\StoreFacultyService;
 use App\Http\Requests\StoreFacultyRequest;
-use App\Models\Configuration\Position;
 use App\Models\Configuration\SchoolPosition;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,7 +18,6 @@ use Illuminate\Support\Facades\Http;
 // Models
 use App\Models\Faculty;
 use App\Models\FacultyAccountInformation\Department;
-use App\Models\FacultyAccountInformation\Designation;
 use App\Models\Role;
 use App\Models\Shift;
 use Maatwebsite\Excel\Facades\Excel;
@@ -318,7 +316,7 @@ class FacultyController extends Controller
             ->orWhereHas('shift', function ($subQuery) use ($query) {
                 $subQuery->where('name', 'LIKE', '%' . request('query') . '%');
             })
-            ->paginate(5);
+            ->paginate(5)->withQueryString();
 
         return Inertia::render('Admin/Faculty/Index', [
             'faculties' => $faculties,
