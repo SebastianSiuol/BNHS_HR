@@ -78,7 +78,7 @@ class FacultyController extends Controller
         );
 
         $shifts = Shift::select('id', 'name')->get();
-        $rolesOptions = Role::all(['id', 'type', 'description']);
+        $rolesOptions = Role::all(['id','role_name', 'type', 'description']);
 
         return Inertia::render('Admin/Faculty/Create', [
             'departments' => $departments,
@@ -251,11 +251,11 @@ class FacultyController extends Controller
             ]
         ];
 
-        $data = Role::all(['id', 'type', 'description']);
+        $rolesOptions = Role::all(['id','role_name', 'type', 'description']);
 
         return Inertia::render('Admin/Faculty/Edit/Roles', [
             'selectedFaculty' => $formatted_faculty,
-            'rolesOptions' => $data,
+            'rolesOptions' => $rolesOptions,
         ]);
     }
 
