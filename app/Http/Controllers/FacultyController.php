@@ -126,26 +126,36 @@ class FacultyController extends Controller
         return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
 
+
+    /**
+     * ===============================================================================
+     *
+     * Edit Functions
+     *
+     * ===============================================================================
+     *
+     */
+
     public function editPsnDeets(int $faculty)
     {
         $fac = Faculty::find($faculty);
 
         $formatted_faculty = [
-                    'faculty_id'                                => $fac->id ?? 'N/A',
-                    'id'                                    => $fac->personal_information->id ?? 'N/A',
-                    'first_name'                            => $fac->personal_information->first_name ?? 'N/A',
-                    'middle_name'                           => $fac->personal_information->middle_name ?? 'N/A',
-                    'last_name'                             => $fac->personal_information->last_name ?? 'N/A',
-                    'name_extension_id'                     => $fac->personal_information->name_extension->id ?? 'N/A',
-                    'place_of_birth'                        => $fac->personal_information->place_of_birth ?? 'N/A',
-                    'date_of_birth'                         => $fac->personal_information->date_of_birth ?? 'N/A',
-                    'sex'                                   => $fac->personal_information->sex ?? 'N/A',
-                    'civil_status_id'                       => $fac->personal_information->civil_status->id ?? 'N/A',
-                    'contact_number'                        => $fac->personal_information->contact_no ?? 'N/A',
-                    'telephone_number'                      => $fac->personal_information->telephone_no ?? 'N/A',
-                    'contact_person_name'                   => $fac->personal_information->contact_person->name ?? 'N/A',
-                    'contact_person_number'                 => $fac->personal_information->contact_person->contact_no ?? 'N/A',
-            ];
+            'public_id'                            => $fac->public_id ?? 'N/A',
+            'id'                                    => $fac->personal_information->id ?? 'N/A',
+            'first_name'                            => $fac->personal_information->first_name ?? 'N/A',
+            'middle_name'                           => $fac->personal_information->middle_name ?? 'N/A',
+            'last_name'                             => $fac->personal_information->last_name ?? 'N/A',
+            'name_extension_id'                     => $fac->personal_information->name_extension->id ?? 'N/A',
+            'place_of_birth'                        => $fac->personal_information->place_of_birth ?? 'N/A',
+            'date_of_birth'                         => $fac->personal_information->date_of_birth ?? 'N/A',
+            'sex'                                   => $fac->personal_information->sex ?? 'N/A',
+            'civil_status_id'                       => $fac->personal_information->civil_status->id ?? 'N/A',
+            'contact_number'                        => $fac->personal_information->contact_no ?? 'N/A',
+            'telephone_number'                      => $fac->personal_information->telephone_no ?? 'N/A',
+            'contact_person_name'                   => $fac->personal_information->contact_person->name ?? 'N/A',
+            'contact_person_number'                 => $fac->personal_information->contact_person->contact_no ?? 'N/A',
+        ];
         return Inertia::render('Admin/Faculty/Edit/PsnDeets', [
             'selectedFaculty' => $formatted_faculty,
         ]);
@@ -156,7 +166,7 @@ class FacultyController extends Controller
         $fac = Faculty::find($faculty);
 
         $formatted_faculty = [
-            'faculty_id'                                => $fac->id ?? 'N/A',
+            'public_id'                                 => $fac->public_id ?? 'N/A',
             'residential_id'                            => $fac->personal_information->residential_address->id ?? 'N/A',
             'residential_houseNumber'                   => $fac->personal_information->residential_address->house_block_no ?? 'N/A',
             'residential_street'                        => $fac->personal_information->residential_address->street ?? 'N/A',
@@ -180,7 +190,7 @@ class FacultyController extends Controller
         $fac = Faculty::find($faculty);
 
         $formatted_faculty = [
-            'faculty_id'                            => $fac->id ?? 'N/A',
+            'public_id'                             => $fac->public_id,
             'faculty_code'                          => $fac->faculty_code ?? 'N/A',
             'date_of_joining'                       => $fac->date_of_joining ?? 'N/A',
             'designation_id'                        => $fac->designation_id ?? 'N/A',
@@ -220,6 +230,146 @@ class FacultyController extends Controller
             'selectedFaculty' => $formatted_faculty,
             'rolesOption' => $data,
         ]);
+    }
+
+    /**
+     * ===============================================================================
+     *
+     * Update Functions
+     *
+     * ===============================================================================
+     *
+     */
+
+    public function updatePsnDeets(Request $request, string $public_id)
+    {
+        $faculty = Faculty::where('public_id', $public_id)->first();
+
+        $request->validate([
+            'first_name'                    => ['required'],
+            'middle_name'                   => ['nullable'],
+            'last_name'                     => ['required'],
+            'name_extension_id'             => ['nullable'],
+            'sex'                           => ['required'],
+            'place_of_birth'                => ['required'],
+            'date_of_birth'                 => ['required', 'date', 'before: -18 year'],
+            'contact_number'                => ['required'],
+            'telephone_number'              => ['nullable'],
+            'civil_status_id'               => ['required'],
+            'department_head'               => ['nullable'],
+        ]);
+
+        // PERSONAL INFORMATION
+        $psn_info = $faculty->personal_information;
+        $psn_info->update([
+            'first_name'               => $request->first_name,
+            'middle_name'              => $request->middle_name,
+            'last_name'                => $request->last_name,
+            'name_extension_id'        => $request->name_extension_id,
+            'sex'                      => $request->sex,
+            'place_of_birth'           => $request->place_of_birth,
+            'date_of_birth'            => $request->date_of_birth,
+            'contact_no'               => $request->contact_number,
+            'telephone_no'             => $request->telephone_number,
+            'civil_status_id'          => $request->civil_status_id,
+        ]);
+
+
+        $psn_info->save();
+
+        return redirect()
+            ->route('admin.faculty.index')
+            ->with('success', 'Employee updated successfully!');
+    }
+
+    public function updateAddresses(Request $request, string $public_id)
+    {
+        $faculty = Faculty::where('public_id', $public_id)->first();
+        $psn_info = $faculty->personal_information;
+
+        $request->validate([
+
+            // ADDRESSES
+            'residential_houseNumber'           => ['required'],
+            'residential_street'                => ['required'],
+            'residential_subdivision'           => ['required'],
+            'residential_barangayName'          => ['required'],
+            'residential_cityName'              => ['required'],
+            'residential_provinceName'          => ['required'],
+            'residential_zipCode'               => ['required'],
+
+            // CONDITIONAL PERMANENT ADDRESS
+            'permanent_houseNumber'             => ['required_unless:sameAddress,true'],
+            'permanent_street'                  => ['required_unless:sameAddress,true'],
+            'permanent_subdivision'             => ['required_unless:sameAddress,true'],
+            'permanent_barangayName'            => ['required_unless:sameAddress,true'],
+            'permanent_cityName'                => ['required_unless:sameAddress,true'],
+            'permanent_provinceName'            => ['required_unless:sameAddress,true'],
+            'permanent_zipCode'                 => ['required_unless:sameAddress,true'],
+
+            'sameAddress'                                  => ['nullable', 'boolean'],
+        ]);
+
+        //      RESIDENTIAL ADDRESS
+        $res_addr = $psn_info->residential_address;
+        $res_addr->house_block_no           = $request->residential_houseNumber;
+        $res_addr->street                   = $request->residential_street;
+        $res_addr->subdivision_village      = $request->residential_subdivision;
+        $res_addr->barangay                 = $request->residential_barangayName;
+        $res_addr->city_municipality        = $request->residential_cityName;
+        $res_addr->province                 = $request->residential_provinceName;
+        $res_addr->zip_code                 = $request->residential_zipCode;
+
+        if ($request->sameAddress) {
+            $perm_addr = $psn_info->permanent_address;
+            $perm_addr->house_block_no          = $request->residential_houseNumber;
+            $perm_addr->street                  = $request->residential_street;
+            $perm_addr->subdivision_village     = $request->residential_subdivision;
+            $perm_addr->barangay                = $request->residential_barangayName;
+            $perm_addr->city_municipality       = $request->residential_cityName;
+            $perm_addr->province                = $request->residential_provinceName;
+            $perm_addr->zip_code                = $request->residential_zipCode;
+        } else {
+            $perm_addr = $psn_info->permanent_address;
+            $perm_addr->house_block_no          = $request->permanent_houseNumber;
+            $perm_addr->street                  = $request->permanent_street;
+            $perm_addr->subdivision_village     = $request->permanent_subdivision;
+            $perm_addr->barangay                = $request->permanent_barangayName;
+            $perm_addr->city_municipality       = $request->permanent_cityName;
+            $perm_addr->province                = $request->permanent_provinceName;
+            $perm_addr->zip_code                = $request->permanent_zipCode;
+        }
+
+        $res_addr->save();
+        $perm_addr->save();
+
+        return redirect()
+            ->route('admin.faculty.index')
+            ->with('success', 'Employee updated successfully!');
+    }
+
+    public function updateCompDeets(Request $request, string $public_id)
+    {
+        $faculty = Faculty::where('public_id', $public_id)->first();
+
+        $request->validate([
+            'designation_id'                => ['required'],
+            'shift_id'                      => ['required'],
+            'position_id'                   => ['required'],
+            'department_head'               => ['nullable'],
+        ]);
+
+        $validatedDeptHead = $request->department_head == 'blank' ? null : $request->department_head;
+
+        $faculty->designation_id = $request->designation_id;
+        $faculty->school_position_id = $request->position_id;
+        $faculty->shift_id = $request->shift_id;
+        $faculty->department_head_id = $validatedDeptHead;
+        $faculty->save();
+
+        return redirect()
+            ->route('admin.faculty.index')
+            ->with('success', 'Employee updated successfully!');
     }
 
     public function updateRoles(Request $request, string $public_id)
