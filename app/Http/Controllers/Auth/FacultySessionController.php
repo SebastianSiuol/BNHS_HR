@@ -45,11 +45,11 @@ class FacultySessionController extends Controller
         $roleRedirects = [
             'hr_admin' => route('admin.dashboard'),
             'hr_manager' => route('admin.dashboard'),
-            'hr_faculty' => route('faculty.dashboard'),
             'sis_admin' => "https://bhnhs-sis.onrender.com/admin/dashboard",
             'sis_registrar' => "https://bhnhs-sis.onrender.com/admin/dashboard",
-            'sis_faculty' => "https://bhnhs-sis.onrender.com/faculty/home",
             'logi_admin' => "https://batasan-logistics.onrender.com/admin_dashboard",
+            'hr_faculty' => route('faculty.dashboard'),
+            'sis_faculty' => "https://bhnhs-sis.onrender.com/faculty/home",
             // 'logi_admin' => "http://192.168.0.111:8000/admin_dashboard",
             // 'logi_admin' => "http://192.168.0.111:8000/redirect",
 
