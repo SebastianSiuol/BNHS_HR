@@ -227,11 +227,21 @@ export function CompanyDetailsForm() {
 
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Position</span>
-                        <InputSelect id={"position_id"} register={register} error={errors}>
+                        <InputSelect
+                            id={"position_id"}
+                            register={register}
+                            error={errors}>
                             <option value={"0"}>Select Position</option>
                             {positions.map((pos) => (
-                                <option value={`${pos.id}`} key={pos.id}>
-                                    {capitalizeFirstLetter(pos.title)}
+                                <option
+                                    value={`${pos.id}`}
+                                    key={pos.id}
+                                    disabled={pos.isFull}>
+                                    <span className="font-bold">{`${capitalizeFirstLetter(
+                                        pos.title
+                                    )}`}</span>
+                                    <span>{` | `}</span>
+                                    <span>{`Slot Left:${pos.allotmentLeft}`}</span>
                                 </option>
                             ))}
                         </InputSelect>
