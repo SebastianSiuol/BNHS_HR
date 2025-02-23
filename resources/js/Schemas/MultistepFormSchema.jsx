@@ -42,6 +42,7 @@ export const addressDataSchema = z.object({
             message: "Please select a Barangay.",
         }),
     residential_zipCode: z.string().min(1, { message: "Zip Code is required!" }),
+    sameAddress: z.any().optional()
 });
 
 export const emailDataSchema = z.object({
