@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
 
 export function FacultyAutoComplete({ selected, setSelected }) {
@@ -14,7 +14,6 @@ export function FacultyAutoComplete({ selected, setSelected }) {
                 const response = await fetch(`/api/faculty/autocomplete?search=${query}`, {
                     method: "GET",
                     headers: {
-                        "x-auth-api-key": AUTH_API_KEY,
                         "content-type": "application/json",
                     },
                     signal: autoCompleteController.signal,
@@ -64,7 +63,6 @@ export function FacultyAutoComplete({ selected, setSelected }) {
                     <ComboboxInput
                         placeholder="Faculty Name"
                         onFocus={() => setIsInputClicked(true)}
-                        // onBlur={() => setIsInputClicked(false)}
                         onChange={(e) => setQuery(e.target.value)}
                         className={
                             "w-full p-2.5 text-gray-900 text-sm bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-600 focus:border-blue-600"
