@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import  dayjs  from 'dayjs';
 
 import { ContentContainer } from "@/Components/ContentContainer";
 import { ContentHeader } from "@/Components/ContentHeader";
@@ -36,7 +37,7 @@ function PersonalDetails() {
         { id: "last_name", label: "Last Name", value: personal_information.last_name ?? 'N/A' },
         { id: "name_extension", label: "Name Extension", value: personal_information.name_extension ?? 'N/A' },
         { id: "place_of_birth", label: "Place of Birth", value: personal_information.place_of_birth ?? 'N/A' },
-        { id: "date_of_birth", label: "Date of Birth", value: personal_information.date_of_birth ?? 'N/A' },
+        { id: "date_of_birth", label: "Date of Birth", value: dayjs(personal_information.date_of_birth).format('MM-DD-YYYY') ?? 'N/A' },
         { id: "sex", label: "Sex", value: personal_information.sex ?? 'N/A' },
         { id: "civil_status", label: "Civil Status", value: personal_information.civil_status ?? 'N/A' },
         { id: "contact_number", label: "Contact Number", value: personal_information.contact_number ?? 'N/A' },
