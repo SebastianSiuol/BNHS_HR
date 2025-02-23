@@ -29,6 +29,13 @@ class FacultyController extends Controller
         protected StoreFacultyService $store_faculty,
     ) {}
 
+    private function getFacultyById(string $id){
+        return Faculty::findOrFail($id);
+    }
+
+    private function getFacultyByPubId(string $public_id){
+        return Faculty::where('public_id', $public_id);
+    }
 
     public function index()
     {
@@ -138,7 +145,7 @@ class FacultyController extends Controller
 
     public function editPsnDeets(int $faculty)
     {
-        $fac = Faculty::find($faculty);
+        $fac = $this->getFacultyById($faculty);
 
         $formatted_faculty = [
             'public_id'                            => $fac->public_id ?? 'N/A',
@@ -163,7 +170,7 @@ class FacultyController extends Controller
 
     public function editAddress(int $faculty)
     {
-        $fac = Faculty::find($faculty);
+        $fac = $this->getFacultyById($faculty);
 
         $formatted_faculty = [
             'public_id'                                 => $fac->public_id ?? 'N/A',
@@ -187,7 +194,7 @@ class FacultyController extends Controller
 
     public function editCompDeets(int $faculty)
     {
-        $fac = Faculty::find($faculty);
+        $fac = $this->getFacultyById($faculty);
 
         $formatted_faculty = [
             'public_id'                             => $fac->public_id,
@@ -225,7 +232,7 @@ class FacultyController extends Controller
 
     public function editRoles(int $faculty)
     {
-        $fac = Faculty::find($faculty);
+        $fac = $this->getFacultyById($faculty);
 
         $formatted_faculty = [
             'public_id' => $fac->public_id,
@@ -253,7 +260,7 @@ class FacultyController extends Controller
 
     public function updatePsnDeets(Request $request, string $public_id)
     {
-        $faculty = Faculty::where('public_id', $public_id)->first();
+        $faculty = $this->getFacultyByPubId($public_id);
 
         $request->validate([
             'first_name'                    => ['required'],
@@ -294,7 +301,7 @@ class FacultyController extends Controller
 
     public function updateAddresses(Request $request, string $public_id)
     {
-        $faculty = Faculty::where('public_id', $public_id)->first();
+        $faculty = $this->getFacultyByPubId($public_id);
         $psn_info = $faculty->personal_information;
 
         $request->validate([
@@ -360,7 +367,7 @@ class FacultyController extends Controller
 
     public function updateCompDeets(Request $request, string $public_id)
     {
-        $faculty = Faculty::where('public_id', $public_id)->first();
+        $faculty = $this->getFacultyByPubId($public_id);
 
         $request->validate([
             'designation_id'                => ['required'],
@@ -385,7 +392,7 @@ class FacultyController extends Controller
     public function updateRoles(Request $request, string $public_id)
     {
 
-        $faculty = Faculty::where('public_id', $public_id)->first();
+        $faculty = $this->getFacultyByPubId($public_id);
 
         $request->validate([
             'roles_id' => 'required|array',
