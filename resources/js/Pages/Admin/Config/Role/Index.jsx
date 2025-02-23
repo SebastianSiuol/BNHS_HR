@@ -13,11 +13,6 @@ import { ContentContainer } from "@/Components/ContentContainer";
 import { PageHeaders } from "@/Components/Admin/PageHeaders.jsx";
 import { FacultyAutoComplete } from "@/Components/FacultyAutoComplete";
 
-import { useFetchToFillDataToSelect } from "@/Hooks/useFetchToFillDataToSelect";
-
-
-
-
 const roleTypes = [
     { type: "sis", label: "Student Information System" },
     { type: "hr", label: "Human Resources Management System" },
