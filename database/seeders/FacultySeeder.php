@@ -17,6 +17,7 @@ class FacultySeeder extends Seeder
             'email' => 'john@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -24,6 +25,7 @@ class FacultySeeder extends Seeder
             'email' => 'adambakers07@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -31,6 +33,7 @@ class FacultySeeder extends Seeder
             'email' => 'rv043098@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -38,6 +41,7 @@ class FacultySeeder extends Seeder
             'email' => 'romeovelasquez08@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -45,6 +49,7 @@ class FacultySeeder extends Seeder
             'email' => 'dabdaki@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -52,6 +57,7 @@ class FacultySeeder extends Seeder
             'email' => 'gabogabian@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-04',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
 
@@ -60,6 +66,7 @@ class FacultySeeder extends Seeder
             'email' => 'roberto@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2008-01-06',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
 
@@ -68,6 +75,7 @@ class FacultySeeder extends Seeder
             'email' => 'poppy@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2002-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -75,6 +83,7 @@ class FacultySeeder extends Seeder
             'email' => 'tuffin@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2002-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -82,6 +91,7 @@ class FacultySeeder extends Seeder
             'email' => 'rijel@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2002-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
         Faculty::factory()->create([
@@ -89,6 +99,7 @@ class FacultySeeder extends Seeder
             'email' => 'janice@example.com',
             'password' => 'Password123',
             'date_of_joining' => '2002-01-02',
+            'first_login_password_change' => false,
             'service_credit' => 8,
         ]);
     }
