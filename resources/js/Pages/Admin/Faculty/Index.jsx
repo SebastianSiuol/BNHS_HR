@@ -156,7 +156,7 @@ function EditButtonContext({ selectedFaculty }) {
             <DropdownMenu.Content
                 className="z-50 text-base bg-white divide-y divide-gray-100 rounded shadow"
                 align="start">
-                <DropdownMenu.Item className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100">
+                <DropdownMenu.Item >
                     <Link
                         className="block px-4 py-2 text-sm text-gray-700 w-full hover:bg-gray-100"
                         href={route(
