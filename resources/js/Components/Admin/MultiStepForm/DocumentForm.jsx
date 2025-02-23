@@ -21,8 +21,6 @@ export function DocumentForm() {
         postFormDatatoServer(submittedData);
     }
 
-    console.log(inertiaError);
-
     return (
         <>
             <form>
