@@ -34,7 +34,7 @@ class FacultyController extends Controller
     }
 
     private function getFacultyByPubId(string $public_id){
-        return Faculty::where('public_id', $public_id);
+        return Faculty::where('public_id', $public_id)->first();
     }
 
     public function index()
@@ -64,17 +64,27 @@ class FacultyController extends Controller
     public function create()
     {
         $departments = Department::select('id', 'name')
-            ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
-            ->get();
-        $positions = SchoolPosition::select('id','title')->get();
-        $shifts = Shift::select('id','name')->get();
-        $data = Role::all(['id', 'type', 'description']);
+        ->with(['designations' => fn($query) => $query->select('id', 'name', 'department_id')])
+        ->get();
+
+        $positions = SchoolPosition::select('id', 'title', 'allotment')->withCount('faculties')->get();
+        $mapped_positions = $positions->map(
+            fn($pos) => [
+                'id' => $pos->id,
+                'title' => $pos->title,
+                'allotmentLeft' => $pos->allotment - $pos->faculties_count,
+                'isFull' => $pos->faculties_count >= $pos->allotment,
+            ]
+        );
+
+        $shifts = Shift::select('id', 'name')->get();
+        $rolesOptions = Role::all(['id', 'type', 'description']);
 
         return Inertia::render('Admin/Faculty/Create', [
             'departments' => $departments,
-            'positions' => $positions,
+            'positions' => $mapped_positions,
             'shifts' => $shifts,
-            'retrievedRoles' => $data,
+            'rolesOptions' => $rolesOptions,
         ]);
     }
 
@@ -211,9 +221,7 @@ class FacultyController extends Controller
         ->get();
 
         $positions = SchoolPosition::select('id', 'title', 'allotment')->withCount('faculties')->get();
-        $shifts = Shift::select('id', 'name')->get();
-
-        $mappedPositions = $positions->map(
+        $mapped_positions = $positions->map(
             fn($pos) => [
                 'id' => $pos->id,
                 'title' => $pos->title,
@@ -222,10 +230,12 @@ class FacultyController extends Controller
             ]
         );
 
+        $shifts = Shift::select('id', 'name')->get();
+
         return Inertia::render('Admin/Faculty/Edit/CompDeets', [
             'selectedFaculty' => $formatted_faculty,
             'departments' => $departments,
-            'positions' => $mappedPositions,
+            'positions' => $mapped_positions,
             'shifts' => $shifts,
         ]);
     }
@@ -245,7 +255,7 @@ class FacultyController extends Controller
 
         return Inertia::render('Admin/Faculty/Edit/Roles', [
             'selectedFaculty' => $formatted_faculty,
-            'rolesOption' => $data,
+            'rolesOptions' => $data,
         ]);
     }
 
