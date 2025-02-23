@@ -7,7 +7,7 @@ import { useForm, Controller, useController } from "react-hook-form";
 // Edit Multistep Form Context, Provider, and Hooks
 
 import { capitalizeFirstLetter } from "@/Utils/stringUtils";
-import { getFullName } from '@/Utils/formatTableDataUtils';
+import { getFullName } from "@/Utils/formatTableDataUtils";
 
 // Schemas
 import { companyDetailsDataSchema } from "@/Schemas/MultistepFormSchema";
@@ -34,7 +34,6 @@ export default function CompDeets() {
 }
 
 export function CompanyDetailsForm() {
-
     const { selectedFaculty, departments, positions, shifts } = usePage().props;
     const [designations, setDesignations] = useState([]);
     const [departmentHeads, setDepartmentHeads] = useState([]);
@@ -43,17 +42,17 @@ export function CompanyDetailsForm() {
     const [allFetchLoading, setAllFetchLoading] = useState([]);
 
     const {
-            register,
-            handleSubmit,
-            watch,
-            setValue,
-            formState: { errors },
-            setError,
-            clearErrors,
-        } = useForm({
-            resolver: zodResolver(companyDetailsDataSchema),
-            defaultValues: selectedFaculty,
-        });
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+        setError,
+        clearErrors,
+    } = useForm({
+        resolver: zodResolver(companyDetailsDataSchema),
+        defaultValues: selectedFaculty,
+    });
 
     const selectedDept = parseInt(watch("department_id"));
 
@@ -80,7 +79,6 @@ export function CompanyDetailsForm() {
             }
         }
     }, [designations]);
-
 
     useEffect(
         function () {
@@ -119,7 +117,6 @@ export function CompanyDetailsForm() {
                             clearErrors("department_head");
                         }
                     }
-
                 } catch (err) {
                     console.error(err);
                 } finally {
@@ -132,37 +129,47 @@ export function CompanyDetailsForm() {
             getDepartmentHeads();
         },
         [selectedDept]
-    )
+    );
 
-     useEffect(() => {
-         const allFetchesCompleted = Object.values(allFetchLoading).every(
-             (loading) => !loading
-         );
+    useEffect(() => {
+        const allFetchesCompleted = Object.values(allFetchLoading).every(
+            (loading) => !loading
+        );
 
-         if (allFetchesCompleted) {
-             if (allFetchErrors["department_head"]) {
-                 setError("department_head", {
-                     type: "custom",
-                     message: "No Department Head found in Department!",
-                 });
-             }
-         }
-     }, [allFetchLoading, setValue]);
+        if (allFetchesCompleted) {
+            if (allFetchErrors["department_head"]) {
+                setError("department_head", {
+                    type: "custom",
+                    message: "No Department Head found in Department!",
+                });
+            }
+        }
+    }, [allFetchLoading, setValue]);
 
-
-     function onFormUpdate(data, e) {
-        router.put(route('admin.faculty.update.comp-deets', selectedFaculty?.public_id), data)
-     }
+    function onFormUpdate(data, e) {
+        router.put(
+            route(
+                "admin.faculty.update.comp-deets",
+                selectedFaculty?.public_id
+            ),
+            data
+        );
+    }
     return (
         <form>
             <div className="grid grid-cols-none lg:grid-cols-2 lg:gap-16">
                 <div>
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Department</span>
-                        <InputSelect id={"department_id"} register={register} error={errors}>
+                        <InputSelect
+                            id={"department_id"}
+                            register={register}
+                            error={errors}>
                             <option value={"0"}>Select Department</option>
                             {departments.map((dept) => (
-                                <option value={`${dept.id}`} key={dept.id}>
+                                <option
+                                    value={`${dept.id}`}
+                                    key={dept.id}>
                                     {dept.name}
                                 </option>
                             ))}
@@ -171,10 +178,15 @@ export function CompanyDetailsForm() {
 
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Designations</span>
-                        <InputSelect id={"designation_id"} register={register} error={errors}>
+                        <InputSelect
+                            id={"designation_id"}
+                            register={register}
+                            error={errors}>
                             <option value={"0"}>Select Department First</option>
                             {designations.map((desig) => (
-                                <option value={`${desig.id}`} key={desig.id}>
+                                <option
+                                    value={`${desig.id}`}
+                                    key={desig.id}>
                                     {desig.name}
                                 </option>
                             ))}
@@ -183,11 +195,20 @@ export function CompanyDetailsForm() {
 
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Manager/Department Head</span>
-                        <InputSelect id={"department_head"} register={register} error={errors}>
-                        <option value={'blank'}>No Head</option>
+                        <InputSelect
+                            id={"department_head"}
+                            register={register}
+                            error={errors}>
+                            <option value={"blank"}>No Head</option>
                             {departmentHeads.map((deptHead) => (
-                                <option value={`${deptHead.id}`} key={deptHead.id}>
-                                    {getFullName(deptHead) ?? 'null'}
+                                <option
+                                    value={`${deptHead.id}`}
+                                    key={deptHead.id}>
+                                    {getFullName(deptHead)
+                                        ? `[${
+                                              deptHead.faculty_code
+                                          }] ${getFullName(deptHead)}`
+                                        : null}
                                 </option>
                             ))}
                         </InputSelect>
@@ -195,10 +216,15 @@ export function CompanyDetailsForm() {
 
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Shift</span>
-                        <InputSelect id={"shift_id"} register={register} error={errors}>
+                        <InputSelect
+                            id={"shift_id"}
+                            register={register}
+                            error={errors}>
                             <option value={"0"}>Select Shift</option>
                             {shifts.map((shift) => (
-                                <option value={`${shift.id}`} key={shift.id}>
+                                <option
+                                    value={`${shift.id}`}
+                                    key={shift.id}>
                                     {capitalizeFirstLetter(shift.name)}
                                 </option>
                             ))}
@@ -206,14 +232,23 @@ export function CompanyDetailsForm() {
                     </label>
                 </div>
                 <div>
-
                     <label className={"my-2 space-y-2 text-sm"}>
                         <span>Position</span>
-                        <InputSelect id={"position_id"} register={register} error={errors}>
+                        <InputSelect
+                            id={"position_id"}
+                            register={register}
+                            error={errors}>
                             <option value={"0"}>Select Position</option>
                             {positions.map((pos) => (
-                                <option value={`${pos.id}`} key={pos.id}>
-                                    {capitalizeFirstLetter(pos.title)}
+                                <option
+                                    value={`${pos.id}`}
+                                    key={pos.id}
+                                    disabled={pos.isFull}>
+                                    <span className="font-bold">{`${capitalizeFirstLetter(
+                                        pos.title
+                                    )}`}</span>
+                                    <span>{` | `}</span>
+                                    <span>{`Slot Left:${pos.allotmentLeft}`}</span>
                                 </option>
                             ))}
                         </InputSelect>
