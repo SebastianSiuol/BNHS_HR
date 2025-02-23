@@ -38,12 +38,13 @@ function HandlePage() {
     useEffect(() => {
         setValue(
             "roles_id",
-            selectedFaculty?.roles?.map((role) => role.id.toString())
+            selectedFaculty?.roles?.map((role) => role.id)
         );
     }, [selectedFaculty]);
 
     function rolesUpdate(data, e) {
         e.preventDefault();
+        console.log(data);
         if (getValues("roles_id") === undefined || getValues("roles_id").length === 0) {
             setRoleError("Please select a role!");
             return;
@@ -88,6 +89,8 @@ function HandlePage() {
                         register={register}
                         rolesOptions={rolesOptions}
                         roleError={roleError}
+                        setValue={setValue}
+                        watch={watch}
                     />
 
                     <div className={"flex justify-between mt-16"}>

@@ -31,7 +31,7 @@ function RolesForm() {
     const { roles } = selectedFaculty;
     const { roles_id } = roles;
 
-    const { register, handleSubmit, setValue, getValues } = useForm({
+    const { register, handleSubmit, setValue, getValues, watch } = useForm({
         defaultValues: { roles_id: [] },
     });
 
@@ -42,7 +42,7 @@ function RolesForm() {
             if (rolesOptions.length > 0) {
                 setValue(
                     "roles_id",
-                    roles_id.map((id) => id.toString())
+                    roles_id.map((id) => id)
                 );
             }
         },
@@ -69,6 +69,8 @@ function RolesForm() {
                 register={register}
                 rolesOptions={rolesOptions}
                 roleError={roleError}
+                setValue={setValue}
+                watch={watch}
             />
 
             <div className={"flex justify-end mt-16"}>

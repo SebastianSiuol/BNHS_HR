@@ -13,30 +13,33 @@ import { usePersistsData } from "@/Hooks/usePersistsData";
 const FORM_DATA_KEY = "fifth_form_local_data";
 
 export function RolesForm() {
-    const { rolesOptions } = usePage().props
-    const { getSavedData, prevStep, nextStep, } = useMultiStepForm();
-    const [roleError, setRoleError] = useState('');
-    const {
-        register,
-        handleSubmit,
-        watch,
-        getValues,
-    } = useForm({
-        defaultValues: getSavedData(FORM_DATA_KEY) ?? [],
+    const { rolesOptions } = usePage().props;
+    const { getSavedData, prevStep, nextStep } = useMultiStepForm();
+    const [roleError, setRoleError] = useState("");
+
+    const { register, watch, getValues, setValue } = useForm({
+        defaultValues: getSavedData(FORM_DATA_KEY) || [],
     });
 
     usePersistsData({ localStorageKey: FORM_DATA_KEY, value: watch() });
 
-    function rolesFormSubmit(data) {
+    useEffect(() => {
+        const savedData = getSavedData(FORM_DATA_KEY);
+        setValue("roles_id", savedData?.roles_id || []);
+    }, [getSavedData, setValue]);;
 
-        if(getValues("roles_id") === undefined || getValues("roles_id").length === 0){
-            setRoleError((roleError) => "Please select a role!");
+
+    function rolesFormSubmit() {
+        if (
+            getValues("roles_id") === undefined ||
+            getValues("roles_id").length === 0
+        ) {
+            setRoleError("Please select a role!");
             return;
         } else {
-            setRoleError((roleError) => "");
+            setRoleError("");
             nextStep();
         }
-
     }
 
     return (
@@ -45,13 +48,19 @@ export function RolesForm() {
                 register={register}
                 rolesOptions={rolesOptions}
                 roleError={roleError}
+                setValue={setValue}
+                watch={watch}
             />
 
             <div className={"flex justify-between mt-16"}>
-                <NavButton type={"prev"} onClick={prevStep}>
+                <NavButton
+                    type={"prev"}
+                    onClick={prevStep}>
                     Back
                 </NavButton>
-                <NavButton type={"next"} onClick={handleSubmit(rolesFormSubmit)}>
+                <NavButton
+                    type={"next"}
+                    onClick={rolesFormSubmit}>
                     Next: Documents
                 </NavButton>
             </div>
