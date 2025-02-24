@@ -53,7 +53,7 @@ class VoluntaryWorkController extends Controller
             // Update or create voluntary works
             foreach ($voluntaryWorks as $work) {
                 $personalInfo->voluntary_works()->updateOrCreate(
-                    ['id' => $work['publicId']], // Match by ID if available
+                    ['public_id' => $work['publicId'] ?? null], // Match by ID if available
                     [
                         'organization_name' => $work['organizationName'],
                         'date_from' => $work['dateFrom'],

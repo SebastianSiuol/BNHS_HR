@@ -54,7 +54,7 @@ class WorkExperienceController extends Controller
             // Update or create work experiences
             foreach ($workExperiences as $experience) {
                 $personalInfo->work_experiences()->updateOrCreate(
-                    ['publicId' => $experience['publicId']], // Match by ID if available
+                    ['public_id' => $experience['publicId'] ?? null], // Match by ID if available
                     [
                         'from_date' => $experience['fromDate'],
                         'to_date' => $experience['toDate'],
