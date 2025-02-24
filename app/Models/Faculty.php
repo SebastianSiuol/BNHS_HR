@@ -150,7 +150,7 @@ class Faculty extends Authenticatable implements JWTSubject
 
     public function current_attendance()
     {
-        return $this->hasOne(Attendance::class)->whereDate('check_in', Carbon::now()->timezone('GMT+8'));
+        return $this->hasOne(Attendance::class)->whereDate('created_at', Carbon::now()->timezone('GMT+8'));
     }
 
     /* NOTE: Belongs Relationships */
