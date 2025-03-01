@@ -25,7 +25,7 @@ class JWTRedirectController extends Controller
                     'expiresIn' => '12h'
                 ])->fromUser($faculty);
 
-                return Inertia::location("https://bhnhs-sis.onrender.com/admin/dashboard?access_token=" . $token);
+                return Inertia::location("http://localhost:5173/admin/dashboard?access_token=" . $token);
             } catch (JWTException $e) {
                 return response()->json([
                     'error' => 'Could not create token',
@@ -52,7 +52,7 @@ class JWTRedirectController extends Controller
                 'expiresIn' => '12h'
             ])->fromUser($faculty);
 
-            return Inertia::location("https://bhnhs-sis.onrender.com/faculty/home?access_token=" . $token);
+            return Inertia::location("http://localhost:5173/faculty/home?access_token=" . $token);
         } catch (JWTException $e) {
             return response()->json([
                 'error' => 'Could not create token',
