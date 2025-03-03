@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Personalinformation;
+namespace Database\Factories\PersonalInformation;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
