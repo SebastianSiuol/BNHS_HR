@@ -1,32 +1,42 @@
-FROM richarvey/nginx-php-fpm:3.1.6
+# Use a multi-stage build to reduce image size
 
-# Copy all application files to the container
-COPY . .
+# Stage 1: Build assets
+FROM node:18-alpine AS build-stage
 
-RUN apk update
+WORKDIR /app
 
-# Install the `npm` package
-RUN apk add --no-cache npm
-
-# Install NPM dependencies
+# Copy only necessary files to improve build cache efficiency
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Build Vite assets
+COPY . .
 RUN npm run build
 
-# Image config
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+# Stage 2: Final application setup
+FROM richarvey/nginx-php-fpm:3.1.6
 
-# Laravel config
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
+# Set working directory
+WORKDIR /var/www/html
 
-# Allow composer to run as root
-ENV COMPOSER_ALLOW_SUPERUSER 1
+# Copy application files
+COPY . .
+
+# Copy built assets from the previous stage
+COPY --from=build-stage /app/public/build public/build
+
+# Install system dependencies
+RUN apk add --no-cache npm \
+    && rm -rf /var/cache/apk/*
+
+# Image configuration
+ENV SKIP_COMPOSER 1 \
+    WEBROOT /var/www/html/public \
+    PHP_ERRORS_STDERR 1 \
+    RUN_SCRIPTS 1 \
+    REAL_IP_HEADER 1 \
+    APP_ENV production \
+    APP_DEBUG false \
+    LOG_CHANNEL stderr \
+    COMPOSER_ALLOW_SUPERUSER 1
 
 CMD ["/start.sh"]
