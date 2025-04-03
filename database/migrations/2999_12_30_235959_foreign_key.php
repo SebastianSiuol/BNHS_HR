@@ -41,6 +41,22 @@ return new class extends Migration
             $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
         });
 
+        Schema::table('residential_addresses', function (Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
+        Schema::table('permanent_addresses', function (Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
+        Schema::table('phil_id_cards', function (Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
+        Schema::table('medical_information', function (Blueprint $table) {
+            $table->foreign('personal_information_id')->references('id')->on('personal_information')->onDelete('cascade');
+        });
+
         Schema::table('leaves', function(Blueprint $table) {
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
             $table->foreign('leave_types_id')->references('id')->on('leave_types');
