@@ -93,7 +93,6 @@ class FacultyController extends Controller
 
     public function store(StoreFacultyRequest $request)
     {
-
         $validated_inputs = $request->validated();
         $validatedDeptHead = $validated_inputs['department_head'] == 'blank' ? null : $validated_inputs['department_head'];
         $faculty_code = Faculty::generateFacultyCode();
@@ -109,41 +108,49 @@ class FacultyController extends Controller
                 ->withInput();
         }
 
-        /* Stores Faculty */
-        $faculty = new Faculty;
-        $faculty->faculty_code      = $faculty_code;
-        $faculty->email             = $validated_inputs['email'];
-        $faculty->password          = $random_password;
-        $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
-        $faculty->date_of_leaving   = null;
-        $faculty->designation_id    = $validated_inputs['designation_id'];
-        $faculty->shift_id          = $validated_inputs['shift_id'];
-        $faculty->employment_status_id = 1;
-        $faculty->school_position_id = $validated_inputs['position_id'];
-        $faculty->department_head_id = $validatedDeptHead;
-        $faculty->save();
+        try {
+            DB::beginTransaction();
 
-        foreach ($validated_inputs['roles_id'] as $role) {
-            $faculty->roles()->attach($role);
+            /* Stores Faculty */
+            $faculty = new Faculty;
+            $faculty->faculty_code      = $faculty_code;
+            $faculty->email             = $validated_inputs['email'];
+            $faculty->password          = bcrypt($random_password);
+            $faculty->date_of_joining   = $validated_inputs['date_of_joining'];
+            $faculty->date_of_leaving   = null;
+            $faculty->designation_id    = $validated_inputs['designation_id'];
+            $faculty->shift_id          = $validated_inputs['shift_id'];
+            $faculty->employment_status_id = 1;
+            $faculty->school_position_id = $validated_inputs['position_id'];
+            $faculty->department_head_id = $validatedDeptHead;
+            $faculty->save();
+
+            foreach ($validated_inputs['roles_id'] as $role) {
+                $faculty->roles()->attach($role);
+            }
+
+            /* Stores Faculty Details */
+            $personal_information = $this->store_faculty->storePersonalInformation($faculty, $validated_inputs);
+            $this->store_faculty->storeAddresses($personal_information, $validated_inputs);
+            $this->store_faculty->storeContactPerson($personal_information, $validated_inputs);
+
+            DB::commit();
+
+            // API request payload
+            $payload = [
+                'name' => $validated_inputs['first_name'] . " " . $validated_inputs['last_name'],
+                'faculty_code' => $faculty_code,
+                'password' => $random_password
+            ];
+
+            // Send the email using the provided API
+            Mail::to($faculty->email)->send(new FacultyAccountCreated($payload));
+
+            return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the faculty. Please try again.'])->withInput();
         }
-
-        /* Stores Faculty Details */
-        $personal_information = $this->store_faculty->storePersonalInformation($faculty, $validated_inputs);
-        $this->store_faculty->storeAddresses($personal_information, $validated_inputs);
-        $this->store_faculty->storeContactPerson($personal_information, $validated_inputs);
-
-
-        // API request payload
-        $payload = [
-            'name' => $validated_inputs['first_name'] . " " . $validated_inputs['last_name'],
-            'faculty_code' => $faculty_code,
-            'password' => $random_password
-        ];
-
-        // Send the email using the provided API
-        Mail::to($faculty->email)->send(new FacultyAccountCreated($payload));
-
-        return redirect()->route('admin.faculty.index')->with('success', 'Employee created successfully!');
     }
 
 
