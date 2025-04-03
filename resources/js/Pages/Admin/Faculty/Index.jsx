@@ -125,7 +125,7 @@ function FacultyTable({ faculties }){
 }
 
 function useFacultyActions() {
-    const { fetchFacultyMember, toggleShowModal, toggleDeleteModal, confirmFacultyDelete } = useFacultiesIndex();
+    const { fetchFacultyMember, toggleShowModal, toggleDeleteModal} = useFacultiesIndex();
 
     function handleShowFaculty(id) {
         fetchFacultyMember(id);
@@ -140,16 +140,32 @@ function useFacultyActions() {
                 html: 'Are you sure you want to delete this <strong>faculty?</strong>',
                 allowEscapeKey: false,
                 allowOutsideClick: false,
-                showCancelButton: true,
+                showDenyButton: true,
                 confirmButtonText: 'Confirm',
-                cancelButtonText: 'Cancel',
+                denyButtonText: 'Cancel',
                 customClass: {
                     popup: 'border rounded-3xl',
                     confirmButton: 'bg-blue-700',
-                    cancelButton: 'bg-gray-200 text-gray-800',
+                    denyButton: 'bg-gray-200 text-gray-800',
                   }
-            }).then(()=>{
-                router.delete(route('admin.faculty.destroy', {faculty: (facultyId).toString()}));
+            }).then((result)=>{
+                if (result.isConfirmed){
+                    router.delete(route('admin.faculty.destroy', {faculty: (facultyId).toString()}));
+                }
+
+                if(result.isDenied){
+                    withReactContent(Swal).fire({
+                        title: 'Deletion cancelled',
+                        icon: 'success',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Confirm',
+                        customClass: {
+                            popup: 'border rounded-3xl',
+                            confirmButton: 'bg-blue-700',
+                            }
+                    });
+                }
             });
     }
 

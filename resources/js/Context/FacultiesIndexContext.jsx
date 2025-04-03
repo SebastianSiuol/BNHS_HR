@@ -53,11 +53,6 @@ export function FacultiesIndexProvider({ children }) {
         setDeleteModal(false)
     }
 
-    function confirmFacultyDelete(){
-        setDeleteModal(false)
-        router.delete(route('admin.faculty.destroy', {faculty: (facultyToDelete.data).toString()}));
-    }
-
     function capitalizeFirstLetter(text) {
         const word = text
             ?.split(" ")
@@ -102,7 +97,6 @@ export function FacultiesIndexProvider({ children }) {
                 toggleShowModal,
                 fetchFacultyMember,
                 cancelFacultyDelete,
-                confirmFacultyDelete
             }}
         >
             {children}
