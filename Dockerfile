@@ -3,11 +3,14 @@ FROM richarvey/nginx-php-fpm:3.1.6
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy package.json and package-lock.json first to leverage caching
+# Update Alpine packages and install npm (this layer will be cached unless apk changes)
+RUN apk update && apk add --no-cache npm
+
+# Copy package.json and package-lock.json first for better caching
 COPY package.json package-lock.json ./
 
-# Update Alpine packages and install npm in a single layer to reduce image size
-RUN apk update && apk add --no-cache npm && npm install
+# Install NPM dependencies separately (cached if package.json hasn't changed)
+RUN npm install
 
 # Copy the rest of the application files
 COPY . .
