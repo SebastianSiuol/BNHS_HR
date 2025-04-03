@@ -44,7 +44,8 @@ export function FacultiesIndexProvider({ children }) {
 
     function toggleDeleteModal(data){
         setFacultyToDelete(data);
-        setDeleteModal(true)
+        console.log(data);
+        // setDeleteModal(true)
     }
 
     function cancelFacultyDelete(){

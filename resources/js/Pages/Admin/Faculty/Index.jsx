@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { router, Link, usePage, useForm as useInertiaForm, Head } from "@inertiajs/react";
 import { Description, DialogTitle} from '@headlessui/react';
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -48,7 +50,7 @@ function HandlePage() {
                 <Pagination data={faculties} />
 
                 <ShowFacultyModal />
-                <ShowDeleteModal />
+                {/* <ShowDeleteModal /> */}
             </ContentContainer>
         </>
     );
@@ -123,7 +125,7 @@ function FacultyTable({ faculties }){
 }
 
 function useFacultyActions() {
-    const { fetchFacultyMember, toggleShowModal, toggleDeleteModal } = useFacultiesIndex();
+    const { fetchFacultyMember, toggleShowModal, toggleDeleteModal, confirmFacultyDelete } = useFacultiesIndex();
 
     function handleShowFaculty(id) {
         fetchFacultyMember(id);
@@ -132,6 +134,23 @@ function useFacultyActions() {
 
     function handleFacultyDeletion(facultyId) {
         toggleDeleteModal({ data: facultyId });
+        withReactContent(Swal).fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                html: 'Are you sure you want to delete this <strong>faculty?</strong>',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    popup: 'border rounded-3xl',
+                    confirmButton: 'bg-blue-700',
+                    cancelButton: 'bg-gray-200 text-gray-800',
+                  }
+            }).then(()=>{
+                router.delete(route('admin.faculty.destroy', {faculty: (facultyId).toString()}));
+            });
     }
 
     return { handleShowFaculty, handleFacultyDeletion}
@@ -233,65 +252,65 @@ function ShowFacultyModal() {
     );
 }
 
-function ShowDeleteModal() {
-    const {
-        deleteModal,
-        isLoading,
-        cancelFacultyDelete,
-        confirmFacultyDelete,
-    } = useFacultiesIndex();
+// function ShowDeleteModal() {
+//     const {
+//         deleteModal,
+//         isLoading,
+//         cancelFacultyDelete,
+//         confirmFacultyDelete,
+//     } = useFacultiesIndex();
 
-    return (
-        <Modal
-            state={deleteModal}
-            onToggle={cancelFacultyDelete}>
-            <DialogTitle
-                className="flex font-bold text-2xl text-black justify-between items-center p-4"
-                as={"div"}>
-                <span>
-                    {isLoading ? (
-                        <p>Loading</p>
-                    ) : (
-                        <p>
-                            Confirm{" "}
-                            <span className={"font-bold text-red-600"}>
-                                delete?
-                            </span>
-                        </p>
-                    )}
-                </span>
-                <button
-                    onClick={cancelFacultyDelete}
-                    className={"text-red-800"}>
-                    &times;
-                </button>
-            </DialogTitle>
-            <Description as={"div"}>
-                <div className={"px-12 pb-8"}>
-                    <p className={"text-lg"}>
-                        Are you sure you want to delete this faculty member?
-                    </p>
-                    <p className={"text-lg text-red-600 text-end"}>
-                        *This action is irreversible!
-                    </p>
-                </div>
-                <div className={"flex justify-between px-12 mb-8"}>
-                    <button
-                        onClick={confirmFacultyDelete}
-                        className={
-                            "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                        }>
-                        Confirm delete
-                    </button>
-                    <button
-                        onClick={cancelFacultyDelete}
-                        className={
-                            "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
-                        }>
-                        Cancel
-                    </button>
-                </div>
-            </Description>
-        </Modal>
-    );
-}
+//     return (
+//         <Modal
+//             state={deleteModal}
+//             onToggle={cancelFacultyDelete}>
+//             <DialogTitle
+//                 className="flex font-bold text-2xl text-black justify-between items-center p-4"
+//                 as={"div"}>
+//                 <span>
+//                     {isLoading ? (
+//                         <p>Loading</p>
+//                     ) : (
+//                         <p>
+//                             Confirm{" "}
+//                             <span className={"font-bold text-red-600"}>
+//                                 delete?
+//                             </span>
+//                         </p>
+//                     )}
+//                 </span>
+//                 <button
+//                     onClick={cancelFacultyDelete}
+//                     className={"text-red-800"}>
+//                     &times;
+//                 </button>
+//             </DialogTitle>
+//             <Description as={"div"}>
+//                 <div className={"px-12 pb-8"}>
+//                     <p className={"text-lg"}>
+//                         Are you sure you want to delete this faculty member?
+//                     </p>
+//                     <p className={"text-lg text-red-600 text-end"}>
+//                         *This action is irreversible!
+//                     </p>
+//                 </div>
+//                 <div className={"flex justify-between px-12 mb-8"}>
+//                     <button
+//                         onClick={confirmFacultyDelete}
+//                         className={
+//                             "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+//                         }>
+//                         Confirm delete
+//                     </button>
+//                     <button
+//                         onClick={cancelFacultyDelete}
+//                         className={
+//                             "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+//                         }>
+//                         Cancel
+//                     </button>
+//                 </div>
+//             </Description>
+//         </Modal>
+//     );
+// }
