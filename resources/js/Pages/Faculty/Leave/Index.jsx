@@ -28,7 +28,7 @@ export default function Index() {
 }
 
 function HandlePage() {
-    const { leaves } = usePage().props;
+    const { leaves, serviceCredit } = usePage().props;
     const [selectedLeave, setSelectedLeave] = useState(null);
     const [cancelModal, setCancelModal] = useState(false);
     const [viewModal, setViewModal] = useState(false);
@@ -46,12 +46,24 @@ function HandlePage() {
 
     return (
         <>
-            <div className="flex pb-6 pt-2 justify-end">
-                <Link
-                    href={route("faculty.leaves.create")}
-                    className="bg-blue-700 p-2 text-white rounded-lg hover:bg-blue-900">
-                    Request for a Leave
-                </Link>
+            <div className="flex justify-between items-center">
+                <div className="mb-4">
+                    <p className="text-gray-900">
+                        Service Credit Balance:{" "}
+                        <span
+                            id="credit-balance"
+                            className="font-bold text-green-600">
+                            {serviceCredit}
+                        </span>
+                    </p>
+                </div>
+                <div className="flex pb-6 pt-2 justify-end">
+                    <Link
+                        href={route("faculty.leaves.create")}
+                        className="bg-blue-700 p-2 text-white rounded-lg hover:bg-blue-900">
+                        Request for a Leave
+                    </Link>
+                </div>
             </div>
             <LeaveTable data={leaves?.data} onCancel={handleCancelModal} onView={handleViewModal} />
             <Pagination data={leaves}/>
@@ -71,7 +83,6 @@ function LeaveTable({ data, onCancel, onView }) {
     }
 
     function handleCancel(leaveId) {
-        console.log(leaveId)
         onCancel(leaveId);
     }
 

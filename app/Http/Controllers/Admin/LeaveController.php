@@ -23,7 +23,7 @@ class LeaveController extends Controller
             ->with(['leave_types' => fn($query) => $query->select('id', 'name', 'days')])
             ->paginate(5);
 
-
+        $service_credit = Auth::user()->service_credit;
 
         $render_url = $this->getRenderUrl($request, [
             'admin' => 'Admin/Leave/Index',
@@ -32,6 +32,7 @@ class LeaveController extends Controller
 
         return Inertia::render($render_url, [
             'leaves' => $user_leaves,
+            'serviceCredit' => $service_credit,
         ]);
     }
 
