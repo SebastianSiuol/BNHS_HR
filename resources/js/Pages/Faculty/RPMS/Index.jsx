@@ -3,6 +3,9 @@ import { usePage, router } from "@inertiajs/react";
 import { Description, DialogTitle } from "@headlessui/react";
 import { useForm, Controller } from "react-hook-form";
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import { FaPlus } from "react-icons/fa";
 import { IoSearchSharp, IoDocumentTextOutline } from "react-icons/io5";
 import FileUploadProgressModal from "@/Components/FileUploadProgressModal";
@@ -35,7 +38,6 @@ function HandlePage() {
     const [currentFilePath, setCurrentFilePath] = useState(null);
     const [openUploadModal, setOpenUploadModal] = useState(false);
     const [openViewFileModal, setOpenViewFileModal] = useState(false);
-    const [openDelFileModal, setOpenDelFileModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null)
 
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -51,9 +53,38 @@ function HandlePage() {
     }
 
     function handleDeleteDocument(id){
-
-        setSelectedFile(id);
-        setOpenDelFileModal((e) => !e);
+        withReactContent(Swal).fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            html: 'Are you sure you want to delete this <strong>leave?</strong>',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showDenyButton: true,
+            confirmButtonText: 'Confirm',
+            denyButtonText: 'Cancel',
+            customClass: {
+                popup: 'border rounded-3xl',
+                confirmButton: 'bg-blue-700',
+                denyButton: 'bg-gray-200 text-gray-800',
+                }
+        }).then((result)=>{
+            if (result.isConfirmed){
+                router.delete(route("faculty.rpms.delete", id));
+            }
+            if(result.isDenied){
+                withReactContent(Swal).fire({
+                    title: 'Deletion cancelled',
+                    icon: 'success',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    confirmButtonText: 'Confirm',
+                    customClass: {
+                        popup: 'border rounded-3xl',
+                        confirmButton: 'bg-blue-700',
+                        }
+                });
+            }
+        });
     }
 
     async function handleDownloadDocument(id, fileName) {
@@ -118,11 +149,11 @@ function HandlePage() {
                 onToggle={handleViewDocument}
                 selectedFile={selectedFile}
             />
-            <DeleteDocumentModal
+            {/* <DeleteDocumentModal
                 state={openDelFileModal}
                 onToggle={handleDeleteDocument}
                 selectedFile={selectedFile}
-            />
+            /> */}
             <FileUploadProgressModal
                 isOpen={isUploadProgressModal}
                 progress={uploadProgress}
@@ -447,59 +478,59 @@ function ViewDocumentModal({ state, onToggle, selectedFile }) {
     );
 }
 
-function DeleteDocumentModal({ state, onToggle, selectedFile }) {
-    function handleDelete() {
-        console.log(selectedFile.id);
-        router.delete(route("faculty.rpms.delete", selectedFile), {
-            onSuccess: () => {
-                onToggle();
-            },
-        });
-    }
+// function DeleteDocumentModal({ state, onToggle, selectedFile }) {
+//     function handleDelete() {
+//         console.log(selectedFile.id);
+//         router.delete(route("faculty.rpms.delete", selectedFile), {
+//             onSuccess: () => {
+//                 onToggle();
+//             },
+//         });
+//     }
 
-    return (
-        <Modal
-            state={state}
-            onToggle={onToggle}>
-            <DialogTitle
-                className="flex font-bold text-2xl text-black justify-between items-center p-4"
-                as="div">
-                <span>
-                    Confirm{" "}
-                    <span className={"font-bold text-red-600"}>delete?</span>
-                </span>
-                <button
-                    onClick={onToggle}
-                    className={"text-red-800"}>
-                    &times;
-                </button>
-            </DialogTitle>
-            <Description as="div">
-                <div className={"px-12 pb-8"}>
-                    <p className={"text-lg"}>
-                        Are you sure you want to delete this file?
-                    </p>
-                    <p className={"text-lg text-red-600 text-end"}>
-                        *This action is irreversible!
-                    </p>
-                </div>
-                <div className={"flex justify-between px-12 mb-8"}>
-                    <button
-                        onClick={handleDelete}
-                        className={
-                            "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                        }>
-                        Confirm delete
-                    </button>
-                    <button
-                        onClick={onToggle}
-                        className={
-                            "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
-                        }>
-                        Cancel
-                    </button>
-                </div>
-            </Description>
-        </Modal>
-    );
-}
+//     return (
+//         <Modal
+//             state={state}
+//             onToggle={onToggle}>
+//             <DialogTitle
+//                 className="flex font-bold text-2xl text-black justify-between items-center p-4"
+//                 as="div">
+//                 <span>
+//                     Confirm{" "}
+//                     <span className={"font-bold text-red-600"}>delete?</span>
+//                 </span>
+//                 <button
+//                     onClick={onToggle}
+//                     className={"text-red-800"}>
+//                     &times;
+//                 </button>
+//             </DialogTitle>
+//             <Description as="div">
+//                 <div className={"px-12 pb-8"}>
+//                     <p className={"text-lg"}>
+//                         Are you sure you want to delete this file?
+//                     </p>
+//                     <p className={"text-lg text-red-600 text-end"}>
+//                         *This action is irreversible!
+//                     </p>
+//                 </div>
+//                 <div className={"flex justify-between px-12 mb-8"}>
+//                     <button
+//                         onClick={handleDelete}
+//                         className={
+//                             "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+//                         }>
+//                         Confirm delete
+//                     </button>
+//                     <button
+//                         onClick={onToggle}
+//                         className={
+//                             "py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+//                         }>
+//                         Cancel
+//                     </button>
+//                 </div>
+//             </Description>
+//         </Modal>
+//     );
+// }

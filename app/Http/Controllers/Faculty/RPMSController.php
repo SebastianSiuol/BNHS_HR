@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Faculty;
 
 use App\Http\Controllers\Controller;
 use App\Models\Configuration\RPMSConfiguration;
-use App\Models\RPMS;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\RPMS;
 use Inertia\Inertia;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class RPMSController extends Controller
 {
@@ -68,24 +69,17 @@ class RPMSController extends Controller
             'additionalFiles.*' => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
-        // Get current date
         $currentDate = now();
 
-        // Fetch the current RPMS configuration
         $config = RPMSConfiguration::where('year', $currentDate->year)->first();
-
         if (!$config) {
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'No RPMS configuration found for the current year.']);
         }
 
-        // Determine the upload period based on the configuration
-        $uploadPeriod = $currentDate->lessThan($config->mid_year_date)
-            ? 'mid_year'
-            : 'end_year';
+        $uploadPeriod = $currentDate->lessThan($config->mid_year_date) ? 'mid_year' : 'end_year';
 
-        // Check if the current faculty member has already uploaded 5 files in this period
         $fileCount = RPMS::where('faculty_id', auth()->id())
             ->where('upload_period', $uploadPeriod)
             ->count();
@@ -98,29 +92,34 @@ class RPMSController extends Controller
                 ->withErrors(['error' => 'Upload limit exceeded. You can only upload a maximum of 5 files per upload period.']);
         }
 
-        // Store the main file
-        $mainFile = $request->file('mainFile');
-        $mainFilePath = $mainFile->store('uploads', 'public');
-        RPMS::create([
-            'filename' => $mainFile->getClientOriginalName(),
-            'file_path' => $mainFilePath,
-            'upload_period' => $uploadPeriod,
-            'faculty_id' => auth()->id(),
-        ]);
+        try {
+            DB::transaction(function () use ($request, $uploadPeriod) {
+                $mainFile = $request->file('mainFile');
+                $mainFilePath = $mainFile->store('uploads', 'public');
+                RPMS::create([
+                    'filename' => $mainFile->getClientOriginalName(),
+                    'file_path' => $mainFilePath,
+                    'upload_period' => $uploadPeriod,
+                    'faculty_id' => auth()->id(),
+                ]);
 
-        // Store additional files (if any)
-        $additionalFiles = $request->file('additionalFiles') ?? [];
-        foreach ($additionalFiles as $file) {
-            $filePath = $file->store('uploads', 'public');
-            RPMS::create([
-                'filename' => $file->getClientOriginalName(),
-                'file_path' => $filePath,
-                'upload_period' => $uploadPeriod,
-                'faculty_id' => auth()->id(),
-            ]);
+                $additionalFiles = $request->file('additionalFiles') ?? [];
+                foreach ($additionalFiles as $file) {
+                    $filePath = $file->store('uploads', 'public');
+                    RPMS::create([
+                        'filename' => $file->getClientOriginalName(),
+                        'file_path' => $filePath,
+                        'upload_period' => $uploadPeriod,
+                        'faculty_id' => auth()->id(),
+                    ]);
+                }
+            });
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'An error occurred while uploading files. Please try again.']);
         }
 
-        // Redirect with success message
         return redirect()
             ->route('faculty.rpms.store')
             ->with('success', 'RPMS uploaded successfully!');
