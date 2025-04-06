@@ -126,7 +126,6 @@ function ViewModal({ state, onToggle, selectedData }) {
 
     const [leaveData, setLeaveData] = useState(null);
 
-
     useEffect(() => {
         async function fetchData() {
             if (selectedData) {

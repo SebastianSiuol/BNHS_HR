@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('start_date');
             $table->string('end_date');
             $table->string('document')->nullable();
+            $table->string('service_credits_used')->nullable();
             $table->string('approved_by')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected', 'ongoing', 'cancelled'])->default('pending');
             $table->timestamps();

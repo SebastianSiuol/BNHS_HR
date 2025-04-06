@@ -59,6 +59,10 @@ export default function Create() {
         e.preventDefault();
         setIsModalOpen(true);
 
+        data = {...data,
+            'user_service_credits': serviceCreditValue,
+            'service_credits_used': serviceCredit - serviceCreditValue,};
+
         router.post(route("faculty.leaves.store"), data, {
             onProgress: (progress) => {
                 const percentage = Math.round(
