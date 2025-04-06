@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('days')->nullable()->default(null);
             $table->enum('for', ['male', 'female', 'both']);
+            $table->boolean('is_service_credits')->default(false);
             $table->timestamps();
         });
     }

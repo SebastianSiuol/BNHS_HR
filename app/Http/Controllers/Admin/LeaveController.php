@@ -72,7 +72,7 @@ class LeaveController extends Controller
         $auth_sex = Auth::user()->personal_information->sex;
 
 
-        $leave_types = LeaveType::all()->select('public_id', 'name', 'days', 'for');
+        $leave_types = LeaveType::all()->select('public_id', 'name', 'days', 'for', 'is_service_credits');
         $service_credit = Auth::user()->service_credit;
 
 
@@ -91,9 +91,10 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate(['leave_type' => 'required']);
 
-        $leave_type = LeaveType::findOrFail($request->leave_type);
+        $leave_type = LeaveType::where('public_id', $request->leave_type)->first();
 
         $validate_request = [
             'leave_type' => ['required'],
@@ -120,7 +121,7 @@ class LeaveController extends Controller
 
         Leave::create([
             'faculty_id' => Auth::id(),
-            'leave_types_id' => $validated_input['leave_type'],
+            'leave_types_id' =>$leave_type->id,
             'start_date' => $validated_input['start_date'],
             'end_date' => $end_date,
             'document' => $leave_document_path,

@@ -76,12 +76,13 @@ function LeaveTable({ data, onCancel, onView }) {
     }
 
 
-    const headers = ["Leave Type", "Duration", "Start Date", "Status", "Action"];
+    const headers = ["Leave Type", "Start Date", "End Date", "Status", "Action"];
 
     const columns = [
         (leave) => leave.leave_types?.name,
-        (leave) => leave.leave_types?.days,
+        // (leave) => leave.leave_types?.days,
         (leave) => leave.start_date,
+        (leave) => leave.end_date,
         (leave) => handleStatus(capitalizeFirstLetter(leave.status)),
         (leave) => (
             <div className="flex items-center justify-evenly">

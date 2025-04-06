@@ -36,7 +36,7 @@ export default function Create() {
 
         const filteredLeaveType = leaveTypes.find((leaveType)=>(leaveType.public_id === selectedLeaveType));
 
-        if (lowerCaseWord(filteredLeaveType?.name) != 'service credit') {
+        if (filteredLeaveType?.is_service_credits != true) {
             setValue("no_of_days", 0);
             setServiceCreditValue(serviceCredit);
             setIsServiceCredit(false);

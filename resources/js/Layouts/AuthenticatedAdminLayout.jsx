@@ -313,6 +313,14 @@ function SideNavbar() {
                                     </li>
                                     <li>
                                         <SidebarNavLink
+                                            href={route("admin.config.leave.index")}
+                                            active={route().current("admin.config.leave.index")}
+                                            type={"sub"}>
+                                            Leave
+                                        </SidebarNavLink>
+                                    </li>
+                                    <li>
+                                        <SidebarNavLink
                                             href={route(
                                                 "admin.config.shift.index"
                                             )}

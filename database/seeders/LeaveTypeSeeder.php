@@ -25,9 +25,9 @@ class LeaveTypeSeeder extends Seeder
             ['name' => 'Solo Parent Leave', 'days' => 7, 'for' => 'both'],
             ['name' => 'Special Leave Privileges', 'days' => 3, 'for' => 'both'],
             ['name' => 'VAWC Leave (If Victim)', 'days' => 10, 'for' => 'both'],
-            ['name' => 'Rehabilitation Leave', 'days' => null, 'for' => 'both'],
+            ['name' => 'Rehabilitation Leave', 'days' => null, 'for' => 'both', 'is_service_credits'=>true],
             ['name' => 'Study Leave', 'days' => 365, 'for' => 'both'],
-            ['name'=> 'Service Credit', 'days'=>null, 'for'=>'both']
+            ['name'=> 'Service Credit', 'days'=>null, 'for'=>'both', 'is_service_credits'=>true],
         ];
 
         foreach ($leave_types as $leave) {

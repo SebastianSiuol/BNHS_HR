@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Configuration\DepartmentController;
 use App\Http\Controllers\Admin\Configuration\SchoolPositionController;
 use App\Http\Controllers\Admin\Configuration\ShiftController;
 use App\Http\Controllers\Admin\Configuration\RoleController;
+use App\Http\Controllers\Admin\Configuration\LeaveController as LeaveConfigController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Api\DepartmentApiController;
 use App\Http\Controllers\Api\DesignationApiController;
@@ -75,72 +76,79 @@ Route::middleware('auth')->group(function () {
          *
          */
         Route::prefix('admin')->group(function () {
-            Route::get('/dashboard', [AdminDashboardController::class, 'index'])                                      ->name('admin.dashboard');
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])                                        ->name('admin.dashboard');
 
             // Faculties
-            Route::get('/faculties', [FacultyController::class, 'index'])                                             ->name('admin.faculty.index');
-            Route::get('/faculty/create', [FacultyController::class, 'create'])                                       ->name('admin.faculty.create');
-            Route::get('/faculty/{faculty}/edit/personal-info', [FacultyController::class, 'editPsnDeets'])           ->name('admin.faculty.edit.psn-deets');
-            Route::get('/faculty/{faculty}/edit/address', [FacultyController::class, 'editAddress'])                  ->name('admin.faculty.edit.address');
-            Route::get('/faculty/{faculty}/edit/company-details', [FacultyController::class, 'editCompDeets'])        ->name('admin.faculty.edit.comp-deets');
-            Route::get('/faculty/{faculty}/edit/roles', [FacultyController::class, 'editRoles'])                      ->name('admin.faculty.edit.roles');
-            Route::put('/faculty/{public_id}/personal-info', [FacultyController::class, 'updatePsnDeets'])            ->name('admin.faculty.update.psn-deets');
-            Route::put('/faculty/{public_id}/address', [FacultyController::class, 'updateAddresses'])                 ->name('admin.faculty.update.address');
-            Route::put('/faculty/{public_id}/company-details', [FacultyController::class, 'updateCompDeets'])         ->name('admin.faculty.update.comp-deets');
-            Route::put('/faculty/{public_id}/roles', [FacultyController::class, 'updateRoles'])                       ->name('admin.faculty.update.roles');
-            Route::delete('/faculty/{faculty}', [FacultyController::class, 'destroy'])                                ->name('admin.faculty.destroy');
-            Route::post('/faculty/store', [FacultyController::class, 'store'])                                        ->name('admin.faculty.store');
-            Route::get('/faculty/search', [FacultyController::class, 'search'])                                       ->name('admin.faculty.search');
+            Route::get('/faculties', [FacultyController::class, 'index'])                                               ->name('admin.faculty.index');
+            Route::get('/faculty/create', [FacultyController::class, 'create'])                                         ->name('admin.faculty.create');
+            Route::get('/faculty/{faculty}/edit/personal-info', [FacultyController::class, 'editPsnDeets'])             ->name('admin.faculty.edit.psn-deets');
+            Route::get('/faculty/{faculty}/edit/address', [FacultyController::class, 'editAddress'])                    ->name('admin.faculty.edit.address');
+            Route::get('/faculty/{faculty}/edit/company-details', [FacultyController::class, 'editCompDeets'])          ->name('admin.faculty.edit.comp-deets');
+            Route::get('/faculty/{faculty}/edit/roles', [FacultyController::class, 'editRoles'])                        ->name('admin.faculty.edit.roles');
+            Route::put('/faculty/{public_id}/personal-info', [FacultyController::class, 'updatePsnDeets'])              ->name('admin.faculty.update.psn-deets');
+            Route::put('/faculty/{public_id}/address', [FacultyController::class, 'updateAddresses'])                   ->name('admin.faculty.update.address');
+            Route::put('/faculty/{public_id}/company-details', [FacultyController::class, 'updateCompDeets'])           ->name('admin.faculty.update.comp-deets');
+            Route::put('/faculty/{public_id}/roles', [FacultyController::class, 'updateRoles'])                         ->name('admin.faculty.update.roles');
+            Route::delete('/faculty/{faculty}', [FacultyController::class, 'destroy'])                                  ->name('admin.faculty.destroy');
+            Route::post('/faculty/store', [FacultyController::class, 'store'])                                          ->name('admin.faculty.store');
+            Route::get('/faculty/search', [FacultyController::class, 'search'])                                         ->name('admin.faculty.search');
 
             // Attendances
-            Route::get('/attendances/check', [AttendanceController::class, 'create'])                                 ->name('admin.attendances.create');
-            Route::get('/attendances', [AttendanceController::class, 'index'])                                        ->name('admin.attendances.index');
-            Route::get('/attendances/report', [AttendanceController::class, 'report'])                                ->name('admin.attendances.report');
-            Route::get('/attendances/report/filter', [AttendanceController::class, 'reportFilter'])                   ->name('admin.attendances.report.filter');
-            Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])                             ->name('admin.attendances.check-in');
-            Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])                           ->name('admin.attendances.check-out');
+            Route::get('/attendances/check', [AttendanceController::class, 'create'])                                   ->name('admin.attendances.create');
+            Route::get('/attendances', [AttendanceController::class, 'index'])                                          ->name('admin.attendances.index');
+            Route::get('/attendances/report', [AttendanceController::class, 'report'])                                  ->name('admin.attendances.report');
+            Route::get('/attendances/report/filter', [AttendanceController::class, 'reportFilter'])                     ->name('admin.attendances.report.filter');
+            Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])                               ->name('admin.attendances.check-in');
+            Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])                             ->name('admin.attendances.check-out');
 
             // Leaves
-            Route::get('/leave/create', [LeaveController::class, 'create'])                                           ->name('admin.leaves.create');
-            Route::get('/leaves', [LeaveController::class, 'index'])                                                  ->name('admin.leaves.index');
-            Route::get('/leaves/manage', [LeaveController::class, 'manage'])                                          ->name('admin.leaves.manage');
-            Route::post('/leave/store', [LeaveController::class, 'store'])                                            ->name('admin.leaves.store');
-            Route::patch('/leave/manage/{leave}/action', [LeaveController::class, 'leaveAction'])                     ->name('admin.leaves.manage.action');
+            Route::get('/leave/create', [LeaveController::class, 'create'])                                             ->name('admin.leaves.create');
+            Route::get('/leaves', [LeaveController::class, 'index'])                                                    ->name('admin.leaves.index');
+            Route::get('/leaves/manage', [LeaveController::class, 'manage'])                                            ->name('admin.leaves.manage');
+            Route::post('/leave/store', [LeaveController::class, 'store'])                                              ->name('admin.leaves.store');
+            Route::patch('/leave/manage/{leave}/action', [LeaveController::class, 'leaveAction'])                       ->name('admin.leaves.manage.action');
 
             // Service Credits
-            Route::get('/service-credits', [ServiceCreditController::class, 'index'])                                 ->name('admin.service-credits.index');
-            Route::post('/service-credits/calc', [ServiceCreditController::class, 'storeCalc'])                       ->name('admin.service-credits.store.calc');
-            Route::post('/service-credits/mnl-adjust', [ServiceCreditController::class, 'mnlAdjust'])                 ->name('admin.service-credits.store.adjust');
-            Route::get('/service-credits/report', [ServiceCreditController::class, 'report'])                         ->name('admin.service-credits.report');
+            Route::get('/service-credits', [ServiceCreditController::class, 'index'])                                   ->name('admin.service-credits.index');
+            Route::post('/service-credits/calc', [ServiceCreditController::class, 'storeCalc'])                         ->name('admin.service-credits.store.calc');
+            Route::post('/service-credits/mnl-adjust', [ServiceCreditController::class, 'mnlAdjust'])                   ->name('admin.service-credits.store.adjust');
+            Route::get('/service-credits/report', [ServiceCreditController::class, 'report'])                           ->name('admin.service-credits.report');
 
             // RPMS
-            Route::get('/rpms', [RPMSController::class, 'index'])                                                     ->name('admin.rpms.index');
-            Route::get('/rpms/{id}/show', [RPMSController::class, 'show'])                                            ->name('admin.rpms.show');
-            Route::post('/rpms/config/set-date', [RPMSConfigurationController::class, 'store'])                       ->name('admin.rpms.config.store');
+            Route::get('/rpms', [RPMSController::class, 'index'])                                                       ->name('admin.rpms.index');
+            Route::get('/rpms/{id}/show', [RPMSController::class, 'show'])                                              ->name('admin.rpms.show');
+            Route::post('/rpms/config/set-date', [RPMSConfigurationController::class, 'store'])                         ->name('admin.rpms.config.store');
 
             // Configurations
-            Route::get('/config/company-details', [CompanyDetailController::class, 'index'])                          ->name('admin.config.company-details.index');
-            Route::post('/config/company-details', [CompanyDetailController::class, 'store'])                         ->name('admin.config.company-details.store');
-            Route::patch('/config/company-details', [CompanyDetailController::class, 'update'])                       ->name('admin.config.company-details.update');
+            Route::prefix('config')->group(function () {
+                Route::get('/company-details', [CompanyDetailController::class, 'index'])                               ->name('admin.config.company-details.index');
+                Route::post('/company-details', [CompanyDetailController::class, 'store'])                              ->name('admin.config.company-details.store');
+                Route::patch('/company-details', [CompanyDetailController::class, 'update'])                            ->name('admin.config.company-details.update');
 
-            Route::get('/config/departments', [DepartmentController::class, 'index'])                                 ->name('admin.config.department.index');
-            Route::post('/config/department', [DepartmentController::class, 'store'])                                 ->name('admin.config.department.store');
-            Route::patch('/config/department/{department}', [DepartmentController::class, 'update'])                  ->name('admin.config.department.update');
-            Route::delete('/config/department/{department}', [DepartmentController::class, 'destroy'])                ->name('admin.config.department.destroy');
+                Route::get('/departments', [DepartmentController::class, 'index'])                                      ->name('admin.config.department.index');
+                Route::post('/department', [DepartmentController::class, 'store'])                                      ->name('admin.config.department.store');
+                Route::patch('/department/{department}', [DepartmentController::class, 'update'])                       ->name('admin.config.department.update');
+                Route::delete('/department/{department}', [DepartmentController::class, 'destroy'])                     ->name('admin.config.department.destroy');
 
-            Route::get('/config/position', [SchoolPositionController::class, 'index'])                                ->name('admin.config.position.index');
-            Route::post('/config/position', [SchoolPositionController::class, 'store'])                               ->name('admin.config.position.store');
-            Route::patch('/config/position/{school_position}', [SchoolPositionController::class, 'update'])           ->name('admin.config.position.update');
-            Route::delete('/config/position/{school_position}', [SchoolPositionController::class, 'destroy'])         ->name('admin.config.position.destroy');
+                Route::get('/position', [SchoolPositionController::class, 'index'])                                     ->name('admin.config.position.index');
+                Route::post('/position', [SchoolPositionController::class, 'store'])                                    ->name('admin.config.position.store');
+                Route::patch('/position/{school_position}', [SchoolPositionController::class, 'update'])                ->name('admin.config.position.update');
+                Route::delete('/position/{school_position}', [SchoolPositionController::class, 'destroy'])              ->name('admin.config.position.destroy');
 
-            Route::get('/config/shift', [ShiftController::class, 'index'])                                            ->name('admin.config.shift.index');
-            Route::post('/config/shift', [ShiftController::class, 'store'])                                           ->name('admin.config.shift.store');
-            Route::patch('/config/shift/{shift}', [ShiftController::class, 'update'])                                 ->name('admin.config.shift.update');
-            Route::delete('/config/shift/{shift}', [ShiftController::class, 'destroy'])                               ->name('admin.config.shift.destroy');
+                Route::get('/leave', [LeaveConfigController::class, 'index'])                                           ->name('admin.config.leave.index');
+                Route::post('/leave', [LeaveConfigController::class, 'store'])                                          ->name('admin.config.leave.store');
+                Route::patch('/leave/{leave}', [LeaveConfigController::class, 'update'])                                ->name('admin.config.leave.update');
+                Route::delete('/leave/{leave}', [LeaveConfigController::class, 'destroy'])                              ->name('admin.config.leave.destroy');
 
-            Route::get('/config/roles', [RoleController::class, 'index'])                                             ->name('admin.config.role.index');
+                Route::get('/shift', [ShiftController::class, 'index'])                                                 ->name('admin.config.shift.index');
+                Route::post('/shift', [ShiftController::class, 'store'])                                                ->name('admin.config.shift.store');
+                Route::patch('/shift/{shift}', [ShiftController::class, 'update'])                                      ->name('admin.config.shift.update');
+                Route::delete('/shift/{shift}', [ShiftController::class, 'destroy'])                                    ->name('admin.config.shift.destroy');
 
-            Route::patch('/config/roles/{faculty}/update', [RoleController::class, 'update'])                         ->name('admin.config.role.update');
+                Route::get('/roles', [RoleController::class, 'index'])                                                  ->name('admin.config.role.index');
+
+                Route::patch('/roles/{faculty}/update', [RoleController::class, 'update'])                              ->name('admin.config.role.update');
+            });
         });
 
         /**
