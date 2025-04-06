@@ -106,4 +106,57 @@ class RPMSController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('query');
+
+        $auth_faculty = Auth::user();
+        $auth_department_id = $auth_faculty->designation->department_id;
+        $auth_faculty_roles = $auth_faculty->roles->pluck('role_name');
+
+        $facultiesQuery = Faculty::select('id', 'faculty_code', 'designation_id')
+            ->with([
+                'personal_information' => fn($query) => $query->select('faculty_id', 'first_name', 'last_name'),
+                'rpms' => fn($query) => $query->select('id', 'faculty_id', 'filename', 'file_path', 'upload_period'),
+                'designation' => fn($query) => $query->select('id', 'department_id')
+                    ->with(['department' => fn($deptQuery) => $deptQuery->select('id', 'name')]),
+            ])
+            ->where(function ($query) use ($search) {
+                $query->whereHas('personal_information', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%");
+                })->orWhereHas('designation.department', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            });
+
+        if ($auth_faculty_roles->contains('hr_manager')) {
+            $facultiesQuery->whereHas('designation.department', fn($query) => $query->where('id', $auth_department_id));
+        }
+
+        $faculties = $facultiesQuery->paginate(5)->withQueryString();
+
+
+        $faculties->getCollection()->transform(function ($faculty) {
+            $faculty->rpms->transform(function ($rpm) {
+                $rpm->file_path = Storage::disk('public')->url($rpm->file_path);
+                return $rpm;
+            });
+            return $faculty;
+        });
+
+        $year_now = Carbon::now()->format('Y');
+
+        $rpms_config = RPMSConfiguration::where('year', $year_now)
+            ->select('id', 'mid_year_date', 'end_year_date', 'year')
+            ->first();
+
+        return Inertia::render('Admin/RPMS/Index', [
+            'faculties' => $faculties,
+            'rpmsConfig' => $rpms_config,
+            'search' => $search
+        ]);
+    }
+
 }

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { usePage, router, Head } from "@inertiajs/react";
+import { router, Link, usePage, useForm as useInertiaForm, Head } from "@inertiajs/react";
+
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 
 import { FaCalendar } from "react-icons/fa6";
-import { IoSearchSharp } from "react-icons/io5";
+import { FaSearch } from "react-icons/fa";
 
 import { setSubmissionDateSchema } from '@/Schemas/RPMSSchema';
 
@@ -65,6 +66,16 @@ function HandlePage() {
 function Header({ onToggle }) {
     const { rpmsConfig } = usePage().props;
 
+        const { data, setData } = useInertiaForm({
+            query: "",
+        });
+
+        function searchQuery(e) {
+            e.preventDefault();
+            router.get(route("admin.rpms.search"), data);
+        }
+
+
     // Destructure only if rpmsConfig is not null
     const midYearDate = rpmsConfig?.mid_year_date;
     const endYearDate = rpmsConfig?.end_year_date;
@@ -72,37 +83,24 @@ function Header({ onToggle }) {
     return (
         <>
             <div className="pb-4 flex items-center justify-between ">
-                <label
-                    htmlFor="table-search"
-                    className="sr-only">
-                    Search
-                </label>
-                <div className="relative flex mt-1">
+                <form
+                    className="relative mt-1 grid grid-cols-1 sm:grid-cols-2"
+                    onSubmit={searchQuery}>
                     <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <IoSearchSharp className={"w-4 h-4 text-gray-500 0"} />
+                        <FaSearch className="w-4 h-4 text-gray-500 " />
                     </div>
                     <input
-                        type="text"
-                        id="table-search"
-                        className="block mr-2 h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        className="block h-10 sm:w-96 pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for items"
+                        value={data.query}
+                        onChange={(e) => setData("query", e.target.value)}
                     />
-
-                    {/* <div className="flex">
-                        <select
-                            id="shift"
-                            defaultValue="0"
-                            className="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5"
-                            required="">
-                            <option
-                                disabled>
-                                Year
-                            </option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    </div> */}
-                </div>
+                    <button
+                        type="submit"
+                        className="w-32 ml-4 px-4 py-2.5 text-white text-sm text-center font-medium bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300">
+                        Search
+                    </button>
+                </form>
 
                 <div className="flex border-gray-300 mt-1 px-4 border bg-gray-50 rounded-lg items-center justify-center">
                     <div className="mr-4  block items-center justify-center">
@@ -146,8 +144,6 @@ function FacultyTable({ onView }) {
     const headers = [
         "Teacher Name",
         "Department",
-        // "Date Submitted",
-        // "Status",
         "View Details",
     ];
 
@@ -159,9 +155,13 @@ function FacultyTable({ onView }) {
         // () => "2024-10-10",
         // () => "Pending",
         (faculty) => (
-            <button onClick={()=>onView(faculty?.id)}>
-                <CustomIcon type="view" />
-            </button>
+            <button
+                onClick={()=>onView(faculty?.id)}
+                className={
+                    "text-white items-center justify-between bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm p-2 me-2"
+            }>
+            View RPMS
+        </button>
         ),
     ];
 
